@@ -81,6 +81,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.gis',
     'polls',
-    'world'
+    'world',
+    'huts'
 )
 
