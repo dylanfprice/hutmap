@@ -65,7 +65,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
-  join(LOCAL_PATH, 'templates')
+  join(LOCAL_PATH, '..', 'templates')
 )
 
 INSTALLED_APPS = (
@@ -75,11 +75,10 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.admin',
-    'polls',
+    'django.contrib.admindocs',
     'django.contrib.gis',
+    'polls',
     'world'
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
 )
 
 GEOS_LIBRARY_PATH = '/home/hutmap/hutmap.com/deps/geos-3.3.0/lib/libgeos_c.so'
