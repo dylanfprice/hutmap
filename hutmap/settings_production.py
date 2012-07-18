@@ -1,5 +1,6 @@
 # Django production settings.
 from settings_local import *
+from os.path import join
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG

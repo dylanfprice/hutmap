@@ -1,5 +1,6 @@
 # Django development settings.
 from settings_local import *
+from os.path import join
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -80,3 +81,4 @@ INSTALLED_APPS = (
     'polls',
     'world'
 )
+
