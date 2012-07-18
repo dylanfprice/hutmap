@@ -1,5 +1,5 @@
 from django.contrib.gis.db import models
-from util.models import CountryField
+from util.countries import CountryField
 
 class Hut(models.Model):
   LOCATION_ACCURACY_CHOICES = (
@@ -24,8 +24,10 @@ class Hut(models.Model):
   # location
   region = models.ForeignKey('Region')
   location = models.PointField()
-  altitude = models.IntegerField('altitude (m)')
-  location_accuracy = models.IntegerField(choices=LOCATION_ACCURACY_CHOICES)
+  location_accuracy = models.IntegerField(choices=LOCATION_ACCURACY_CHOICES, 
+                                         null=True, blank=True)
+  altitude = models.IntegerField('altitude (m)',
+                                null=True, blank=True)
   # details
   name = models.CharField(max_length=100)
   access = models.IntegerField(choices=ACCESS_CHOICES)
@@ -36,10 +38,14 @@ class Hut(models.Model):
   capacity_hut_min = models.IntegerField('minimum hut capacity')
   capacity_hut_max = models.IntegerField('maximum hut capacity')
   # fees
-  fee_person_min = models.FloatField('minimum fee per person per night')
-  fee_person_max = models.FloatField('maximum fee per person per night')
-  fee_hut_min = models.FloatField('minimum fee per hut per night')
-  fee_hut_max = models.FloatField('maximum fee per hut per night')
+  fee_person_min = models.FloatField('minimum fee per person per night',
+                                     null=True, blank=True)
+  fee_person_max = models.FloatField('maximum fee per person per night',
+                                     null=True, blank=True)
+  fee_hut_min = models.FloatField('minimum fee per hut per night',
+                                  null=True, blank=True)
+  fee_hut_max = models.FloatField('maximum fee per hut per night',
+                                  null=True, blank=True)
   reservations = models.BooleanField('reservations accepted')
   # urls
   hut_url = models.URLField()
@@ -57,14 +63,23 @@ class Region(models.Model):
   country = CountryField()
   state = models.CharField(max_length=20, blank=True)
   region = models.CharField(max_length=50)
-  area = models.PolygonField()
+  area = models.PolygonField(null=True, spatial_index=False)
   objects = models.GeoManager()
+
+  def __unicode__(self):
+    return '{0}, {1}, {2}'.format(self.region, self.state, self.country)
 
 class Agency(models.Model):
   name = models.CharField(max_length=100)
   url = models.URLField()
   objects = models.GeoManager()
 
+  def __unicode__(self):
+    return self.name
+
 class HutType(models.Model):
-  name = models.CharField(max_length=50)
+  name = models.CharField(max_length=50, primary_key=True)
   objects = models.GeoManager()
+
+  def __unicode__(self):
+    return self.name
