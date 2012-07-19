@@ -16,7 +16,8 @@ hutmap.Map = function(mapDivId) {
 
 hutmap.Map.MAP_OPTIONS = {
   zoom: 5,
-  center: new google.maps.LatLng(48.06, -120.70),
+  //center: new google.maps.LatLng(48.06, -120.70),
+  center: new google.maps.LatLng(62.9, 92),
   mapTypeId: google.maps.MapTypeId.TERRAIN
 };
 
