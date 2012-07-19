@@ -5,6 +5,11 @@ html, body {
   text-align: center;
 }
 
+#content {
+  height: 100%;
+  width: 100%;
+}
+
 #map_search {
   margin-top: 10%;
 }
