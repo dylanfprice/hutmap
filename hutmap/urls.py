@@ -9,7 +9,7 @@ urlpatterns = patterns('django.views.generic.simple',
 )
 
 urlpatterns += patterns('',
-  (r'^polls/',      include('polls.urls')),
+  (r'^huts/',       include('huts.urls')),
   (r'^admin/',      include(admin.site.urls)),
   (r'^admin/doc/',  include('django.contrib.admindocs.urls')),
 )
