@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 
 {% block scripts %}
-    <script src="/closure/closure/goog/base.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+{% if DEVELOPMENT %}
+    <script src="/closure/closure/goog/base.js"></script>
     <script src="/static/js/third-party/wicket.src.js"></script>
     <script src="/static/js/third-party/wicket-gmap3.src.js"></script>
     <script src="/static/js/hutmap/ajax.js"></script>
     <script src="/static/js/hutmap/map.js"></script>
+{% else %}
+    <script src="/static/js/hutmap-compiled.js"></script>
+{% endif %}
     <script type="text/javascript">
       function initialize() {
         var autocomplete = new google.maps.places.Autocomplete(
