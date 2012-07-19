@@ -1,0 +1,42 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+#content {
+  height: 100%;
+  width: 100%;
+}
+
+#map_search {
+  margin-top: 10%;
+}
+
+#map_canvas {
+  height: 75%;
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1%;
+}
+
+div.infowindow {
+  text-align: left;
+}
+
+img.infowindow {
+  height: 200px;
+  width: 300px;
+}
+
+@media print {
+  html, body {
+    height: auto;
+  }
+
+  #map_canvas {
+    height: 650px;
+  }
+}
