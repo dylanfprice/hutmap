@@ -29,7 +29,6 @@ class HutResource(ModelResource):
 
     if 'bbox' in filters:
       bbox = filters['bbox']
-      print(bbox)
       lat_lo, lng_lo, lat_hi, lng_hi = [float(x) for x in bbox.split(',')]
       # latitude first from request, longitude first for database!
       polygon = Polygon.from_bbox((lng_hi, lat_hi, lng_lo, lat_lo))
