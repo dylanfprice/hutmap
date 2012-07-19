@@ -1,4 +1,4 @@
-from django.contrib.gis.geos import LineString
+from django.contrib.gis.geos import Polygon, MultiPolygon
 from tastypie import fields
 from tastypie.resources import ModelResource
 from huts.models import Hut, Region, Agency
@@ -29,9 +29,11 @@ class HutResource(ModelResource):
 
     if 'bbox' in filters:
       bbox = filters['bbox']
-      lat_lo, lon_lo, lat_hi, lon_hi = [float(x) for x in bbox.split(',')]
-      line = LineString((lat_lo, lon_lo), (lat_hi, lon_hi))
-      orm_filters['location__within'] = line.envelope
+      print(bbox)
+      lat_lo, lng_lo, lat_hi, lng_hi = [float(x) for x in bbox.split(',')]
+      # latitude first from request, longitude first for database!
+      polygon = Polygon.from_bbox((lng_hi, lat_hi, lng_lo, lat_lo))
+      orm_filters['location__within'] = polygon
 
     return orm_filters
 
