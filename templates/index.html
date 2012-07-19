@@ -1,33 +1,48 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hutmap</title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <link href="/static/css/default.css" rel="stylesheet"> 
-    <script>
-      function initialize() {
-        var mapOptions = {
-          zoom: 8,
-          center: new google.maps.LatLng(-34.397, 150.644),
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
+{% extends "base.html" %}
 
-        var map = new google.maps.Map(document.getElementById('map_canvas'),
-            mapOptions);
+{% block scripts %}
+    <script src="/closure/closure/goog/base.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+    <script src="/static/js/third-party/wicket.src.js"></script>
+    <script src="/static/js/third-party/wicket-gmap3.src.js"></script>
+    <script src="/static/js/hutmap/ajax.js"></script>
+    <script src="/static/js/hutmap/map.js"></script>
+    <script type="text/javascript">
+      function initialize() {
+        var autocomplete = new google.maps.places.Autocomplete(
+              document.getElementById('map_search'), 
+              {});
+
+        var map = new hutmap.Map('map_canvas');
+
+        google.maps.event.addListener(
+            autocomplete, 
+            'place_changed', 
+            function() {
+              map.placeChanged(autocomplete.getPlace());
+        });
+
+        google.maps.event.addListener(map.gmap, 'bounds_changed', function() {
+            map.updateHuts();
+        });
+
       }
+
 
       function loadScript() {
         var script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = 'https://maps.googleapis.com/maps/api/js?sensor=false&' +
+            'libraries=places&' +
             'callback=initialize';
         document.body.appendChild(script);
       }
 
-      window.onload = loadScript;
+      window.onload = initialize;
     </script>
-  </head>
-  <body>
-    <div id="map_canvas"></div>
-  </body>
-</html>
+{% endblock %}
+
+{% block content %}
+Search: <input id="map_search" class="center" type="text"/>
+<div id="map_canvas"></div>
+{% endblock %}

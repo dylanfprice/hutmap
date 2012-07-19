@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link href="/static/css/default.css" rel="stylesheet"> 
+    <title>{% block title %}Hutmap{% endblock %}</title>
+    {% block scripts %}{% endblock %}
+</head>
+
+<body>
+    <div id="sidebar">
+        {% block sidebar %}
+        <!--
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/blog/">Blog</a></li>
+        </ul>
+        -->
+        {% endblock %}
+    </div>
+
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
