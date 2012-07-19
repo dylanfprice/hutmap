@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hutmap</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link href="css/default.css" rel="stylesheet"> 
+    <script src="/static/js/closure-library/closure/goog/base.js"></script>
+    <!--
+    <script src="js/GeoJSON.js"></script>
+    -->
+    <script src="/static/js/hutmap/autocomplete.js"></script>
+    <script type="text/javascript">
+      function initialize() {
+        var mapOptions = {
+          zoom: 4,
+          center: new google.maps.LatLng(-25.363882, 131.044922),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        var map = new google.maps.Map(document.getElementById('map_canvas'),
+            mapOptions);
+
+        var autocomplete = new hutmap.Autocomplete(map, 'map_search');
+      }
+
+      function loadScript() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://maps.googleapis.com/maps/api/js?sensor=false&' +
+            'libraries=places&' +
+            'callback=initialize';
+        document.body.appendChild(script);
+      }
+
+      window.onload = loadScript;
+    </script>
+  </head>
+  <body>
+    Search: <input id="map_search" class="center" type="text"/><br/>
+    <div id="map_canvas"></div>
+  </body>
+</html>
