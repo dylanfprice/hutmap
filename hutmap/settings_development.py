@@ -50,7 +50,7 @@ MEDIA_URL = '/media/'
 ADMIN_MEDIA_PREFIX = '/admin_static/'
 
 # Where Django's development server should serve static files from
-STATIC_DOC_ROOT = join(LOCAL_PATH, '..', 'public', 'static')
+STATIC_DOC_ROOT = join(LOCAL_PATH, '..', 'static')
 CLOSURE_LIB = join(LOCAL_PATH, '..', '..', 'javascript', 'closure-library')
 
 # List of callables that know how to import templates from various sources.
