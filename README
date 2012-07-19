@@ -1,11 +1,10 @@
-Dependencies
-============
-
+List of Dependencies
+====================
 
 Basic
 
-- django 1.2.7
 - python 2.7
+- django 1.2.7
 
 
 Geodjango
@@ -24,6 +23,6 @@ django-tastypie
 
 Other
 
-- paste  
+- python-paste  
 
 
