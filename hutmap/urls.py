@@ -15,9 +15,12 @@ urlpatterns += patterns('',
 )
 
 # Serve static files through django if in debug
-if settings.DEBUG:
+if settings.DEVELOPMENT:
   urlpatterns += patterns('',
-    (r'^static/(?P<path>.*)$', 
-      'django.views.static.serve', 
-      {'document_root': settings.STATIC_DOC_ROOT}),
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', 
+      {'document_root': settings.STATIC_DOC_ROOT, 'show_indexes': True}),
+
+    (r'^closure/(?P<path>.*)$', 'django.views.static.serve',
+     {'document_root': settings.CLOSURE_LIB, 'show_indexes': True}),
+       
   )

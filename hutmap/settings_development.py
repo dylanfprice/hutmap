@@ -2,6 +2,7 @@
 from settings_local import *
 from os.path import join
 
+DEVELOPMENT = True
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -50,6 +51,7 @@ ADMIN_MEDIA_PREFIX = '/admin_static/'
 
 # Where Django's development server should serve static files from
 STATIC_DOC_ROOT = join(LOCAL_PATH, '..', 'public', 'static')
+CLOSURE_LIB = join(LOCAL_PATH, '..', '..', 'javascript', 'closure-library')
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (

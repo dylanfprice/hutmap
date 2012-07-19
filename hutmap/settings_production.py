@@ -2,6 +2,7 @@
 from settings_local import *
 from os.path import join
 
+DEVELOPMENT = False
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
