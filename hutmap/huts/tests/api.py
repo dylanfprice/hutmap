@@ -25,3 +25,10 @@ class HutResourceTestCase(TestCase):
     results = json.loads(response.content)
     self.assertEqual(49, results['meta']['total_count'])
 
+  def test_combined_query(self):
+    response = self.client.get(self.url +
+                               '?bbox=47.05814,-122.79683,49.05814,-120.79683' +
+                               '&!id__in=34,36,37')
+    results = json.loads(response.content)
+    self.assertEqual(4, results['meta']['total_count'])
+
