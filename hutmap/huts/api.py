@@ -20,13 +20,23 @@ class HutResource(ModelResource):
   class Meta:
     queryset = Hut.objects.all()
     allowed_methods = ['get']
+    filtering = {
+      'id' : ('in',),
+    }
 
   def build_filters(self, filters=None):
     if filters is None:
       filters = {}
 
-    orm_filters = super(HutResource, self).build_filters(filters)
+    applicable_filters = {}
+    # Normal filtering
+    filter_params = dict([(x, filters[x]) for x in filters if not x.startswith('!')])
+    applicable_filters['filter'] = super(HutResource, self).build_filters(filter_params)
+    # Exclude filtering
+    exclude_params =  dict([(x[1:], filters[x]) for x in filters if x.startswith('!')])
+    applicable_filters['exclude'] = super(HutResource, self).build_filters(exclude_params)
 
+    # Custom bbox filter
     if 'bbox' in filters:
       bbox = filters['bbox']
       lat_lo, lng_lo, lat_hi, lng_hi = [float(x) for x in bbox.split(',')]
@@ -38,9 +48,17 @@ class HutResource(ModelResource):
       else:
         polygon = Polygon.from_bbox((lng_lo, lat_lo, lng_hi, lat_hi))
 
-      orm_filters['location__within'] = polygon
+      applicable_filters['filter']['location__within'] = polygon
 
-    return orm_filters
+    return applicable_filters
 
+  def apply_filters(self, request, applicable_filters):
+    objects = self.get_object_list(request)
 
-
+    f = applicable_filters.get('filter')
+    if f:
+        objects = objects.filter(**f)
+    e = applicable_filters.get('exclude')
+    if e:
+        objects = objects.exclude(**e)
+    return objects
