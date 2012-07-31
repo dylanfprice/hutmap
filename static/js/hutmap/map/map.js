@@ -38,7 +38,8 @@ hutmap.map.Map = function(mapDivId) {
     }
   });
 
-  google.maps.event.addListener(this.gmap, 'bounds_changed', this.updateHuts);
+  google.maps.event.addListener(this.gmap, 'bounds_changed',
+      goog.bind(this.updateHuts, this));
 };
 
 /**
