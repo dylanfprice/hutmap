@@ -1,6 +1,7 @@
 goog.provide('hutmap.map.Map');
 
 goog.require('goog.array');
+goog.require('goog.iter');
 goog.require('goog.structs');
 goog.require('goog.structs.Map');
 goog.require('hutmap.ajax');
@@ -16,10 +17,31 @@ goog.require('Wkt.gmap3');
  * @constructor
  */
 hutmap.map.Map = function(mapDivId) {
+  /**
+   * The google map object.
+   *
+   * @type google.maps.Map
+   */
   this.gmap = new google.maps.Map(document.getElementById(mapDivId),
       hutmap.map.Map.MAP_OPTIONS);
+  /**
+   * A map from hut id to google.maps.Marker
+   *
+   * @type goog.structs.Map
+   */
   this.markers = new goog.structs.Map();
+  /**
+   * A list of currently displayed InfoWindows
+   *
+   * @type Array
+   */
   this.openInfoWindows = [];
+  /**
+   * A comma-separated list of hut ids currently retrieved from the server.
+   *
+   * @type String
+   */
+  this.cachedIds = '';
 
   var mapTypes = new hutmap.map.Types(this.gmap);
 
@@ -72,6 +94,7 @@ hutmap.map.Map.prototype.addHuts = function(huts) {
       this.createInfoWindow(marker, hut);
     },
     self);
+  this.cachedIds = goog.iter.join(this.markers.getKeyIterator(), ',')
 };
 
 /**
@@ -140,7 +163,8 @@ hutmap.map.Map.prototype.placeChanged = function(geometry) {
 hutmap.map.Map.prototype.updateHuts = function() {
   var self = this;
   hutmap.ajax.getHuts({
-      bbox: this.gmap.getBounds().toUrlValue()
+      bbox: this.gmap.getBounds().toUrlValue(),
+      '!id__in': this.cachedIds
     },
     function(data) {
       var huts = data.objects;
