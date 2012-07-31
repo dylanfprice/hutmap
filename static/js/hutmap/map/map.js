@@ -8,6 +8,7 @@ goog.require('hutmap.ajax');
 goog.require('hutmap.map.Types');
 goog.require('Wkt.Wkt');
 goog.require('Wkt.gmap3');
+goog.require('google.maps.MarkerClusterer');
 
 /**
  * Wraps the google.maps.Map class with hutmap specific functionality.
@@ -30,6 +31,12 @@ hutmap.map.Map = function(mapDivId) {
    * @type goog.structs.Map
    */
   this.markers = new goog.structs.Map();
+  /**
+   * A clusterer for the markers on the map.
+   *
+   * @type MarkerClusterer
+   */
+  this.markerClusterer = new MarkerClusterer(this.gmap);
   /**
    * A list of currently displayed InfoWindows
    *
@@ -80,21 +87,28 @@ hutmap.map.Map.MAP_OPTIONS = {
  * @param {Object[]} huts The huts to add to the map.
  */
 hutmap.map.Map.prototype.addHuts = function(huts) {
-  var self = this;
-  goog.array.forEach(
-    huts, 
-    function(hut, index, array) {
-      var position = new Wkt.Wkt(hut.location);
-      var marker = position.toObject({
-        map: this.gmap,
-        visible: true,
-        title: hut.name
-      });
-      this.markers.set(hut.id, marker);
-      this.createInfoWindow(marker, hut);
-    },
-    self);
-  this.cachedIds = goog.iter.join(this.markers.getKeyIterator(), ',')
+  if (!goog.array.isEmpty(huts)) {
+    var self = this;
+    var newMarkers = [];
+    goog.array.forEach(
+      huts, 
+      function(hut, index, array) {
+        var position = new Wkt.Wkt(hut.location);
+        var marker = position.toObject({
+          //map: this.gmap,
+          visible: true,
+          title: hut.name
+        });
+        this.createInfoWindow(marker, hut);
+        if (!this.markers.containsKey(hut.id)) {
+          this.markers.set(hut.id, marker);
+          newMarkers.push(marker);
+        }
+      },
+      self);
+    this.cachedIds = goog.iter.join(this.markers.getKeyIterator(), ',');
+    this.markerClusterer.addMarkers(newMarkers);
+  }
 };
 
 /**
