@@ -9,3 +9,7 @@ class HutResourceTestCase(TestCase):
     results = json.loads(response.content)
     self.assertEqual(7, results['meta']['total_count'])
 
+  def test_query_bbox_across_180th_meridian(self):
+    response = self.client.get('/huts/api/v1/hut/?bbox=44.302615,145.859282,74.411905,-103.398531')
+    results = json.loads(response.content)
+    self.assertEqual(28, results['meta']['total_count'])

@@ -31,7 +31,13 @@ class HutResource(ModelResource):
       bbox = filters['bbox']
       lat_lo, lng_lo, lat_hi, lng_hi = [float(x) for x in bbox.split(',')]
       # latitude first from request, longitude first for database!
-      polygon = Polygon.from_bbox((lng_hi, lat_hi, lng_lo, lat_lo))
+      if lng_lo > 0 and lng_hi < 0:
+        p1 = Polygon.from_bbox((lng_lo, lat_lo, 180, lat_hi))
+        p2 = Polygon.from_bbox((-180, lat_lo, lng_hi, lat_hi))
+        polygon = MultiPolygon(p1, p2)
+      else:
+        polygon = Polygon.from_bbox((lng_lo, lat_lo, lng_hi, lat_hi))
+
       orm_filters['location__within'] = polygon
 
     return orm_filters
