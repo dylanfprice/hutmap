@@ -8,7 +8,7 @@ goog.require('hutmap.ajax');
 goog.require('hutmap.map.Types');
 goog.require('Wkt.Wkt');
 goog.require('Wkt.gmap3');
-goog.require('google.maps.MarkerClusterer');
+goog.require('markerclusterer.MarkerClusterer');
 
 /**
  * Wraps the google.maps.Map class with hutmap specific functionality.

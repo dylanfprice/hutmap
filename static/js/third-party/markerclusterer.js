@@ -16,7 +16,7 @@
  * >v2 MarkerClusterer</a>.
  */
 
-goog.provide('google.maps.MarkerClusterer');
+goog.provide('markerclusterer.MarkerClusterer');
 
 /**
  * Licensed under the Apache License, Version 2.0 (the "License");
