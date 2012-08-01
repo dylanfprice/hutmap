@@ -4,11 +4,12 @@ goog.require('goog.array');
 goog.require('goog.iter');
 goog.require('goog.structs');
 goog.require('goog.structs.Map');
-goog.require('hutmap.ajax');
+
+goog.require('hutmap.Huts');
 goog.require('hutmap.map.Types');
-goog.require('Wkt.Wkt');
-goog.require('Wkt.gmap3');
 goog.require('markerclusterer.MarkerClusterer');
+goog.require('Wkt.gmap3');
+goog.require('Wkt.Wkt');
 
 /**
  * Wraps the google.maps.Map class with hutmap specific functionality.
@@ -24,7 +25,7 @@ hutmap.map.Map = function(mapDivId) {
    * @type google.maps.Map
    */
   this.gmap = new google.maps.Map(document.getElementById(mapDivId),
-      hutmap.map.Map.MAP_OPTIONS);
+      this.MAP_OPTIONS);
   /**
    * A map from hut id to google.maps.Marker
    *
@@ -44,11 +45,9 @@ hutmap.map.Map = function(mapDivId) {
    */
   this.openInfoWindows = [];
   /**
-   * A comma-separated list of hut ids currently retrieved from the server.
    *
-   * @type String
    */
-  this.cachedIds = '';
+  //this.displayedHutLimitWarning = false;
 
   var mapTypes = new hutmap.map.Types(this.gmap);
 
@@ -67,18 +66,26 @@ hutmap.map.Map = function(mapDivId) {
     }
   });
 
-  google.maps.event.addListener(this.gmap, 'bounds_changed',
-      goog.bind(this.updateHuts, this));
+  //google.maps.event.addListener(this.gmap, 'bounds_changed',
+  //    goog.bind(this.updateHuts, this));
 };
 
 /**
  * Options for the google.maps.Map constructor.
  */
-hutmap.map.Map.MAP_OPTIONS = {
+hutmap.map.Map.prototype.MAP_OPTIONS = {
   zoom: 5,
   //center: new google.maps.LatLng(48.06, -120.70),
   center: new google.maps.LatLng(62.9, 92),
   mapTypeId: google.maps.MapTypeId.TERRAIN
+};
+
+/**
+ * Clears all hut markers from the map.
+ */
+hutmap.map.Map.prototype.clearHuts = function() {
+  this.markerClusterer.removeMarkers(this.markers.getValues());
+  this.markers.clear();
 };
 
 /**
@@ -106,8 +113,8 @@ hutmap.map.Map.prototype.addHuts = function(huts) {
         }
       },
       self);
-    this.cachedIds = goog.iter.join(this.markers.getKeyIterator(), ',');
     this.markerClusterer.addMarkers(newMarkers);
+    this.markerClusterer.fitMapToMarkers();
   }
 };
 
@@ -145,18 +152,6 @@ hutmap.map.Map.prototype.createInfoWindow = function(marker, hut) {
 };
 
 /**
- * Clears all hut markers from the map.
- */
-hutmap.map.Map.prototype.clearHuts = function() {
-  goog.structs.forEach(
-      this.markers,
-      function(value, key, collection) {
-        value.setMap(null);
-      });
-  this.markers.clear();
-};
-
-/**
  * Callback for when the map should display a new place.
  *
  * @param {google.maps.places.PlaceGeometry} geometry A
@@ -173,15 +168,24 @@ hutmap.map.Map.prototype.placeChanged = function(geometry) {
 
 /**
  * Retrieves and displays hut markers based on the current bounds of the map.
- */
 hutmap.map.Map.prototype.updateHuts = function() {
-  var self = this;
-  hutmap.ajax.getHuts({
-      bbox: this.gmap.getBounds().toUrlValue(),
-      '!id__in': this.cachedIds
-    },
-    function(data) {
-      var huts = data.objects;
-      self.addHuts(huts);
-  });
+  if (this.totalHuts < this.CONF.maxHuts) {
+    var self = this;
+    hutmap.ajax.getHuts({
+        bbox: this.gmap.getBounds().toUrlValue(),
+        '!id__in': this.cachedIds,
+        limit: (this.CONF.maxHuts - this.totalHuts)
+      },
+      function(data) {
+        var huts = data.objects;
+        self.addHuts(huts);
+    });
+    this.displayedHutLimitWarning = false;
+  } else if (!this.displayedHutLimitWarning) {
+    // TODO: make nicer solution
+    alert('Exceeded hut limit of ' + this.CONF.maxHuts);
+    this.displayedHutLimitWarning = true;
+  }
 }
+*/
+

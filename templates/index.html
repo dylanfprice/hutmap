@@ -9,6 +9,8 @@
     <script src="/static/js/third-party/markerclusterer.js"></script>
     <script src="/static/js/hutmap/globals.js"></script>
     <script src="/static/js/hutmap/ajax.js"></script>
+    <script src="/static/js/hutmap/history.js"></script>
+    <script src="/static/js/hutmap/huts.js"></script>
     <script src="/static/js/hutmap/map/types.js"></script>
     <script src="/static/js/hutmap/map/map.js"></script>
     <script src="/static/js/hutmap/map/search.js"></script>
@@ -18,6 +20,7 @@
 {% endif %}
     <script>
       window.onload = hutmap.map.initialize;
+      //window.onload = hutmap.Huts.test;
     </script>
 {% endblock %}
 
