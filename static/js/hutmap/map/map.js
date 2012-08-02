@@ -6,6 +6,7 @@ goog.require('goog.structs');
 goog.require('goog.structs.Map');
 
 goog.require('hutmap.Huts');
+goog.require('hutmap.History');
 goog.require('hutmap.map.Types');
 goog.require('markerclusterer.MarkerClusterer');
 goog.require('Wkt.gmap3');
@@ -16,9 +17,10 @@ goog.require('Wkt.Wkt');
  *
  * @param {String} mapDivId The id of the div where the map canvas should be
  *   drawn.
+ * @param {hutmap.Huts} huts TODO
  * @constructor
  */
-hutmap.map.Map = function(mapDivId) {
+hutmap.map.Map = function(mapDivId, huts) {
   /**
    * The google map object.
    *
@@ -26,6 +28,10 @@ hutmap.map.Map = function(mapDivId) {
    */
   this.gmap = new google.maps.Map(document.getElementById(mapDivId),
       this.MAP_OPTIONS);
+  /**
+   *TODO
+   */
+  this.huts = huts;
   /**
    * A map from hut id to google.maps.Marker
    *
@@ -48,6 +54,7 @@ hutmap.map.Map = function(mapDivId) {
    *
    */
   //this.displayedHutLimitWarning = false;
+  this.locationMarker = null;
 
   var mapTypes = new hutmap.map.Types(this.gmap);
 
@@ -66,6 +73,8 @@ hutmap.map.Map = function(mapDivId) {
     }
   });
 
+  goog.events.listen(this.huts, hutmap.Huts.EventType.HUTS_CHANGED,
+      goog.bind(this.onHutsChanged, this));
   //google.maps.event.addListener(this.gmap, 'bounds_changed',
   //    goog.bind(this.updateHuts, this));
 };
@@ -114,7 +123,6 @@ hutmap.map.Map.prototype.addHuts = function(huts) {
       },
       self);
     this.markerClusterer.addMarkers(newMarkers);
-    this.markerClusterer.fitMapToMarkers();
   }
 };
 
@@ -149,6 +157,34 @@ hutmap.map.Map.prototype.createInfoWindow = function(marker, hut) {
   });
 
   return infowindow;
+};
+
+hutmap.map.Map.prototype.onHutsChanged = function() {
+  this.clearHuts();
+  if (this.locationMarker !== null) {
+    this.markerClusterer.removeMarker(this.locationMarker);
+    this.locationMarker = null;
+  }
+
+  this.addHuts(this.huts.getHuts());
+  var queryData = hutmap.History.getInstance().getHashData();
+  var mapLocation = queryData.get(hutmap.consts.hk.map_location); 
+  if (mapLocation) {
+    this.locationMarker = new google.maps.Marker({visible: false, position:
+      this.toLatLng(mapLocation)});
+    this.markerClusterer.addMarker(this.locationMarker);
+  }
+
+  this.markerClusterer.fitMapToMarkers();
+};
+
+hutmap.map.Map.prototype.toLatLng = function(location) {
+  var values = goog.array.map(location.split(','),
+      function(value, index, array) {
+        return parseFloat(value);
+      });
+  var latLng = new google.maps.LatLng(values[0], values[1]);
+  return latLng;
 };
 
 /**

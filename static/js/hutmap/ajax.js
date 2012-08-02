@@ -4,8 +4,6 @@ goog.require('goog.dom');
 goog.require('goog.net.XhrIo');
 goog.require('goog.net.XhrIoPool');
 goog.require('goog.net.EventType');
-goog.require('goog.structs.Map');
-goog.require('goog.Uri.QueryData');
 goog.require('goog.debug.Logger');
            
 /**
@@ -23,6 +21,17 @@ hutmap.Ajax = function() {
     {Accept: 'application/json'});
   this.logger = goog.debug.Logger.getLogger('hutmap.Ajax');
 };
+
+/**
+ * Array of keys that are allowed in requests to getHuts.
+ * 
+ * @type Array
+ */
+hutmap.Ajax.getHutsFilter = [hutmap.consts.hk.bbox,
+                             hutmap.consts.hk.limit,
+                             hutmap.consts.hk.fee_person_min__lte, 
+                             hutmap.consts.hk.capacity_max__gte,
+                             hutmap.consts.hk.access__exact];
 
 /**
  * Asynchronously retrieves a list of huts from the server.
@@ -50,8 +59,8 @@ hutmap.Ajax.prototype.getHuts = function(queryData, callback) {
       }
       self.xhrioPool.releaseObject(request);
     });
-
-    request.send('/huts/api/v1/hut/?' + queryData.toString());
+    var ajaxData = queryData.filterKeys(hutmap.Ajax.getHutsFilter);
+    request.send('/huts/api/v1/hut/?' + ajaxData.toString());
   });
 };
 

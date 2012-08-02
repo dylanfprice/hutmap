@@ -12,6 +12,7 @@ goog.require('goog.debug.Logger');
 
 goog.require('hutmap.Ajax');
 goog.require('hutmap.History');
+goog.require('hutmap.consts');
 
 hutmap.Huts = function() {
   this.huts = new goog.structs.Map();
@@ -40,7 +41,7 @@ hutmap.Huts.prototype.CONF = {
 hutmap.Huts.prototype.setHuts = function(queryData) {
   this.huts.clear();
   //TODO: make more sophisticated?
-  queryData['limit'] = 0;
+  queryData.set(hutmap.consts.hk.limit, 0);
   var self = this;
   this.ajax.getHuts(queryData,
     function(data) {
@@ -79,20 +80,3 @@ hutmap.Huts.EventType = {
   HUTS_CHANGED: 'huts_changed'
 };
 
-hutmap.Huts.test = function() {
-  var console = new goog.debug.Console();
-  console.setCapturing(true);
-
-  var logger = goog.debug.Logger.getLogger('goog.net.XhrIo');
-  logger.setLevel(goog.debug.Logger.Level.FINEST);
-
-  logger = goog.debug.Logger.getLogger('hutmap.Huts.test');
-
-  var queryData = goog.Uri.QueryData.createFromMap({
-    bbox: '47.05814,-122.79683,49.05814,-120.79683'
-  });
-
-  var huts = new hutmap.Huts();
-  goog.events.listen(huts, hutmap.Huts.EventType.HUTS_CHANGED, function() { logger.info('huts changed event received'); }); 
-  huts.setHuts(queryData);
-};
