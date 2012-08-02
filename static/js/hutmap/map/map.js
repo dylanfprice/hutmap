@@ -54,7 +54,6 @@ hutmap.map.Map = function(mapDivId, huts) {
    *
    */
   //this.displayedHutLimitWarning = false;
-  this.locationMarker = null;
 
   var mapTypes = new hutmap.map.Types(this.gmap);
 
@@ -160,21 +159,22 @@ hutmap.map.Map.prototype.createInfoWindow = function(marker, hut) {
 
 hutmap.map.Map.prototype.onHutsChanged = function() {
   this.clearHuts();
-  if (this.locationMarker !== null) {
-    this.markerClusterer.removeMarker(this.locationMarker);
-    this.locationMarker = null;
-  }
 
   this.addHuts(this.huts.getHuts());
   var queryData = hutmap.History.getInstance().getHashData();
   var mapLocation = queryData.get(hutmap.consts.hk.map_location); 
+  var locationMarker = null;
   if (mapLocation) {
-    this.locationMarker = new google.maps.Marker({visible: false, position:
+    locationMarker = new google.maps.Marker({visible: false, position:
       this.toLatLng(mapLocation)});
-    this.markerClusterer.addMarker(this.locationMarker);
+    this.markerClusterer.addMarker(locationMarker);
   }
 
   this.markerClusterer.fitMapToMarkers();
+
+  if (locationMarker !== null) {
+    this.markerClusterer.removeMarker(locationMarker);
+  }
 };
 
 hutmap.map.Map.prototype.toLatLng = function(location) {
