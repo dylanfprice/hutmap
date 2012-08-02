@@ -11,6 +11,7 @@ HUTMAP_PATH = join(LOCAL_PATH, '..', 'hutmap')
 PUBLIC_PATH = join(LOCAL_PATH, '..', 'public')
 JS_DEST = join(PUBLIC_PATH, 'static', 'js')
 CSS_DEST = join(PUBLIC_PATH, 'static', 'css')
+IMG_DEST = join(PUBLIC_PATH, 'static', 'img')
 
 sys.path.append(HUTMAP_PATH)
 import settings
@@ -42,8 +43,14 @@ def copy_css():
   shutil.rmtree(CSS_DEST, ignore_errors=True)
   shutil.copytree(join(settings.STATIC_DOC_ROOT, 'css'), CSS_DEST)
 
+def copy_img():
+  shutil.rmtree(IMG_DEST, ignore_errors=True)
+  shutil.copytree(join(settings.STATIC_DOC_ROOT, 'img'), IMG_DEST)
+
 if __name__ == '__main__':
   compile_js()
   print('Successfully compiled javascript.')
   copy_css()
   print('Successfully copied css')
+  copy_img()
+  print('Successfully copied img')
