@@ -31,9 +31,10 @@ def compile_js():
      '--root={0}'.format(settings.CLOSURE_LIB),
      '--root={0}'.format(settings.STATIC_DOC_ROOT),
      '--namespace={0}'.format('hutmap.map'),
+     '--namespace={0}'.format('hutmap.index'),
      '--output_mode=compiled',
      '--compiler_jar={0}'.format(join(settings.CLOSURE_LIB, 'compiler.jar')),
-     '--output_file={0}'.format(join(JS_DEST, 'hutmap-map-compiled.js'))])
+     '--output_file={0}'.format(join(JS_DEST, 'hutmap-compiled.js'))])
   if retcode != 0:
     print("Error!")
 
