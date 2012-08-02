@@ -22,6 +22,9 @@ class HutResource(ModelResource):
     allowed_methods = ['get']
     filtering = {
       'id' : ('in',),
+      'fee_person_min' : ('lte',),
+      'capacity_max' : ('gte',),
+      'access' : ('exact'),
     }
 
   def build_filters(self, filters=None):
