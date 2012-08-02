@@ -13,3 +13,7 @@ urlpatterns = patterns('',
   (r'^api/', include(api.urls)),
 )
 
+urlpatterns += patterns('django.views.generic.simple',
+  (r'^map/', 'direct_to_template', {'template': 'huts/map.html'}),
+)
+
