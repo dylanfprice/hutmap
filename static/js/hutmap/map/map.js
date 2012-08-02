@@ -83,9 +83,8 @@ hutmap.map.Map = function(mapDivId, huts) {
  * Options for the google.maps.Map constructor.
  */
 hutmap.map.Map.prototype.MAP_OPTIONS = {
-  zoom: 5,
-  //center: new google.maps.LatLng(48.06, -120.70),
-  center: new google.maps.LatLng(62.9, 92),
+  zoom: 3,
+  center: new google.maps.LatLng(48.06, -120.70),
   mapTypeId: google.maps.MapTypeId.TERRAIN
 };
 
