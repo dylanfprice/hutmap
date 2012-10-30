@@ -1,11 +1,13 @@
 goog.provide('Wkt.gmap3');
 
 /*global Wkt, google, document, window, console*/
-google.maps.Marker.prototype.type = 'marker';
-google.maps.Polyline.prototype.type = 'polyline';
-google.maps.Polygon.prototype.type = 'polygon';
-google.maps.Rectangle.prototype.type = 'rectangle';
-google.maps.Circle.prototype.type = 'circle';
+if (window.google && window.google.maps) {
+  google.maps.Marker.prototype.type = 'marker';
+  google.maps.Polyline.prototype.type = 'polyline';
+  google.maps.Polygon.prototype.type = 'polygon';
+  google.maps.Rectangle.prototype.type = 'rectangle';
+  google.maps.Circle.prototype.type = 'circle';
+}
 
 /**
  * An object of framework-dependent construction methods used to generate
