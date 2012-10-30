@@ -1,36 +1,83 @@
-#top_bar {
-  width: 100%;
-  height: 120px;
-}
-
-#top_bar .left {
+#map_canvas {
   position: absolute;
   top: 0px;
   left: 0px;
-  margin-left: 10px;
+  bottom: 0px;
+  right: 208px;
 }
 
-#top_bar .middle {
+#sidebar {
   position: absolute;
-  left: 570px;
   top: 0px;
-  width: 125px;
+  right: 0px;
+  bottom: 0px;
+  width: 200px;
+  z-index: 5;
+
+  /* IE10 Consumer Preview */ 
+  background-image: -ms-linear-gradient(top, #466A8E 0%, #FFFFFF 100%);
+  /* Mozilla Firefox */ 
+  background-image: -moz-linear-gradient(top, #466A8E 0%, #FFFFFF 100%);
+  /* Opera */ 
+  background-image: -o-linear-gradient(top, #466A8E 0%, #FFFFFF 100%);
+  /* Webkit (Safari/Chrome 10) */ 
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #466A8E), color-stop(1.0, #FFFFFF));
+  /* Webkit (Chrome 11+) */ 
+  background-image: -webkit-linear-gradient(top, #466A8E 0%, #FFFFFF 100%);
+  /* W3C Markup, IE10 Release Preview */ 
+  background-image: linear-gradient(to bottom, #466A8E 0%, #FFFFFF 100%);
 }
 
-#top_bar .right {
+#sidebar_toggle {
   position: absolute;
-  top: 0;
-  left: 700px;
-  right: 0;
-  height: 120px;
+  right: 200px;
+  height: 100%;
+  width: 8px;
+  font-size: 0.75em;
+  z-index: 10;
+  background-color: lightgray;
+  opacity: 0.8;
+  cursor: e-resize;
+}
+
+#sidebar_toggle_padding {
+  height: 50%;
+  width: 100%;
+}
+
+#sidebar_content {
+  padding: 5px;
   text-align: center;
 }
 
-#map_canvas {
-  position: absolute;
-  top: 140px;
-  bottom: 0px;
+#sidebar_content h3 {
+}
+
+#sidebar_content img {
+  border-style: solid;
+  border-width: 1px;
+  width: 180px;
+  height: 130px;
+}
+
+.hut_detail_table {
   width: 100%;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.hut_detail_title {
+  text-align: left;
+  color: darkgreen;
+  width: 60px;
+}
+
+.hut_detail,.hut_detail_left {
+  text-align: left;
+}
+
+.hut_detail_left {
+  width: 50px;
 }
 
 div.infowindow {
