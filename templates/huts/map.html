@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 
 {% block styles %}
-    <link href="/static/css/goog.css" rel="stylesheet"> 
     <link href="/static/css/map.css" rel="stylesheet"> 
-    <link href="/static/css/find-huts.css" rel="stylesheet"> 
 {% endblock %}
 
 {% block scripts %}
@@ -30,11 +28,42 @@
 {% endblock %}
 
 {% block content %}
-<div id="top_bar">
-  <div class="left">{% include 'find-huts.html' %}</div>
-  <div class="middle" id="small_search_button" title="Find huts"></div>
-  <div class="right" id="summary_info"><p></p></div>
-</div>
 <div id="map_canvas"></div>
+<div id="sidebar">
+  <div id="sidebar_content">
+    <h3>Select a hut.</h3>
+    <span>
+      <img src="http://www.fs.usda.gov/Internet/FSE_MEDIA/stelprdb5137416.jpg" alt="hut image"></img>
+      <table class="hut_detail_table">
+        <tr>
+          <td class="hut_detail_title">Price:</td>
+          <td class="hut_detail_left">$50</td>
+          <td class="hut_detail_title">Capacity:</td>
+          <td class="hut_detail">5</td>
+        </tr>
+        <tr>
+          <td class="hut_detail_title">What:</td>
+          <td class="hut_detail_left">25</td>
+          <td class="hut_detail_title">Yep:</td>
+          <td class="hut_detail">32</td>
+        </tr>
+      </table>
+      <table class="hut_detail_table">
+        <tr>
+          <td class="hut_detail_title">Access:</td>
+          <td class="hut_detail">Frontcountry year-round</td>
+        </tr>
+        <tr>
+          <td class="hut_detail_title">Type:</td>
+          <td class="hut_detail">Hut</td>
+        </tr>
+      </table>
+    </span>
+  </div>
+</div>
+<div id="sidebar_toggle" title="Toggle Sidebar">
+  <div id="sidebar_toggle_padding"></div>
+  <div id="sidebar_toggle_icon">&gt;</div>
+</div>
 
 {% endblock %}
