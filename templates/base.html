@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link href="/static/css/base.css" rel="stylesheet"> 
     <link href="/static/css/default.css" rel="stylesheet"> 
     {% block styles %}{% endblock %}
     <title>{% block title %}Hutmap{% endblock %}</title>
@@ -9,16 +10,12 @@
 </head>
 
 <body>
-    <div id="sidebar">
-        {% block sidebar %}
-        <!--
-        <ul>
+    <ul id="nav">
+        {% block nav %}
             <li><a href="/">Home</a></li>
-            <li><a href="/blog/">Blog</a></li>
-        </ul>
-        -->
+            <li><a href="/huts/map/">Map</a></li>
         {% endblock %}
-    </div>
+    </ul>
 
     <div id="content">
         {% block content %}{% endblock %}
