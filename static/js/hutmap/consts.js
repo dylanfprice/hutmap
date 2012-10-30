@@ -22,3 +22,9 @@ hutmap.consts.hk = {
   access__exact: 'access__exact'
 }
 
+hutmap.consts.mapIds = {
+  mapDivId: 'map_canvas',
+  sidebarDivId: 'sidebar',
+  sidebarToggleDivId: 'sidebar_toggle',
+  sidebarToggleIconDivId: 'sidebar_toggle_icon'
+};

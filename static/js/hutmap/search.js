@@ -1,6 +1,7 @@
 goog.provide('hutmap.Search');
 
 goog.require('goog.debug.Logger');
+goog.require('goog.dom.DomHelper');
 goog.require('goog.dom.forms');
 goog.require('goog.ui.Css3ButtonRenderer');
 goog.require('goog.ui.CustomButton');
@@ -22,6 +23,8 @@ goog.require('hutmap.consts');
  * @constructor
  */
 hutmap.Search = function(formId, searchBoxId, searchButtonId, searchButtonText, searchButtonClicked) {
+  this.domHelper = new goog.dom.DomHelper(document);
+  this.searchBoxId = searchBoxId;
   this.autocomplete = new google.maps.places.Autocomplete(
         document.getElementById(searchBoxId), 
         {});
@@ -87,22 +90,37 @@ hutmap.Search.prototype.getPlaceGeometry = function(callback) {
     if (placeResult.geometry !== undefined) {
       callback(placeResult.geometry);
     } else {
-      var req = {address: placeResult.name};
-      this.geocoder.geocode(req, goog.bind(
-          function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-              callback(results[0].geometry);
-            } else {
-              this.logger.info("Geocode was not successful for the following reason: " + status)
-              callback(null);
-            }
-          }, this));
+      this.geocodeLookup(placeResult.name, callback);
     } 
   } else {
-    // TODO: search box was empty
-    this.logger.info("Search box was empty.");
-    callback(null);
+    this.logger.info("PlaceResult was empty.");
+    element = this.domHelper.getElement(this.searchBoxId);
+    this.logger.info(element.innerText);
+    this.logger.info(element.textContent);
+    place = this.domHelper.getTextContent(element);
+    if (!goog.string.isEmptySafe(place)) {
+      this.geocodeLookup(place, callback);
+    } else {
+      this.logger.info("Search box was empty.");
+      callback(null);
+    }
   }
-  
 };
+
+/**
+ * @private
+ */
+hutmap.Search.prototype.geocodeLookup = function(place, callback) {
+  var req = {address: place};
+  this.geocoder.geocode(req, goog.bind(
+      function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          callback(results[0].geometry);
+        } else {
+          this.logger.info("Geocode was not successful for the following reason: " + status)
+          callback(null);
+        }
+      }, this));
+};
+  
 

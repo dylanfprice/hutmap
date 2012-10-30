@@ -49,7 +49,7 @@ hutmap.Ajax.prototype.getHuts = function(queryData, callback) {
       if (request.isSuccess()) {
         callback(request.getResponseJson()); 
       } else {
-        // print error info to the console
+        // print error info
         self.logger.severe(
             'Something went wrong in the ajax call. Error code: '+ 
             request.getLastErrorCode()+
