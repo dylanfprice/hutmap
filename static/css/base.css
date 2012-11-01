@@ -12,6 +12,10 @@ input		{ -moz-border-radius:10px; -webkit-border-radius:10px; }
 ::selection			{ background:#c3effd; color:#000; /* Safari and Opera */ }
 ::-moz-selection  { background:#c3effd; color:#000; /* Firefox */ }
 
+.logo {
+  font-style: italic;
+}
+
 #nav {
   position: absolute;
   top: 0px;
