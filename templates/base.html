@@ -10,15 +10,17 @@
 </head>
 
 <body>
-    <ul id="nav">
-        {% block nav %}
-            <li><a href="/">Home</a></li>
-            <li><a href="/huts/map/">Map</a></li>
-        {% endblock %}
-    </ul>
-
-    <div id="content">
-        {% block content %}{% endblock %}
-    </div>
+  <ul id="nav">
+      <li class="logo"><a href="/">Hutmap</a></li>
+      {% block nav %}
+        <li><a href="/">Home</a></li>
+        <li><a href="/huts/map/">Map</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/about">About</a></li>
+      {% endblock %}
+  </ul>
+  <div id="content">
+      {% block content %}{% endblock %}
+  </div>
 </body>
 </html>
