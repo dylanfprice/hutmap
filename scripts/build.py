@@ -1,4 +1,6 @@
 #!/usr/bin/python
+# Compiles javascript and copies js, css, and img files to the public folder of
+# the hutmap website.
 
 import shutil
 import sys
