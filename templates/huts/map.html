@@ -12,11 +12,13 @@
     <script src="/static/js/third-party/wicket-gmap3.src.js"></script>
     <script src="/static/js/third-party/markerclusterer.js"></script>
     <script src="/static/js/hutmap/consts.js"></script>
+    <script src="/static/js/hutmap/gconsts.js"></script>
     <script src="/static/js/hutmap/ajax.js"></script>
     <script src="/static/js/hutmap/history.js"></script>
     <script src="/static/js/hutmap/huts.js"></script>
     <script src="/static/js/hutmap/search.js"></script>
     <script src="/static/js/hutmap/map/types.js"></script>
+    <script src="/static/js/hutmap/map/sidebar.js"></script>
     <script src="/static/js/hutmap/map/map.js"></script>
     <script src="/static/js/hutmap/init/map-init.js"></script>
 {% else %}
@@ -29,41 +31,11 @@
 
 {% block content %}
 <div id="map_canvas"></div>
-<div id="sidebar">
-  <div id="sidebar_content">
-    <h3>Select a hut.</h3>
-    <span>
-      <img src="http://www.fs.usda.gov/Internet/FSE_MEDIA/stelprdb5137416.jpg" alt="hut image"></img>
-      <table class="hut_detail_table">
-        <tr>
-          <td class="hut_detail_title">Price:</td>
-          <td class="hut_detail_left">$50</td>
-          <td class="hut_detail_title">Capacity:</td>
-          <td class="hut_detail">5</td>
-        </tr>
-        <tr>
-          <td class="hut_detail_title">What:</td>
-          <td class="hut_detail_left">25</td>
-          <td class="hut_detail_title">Yep:</td>
-          <td class="hut_detail">32</td>
-        </tr>
-      </table>
-      <table class="hut_detail_table">
-        <tr>
-          <td class="hut_detail_title">Access:</td>
-          <td class="hut_detail">Frontcountry year-round</td>
-        </tr>
-        <tr>
-          <td class="hut_detail_title">Type:</td>
-          <td class="hut_detail">Hut</td>
-        </tr>
-      </table>
-    </span>
-  </div>
+<div id="sidebar" class="vertical_gradient">
+  {% include "huts/map_sidebar_content.html" %}
 </div>
-<div id="sidebar_toggle" title="Toggle Sidebar">
+<div id="sidebar_toggle" class="vertical_gradient" title="Toggle Sidebar">
   <div id="sidebar_toggle_padding"></div>
   <div id="sidebar_toggle_icon">&gt;</div>
 </div>
-
 {% endblock %}
