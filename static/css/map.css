@@ -41,6 +41,10 @@
   text-align: center;
 }
 
+#sidebar_content h3 {
+  height: 50px;
+}
+
 #sidebar_content a {
   color: black;
 }
