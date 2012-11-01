@@ -1,25 +1,27 @@
 goog.provide('hutmap.map.Map');
 
 goog.require('goog.array');
+goog.require('goog.debug.Logger');
 goog.require('goog.dom');
 goog.require('goog.iter');
 goog.require('goog.structs');
 goog.require('goog.structs.Map');
-goog.require('goog.debug.Logger');
 
-goog.require('hutmap.Huts');
+goog.require('Wkt.Wkt');
+goog.require('Wkt.gmap3');
 goog.require('hutmap.History');
+goog.require('hutmap.Huts');
+goog.require('hutmap.map.Sidebar');
 goog.require('hutmap.map.Types');
 goog.require('markerclusterer.MarkerClusterer');
-goog.require('Wkt.gmap3');
-goog.require('Wkt.Wkt');
 
 /**
  * Wraps the google.maps.Map class with hutmap specific functionality.
  *
  * @param {Object} mapIds an object containing ids of elements needed by the
  *    map. This object should have the following properties: 'mapDivId',
- *    'sidebarDivId', 'sidebarToggleDivId', and 'sidebarToggleIconDivId'.
+ *    'sidebarDivId', 'sidebarContentDivid', 'sidebarToggleDivId', and
+ *    'sidebarToggleIconDivId'.
  * @param {hutmap.Huts} huts 
  * @constructor
  */
@@ -37,7 +39,10 @@ hutmap.map.Map = function(mapIds, huts) {
    */
   this.mapIds = mapIds;
   /**
-   *TODO
+   * Reference to the huts object which is a container for all huts currently
+   * loaded.
+   *
+   * @type Object
    */
   this.huts = huts;
   /**
@@ -63,11 +68,11 @@ hutmap.map.Map = function(mapIds, huts) {
    */
   this.markerClusterer = new MarkerClusterer(this.gmap);
   /**
-   * A list of currently displayed InfoWindows
+   * The currently selected marker.
    *
-   * @type Array
+   * @type google.maps.Marker
    */
-  this.openInfoWindows = [];
+  this.selectedMarker = null;
   /**
    * A rectangle showing the bounds of huts that are currently shown.
    *
@@ -83,8 +88,15 @@ hutmap.map.Map = function(mapIds, huts) {
     'strokeColor': 'black',
     'strokeOpacity': 0.5
   });
+  /**
+   * The Sidebar object which allows updating the hut display on the sidebar.
+   *
+   * @type Object
+   */
+  this.sidebar = new hutmap.map.Sidebar(mapIds.sidebarContentDivId);
 
 
+  // set up additional map layers
   var mapTypes = new hutmap.map.Types(this.gmap);
 
   this.gmap.mapTypes.set(mapTypes.MSR_TOPO.name, mapTypes.MSR_TOPO);
@@ -102,10 +114,9 @@ hutmap.map.Map = function(mapIds, huts) {
     }
   });
 
+  // attach listener to when new huts are loaded
   goog.events.listen(this.huts, hutmap.Huts.EventType.HUTS_CHANGED,
       goog.bind(this.onHutsChanged, this));
-  //google.maps.event.addListener(this.gmap, 'bounds_changed',
-  //    goog.bind(this.updateHuts, this));
   
   // attach listener to hide sidebar
   var sidebarToggle = goog.dom.getElement(mapIds.sidebarToggleDivId);
@@ -113,7 +124,8 @@ hutmap.map.Map = function(mapIds, huts) {
       goog.bind(this.toggleSidebar, this));
 };
 
-
+hutmap.map.Map.RED_MARKER = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png';
+hutmap.map.Map.BLUE_MARKER = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/blue.png';
 
 /**
  * Clears all hut markers from the map.
@@ -138,11 +150,11 @@ hutmap.map.Map.prototype.addHuts = function(huts) {
       function(hut, index, array) {
         var position = new Wkt.Wkt(hut.location);
         var marker = position.toObject({
-          //map: this.gmap,
           visible: true,
-          title: hut.name
+          title: hut.name,
+          icon: new google.maps.MarkerImage(hutmap.map.Map.RED_MARKER)
         });
-        this.createInfoWindow(marker, hut);
+        this.setCallbacks(marker, hut);
         if (!this.markers.containsKey(hut.id)) {
           this.markers.set(hut.id, marker);
           newMarkers.push(marker);
@@ -154,38 +166,33 @@ hutmap.map.Map.prototype.addHuts = function(huts) {
 };
 
 /**
- * Creates and opens a InfoWindow on the given marker.
+ * Sets the callbacks that should run when the given marker is selected.
  *
  * @param {google.maps.Marker} marker A marker.
- * @param {Object} hut A hut object.
- * @returns {google.maps.InfoWindow} The newly created InfoWindow.
+ * @param {Object} hut The hut object corresponding to the marker.
+ *
+ * @private
  */
-hutmap.map.Map.prototype.createInfoWindow = function(marker, hut) {
-  var contentString = '<div class="infowindow">';
-  contentString += '<h3><a href="' + hut.hut_url + '">' + 
-    hut.name + '</a></h3>';
-  contentString += '<a href="' + hut.photo_url + '">';
-  contentString += '<img class="infowindow" src="' + hut.photo_url + '"/><br/>';
-  contentString += '</a>';
-  contentString += '<br/>';
-  contentString += '</div>';
-  var infowindow = new google.maps.InfoWindow({
-    content: contentString,
-    disableAutoPan: false
-  });
-
+hutmap.map.Map.prototype.setCallbacks = function(marker, hut) {
   var self = this;
   google.maps.event.addListener(marker, 'click', function() {
-    while (self.openInfoWindows[0]) {
-      self.openInfoWindows.pop().close();
+    if (self.selectedMarker != null) {
+      self.selectedMarker.setIcon(new
+        google.maps.MarkerImage(hutmap.map.Map.RED_MARKER));
     }
-    infowindow.open(self.gmap, marker);
-    self.openInfoWindows.push(infowindow);
-  });
 
-  return infowindow;
+    self.selectedMarker = marker;
+    marker.setIcon(new google.maps.MarkerImage(hutmap.map.Map.BLUE_MARKER));
+    
+    self.sidebar.setHut(hut);
+  });
 };
 
+/**
+ * Callback for when new huts are loaded in the this.huts object.
+ *
+ * @private
+ */
 hutmap.map.Map.prototype.onHutsChanged = function() {
   this.clearHuts();
 
@@ -212,6 +219,10 @@ hutmap.map.Map.prototype.onHutsChanged = function() {
 /**
  * Adjusts the rectangle displayed on the map to match the given bounding box
  * of the form 'lat_sw'lon_sw,lat_ne,lon_ne'.
+ *
+ * @param {String} bbox
+ *
+ * @private
  */
 hutmap.map.Map.prototype.drawBounds = function(bbox) {
   var bounds = this.toLatLngBounds(bbox);
@@ -222,6 +233,11 @@ hutmap.map.Map.prototype.drawBounds = function(bbox) {
 /**
  * Converts a lat lon pair of the form 'lat,lon' to a google.maps.LatLng
  * object.
+ *
+ * @param {String} location
+ * @return {google.maps.LatLng}
+ *
+ * @private
  */
 hutmap.map.Map.prototype.toLatLng = function(location) {
   var values = goog.array.map(location.split(','),
@@ -235,6 +251,11 @@ hutmap.map.Map.prototype.toLatLng = function(location) {
 /**
  * Converts a bounding box of the form 'lat_sw,lon_sw,lat_ne,lon_ne' to a
  * google.maps.LatLngBounds object.
+ *
+ * @param {String} bbox
+ * @return {google.maps.LatLngBounds}
+ *
+ * @private
  */
 hutmap.map.Map.prototype.toLatLngBounds = function(bbox) {
   var values = goog.array.map(bbox.split(','),
@@ -250,6 +271,8 @@ hutmap.map.Map.prototype.toLatLngBounds = function(bbox) {
 
 /**
  * Hides or shows the sidebar which displays hut information.
+ *
+ * @private
  */
 hutmap.map.Map.prototype.toggleSidebar = function() {
   this._mapRight = '';
@@ -293,27 +316,4 @@ hutmap.map.Map.prototype.placeChanged = function(geometry) {
     this.gmap.setZoom(17);
   }
 };
-
-/**
- * Retrieves and displays hut markers based on the current bounds of the map.
-hutmap.map.Map.prototype.updateHuts = function() {
-  if (this.totalHuts < this.CONF.maxHuts) {
-    var self = this;
-    hutmap.ajax.getHuts({
-        bbox: this.gmap.getBounds().toUrlValue(),
-        '!id__in': this.cachedIds,
-        limit: (this.CONF.maxHuts - this.totalHuts)
-      },
-      function(data) {
-        var huts = data.objects;
-        self.addHuts(huts);
-    });
-    this.displayedHutLimitWarning = false;
-  } else if (!this.displayedHutLimitWarning) {
-    // TODO: make nicer solution
-    alert('Exceeded hut limit of ' + this.CONF.maxHuts);
-    this.displayedHutLimitWarning = true;
-  }
-}
-*/
 
