@@ -25,6 +25,7 @@ hutmap.consts.hk = {
 hutmap.consts.mapIds = {
   mapDivId: 'map_canvas',
   sidebarDivId: 'sidebar',
+  sidebarContentDivId: 'sidebar_content',
   sidebarToggleDivId: 'sidebar_toggle',
   sidebarToggleIconDivId: 'sidebar_toggle_icon'
 };
