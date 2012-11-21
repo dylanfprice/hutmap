@@ -111,7 +111,7 @@ hutmap.map.Map = function(mapIds, huts) {
    *
    * @type Object
    */
-  this.filter = new hutmap.map.Filter(mapIds.filterDivId);
+  this.filter = new hutmap.map.Filter(this.huts, this);
 
 
   // set up additional map layers
@@ -181,6 +181,17 @@ hutmap.map.Map.prototype.addHuts = function(huts) {
       self);
     this.markerClusterer.addMarkers(newMarkers);
   }
+};
+
+hutmap.map.Map.prototype.setVisibleHuts = function(ids) {
+  var markers = [];
+  var self = this;
+  goog.array.forEach(ids, function(id, index, array) {
+    var marker = self.markers.get(id);
+    markers.push(marker);
+  });
+  self.markerClusterer.clearMarkers();
+  self.markerClusterer.addMarkers(markers);
 };
 
 /**
