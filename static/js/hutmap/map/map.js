@@ -22,7 +22,7 @@ goog.require('markerclusterer.MarkerClusterer');
  * @param {Object} mapIds an object containing ids of elements needed by the
  *    map. This object should have the following properties: 'mapDivId',
  *    'sidebarDivId', 'sidebarContentDivid', 'sidebarToggleDivId',
- *    'sidebarToggleIconDivId', and 'filterDivId'.
+ *    'sidebarToggleIconDivId'.
  * @param {hutmap.Huts} huts 
  * @constructor
  */
@@ -144,7 +144,7 @@ hutmap.map.Map.RED_MARKER = 'http://maps.google.com/intl/en_us/mapfiles/ms/micon
 hutmap.map.Map.BLUE_MARKER = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/blue.png';
 
 /**
- * Clears all hut markers from the map.
+ * Clears all hut markers from the map and permanently removes them.
  */
 hutmap.map.Map.prototype.clearHuts = function() {
   this.markerClusterer.removeMarkers(this.markers.getValues());
@@ -152,8 +152,8 @@ hutmap.map.Map.prototype.clearHuts = function() {
 };
 
 /**
- * Adds huts to the map. If the map already contains a given hut, will not add
- * it again.
+ * Adds huts to the map and makes them visible on it. If the map already
+ * contains a given hut, will not add it again.
  *
  * @param {Object[]} huts The huts to add to the map.
  *
@@ -183,12 +183,20 @@ hutmap.map.Map.prototype.addHuts = function(huts) {
   }
 };
 
+/**
+ * Makes the given huts visible and hides the rest. Ignores any hut ids which
+ * do not correspond to markers on the map.
+ *
+ * @param {Number[]} ids An array of hut ids corresponding to the huts which
+ *    should be visible on the map.
+ */
 hutmap.map.Map.prototype.setVisibleHuts = function(ids) {
   var markers = [];
   var self = this;
   goog.array.forEach(ids, function(id, index, array) {
-    var marker = self.markers.get(id);
-    markers.push(marker);
+    var marker = self.markers.get(id, null);
+    if (marker != null)
+      markers.push(marker);
   });
   self.markerClusterer.clearMarkers();
   self.markerClusterer.addMarkers(markers);
@@ -291,7 +299,6 @@ hutmap.map.Map.prototype.toLatLngBounds = function(bbox) {
       function(value, index, array) {
         return parseFloat(value);
       });
-  this.logger.info(values);
   var sw = new google.maps.LatLng(values[0], values[1]);
   var ne = new google.maps.LatLng(values[2], values[3]);
   var latLngBounds = new google.maps.LatLngBounds(sw, ne);
