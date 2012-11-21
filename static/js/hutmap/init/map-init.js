@@ -31,10 +31,10 @@ hutmap.map.init = function() {
   goog.events.listen(huts, hutmap.Huts.EventType.HUTS_CHANGED,
       goog.bind(hutmap.map.updateSummary, null, logger, huts));
 
-  // set map to be at Seattle (static location query)
+  // set map with static location query
   var history = hutmap.History.getInstance();
   var queryData = new goog.Uri.QueryData();
-  queryData.set(hutmap.consts.hk.bbox, '47,-125,50,-120');
+  queryData.set(hutmap.consts.hk.bbox, '10,-180,120,-80');
   history.setHashData(queryData, true);
 }
 
