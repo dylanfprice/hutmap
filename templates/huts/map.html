@@ -19,6 +19,7 @@
     <script src="/static/js/hutmap/search.js"></script>
     <script src="/static/js/hutmap/map/types.js"></script>
     <script src="/static/js/hutmap/map/sidebar.js"></script>
+    <script src="/static/js/hutmap/map/filter.js"></script>
     <script src="/static/js/hutmap/map/map.js"></script>
     <script src="/static/js/hutmap/init/map-init.js"></script>
 {% else %}
@@ -31,6 +32,7 @@
 
 {% block content %}
 <div id="map_canvas"></div>
+{% include "huts/map_filter.html" %}
 <div id="sidebar" class="vertical_gradient">
   {% include "huts/map_sidebar_content.html" %}
 </div>
