@@ -156,6 +156,8 @@ hutmap.map.Map.prototype.clearHuts = function() {
  * it again.
  *
  * @param {Object[]} huts The huts to add to the map.
+ *
+ * @private
  */
 hutmap.map.Map.prototype.addHuts = function(huts) {
   if (!goog.array.isEmpty(huts)) {
