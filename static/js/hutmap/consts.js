@@ -27,5 +27,6 @@ hutmap.consts.mapIds = {
   sidebarDivId: 'sidebar',
   sidebarContentDivId: 'sidebar_content',
   sidebarToggleDivId: 'sidebar_toggle',
-  sidebarToggleIconDivId: 'sidebar_toggle_icon'
+  sidebarToggleIconDivId: 'sidebar_toggle_icon',
+  filterDivId: 'map_filter'
 };
