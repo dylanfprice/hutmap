@@ -11,9 +11,11 @@ goog.require('goog.debug.Logger');
 goog.require('goog.dom');
 goog.require('goog.style');
 goog.require('goog.ui.Zippy');
+goog.require('goog.ui.TwoThumbSlider');
 
 hutmap.map.init = function() {
   var console = new goog.debug.Console();
+  console.setCapturing(true);
 
   var logger = goog.debug.Logger.getLogger('hutmap.map');
   var huts = new hutmap.Huts();
@@ -28,7 +30,6 @@ hutmap.map.init = function() {
 
   goog.events.listen(huts, hutmap.Huts.EventType.HUTS_CHANGED,
       goog.bind(hutmap.map.updateSummary, null, logger, huts));
-
 
   // set map to be at Seattle (static location query)
   var history = hutmap.History.getInstance();
