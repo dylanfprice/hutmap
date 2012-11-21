@@ -3,6 +3,8 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: Arial,Helvetica,sans-serif;
+  color: rgb(79, 76, 66); 
+  font-weight: 700;
 }
 
 /* Round all input elements */
