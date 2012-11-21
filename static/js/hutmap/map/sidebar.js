@@ -12,6 +12,7 @@ goog.require('Wkt.gmap3');
  * Allows manipulation of data displayed in the sidebar.
  *
  * @param {String} sidebarContentDivId The id of the sidebar content div.
+ * @constructor
  */
 hutmap.map.Sidebar = function(sidebarContentDivId) {
   this.sidebarDiv = goog.dom.getElement(sidebarContentDivId);
