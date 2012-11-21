@@ -11,6 +11,7 @@ goog.require('Wkt.Wkt');
 goog.require('Wkt.gmap3');
 goog.require('hutmap.History');
 goog.require('hutmap.Huts');
+goog.require('hutmap.map.Filter');
 goog.require('hutmap.map.Sidebar');
 goog.require('hutmap.map.Types');
 goog.require('markerclusterer.MarkerClusterer');
@@ -20,8 +21,8 @@ goog.require('markerclusterer.MarkerClusterer');
  *
  * @param {Object} mapIds an object containing ids of elements needed by the
  *    map. This object should have the following properties: 'mapDivId',
- *    'sidebarDivId', 'sidebarContentDivid', 'sidebarToggleDivId', and
- *    'sidebarToggleIconDivId'.
+ *    'sidebarDivId', 'sidebarContentDivid', 'sidebarToggleDivId',
+ *    'sidebarToggleIconDivId', and 'filterDivId'.
  * @param {hutmap.Huts} huts 
  * @constructor
  */
@@ -53,7 +54,18 @@ hutmap.map.Map = function(mapIds, huts) {
   this.gmap = new google.maps.Map(goog.dom.getElement(mapIds.mapDivId), {
     zoom: 3,
     center:  new google.maps.LatLng(47.6, -122.3), 
-    mapTypeId: google.maps.MapTypeId.TERRAIN 
+    mapTypeId: google.maps.MapTypeId.TERRAIN,
+    streetViewControl: false,
+    panControl: false,
+    /*
+    mapTypeControlOptions: {
+      position: google.maps.ControlPosition.RIGHT_TOP,
+      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+    },
+    */
+    zoomControlOptions: { 
+      position: google.maps.ControlPosition.RIGHT_TOP 
+    }
   }); 
   /**
    * A map from hut id to google.maps.Marker
@@ -94,6 +106,12 @@ hutmap.map.Map = function(mapIds, huts) {
    * @type Object
    */
   this.sidebar = new hutmap.map.Sidebar(mapIds.sidebarContentDivId);
+  /**
+   * The Filter object which allows filtering the huts displayed on the map.
+   *
+   * @type Object
+   */
+  this.filter = new hutmap.map.Filter(mapIds.filterDivId);
 
 
   // set up additional map layers
@@ -105,8 +123,6 @@ hutmap.map.Map = function(mapIds, huts) {
 
   this.gmap.setOptions({
     mapTypeControlOptions: {
-      position: google.maps.ControlPosition.RIGHT_TOP,
-      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
       mapTypeIds: [google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.SATELLITE, 
                    google.maps.MapTypeId.HYBRID, google.maps.MapTypeId.TERRAIN, 
                    mapTypes.MSR_TOPO.name, mapTypes.ARC_GIS_USA.name, 
@@ -148,14 +164,14 @@ hutmap.map.Map.prototype.addHuts = function(huts) {
     goog.array.forEach(
       huts, 
       function(hut, index, array) {
-        var position = new Wkt.Wkt(hut.location);
-        var marker = position.toObject({
-          visible: true,
-          title: hut.name,
-          icon: new google.maps.MarkerImage(hutmap.map.Map.RED_MARKER)
-        });
-        this.setCallbacks(marker, hut);
         if (!this.markers.containsKey(hut.id)) {
+          var position = new Wkt.Wkt(hut.location);
+          var marker = position.toObject({
+            visible: true,
+            title: hut.name,
+            icon: new google.maps.MarkerImage(hutmap.map.Map.RED_MARKER)
+          });
+          this.setCallbacks(marker, hut);
           this.markers.set(hut.id, marker);
           newMarkers.push(marker);
         }
