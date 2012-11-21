@@ -124,9 +124,19 @@ hutmap.map.Sidebar.prototype.setHut = function(hut) {
     textContent = 'Unknown';
   } else {
     textContent = '<a href="' + agency['url'] + '" target="blank">' +
-      goog.string.truncate(agency['name'], 25) + '</a>';
+      goog.string.truncate(agency['name'], 20) + '</a>';
   }
   elt = goog.dom.getElement('sidebar_agency');
+  elt.innerHTML = textContent;
+  // Set the url
+  var url = goog.object.get(hut, 'hut_url', null);
+  if (url == null) {
+    textContent = 'Unknown';
+  } else {
+    textContent = '<a href="' + url + '" target="blank">' +
+      goog.string.truncate(url, 20) + '</a>';
+  }
+  elt = goog.dom.getElement('sidebar_hut_url');
   elt.innerHTML = textContent;
 
   // Unhide the html
