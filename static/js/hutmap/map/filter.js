@@ -53,7 +53,7 @@ hutmap.map.Filter = function(huts, map) {
   this.capacitySlider.decorate(capacitySliderElt);
   this.capacitySlider.setBlockIncrement(1);
   this.capacitySlider.setMinimum(1);
-  this.capacitySlider.setMaximum(50);
+  this.capacitySlider.setMaximum(40);
 
   // Make slider labels update when thumbs are moved
   var updatePersonSlider = this.createUpdateFeeSliderFn(this.personSlider, personSliderElt);  
