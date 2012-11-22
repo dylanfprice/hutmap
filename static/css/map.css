@@ -21,7 +21,7 @@
   margin: 10px;
   padding: 5px;
   width: 200px;
-  height: 150px;
+  height: 185px;
   background-color: white;
 }
 
@@ -55,7 +55,8 @@
   height:0;
 }
 
-.goog-twothumbslider-horizontal {
+.goog-twothumbslider-horizontal,
+.goog-slider-horizontal {
   background-color: lightgray;
   opacity: 0.5;
   position: relative;
@@ -63,7 +64,8 @@
 }
 
 .goog-twothumbslider-value-thumb,
-.goog-twothumbslider-extent-thumb {
+.goog-twothumbslider-extent-thumb,
+.goog-slider-thumb {
   position: absolute;
   background-color: darkgray;
   opacity: 1;
@@ -73,7 +75,8 @@
 }
 
 .goog-twothumbslider-horizontal .goog-twothumbslider-value-thumb,
-.goog-twothumbslider-horizontal .goog-twothumbslider-extent-thumb {
+.goog-twothumbslider-horizontal .goog-twothumbslider-extent-thumb, 
+.goog-slider-horizontal .goog-slider-thumb {
   width: 25px;
   height: 100%;
 }

@@ -5,6 +5,7 @@ goog.require('goog.events');
 goog.require('goog.debug.Logger');
 goog.require('goog.dom');
 goog.require('goog.ui.TwoThumbSlider');
+goog.require('goog.ui.Slider');
 goog.require('goog.ui.Checkbox');
 goog.require('goog.ui.Component');
 
@@ -27,6 +28,7 @@ hutmap.map.Filter = function(huts, map) {
   this.hutCountElt = goog.dom.getElement(hutmap.consts.mapIds.hutCountSpanId);
   this.personSlider = new goog.ui.TwoThumbSlider();
   this.hutSlider = new goog.ui.TwoThumbSlider();
+  this.capacitySlider = new goog.ui.Slider();
   this.accessCheckboxes = [];
 
   // Set up fee per person slider
@@ -45,13 +47,24 @@ hutmap.map.Filter = function(huts, map) {
   this.hutSlider.setMinimum(0);
   this.hutSlider.setMaximum(50);
 
+  // Set up capacity slider
+  var capacitySliderElt = goog.dom.getElement(hutmap.consts.mapIds.capacitySliderId);
+  this.capacitySlider.setMoveToPointEnabled(true);
+  this.capacitySlider.decorate(capacitySliderElt);
+  this.capacitySlider.setBlockIncrement(1);
+  this.capacitySlider.setMinimum(1);
+  this.capacitySlider.setMaximum(50);
+
   // Make slider labels update when thumbs are moved
   var updatePersonSlider = this.createUpdateFeeSliderFn(this.personSlider, personSliderElt);  
   var updateHutSlider = this.createUpdateFeeSliderFn(this.hutSlider, hutSliderElt);  
+  var updateCapacitySlider = this.createUpdateSingleSliderFn(this.capacitySlider, capacitySliderElt);
   goog.events.listen(this.personSlider, goog.ui.Component.EventType.CHANGE, updatePersonSlider);
   goog.events.listen(this.hutSlider, goog.ui.Component.EventType.CHANGE, updateHutSlider);
+  goog.events.listen(this.capacitySlider, goog.ui.Component.EventType.CHANGE, updateCapacitySlider);
   updatePersonSlider();
   updateHutSlider();
+  updateCapacitySlider();
 
   // Set up hut access checkboxes
   var access = goog.dom.getElement('map_filter_hut_access');
@@ -67,6 +80,8 @@ hutmap.map.Filter = function(huts, map) {
   goog.events.listen(this.personSlider, goog.ui.Component.EventType.CHANGE,
       goog.bind(this.filter, this));
   goog.events.listen(this.hutSlider, goog.ui.Component.EventType.CHANGE,
+      goog.bind(this.filter, this));
+  goog.events.listen(this.capacitySlider, goog.ui.Component.EventType.CHANGE,
       goog.bind(this.filter, this));
   goog.array.forEach(this.accessCheckboxes, function(checkbox, index, array) {
     goog.events.listen(checkbox, goog.ui.Component.EventType.CHANGE,
@@ -89,6 +104,7 @@ hutmap.map.Filter.prototype.filter = function() {
   var personHi = this.personSlider.getValue() + this.personSlider.getExtent();
   var hutLo = this.hutSlider.getValue();
   var hutHi = this.hutSlider.getValue() + this.hutSlider.getExtent();
+  var capacityValue = this.capacitySlider.getValue();
   
   goog.array.forEach(this.huts.getHuts(), function(hut, index, array) {
     // filter fee/person
@@ -101,6 +117,8 @@ hutmap.map.Filter.prototype.filter = function() {
       hutLo, hutHi, true);
     var isHutMax = this.isHutInRange(hut, this.h.fee_hut_max,
       hutLo, hutHi, true);
+    // filter capacity
+    var isCapacity = hut[this.h.capacity_max] >= capacityValue;
     // filter hut access
     var hutAccess = hut[this.h.access];
     var access = true;
@@ -108,7 +126,8 @@ hutmap.map.Filter.prototype.filter = function() {
       access = this.accessCheckboxes[parseInt(hutAccess)].isChecked();
     }
     
-    if ((isPersonMin || isPersonMax) && (isHutMin || isHutMax) && access) {
+    if ((isPersonMin || isPersonMax) && (isHutMin || isHutMax) && isCapacity &&
+      access) {
       hutIds.push(hut[this.h.id]);
     }
   }, this);
@@ -154,5 +173,16 @@ hutmap.map.Filter.prototype.createUpdateFeeSliderFn = function(feeSlider, feeSli
     highFeeElt.innerHTML = '$' + (feeSlider.getValue() + feeSlider.getExtent());
   };
   return updateFeeSlider;
+};
+
+/**
+ *
+ */
+hutmap.map.Filter.prototype.createUpdateSingleSliderFn = function(slider, sliderElt) {
+  var updateSlider = function() {
+    var valueElt = goog.dom.getElementByClass(hutmap.consts.googCss.sliderThumb, sliderElt);
+    valueElt.innerHTML = slider.getValue();
+  };
+  return updateSlider;
 };
 

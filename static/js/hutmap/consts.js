@@ -30,10 +30,12 @@ hutmap.consts.mapIds = {
   sidebarToggleIconDivId: 'sidebar_toggle_icon',
   feePersonSliderId: 'map_filter_fee_person_slider',
   feeHutSliderId: 'map_filter_fee_hut_slider',
+  capacitySliderId: 'map_filter_capacity_slider',
   hutCountSpanId: 'map_filter_hut_count'
 };
 
 hutmap.consts.googCss = {
+  sliderThumb: 'goog-slider-thumb',
   twoThumbSliderValueThumb: 'goog-twothumbslider-value-thumb',
   twoThumbSliderExtentThumb: 'goog-twothumbslider-extent-thumb'
 };
