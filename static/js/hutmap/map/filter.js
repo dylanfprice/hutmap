@@ -21,8 +21,10 @@ goog.require('hutmap.consts');
  */
 hutmap.map.Filter = function(huts, map) {
   this.logger = goog.debug.Logger.getLogger('hutmap.map.Filter');
+  this.h = hutmap.consts.g.hut;
   this.huts = huts;
   this.map = map;
+  this.hutCountElt = goog.dom.getElement(hutmap.consts.mapIds.hutCountSpanId);
   this.personSlider = new goog.ui.TwoThumbSlider();
   this.hutSlider = new goog.ui.TwoThumbSlider();
   this.accessCheckboxes = [];
@@ -70,6 +72,10 @@ hutmap.map.Filter = function(huts, map) {
     goog.events.listen(checkbox, goog.ui.Component.EventType.CHANGE,
       goog.bind(this.filter, this));
   }, this);
+
+  // attach listener to when new huts are loaded
+  goog.events.listen(this.huts, hutmap.Huts.EventType.HUTS_CHANGED,
+      goog.bind(this.filter, this));
 };
 
 /**
@@ -86,27 +92,28 @@ hutmap.map.Filter.prototype.filter = function() {
   
   goog.array.forEach(this.huts.getHuts(), function(hut, index, array) {
     // filter fee/person
-    var isPersonMin = this.isHutInRange(hut, hutmap.consts.g.hut.fee_person_min,
+    var isPersonMin = this.isHutInRange(hut, this.h.fee_person_min,
       personLo, personHi, true);
-    var isPersonMax = this.isHutInRange(hut, hutmap.consts.g.hut.fee_person_max,
+    var isPersonMax = this.isHutInRange(hut, this.h.fee_person_max,
       personLo, personHi, true);
     // filter fee/hut
-    var isHutMin = this.isHutInRange(hut, hutmap.consts.g.hut.fee_hut_min,
+    var isHutMin = this.isHutInRange(hut, this.h.fee_hut_min,
       hutLo, hutHi, true);
-    var isHutMax = this.isHutInRange(hut, hutmap.consts.g.hut.fee_hut_max,
+    var isHutMax = this.isHutInRange(hut, this.h.fee_hut_max,
       hutLo, hutHi, true);
     // filter hut access
-    var hutAccess = hut['access'];
+    var hutAccess = hut[this.h.access];
     var access = true;
     if (hutAccess != null) {
       access = this.accessCheckboxes[parseInt(hutAccess)].isChecked();
     }
     
     if ((isPersonMin || isPersonMax) && (isHutMin || isHutMax) && access) {
-      hutIds.push(hut['id']);
-    } 
+      hutIds.push(hut[this.h.id]);
+    }
   }, this);
   this.map.setVisibleHuts(hutIds);
+  this.hutCountElt.innerHTML = hutIds.length;
 };
 
 /**
