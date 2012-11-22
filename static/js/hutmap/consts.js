@@ -29,7 +29,8 @@ hutmap.consts.mapIds = {
   sidebarToggleDivId: 'sidebar_toggle',
   sidebarToggleIconDivId: 'sidebar_toggle_icon',
   feePersonSliderId: 'map_filter_fee_person_slider',
-  feeHutSliderId: 'map_filter_fee_hut_slider'
+  feeHutSliderId: 'map_filter_fee_hut_slider',
+  hutCountSpanId: 'map_filter_hut_count'
 };
 
 hutmap.consts.googCss = {
