@@ -45,7 +45,7 @@ hutmap.map.Filter = function(huts, map) {
   this.hutSlider.decorate(hutSliderElt);
   this.hutSlider.setBlockIncrement(1);
   this.hutSlider.setMinimum(0);
-  this.hutSlider.setMaximum(50);
+  this.hutSlider.setMaximum(80);
 
   // Set up capacity slider
   var capacitySliderElt = goog.dom.getElement(hutmap.consts.mapIds.capacitySliderId);
