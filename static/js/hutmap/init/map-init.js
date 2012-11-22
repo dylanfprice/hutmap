@@ -34,7 +34,7 @@ hutmap.map.init = function() {
   // set map with static location query
   var history = hutmap.History.getInstance();
   var queryData = new goog.Uri.QueryData();
-  queryData.set(hutmap.consts.hk.bbox, '10,-180,70,-80');
+  queryData.set(hutmap.consts.hk.bbox, '41.93,-159.61,65.63,-102.49');
   history.setHashData(queryData, true);
 }
 
