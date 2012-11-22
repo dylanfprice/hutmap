@@ -1,45 +1,182 @@
-#top_bar {
-  width: 100%;
-  height: 120px;
-}
-
-#top_bar .left {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  margin-left: 10px;
-}
-
-#top_bar .middle {
-  position: absolute;
-  left: 570px;
-  top: 0px;
-  width: 125px;
-}
-
-#top_bar .right {
-  position: absolute;
-  top: 0;
-  left: 700px;
-  right: 0;
-  height: 120px;
-  text-align: center;
-}
+/************************* 
+ * Map
+ *************************/
 
 #map_canvas {
   position: absolute;
-  top: 140px;
+  top: 0px;
+  left: 0px;
   bottom: 0px;
+  right: 208px;
+}
+
+/************************* 
+ * Filter
+ *************************/
+
+#map_filter {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  margin: 10px;
+  padding: 5px;
+  width: 200px;
+  height: 185px;
+  background-color: white;
+}
+
+#map_filter hr {
+  color: rgb(79, 76, 66); 
+  opacity: 0.5;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.map_filter_item {
+  font-size: 0.75em;
+  margin-bottom: 5px;
+}
+
+.map_filter_label {
+  color: darkgreen;
+}
+
+.map_filter_slider {
+  width: 100%;
+  height: 15px;
+}
+
+.map_filter_slider_line {
+  position:absolute;
+  width:100%;
+  top:7.5px;
+  border:1px inset white;
+  overflow:hidden;
+  height:0;
+}
+
+.goog-twothumbslider-horizontal,
+.goog-slider-horizontal {
+  background-color: lightgray;
+  opacity: 0.5;
+  position: relative;
+  overflow: hidden;
+}
+
+.goog-twothumbslider-value-thumb,
+.goog-twothumbslider-extent-thumb,
+.goog-slider-thumb {
+  position: absolute;
+  background-color: darkgray;
+  opacity: 1;
+  overflow: hidden;
+  text-align: center;
+  color: black;
+}
+
+.goog-twothumbslider-horizontal .goog-twothumbslider-value-thumb,
+.goog-twothumbslider-horizontal .goog-twothumbslider-extent-thumb, 
+.goog-slider-horizontal .goog-slider-thumb {
+  width: 25px;
+  height: 100%;
+}
+
+.goog-checkbox {
+  border: 1px solid #1C5180;
+  display: -moz-inline-box;
+  display: inline-block;
+  font-size: 1px;  /* Fixes the height in IE6 */
+  height: 11px;
+  margin: 0 4px 0 1px;
+  vertical-align: text-bottom;
+  width: 11px;
+}
+
+.goog-checkbox-checked {
+  background: #fff url(/static/img/check-sprite.gif) no-repeat 2px center;
+}
+
+.goog-checkbox-undetermined {
+  background: #bbb url(/static/img/check-sprite.gif) no-repeat 2px center;
+}
+
+.goog-checkbox-unchecked {
+  background: #fff;
+}
+
+/************************* 
+ * Sidebar
+ *************************/
+
+#sidebar {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  width: 200px;
+  z-index: 5;
+}
+
+#sidebar_toggle {
+  position: absolute;
+  right: 200px;
+  height: 100%;
+  width: 8px;
+  font-size: 0.75em;
+  z-index: 10;
+  background-color: lightgray;
+  opacity: 0.8;
+  cursor: e-resize;
+}
+
+#sidebar_toggle_padding {
+  height: 50%;
   width: 100%;
 }
 
-div.infowindow {
+#sidebar_toggle_icon {
+  font-weight: 900;
+}
+
+#sidebar_content {
+  padding: 5px;
+  text-align: center;
+}
+
+#sidebar_content h3 {
+  height: 50px;
+}
+
+#sidebar_content a {
+  color: black;
+}
+
+#sidebar_content img {
+  border-style: solid;
+  border-width: 1px;
+  width: 180px;
+  height: 130px;
+}
+
+.hut_detail_table {
+  width: 100%;
+  font-size: 10px;
+  font-weight: 700;
+  color: black;
   text-align: left;
 }
 
-img.infowindow {
-  height: 200px;
-  width: 300px;
+.hut_detail_footer {
+  padding-top: 1em;
+}
+
+.hut_detail_title {
+  color: darkgreen;
+  width: 65px;
+}
+
+.hut_detail_left {
+  width: 50px;
 }
 
 @media print {
@@ -51,3 +188,4 @@ img.infowindow {
     height: 650px;
   }
 }
+

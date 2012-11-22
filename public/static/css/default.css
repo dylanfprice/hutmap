@@ -1,52 +1,33 @@
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: Arial,Helvetica,sans-serif;
+.hidden {
+  display: none;
 }
 
-input		{ -moz-border-radius:10px; -webkit-border-radius:10px; }
-::selection			{ background:#c3effd; color:#000; /* Safari and Opera */ }
-::-moz-selection  { background:#c3effd; color:#000; /* Firefox */ }
-
-table td.empty_column {
-  width: 70%;
+.vertical_gradient {
+  /* IE10 Consumer Preview */ 
+  background-image: -ms-linear-gradient(top, #466A8E 0%, #FFFFFF 100%);
+  /* Mozilla Firefox */ 
+  background-image: -moz-linear-gradient(top, #466A8E 0%, #FFFFFF 100%);
+  /* Opera */ 
+  background-image: -o-linear-gradient(top, #466A8E 0%, #FFFFFF 100%);
+  /* Webkit (Safari/Chrome 10) */ 
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #466A8E), color-stop(1.0, #FFFFFF));
+  /* Webkit (Chrome 11+) */ 
+  background-image: -webkit-linear-gradient(top, #466A8E 0%, #FFFFFF 100%);
+  /* W3C Markup, IE10 Release Preview */ 
+  background-image: linear-gradient(to bottom, #466A8E 0%, #FFFFFF 100%);
 }
 
-#content {
-  height: 100%;
-  width: 100%;
-}
-
-#search_form {
-  vertical-align: center;
-}
-
-#search_button {
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 250px;
-}
-
-#centerer {
-  position: absolute;
-  top: 50%;
-  left: 0px;
-  width: 100%;
-  height: 1px;
-  overflow: visible;
-}
-
-div.outline {
-  margin-left: auto;
-  margin-right: auto;
-  border: 5px solid lightgrey;
-  padding: 5px;
-  height: 200px;
-  width: 560px;
-  margin-left: -280px;  /***  width / 2   ***/
-  position: absolute;
-  top: -100px;          /***  height / 2   ***/
-  left: 50%;
+.rtl_horizontal_gradient {
+  /* IE10 Consumer Preview */ 
+  background-image: -ms-linear-gradient(right, #466A8E 0%, #FFFFFF 100%);
+  /* Mozilla Firefox */ 
+  background-image: -moz-linear-gradient(right, #466A8E 0%, #FFFFFF 100%);
+  /* Opera */ 
+  background-image: -o-linear-gradient(right, #466A8E 0%, #FFFFFF 100%);
+  /* Webkit (Safari/Chrome 10) */ 
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #466A8E), color-stop(1.0, #FFFFFF));
+  /* Webkit (Chrome 11+) */ 
+  background-image: -webkit-linear-gradient(right, #466A8E 0%, #FFFFFF 100%);
+  /* W3C Markup, IE10 Release Preview */ 
+  background-image: linear-gradient(to left, #466A8E 0%, #FFFFFF 100%);
 }
