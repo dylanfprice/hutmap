@@ -10,6 +10,7 @@ goog.require('goog.ui.Checkbox');
 goog.require('goog.ui.Component');
 
 goog.require('hutmap.consts');
+goog.require('hutmap.consts.g');
 
 /**
  * Sets up the filtering widgets in the filter box on the map. The

@@ -5,6 +5,7 @@ goog.require('goog.object');
 goog.require('goog.string');
 
 goog.require('hutmap.consts');
+goog.require('hutmap.consts.g');
 goog.require('Wkt.Wkt');
 goog.require('Wkt.gmap3');
 
