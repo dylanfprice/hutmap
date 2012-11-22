@@ -1,5 +1,6 @@
 goog.provide('hutmap.map.Map');
 
+goog.require('goog.Uri.QueryData');
 goog.require('goog.array');
 goog.require('goog.debug.Logger');
 goog.require('goog.dom');
@@ -93,7 +94,7 @@ hutmap.map.Map = function(mapIds, huts) {
   this.rectangle = new google.maps.Rectangle({
     'map': this.gmap,
     'clickable': false,
-    'editable': false,
+    'editable': true,
     'visible': false,
     'fillColor': 'black',
     'fillOpacity': 0.0,
@@ -138,6 +139,10 @@ hutmap.map.Map = function(mapIds, huts) {
   var sidebarToggle = goog.dom.getElement(mapIds.sidebarToggleDivId);
   goog.events.listen(sidebarToggle, goog.events.EventType.CLICK,
       goog.bind(this.toggleSidebar, this));
+
+  // attach listener to rectangle bounds
+  google.maps.event.addListener(this.rectangle, 'bounds_changed',
+      goog.bind(this.onBoundsChanged, this));
 };
 
 hutmap.map.Map.RED_MARKER = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png';
@@ -243,7 +248,7 @@ hutmap.map.Map.prototype.onHutsChanged = function() {
     this.markerClusterer.addMarker(locationMarker);
   }
 
-  this.markerClusterer.fitMapToMarkers();
+  //this.markerClusterer.fitMapToMarkers();
 
   if (locationMarker !== null) {
     this.markerClusterer.removeMarker(locationMarker);
@@ -336,6 +341,18 @@ hutmap.map.Map.prototype.toggleSidebar = function() {
   }
 
   google.maps.event.trigger(map, 'resize');
+};
+
+/**
+ * TODO
+ */
+hutmap.map.Map.prototype.onBoundsChanged = function() {
+  var bounds = this.rectangle.getBounds();
+  var bbox = bounds.toUrlValue(2);
+  var history = hutmap.History.getInstance();
+  var queryData = new goog.Uri.QueryData();
+  queryData.set(hutmap.consts.hk.bbox, bbox);
+  history.setHashData(queryData, true);
 };
 
 /**
