@@ -326,17 +326,19 @@ hutmap.map.Map.prototype.toggleSidebar = function() {
   if (goog.style.isElementShown(sidebar)) {
     hutmap.map.mapRight = window.getComputedStyle(map).getPropertyValue('right');
     hutmap.map.sidebarToggleRight = window.getComputedStyle(sidebarToggle).getPropertyValue('right');
-    map.style.right = '0px';
+    map.style.right = '14px';
     sidebarToggle.style.right = '0px';
-    sidebarToggle.style.cursor = 'w-resize';
-    goog.dom.setTextContent(sidebarToggleIcon, '<');
+    //sidebarToggle.style.cursor = 'w-resize';
+    //goog.dom.setTextContent(sidebarToggleIcon, '<');
+    sidebarToggleIcon.innerHTML = '<i class="icon-chevron-left"></i>';
     goog.style.showElement(sidebar, false);
   }
   else {
-    map.style.right = this._mapRight; //'208px';
-    sidebarToggle.style.right = this._sidebarToggleRight; //'200px';
-    sidebarToggle.style.cursor = 'e-resize';
-    goog.dom.setTextContent(sidebarToggleIcon, '>');
+    map.style.right = this._mapRight;
+    sidebarToggle.style.right = this._sidebarToggleRight;
+    //sidebarToggle.style.cursor = 'e-resize';
+    //goog.dom.setTextContent(sidebarToggleIcon, '>');
+    sidebarToggleIcon.innerHTML = '<i class="icon-chevron-right"></i>';
     goog.style.showElement(sidebar, true);
   }
 

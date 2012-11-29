@@ -4,6 +4,19 @@
     <link href="/static/css/map.css" rel="stylesheet"> 
 {% endblock %}
 
+{% block content %}
+<div id="map_canvas"></div>
+  {% include "huts/map_filter.html" %}
+</div>
+<div id="sidebar" class="vertical_gradient">
+  {% include "huts/map_sidebar_content.html" %}
+</div>
+<div id="sidebar_toggle" class="vertical_gradient" title="Toggle Sidebar">
+  <div id="sidebar_toggle_padding"></div>
+  <div id="sidebar_toggle_icon"><i class="icon-chevron-right"></i></div>
+</div>
+{% endblock %}
+
 {% block scripts %}
 {% include 'google-maps.html' %}
 {% if DEVELOPMENT %}
@@ -30,14 +43,3 @@
     </script>
 {% endblock %}
 
-{% block content %}
-<div id="map_canvas"></div>
-{% include "huts/map_filter.html" %}
-<div id="sidebar" class="vertical_gradient">
-  {% include "huts/map_sidebar_content.html" %}
-</div>
-<div id="sidebar_toggle" class="vertical_gradient" title="Toggle Sidebar">
-  <div id="sidebar_toggle_padding"></div>
-  <div id="sidebar_toggle_icon">&gt;</div>
-</div>
-{% endblock %}
