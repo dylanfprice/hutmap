@@ -15,6 +15,6 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('django.views.generic.simple',
-  (r'^map/', 'direct_to_template', {'template': 'huts/map.html'}),
+  url(r'^map/', 'direct_to_template', {'template': 'huts/map.html'}, name='hutmap_map'),
 )
 

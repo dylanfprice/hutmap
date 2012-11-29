@@ -18,28 +18,10 @@
 {% endblock %}
 
 {% block scripts %}
-{% include 'google-maps.html' %}
-{% if DEVELOPMENT %}
-    <script src="/closure/closure/goog/base.js"></script>
-    <script src="/static/js/third-party/wicket.src.js"></script>
-    <script src="/static/js/third-party/wicket-gmap3.src.js"></script>
-    <script src="/static/js/third-party/markerclusterer.js"></script>
-    <script src="/static/js/hutmap/consts.js"></script>
-    <script src="/static/js/hutmap/gconsts.js"></script>
-    <script src="/static/js/hutmap/ajax.js"></script>
-    <script src="/static/js/hutmap/history.js"></script>
-    <script src="/static/js/hutmap/huts.js"></script>
-    <script src="/static/js/hutmap/search.js"></script>
-    <script src="/static/js/hutmap/map/types.js"></script>
-    <script src="/static/js/hutmap/map/sidebar.js"></script>
-    <script src="/static/js/hutmap/map/filter.js"></script>
-    <script src="/static/js/hutmap/map/map.js"></script>
-    <script src="/static/js/hutmap/init/map-init.js"></script>
-{% else %}
-    <script src="/static/js/hutmap-compiled.js"></script>
-{% endif %}
-    <script>
-      window.onload = hutmap.map.init;
-    </script>
+  {% include 'google-maps.html' %}
+  <script>
+    window.onload = hutmap.map.init;
+  </script>
 {% endblock %}
+
 

@@ -5,13 +5,15 @@ from django.contrib.gis import admin
 admin.autodiscover()
 
 urlpatterns = patterns('django.views.generic.simple',
-  (r'^$',  'direct_to_template', {'template': 'index.html'}),
+  url(r'^$',  'direct_to_template', {'template': 'index.html'}, name='hutmap_home'),
 )
 
 urlpatterns += patterns('',
-  (r'^huts/',       include('huts.urls')),
-  (r'^admin/',      include(admin.site.urls)),
-  (r'^admin/doc/',  include('django.contrib.admindocs.urls')),
+  url(r'^huts/',       include('huts.urls')),
+  #url(r'^blog/',       include('blog.urls'), name='hutmap_blog'),
+  #url(r'^about/',      include('blog.urls'), name='hutmap_about'),
+  url(r'^admin/',      include(admin.site.urls)),
+  url(r'^admin/doc/',  include('django.contrib.admindocs.urls')),
 )
 
 # Serve static files through django if in debug
