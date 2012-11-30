@@ -38,7 +38,7 @@ hutmap.map.Sidebar.prototype.setHut = function(hut) {
   var photoUrl = goog.object.get(hut, this.h.photo_url);
   if (photoUrl === '' || photoUrl == null)
     photoUrl = '/static/img/no-image-available.gif';
-  textContent = '<a href="' + hutUrl + '" target="blank"><img class="img-rounded" src="' + photoUrl + '" alt="No photo"></img></a>';
+  textContent = '<a href="' + hutUrl + '" target="blank"><img class="img-rounded" src="' + photoUrl + '" alt="Broken photo link!"></img></a>';
   elt = goog.dom.getElement('sidebar_img');
   elt.innerHTML = textContent;
   // Set the fee per person
