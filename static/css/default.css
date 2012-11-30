@@ -1,3 +1,12 @@
+body {
+  background-image: url('/static/img/gray-jean.png');
+}
+
+#top_unit {
+  background-image: url('/static/img/mint-hut.jpg');
+  color: black;
+}
+
 .hidden {
   display: none;
 }
