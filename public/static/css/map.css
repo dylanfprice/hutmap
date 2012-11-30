@@ -4,10 +4,11 @@
 
 #map_canvas {
   position: absolute;
-  top: 0px;
+  top: 26px;
   left: 0px;
   bottom: 0px;
-  right: 208px;
+  right: 214px;
+  line-height: 15px;
 }
 
 /************************* 
@@ -16,18 +17,20 @@
 
 #map_filter {
   position: absolute;
-  top: 0px;
+  top: 25px;
   left: 0px;
   margin: 10px;
   padding: 5px;
   width: 200px;
   height: 185px;
-  background-color: white;
+  /*background-color: white;*/
+  background-image: url('/static/img/gray-jean.png');
+  line-height: 15px;
+  color: black;
+  font-weight: 600;
 }
 
 #map_filter hr {
-  color: rgb(79, 76, 66); 
-  opacity: 0.5;
   margin-top: 2px;
   margin-bottom: 2px;
 }
@@ -110,23 +113,23 @@
 
 #sidebar {
   position: absolute;
-  top: 0px;
+  top: 25px;
   right: 0px;
   bottom: 0px;
   width: 200px;
   z-index: 5;
+  line-height: 15px;
 }
 
 #sidebar_toggle {
   position: absolute;
+  top: 25px;
+  bottom: 0px;
   right: 200px;
-  height: 100%;
-  width: 8px;
-  font-size: 0.75em;
+  width: 14px;
   z-index: 10;
-  background-color: lightgray;
   opacity: 0.8;
-  cursor: e-resize;
+  line-height: 15px;
 }
 
 #sidebar_toggle_padding {
@@ -135,7 +138,6 @@
 }
 
 #sidebar_toggle_icon {
-  font-weight: 900;
 }
 
 #sidebar_content {
@@ -143,25 +145,40 @@
   text-align: center;
 }
 
-#sidebar_content h3 {
+#sidebar_content h4 {
   height: 50px;
 }
 
-#sidebar_content a {
+#sidebar_content h4 a {
   color: black;
 }
 
+/*
+#sidebar_content a {
+  color: black;
+  text-decoration: underline;
+}
+  */
+
+#sidebar_img,
 #sidebar_content img {
-  border-style: solid;
-  border-width: 1px;
   width: 180px;
   height: 130px;
+  text-align: center;
+}
+
+#sidebar_img {
+/*
+  border-style: solid;
+  border-width: 1px;
+  */
+  margin-bottom: 5px;
 }
 
 .hut_detail_table {
   width: 100%;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   color: black;
   text-align: left;
 }
