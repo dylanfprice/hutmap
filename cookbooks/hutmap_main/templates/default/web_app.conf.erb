@@ -1,0 +1,42 @@
+<VirtualHost *:80>
+  ServerName <%= @params[:server_name] %>
+  ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
+  DocumentRoot <%= @params[:docroot] %>
+
+  <Directory <%= @params[:docroot] %>>
+    Options FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+  </Directory> 
+
+  LogLevel info
+  ErrorLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
+  CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
+
+  SetEnv HUTMAP_DB_NAME <%= node['hutmap']['db']['name'] %>
+  SetEnv HUTMAP_DB_USER <%= node['hutmap']['db']['user'] %>
+  SetEnv HUTMAP_DB_PASSWORD <%= node['hutmap']['db']['password'] %>
+  SetEnv HUTMAP_DB_HOST <%= node['hutmap']['db']['host'] %>
+  SetEnv HUTMAP_DB_PORT <%= node['hutmap']['db']['port'] %>
+  SetEnv HUTMAP_SECRET_KEY <%= node['hutmap']['secret_key'] %>
+  SetEnv HUTMAP_DEVELOPMENT <%= node['hutmap']['development'] %>
+  SetEnv HUTMAP_DEBUG <%= node['hutmap']['debug'] %>
+  SetEnv HUTMAP_TEMPLATE_DEBUG <%= node['hutmap']['template_debug'] %>
+
+  #RewriteEngine On
+  #RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
+  #RewriteLogLevel 0
+
+  # Canonical host
+  #RewriteCond %{HTTP_HOST}   !^<%= @params[:server_name] %> [NC]
+  #RewriteCond %{HTTP_HOST}   !^$
+  #RewriteCond %{HTTP_HOST}   !^localhost
+  #RewriteCond %{HTTP_HOST}   !^127.0.0.1
+  #RewriteRule ^/(.*)$        http://<%= @params[:server_name] %>/$1 [L,R=301]
+
+  #RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+  #RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+  #RewriteRule ^.*$ /system/maintenance.html [L]
+
+</VirtualHost>
