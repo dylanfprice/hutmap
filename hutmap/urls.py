@@ -1,5 +1,4 @@
 from django.conf.urls.defaults import *
-from django.conf import settings
 
 from django.contrib.gis import admin
 admin.autodiscover()
@@ -16,13 +15,3 @@ urlpatterns += patterns('',
   url(r'^admin/doc/',  include('django.contrib.admindocs.urls')),
 )
 
-# Serve static files through django if in debug
-if settings.DEVELOPMENT:
-  urlpatterns += patterns('',
-    (r'^static/(?P<path>.*)$', 'django.views.static.serve', 
-      {'document_root': settings.STATIC_DOC_ROOT, 'show_indexes': True}),
-
-    (r'^closure/(?P<path>.*)$', 'django.views.static.serve',
-     {'document_root': settings.CLOSURE_LIB, 'show_indexes': True}),
-       
-  )
