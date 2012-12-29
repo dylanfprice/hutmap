@@ -19,7 +19,6 @@ DATABASES = {
 # Set this to something random, long, and secret
 SECRET_KEY = os.environ['HUTMAP_SECRET_KEY']
 
-DEVELOPMENT = bool(os.getenv('HUTMAP_DEVELOPMENT', False))
 DEBUG = bool(os.getenv('HUTMAP_DEBUG', False))
 TEMPLATE_DEBUG = bool(os.getenv('HUTMAP_TEMPLATE_DEBUG', False))
 
@@ -86,7 +85,6 @@ TEMPLATE_LOADERS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = (
   'django.contrib.auth.context_processors.auth',
-  'huts.context_processors.settings',
 )
 
 MIDDLEWARE_CLASSES = (

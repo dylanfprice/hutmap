@@ -21,7 +21,6 @@ Vagrant::Config.run do |config|
           :port     => ENV['HUTMAP_DB_PORT'],
         },
         :secret_key     => ENV['HUTMAP_SECRET_KEY'],
-        :development    => ENV['HUTMAP_DEVELOPMENT'],
         :debug          => ENV['HUTMAP_DEBUG'],
         :template_debug => ENV['HUTMAP_TEMPLATE_DEBUG'],
       },

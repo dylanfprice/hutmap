@@ -28,7 +28,6 @@ have to rebuild the vm by running 'vagrant destroy', then 'vagrant up' again.
     export HUTMAP_DB_HOST='' # Don't set this since we put Apache and MySQL on the same vm
     export HUTMAP_DB_PORT='' # Same goes for this
     export HUTMAP_SECRET_KEY='6b1c3b50-14b3-11e2-892e-0800200c9a66'
-    export HUTMAP_DEVELOPMENT='true'
     export HUTMAP_DEBUG='true'
     export HUTMAP_TEMPLATE_DEBUG='true'
 
