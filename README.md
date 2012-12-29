@@ -2,8 +2,8 @@
 
 # Setup #
 
-1. Install [Vagrant](www.vagrantup.com) 
-2. Add the following to your ~/.bash\_profile to set the following environment
+First, install [Vagrant](http://www.vagrantup.com) 
+Next, add the following to your ~/.bash\_profile to set the following environment
    variables, or do the equivalent thing for your operating system. You are
    allowed to change the values but some defaults are provided here for
    convenience.
@@ -19,10 +19,10 @@
     export HUTMAP\_DEBUG='true'
     export HUTMAP\_TEMPLATE\_DEBUG='true'
 
-3. In the directory containing this README.md, perform the following:
+In the directory containing this README.md, perform the following:
 
   :::bash
   $ vagrant box add lucid32 http://files.vagrantup.com/lucid32.box
   $ vagrant up
 
-4. Go to <http://localhost:8080> in your browser and verify you see the homepage.
+Finally, go to <http://localhost:8080> in your browser and verify you see the homepage.
