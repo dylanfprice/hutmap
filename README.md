@@ -1,6 +1,14 @@
 # About #
+This is the code that powers [hutmap.com](http://www.hutmap.com).
 
 # Setup #
+
+I am assuming a working knowledge of Linux, Bash, Python, and Django. You may
+not know Vagrant, so walk through the
+[tutorial](http://vagrantup.com/v1/docs/getting-started/index.html) and all
+will become clear.
+
+You can try this on Mac or Windows but I've only ever used Linux so no guarantees.
 
 ## Setup Dev Environment ##
 First, install [Vagrant](http://www.vagrantup.com). Vagrant requires both
@@ -33,7 +41,7 @@ In the directory containing this README.md, perform the following:
 
 Finally, go to <http://localhost:8080> in your browser and verify you see the homepage.
 
-## Initializing Stuff ##
+## Initialize the Database ##
 Get the database up and running:
 
     :::bash
