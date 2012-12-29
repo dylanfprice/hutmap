@@ -4,10 +4,9 @@
 
 First, install [Vagrant](http://www.vagrantup.com) 
 
-Next, add the following to your ~/.bash\_profile to set the following environment
-variables, or do the equivalent thing for your operating system. You are
-allowed to change the values but some defaults are provided here for
-convenience.
+Next, add the following to your ~/.bash\_profile to set the necessary
+environment variables, or do the equivalent thing for your operating system.
+You are allowed to change the values but defaults are provided for convenience.
 
     :::bash
     export HUTMAP_DB_NAME='hutmap' 
