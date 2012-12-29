@@ -35,6 +35,7 @@ In the directory containing this README.md, perform the following:
 
     :::bash
     $ source ~/.bash_profile
+    $ cd scripts/
     $ vagrant box add lucid32 http://files.vagrantup.com/lucid32.box
     $ vagrant up # This will take a while
 
@@ -45,7 +46,7 @@ Get the database up and running:
 
     :::bash
     $ vagrant ssh
-    $ cd /vagrant/hutmap
+    $ cd /vagrant/src/hutmap
     $ python manage.py validate
     $ python manage.py syncdb
     $ python manage.py loaddata test_data

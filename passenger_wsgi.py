@@ -6,10 +6,11 @@ import sys, os
 #sys.path.insert(0, paste_dir)
 
 # Add hutmap dir to the python path
-hutmap_dir = os.path.join(os.getcwd(), 'src', 'hutmap')
+src_dir = os.path.join(os.getcwd(), 'src')
+hutmap_dir = os.path.join(src_dir, 'hutmap')
 sys.path.append(hutmap_dir)
 
-sys.path.append(os.getcwd())
+sys.path.append(src_dir)
 os.environ['DJANGO_SETTINGS_MODULE'] = "hutmap.settings"
 
 import django.core.handlers.wsgi
