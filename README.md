@@ -50,3 +50,5 @@ Get the database up and running:
     $ python manage.py validate
     $ python manage.py syncdb
     $ python manage.py loaddata test_data
+
+# Project Layout #
