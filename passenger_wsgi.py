@@ -6,7 +6,7 @@ import sys, os
 #sys.path.insert(0, paste_dir)
 
 # Add hutmap dir to the python path
-hutmap_dir = os.path.join(os.getcwd(), 'hutmap')
+hutmap_dir = os.path.join(os.getcwd(), 'src', 'hutmap')
 sys.path.append(hutmap_dir)
 
 sys.path.append(os.getcwd())

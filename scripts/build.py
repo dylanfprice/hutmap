@@ -3,24 +3,24 @@
 # the hutmap website.
 
 import shutil
-import sys
 import subprocess
 import os
 from os.path import join, dirname, normpath
 
+
 LOCAL_PATH = normpath(join(dirname(__file__), '.'))
-HUTMAP_PATH = join(LOCAL_PATH, '..', 'hutmap')
+CLOSURE_LIB = join(LOCAL_PATH, '..', '..', 'javascript', 'closure-library')
+SRC_PATH = join(LOCAL_PATH, '..', 'src')
+
+JS_PATH = join(SRC_PATH, 'js')
+CSS_PATH = join(SRC_PATH, 'css')
+
 PUBLIC_PATH = join(LOCAL_PATH, '..', 'public')
 JS_DEST = join(PUBLIC_PATH, 'static', 'js')
 CSS_DEST = join(PUBLIC_PATH, 'static', 'css')
-IMG_DEST = join(PUBLIC_PATH, 'static', 'img')
-
-sys.path.append(HUTMAP_PATH)
-import settings
-
 
 def compile_js():
-  closure_builder = join(settings.CLOSURE_LIB, 'closure', 
+  closure_builder = join(CLOSURE_LIB, 'closure', 
                          'bin', 'build', 'closurebuilder.py')
 
   try:
@@ -31,28 +31,23 @@ def compile_js():
 
   retcode = subprocess.call(
     ['python', closure_builder, 
-     '--root={0}'.format(settings.CLOSURE_LIB),
-     '--root={0}'.format(settings.STATIC_DOC_ROOT),
+     '--root={0}'.format(CLOSURE_LIB),
+     '--root={0}'.format(JS_PATH),
      '--namespace={0}'.format('hutmap.map'),
      '--namespace={0}'.format('hutmap.index'),
      '--output_mode=compiled',
-     '--compiler_jar={0}'.format(join(settings.CLOSURE_LIB, 'compiler.jar')),
+     '--compiler_jar={0}'.format(join(CLOSURE_LIB, 'compiler.jar')),
      '--output_file={0}'.format(join(JS_DEST, 'hutmap-compiled.js'))])
   if retcode != 0:
     print("Error!")
+  else:
+    print('Successfully compiled javascript.')
 
 def copy_css():
   shutil.rmtree(CSS_DEST, ignore_errors=True)
-  shutil.copytree(join(settings.STATIC_DOC_ROOT, 'css'), CSS_DEST)
-
-def copy_img():
-  shutil.rmtree(IMG_DEST, ignore_errors=True)
-  shutil.copytree(join(settings.STATIC_DOC_ROOT, 'img'), IMG_DEST)
+  shutil.copytree(CSS_PATH, CSS_DEST)
+  print('Successfully copied css')
 
 if __name__ == '__main__':
   compile_js()
-  print('Successfully compiled javascript.')
   copy_css()
-  print('Successfully copied css')
-  copy_img()
-  print('Successfully copied img')
