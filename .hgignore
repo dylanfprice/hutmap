@@ -1,3 +1,3 @@
 .pyc$
-hutmap/settings_local.py
 deps/
+.vagrant
