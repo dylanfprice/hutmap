@@ -23,7 +23,7 @@ DEBUG = bool(os.getenv('HUTMAP_DEBUG', False))
 TEMPLATE_DEBUG = bool(os.getenv('HUTMAP_TEMPLATE_DEBUG', False))
 
 # Special setting for dreamhost account
-if node() == 'tucana':
+if node() == 'fulton':
   GEOS_LIBRARY_PATH = '/home/hutmap/hutmap.com/deps/geos-3.3.0/lib/libgeos_c.so'
   GDAL_LIBRARY_PATH = '/home/hutmap/hutmap.com/deps/gdal-1.8.0/lib/libgdal.so'
 
