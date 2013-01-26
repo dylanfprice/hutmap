@@ -1,13 +1,18 @@
 goog.provide('hutmap.Hut');
 
-hutmap.Hut = function(opt_name, opt_priceHutMin, opt_priceHutMax) {
-  this.name = opt_name;
-  this.priceHutMin = opt_priceHutMin;
-  this.priceHutMax = opt_priceHutMax;
+hutmap.Hut = function(id, name, country, state, agency, url, photo_url, latlon,
+                      location_accuracy) {
+  this.id = id;
+  this.name = name;
+  this.country = country;
+  this.state = state;
+  this.agency = agency;
+  this.url = url;
+  this.photo_url = photo_url;
+  this.latlon = latlon;
+  this.location_accuracy = location_accuracy;
 };
 
 hutmap.Hut.prototype.equals = function(other) {
-  return this.name == other.name &&
-    this.priceHutMin == other.priceHutMin &&
-    this.priceHutMax == other.priceHutMax;
+  return this.id === other.id;
 };

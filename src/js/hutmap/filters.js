@@ -1,12 +1,12 @@
 goog.provide('hutmap.filters');
 
-hutmap.filters.createPriceHutFilter = function(priceLow, priceHi) {
-  var priceLow = priceLow;
-  var priceHi = priceHi;
+hutmap.filters.create_price_hut_filter = function(price_low, price_hi) {
+  var price_low = price_low;
+  var price_hi = price_hi;
   return function(hut) {
-    if (hut.priceHutMin <= priceLow)
-      return hut.priceHutMax >= priceLow;
+    if (hut.price_hut_min <= price_low)
+      return hut.price_hut_max >= price_low;
     else 
-      return hut.priceHutMin <= priceHi;
+      return hut.price_hut_min <= price_hi;
   };
 };
