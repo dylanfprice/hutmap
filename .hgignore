@@ -1,3 +1,4 @@
 .pyc$
 deps/
 .vagrant
+.swp
