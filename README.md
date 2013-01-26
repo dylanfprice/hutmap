@@ -12,11 +12,14 @@ You can try this on Mac or Windows but I've only ever used Linux so no guarantee
 
 ## Install Dependencies ##
 
-First, install [Vagrant](http://www.vagrantup.com). Vagrant requires both
+First, make sure you have [Python](http://www.python.org) installed. I'm using
+Python 2.6.
+
+Install [Vagrant](http://www.vagrantup.com). Vagrant requires both
 [Ruby](http://www.ruby-lang.org) and [VirtualBox](https://www.virtualbox.org),
 I'm not sure if the installer installs these for you or not.
 
-Then grab [Google Closure](https://developers.google.com/closure/), the Closure
+Finally, grab [Google Closure](https://developers.google.com/closure/), the Closure
 Compiler, and the Closure Templates Library:
 
     :::bash
