@@ -5,11 +5,15 @@
 import shutil
 import subprocess
 import os
+import sys
 from os.path import join, dirname, normpath
 
 
+CLOSURE_LIBRARY = os.environ['HUTMAP_CLOSURE_LIBRARY']
+CLOSURE_COMPILER = os.environ['HUTMAP_CLOSURE_COMPILER']
+CLOSURE_TEMPLATES = os.environ['HUTMAP_CLOSURE_TEMPLATES']
+
 LOCAL_PATH = normpath(join(dirname(__file__), '.'))
-CLOSURE_LIB = join(LOCAL_PATH, '..', '..', 'javascript', 'closure-library')
 SRC_PATH = join(LOCAL_PATH, '..', 'src')
 
 JS_PATH = join(SRC_PATH, 'js')
@@ -19,8 +23,25 @@ PUBLIC_PATH = join(LOCAL_PATH, '..', 'public')
 JS_DEST = join(PUBLIC_PATH, 'static', 'js')
 CSS_DEST = join(PUBLIC_PATH, 'static', 'css')
 
+def check_retcode(retcode, msg):
+  if retcode != 0:
+    print("Error!")
+    sys.exit(retcode)
+  else:
+    print(msg)
+
+def compile_soy_templates():
+  retcode = subprocess.call(
+      ['java', '-jar',
+        CLOSURE_TEMPLATES,
+        '--shouldGenerateJsdoc',
+        '--shouldProvideRequireSoyNamespaces',
+        '--srcs', '{0}'.format(join(JS_PATH, 'hutmap', 'templates.soy')),
+        '--outputPathFormat', '{0}'.format(join(JS_PATH, 'hutmap', 'templates.js'))])
+  check_retcode(retcode, 'Successfully compiled soy templates')
+
 def compile_js():
-  closure_builder = join(CLOSURE_LIB, 'closure', 
+  closure_builder = join(CLOSURE_LIBRARY, 'closure', 
                          'bin', 'build', 'closurebuilder.py')
 
   try:
@@ -31,23 +52,22 @@ def compile_js():
 
   retcode = subprocess.call(
     ['python', closure_builder, 
-     '--root={0}'.format(CLOSURE_LIB),
+     '--root={0}'.format(CLOSURE_LIBRARY),
      '--root={0}'.format(JS_PATH),
      '--namespace={0}'.format('hutmap.map'),
      '--namespace={0}'.format('hutmap.index'),
      '--output_mode=compiled',
-     '--compiler_jar={0}'.format(join(CLOSURE_LIB, 'compiler.jar')),
+     '--compiler_jar={0}'.format(CLOSURE_COMPILER),
      '--output_file={0}'.format(join(JS_DEST, 'hutmap-compiled.js'))])
-  if retcode != 0:
-    print("Error!")
-  else:
-    print('Successfully compiled javascript.')
+  check_retcode(retcode, 'Successfully compiled javascript.')
 
 def copy_css():
+  # TODO: minify css
   shutil.rmtree(CSS_DEST, ignore_errors=True)
   shutil.copytree(CSS_PATH, CSS_DEST)
   print('Successfully copied css')
 
 if __name__ == '__main__':
+  compile_soy_templates()
   compile_js()
   copy_css()
