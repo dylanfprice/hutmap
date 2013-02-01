@@ -67,7 +67,15 @@ def copy_css():
   shutil.copytree(CSS_PATH, CSS_DEST)
   print('Successfully copied css')
 
+def set_permissions():
+  for dirpath,dirnames,filenames in os.walk(PUBLIC_PATH):
+    os.chmod(dirpath, 0755)
+    for filename in filenames:
+      path = join(dirpath, filename)
+      os.chmod(path, 0755)
+
 if __name__ == '__main__':
   compile_soy_templates()
   compile_js()
   copy_css()
+  set_permissions()
