@@ -19,8 +19,8 @@ DATABASES = {
 # Set this to something random, long, and secret
 SECRET_KEY = os.environ['HUTMAP_SECRET_KEY']
 
-DEBUG = bool(os.getenv('HUTMAP_DEBUG', False))
-TEMPLATE_DEBUG = bool(os.getenv('HUTMAP_TEMPLATE_DEBUG', False))
+DEBUG = os.getenv('HUTMAP_DEBUG', False).lower() != 'false'
+TEMPLATE_DEBUG = os.getenv('HUTMAP_TEMPLATE_DEBUG', False).lower() != 'false'
 
 # Special setting for dreamhost account
 if node() == 'fulton':
