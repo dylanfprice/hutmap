@@ -3,6 +3,8 @@ This is the code that powers [hutmap.com](http://www.hutmap.com).
 
 # Setup #
 
+This section describes how to set up and run hutmap as a developer.
+
 I am assuming a working knowledge of Linux, Bash, Python, and Django. You may
 not know Vagrant, so walk through the
 [tutorial](http://vagrantup.com/v1/docs/getting-started/index.html) before
@@ -13,11 +15,14 @@ You can try this on Mac or Windows but I've only ever used Linux so no guarantee
 ## Install Dependencies ##
 
 First, make sure you have [Python](http://www.python.org) installed. I'm using
-Python 2.6.
+Python 2.6. Note that this Python installation is only used for running the
+build script and the like, and not for running the code. Vagrant will provision
+a separate Python install for the development vm that runs the code.
 
-Install [Vagrant](http://www.vagrantup.com). Vagrant requires both
+Next install [Vagrant](http://www.vagrantup.com). Vagrant requires both
 [Ruby](http://www.ruby-lang.org) and [VirtualBox](https://www.virtualbox.org),
-I'm not sure if the installer installs these for you or not.
+I'm not sure if the installer installs these for you or not so you may need to
+install those first.
 
 Finally, grab [Google Closure](https://developers.google.com/closure/), the Closure
 Compiler, and the Closure Templates Library:
@@ -38,13 +43,17 @@ Compiler, and the Closure Templates Library:
 
 ## Configure ##
 
-Next, add the following to your ~/.bash\_profile to set the necessary
-environment variables, or do the equivalent thing for your operating system.
-You can change the values but defaults are provided for convenience. Warning:
-Don't change the values after you call 'vagrant up' (see next step) or you will
-have to rebuild the vm by running 'vagrant destroy', then 'vagrant up' again.
+After you've installed the dependencies, add the following to your ~/.profile
+to set the necessary environment variables, or do the equivalent thing for your
+operating system.  Where appropriate, defaults are provided for convenience,
+however you may change these if you wish and it won't break anything (e.g. you
+can change the name of the database and vagrant will propagate it correctly to
+the vm when it builds it). Warning: Don't change the values after you call
+'vagrant up' (see next step) or you will have to rebuild the vm by running
+'vagrant destroy', then 'vagrant up' again.
 
     :::bash
+    ## Run settings
     export HUTMAP_DB_NAME='hutmap' 
     export HUTMAP_DB_USER='hutmap'
     export HUTMAP_DB_PASSWORD='hutmap'
@@ -53,6 +62,7 @@ have to rebuild the vm by running 'vagrant destroy', then 'vagrant up' again.
     export HUTMAP_SECRET_KEY='6b1c3b50-14b3-11e2-892e-0800200c9a66'
     export HUTMAP_DEBUG='true'
     export HUTMAP_TEMPLATE_DEBUG='true'
+    ## Dev settings
     # Make sure you set the next three to the right locations for your system
     export HUTMAP_CLOSURE_LIBRARY='/path/to/closure-library/'
     export HUTMAP_CLOSURE_COMPILER='/path/to/closure-compiler/compiler.jar'
@@ -60,10 +70,11 @@ have to rebuild the vm by running 'vagrant destroy', then 'vagrant up' again.
 
 ## Setup Dev Environment ##
 
-In the directory containing this README.md, perform the following:
+This step will build and provision a development vm for running the hutmap
+code. In the directory containing this README.md, perform the following:
 
     :::bash
-    $ source ~/.bash_profile
+    $ source ~/.profile
     $ cd scripts/
     $ vagrant box add lucid32 http://files.vagrantup.com/lucid32.box
     $ vagrant up # This will take a while
