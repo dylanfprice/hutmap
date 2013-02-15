@@ -15,7 +15,7 @@ end
 
 execute "mysql install application privileges" do
   command "/usr/bin/mysql -u root "\
-    "#{node['mysql']['server_root_password'].empty? ? '' : '-p'} "\
+    "#{node['mysql']['server_root_password'].empty? ? '' : '-p'}"\
     "'#{node['mysql']['server_root_password']}' < /etc/mysql/hutmap_grants.sql"
   action :nothing
   subscribes :run, "template[/etc/mysql/hutmap_grants.sql]", :immediately

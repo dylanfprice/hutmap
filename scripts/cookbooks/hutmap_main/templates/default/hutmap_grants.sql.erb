@@ -3,7 +3,7 @@
 
 CREATE DATABASE IF NOT EXISTS hutmap;
 CREATE DATABASE IF NOT EXISTS test_hutmap;
-GRANT ALL ON hutmap.* TO '<%= node['hutmap']['db']['user'] %>'@'%' WITH GRANT OPTION;
-GRANT ALL ON test_hutmap.* TO '<%= node['hutmap']['db']['user'] %>'@'%' WITH GRANT OPTION;
-SET PASSWORD FOR '<%= node['hutmap']['db']['user'] %>'@'%' = PASSWORD('<%= node['hutmap']['db']['password'] %>');
+GRANT ALL ON hutmap.* TO '<%= node[:HUTMAP_DB_USER] %>'@'%' WITH GRANT OPTION;
+GRANT ALL ON test_hutmap.* TO '<%= node[:HUTMAP_DB_USER] %>'@'%' WITH GRANT OPTION;
+SET PASSWORD FOR '<%= node[:HUTMAP_DB_USER] %>'@'%' = PASSWORD('<%= node[:HUTMAP_DB_PASSWORD] %>');
 
