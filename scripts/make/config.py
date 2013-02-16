@@ -18,9 +18,8 @@ PUBLIC_PATH = join(BASE_PATH, 'public')
 JS_DEST = join(PUBLIC_PATH, 'static', 'js')
 CSS_DEST = join(PUBLIC_PATH, 'static', 'css')
 
-# for later
-#generate_models([
-#    {'name': 'Hut',    'skip_fields': ['created', 'updated']},
-#    {'name': 'Agency', 'skip_fields': []},
-#    {'name': 'Region', 'skip_fields': []},
-#  ])
+MODEL_LIST = [
+  {'name': 'Hut',    'skip_fields': ['created', 'updated']},
+  {'name': 'Agency', 'skip_fields': []},
+  {'name': 'Region', 'skip_fields': []},
+]

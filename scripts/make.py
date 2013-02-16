@@ -2,6 +2,7 @@
 
 import sys
 
+import make.config as config
 import make.build as build
 import make.generate as generate
 
@@ -27,7 +28,7 @@ if __name__ == '__main__':
   elif command == 'generate':
     generate.js.generate_soy()
     print('Successfully generated templates.js')
-    generate.js.generate_models()
+    generate.js.generate_models(config.MODEL_LIST)
     print('Successfully generated models.js')
     generate.js_test.generate_deps()
     print('Successfully generated deps.js')
