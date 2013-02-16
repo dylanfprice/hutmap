@@ -1,20 +1,32 @@
-import sys
+from os.path import join
 import os
+import subprocess
+import util
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'django_settings'
 from django.contrib.gis.db import models
 from django.template.loader import render_to_string
 
+config = util.get_config()
 
-def generate_models(model_list, out):
+def generate_soy():
+  """Generates templates.js"""
+  subprocess.check_call(
+      ['java', '-jar',
+        config.CLOSURE_TEMPLATES,
+        '--shouldGenerateJsdoc',
+        '--shouldProvideRequireSoyNamespaces',
+        '--srcs', '{0}'.format(join(config.JS_PATH, 'hutmap', 'templates.soy')),
+        '--outputPathFormat', '{0}'.format(join(config.JS_PATH, 'hutmap', 'templates.js'))])
+
+def generate_models(model_list):
   """
   Generate models.js
 
   model_list: [
-            {'name': 'Model', 'skip_field_names': ['field1', ...]},
+            {'name': 'Model', 'skip_fields': ['field1', ...]},
             ...
           ]
-  out: the file-like object to write to
   """
   model_fields = []
   for model in model_list:
@@ -29,12 +41,5 @@ def generate_models(model_list, out):
     model_fields.append({'name': model['name'], 'fields': fields})
 
   rendered = render_to_string('models.js', { 'models': model_fields })
-  for line in rendered.splitlines():
-    if line and not line.isspace():
-      out.write(line + '\n')
+  util.write_file(rendered, join(config.JS_PATH, 'hutmap', 'models.js'), remove_blank_lines=True)
 
-generate_models([
-    {'name': 'Hut',    'skip_field_names': ['created', 'updated']},
-    {'name': 'Agency', 'skip_field_names': []},
-    {'name': 'Region', 'skip_field_names': []},
-  ], sys.stdout)
