@@ -1,5 +1,5 @@
 from django.contrib.gis.db import models
-from util.countries import CountryField
+from huts.utils.countries import CountryField
 
 class Hut(models.Model):
   LOCATION_ACCURACY_CHOICES = (
@@ -12,11 +12,12 @@ class Hut(models.Model):
     (None, 'coordinates provided and yet unverified')
   )
 
-  ACCESS_CHOICES = (
-    (0, 'frontcountry year-round'),
-    (1, 'winter backcountry'),
-    (2, 'backcountry year-round')
-  )
+  #BACKCOUNTRY_CHOICES = (
+  #  (0, 'frontcountry year-round'),
+  #  (1, 'backcountry in snow'),
+  #  (2, 'backcountry year-round'),
+  #  (3, 'backcountry year-round and accessible by trail or more rugged terrain only'),
+  #)
 
   # metadata
   created = models.DateField(auto_now_add=True)
@@ -26,31 +27,85 @@ class Hut(models.Model):
   location = models.PointField()
   location_accuracy = models.IntegerField(choices=LOCATION_ACCURACY_CHOICES, 
                                          null=True, blank=True)
-  altitude = models.IntegerField('altitude (m)',
-                                null=True, blank=True)
+  #altitude_m = models.IntegerField('altitude (m)',
+  #                              null=True, blank=True)
+
+  # new fields
+  #status = models.IntegerField(choices=STATUS_CHOICES)
+    #???
+  #discretion = models.BooleanField()
+    #A tag for sites that are potentially sensitive
+    #to being publicized. We can choose to honor this or not when the time
+    #comes. I mostly only foresee this as an issue for certain BC/Alberta
+    #huts that I learned about through bivouac.com
+  #designation = models.CharField(max_length=100)
+    #National forest, wilderness
+    #area, national park, state park, etc that surround or border hut
+    #location.
+  #system = models.ForeignKey('System')
+    #Used both for systems internal to a
+    #hut agency, or for larger systems like the Appalachian Trail shelters.
+  #alternate_names = models.??
+  #photo_credit = models.??
+    #[name (url)] Name of author, along with link of origin
+    #(flickr page, wikicommons, library of congress, etc).
+  #location_references = models.??
+  #open_summer = models.BooleanField()
+  #open_winter = models.BooleanField()
+  #activities = models.CharField(max_length=500)
+  #access_no_snow = models.??
+    #[string, multiple entry] Access method(s) when no snow
+    #on ground. Frontcountry options include Paved Road, 4WD Road, 2WD
+    #Road, Unpaved Road (if unknown whether 2WD or 4WD). Backcountry
+    #options include Gated/Private (Paved/2WD/4WD/Unpaved) Road, Boat,
+    #Helicopter, (Ski/Float) Plane, Trail. If technical terrain, the
+    #hardest terrain is listed (Off Trail, Scramble, Glacier Travel, etc).
+  #no_snow_min_km = models.FloatField()
+    #[numeric] Minimum non-motorized kilometers when no snow
+    #is present.
+  #snow_min_km = models.FloatField()
+    #[numeric] Non-motorized kilometers to nearest trailhead
+    #on plowed road (if applicable and known).
+  #locked
+    #[boolean] 0 if not locked, 1 if building is kept locked. This
+    #is not known for many sites, and better to not mention except for
+    #sites that specifically mention they are unlocked.
+  #services
+    #[string, multiple entry] Specified if included in
+    #price (Transportation, Full Board, Half Board, Guided, etc). 0 if none
+    #included. 1 if optional services are available.
+  #restrictions
+    #[mixed factor] 0 if none, otherwise values so far: Club
+    #Membership, Qualified User, etc...
+  #private
+    #[boolean] 0 if not-for-profit, government, or managed by
+    #association, 1 if private. Somewhat deprecated and ambiguous in many
+    #cases, unlikely to be used as a search parameter.
+
+
   # details
   name = models.CharField(max_length=100)
-  access = models.IntegerField(choices=ACCESS_CHOICES)
-  type = models.ForeignKey('HutType')
-  num_structures = models.IntegerField('number of structures')
+  #backcountry = models.IntegerField(choices=BACKCOUNTRY_CHOICES)
+  #type = models.ForeignKey('HutType')
+  #num_structures = models.IntegerField('number of structures')
   # capacity
-  capacity_max = models.IntegerField('total capacity')
-  capacity_hut_min = models.IntegerField('minimum hut capacity')
-  capacity_hut_max = models.IntegerField('maximum hut capacity')
+  #capacity_max = models.IntegerField('total capacity')
+  #capacity_hut_min = models.IntegerField('minimum hut capacity')
+  #capacity_hut_max = models.IntegerField('maximum hut capacity')
   # fees
-  fee_person_min = models.FloatField('minimum fee per person per night',
-                                     null=True, blank=True)
-  fee_person_max = models.FloatField('maximum fee per person per night',
-                                     null=True, blank=True)
-  fee_hut_min = models.FloatField('minimum fee per hut per night',
-                                  null=True, blank=True)
-  fee_hut_max = models.FloatField('maximum fee per hut per night',
-                                  null=True, blank=True)
-  reservations = models.BooleanField('reservations accepted')
+  #fee_person_min = models.FloatField('minimum fee per person per night',
+  #                                   null=True, blank=True)
+  #fee_person_max = models.FloatField('maximum fee per person per night',
+  #                                   null=True, blank=True)
+  #fee_hut_min = models.FloatField('minimum fee per hut per night',
+  #                                null=True, blank=True)
+  #fee_hut_max = models.FloatField('maximum fee per hut per night',
+  #                                null=True, blank=True)
+  #reservations = models.BooleanField('reservations accepted')
   # urls
   hut_url = models.URLField()
   photo_url = models.URLField()
-  references = models.CharField(max_length=200)
+  hut_references = models.CharField(max_length=200)
   # agency
   agency = models.ForeignKey('Agency')
   # for geodjango
@@ -77,9 +132,9 @@ class Agency(models.Model):
   def __unicode__(self):
     return self.name
 
-class HutType(models.Model):
-  name = models.CharField(max_length=50, primary_key=True)
-  objects = models.GeoManager()
-
-  def __unicode__(self):
-    return self.name
+#class HutType(models.Model):
+#  name = models.CharField(max_length=50, primary_key=True)
+#  objects = models.GeoManager()
+#
+#  def __unicode__(self):
+#    return self.name
