@@ -35,7 +35,7 @@ def generate_models(model_list):
 
     fields = []
     for field_name in field_names:
-      if field_name not in model['skip_field_names']:
+      if field_name not in model['skip_fields']:
         fields.append(field_name)
 
     model_fields.append({'name': model['name'], 'fields': fields})
