@@ -11,6 +11,10 @@ body {
   display: none;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 .vertical_gradient {
   /* IE10 Consumer Preview */ 
   background-image: -ms-linear-gradient(top, rgb(3, 60, 115) 0%, #FFFFFF 100%);
