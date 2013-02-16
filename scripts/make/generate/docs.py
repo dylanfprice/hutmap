@@ -1,11 +1,11 @@
 from os.path import join
 import os
-import util
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'django_settings'
 from django.template.loader import render_to_string
 
-config = util.get_config()
+import make.config as config
+import util
 
 def generate_readme():
   """Generates README.md"""

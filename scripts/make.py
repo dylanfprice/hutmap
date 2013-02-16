@@ -1,10 +1,23 @@
 #!/usr/bin/python
 
 import sys
-import build
-import generate
+
+import make.build as build
+import make.generate as generate
+
+def print_unknown_command(command):
+  print('Unknown command: {0}'.format(command))
+
+def print_help():
+  print('Usage: ./make.py <command>')
+  print('    command is one of "build" or "generate"')
+
 
 if __name__ == '__main__':
+  if len(sys.argv) < 2:
+    print_help()
+    sys.exit(1)
+
   command = sys.argv[1]
   if command == 'build':
     build.build_js()
@@ -23,5 +36,6 @@ if __name__ == '__main__':
     generate.docs.generate_readme()
     print('Successfully generated README.md')
   else:
-    print('Unknown command: {0}'.format(command))
+    print_unknown_command(command)
+    print_help()
 

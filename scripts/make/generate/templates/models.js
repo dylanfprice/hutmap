@@ -11,7 +11,7 @@ Context:
 
 {% endcomment %}
 
-// This file generated from the template at scripts/generate/templates/models.js
+// This file generated from the template at scripts/make/generate/templates/models.js
 // Please do not edit by hand.
 {% for model in models %}
 goog.provide('hutmap.{{ model.name }}');

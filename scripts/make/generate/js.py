@@ -1,13 +1,13 @@
 from os.path import join
 import os
 import subprocess
-import util
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'django_settings'
 from django.contrib.gis.db import models
 from django.template.loader import render_to_string
 
-config = util.get_config()
+import make.config as config
+import util
 
 def generate_soy():
   """Generates templates.js"""

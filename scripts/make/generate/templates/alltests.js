@@ -14,7 +14,7 @@ The paths are relative to src/js-test/
 
 {% endcomment %}
 
-// This file generated from the template at scripts/generate/templates/alltests.js
+// This file generated from the template at scripts/make/generate/templates/alltests.js
 // Please do not edit by hand.
 
 _allTests = [

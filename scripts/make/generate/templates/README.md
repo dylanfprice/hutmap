@@ -6,7 +6,7 @@ Context:
 }
 {% endcomment %}
 <!--
-This file generated from the template at scripts/generate/templates/README.md
+This file generated from the template at scripts/make/generate/templates/README.md
 Please do not edit by hand.
 -->
 

@@ -1,10 +1,9 @@
-import util
 import sys
 
-config = util.get_config()
+import make.config as config
+
 sys.path.insert(0, config.HUTMAP_PATH)
 from settings import *
-
 
 TEMPLATE_DIRS = (
   'templates',
