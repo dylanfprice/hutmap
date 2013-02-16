@@ -6,7 +6,7 @@ CLOSURE_COMPILER = os.environ['HUTMAP_CLOSURE_COMPILER']
 CLOSURE_TEMPLATES = os.environ['HUTMAP_CLOSURE_TEMPLATES']
 
 LOCAL_PATH = normpath(join(dirname(__file__), '.'))
-BASE_PATH = join(LOCAL_PATH, '..')
+BASE_PATH = join(LOCAL_PATH, '..', '..')
 SRC_PATH = join(BASE_PATH, 'src')
 
 CSS_PATH = join(SRC_PATH, 'css')
