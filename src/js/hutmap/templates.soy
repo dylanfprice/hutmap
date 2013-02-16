@@ -1,8 +1,90 @@
 {namespace hutmap.templates}
 
 /**
- * Says hello to the world.
+ * Renders a short blurb of hut info meant to be used in a tooltip.
+ * @param hut the hut to render info for. Must not be null.
  */
+{template .hut_tooltip}
+  <div class="bold">{$hut.name_display}</div>
+  <div>Agency: {$hut.agency_display.name}</div>
+  <div>Location accuracy: {$hut.location_accuracy_display}</div>
+{/template}
+
+/**
+ * Renders the information about a hut for use in the sidebar.
+ * @param hut the hut to render info for
+ */
+{template .hut_info}
+  <h4 id="sidebar_title">{$hut.name_display}</h3>
+  <span class="hut_detail_table">
+    <div id="sidebar_img">
+      {if isNonnull($hut.photo_url)}
+        {let $img: '<img src="{$hut.photo_url}" alt="Broken photo link!"></img>'}
+      {else}
+        {let $img: '<img src="/static/img/no-image-available.gif" alt="No image available"></img>'}
+      {/if}
+      {call .wrap_with_link}
+        {param url: $hut.url /}
+        {param value: $img /}
+      {/call}
+    </div>
+    <table>
+      <tr>
+        <td class="hut_detail_title">Country:</td>
+        <td class="hut_detail">{$hut.country_display}</td>
+      </tr>
+      <tr>
+        <td class="hut_detail_title">State:</td>
+        <td class="hut_detail">{$hut.state_display}</td>
+      </tr>
+      <tr>
+        <td class="hut_detail_title">Location:</td>
+        <td class="hut_detail">{$hut.latlon_display}</td>
+      </tr>
+      <tr>
+        <td class="hut_detail_title">Accuracy:</td>
+        <td class="hut_detail">{$hut.location_accuracy_display}</td>
+      </tr>
+      <tr>
+        <td class="hut_detail_title">Agency:</td>
+        <td class="hut_detail">
+          {call .wrap_with_link}
+            {param url: $hut.agency?.url /}
+            {param value: {$hut.agency_display.name|truncate:20} /}
+          {/call}
+        </td>
+      </tr>
+      <tr>
+        <td class="hut_detail_title">Hut Url:</td>
+        <td class="hut_detail"><a href="{$hut.url}">{$hut.url_display|truncate:20}</a></td>
+      </tr>
+    </table>
+{/template}
+
+/**
+ *
+ * @param url
+ * @param value
+ */
+{template .wrap_with_link}
+  {if isNonnull($url)}
+    <a href="{$url}">
+  {/if}
+  {$value}
+  {if isNonnull($url)}
+    </a>
+  {/if}
+{/template}
+
+/**
+ * Renders a list of huts to be shown in the sidebar as nearby huts.
+ * @param huts a list of huts to render. May be an empty list.
+{template .hut_list}
+// TODO
+{/template}
+
+/**
+ * Says hello to the world.
 {template .helloWorld}
   Hello world!
 {/template}
@@ -11,7 +93,6 @@
   * Greets a person using "Hello" by default.
   * @param name The name of the person.
   * @param? greetingWord Optional greeting word to use instead of "Hello".
-  */
 {template .helloName}
   {if not $greetingWord}
     Hello {$name}!
@@ -24,7 +105,6 @@
   * Greets a person and optionally a list of other people.
   * @param name The name of the person.
   * @param additionalNames The additional names to greet. May be an empty list.
-  */
 {template .helloNames}
   // Greet the person.
   {call .helloName data="all" /}<br>
@@ -40,3 +120,4 @@
     No additional people to greet.
   {/foreach}
 {/template}
+ */
