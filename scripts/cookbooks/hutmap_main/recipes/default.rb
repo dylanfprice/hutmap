@@ -87,10 +87,15 @@ package "unzip" do
   action :install
 end
 
+package "openjdk-6-jre" do
+  action :install
+end
+
 bash "download closure-library" do
   code <<-EOH
   cd #{install_dir}
   svn checkout http://closure-library.googlecode.com/svn/trunk/ closure-library && \
+  chmod -R 755 closure-library/ && \
   echo 'export HUTMAP_CLOSURE_LIBRARY="#{install_dir}/closure-library"' >> #{profile}
   EOH
   not_if { File.exists?("#{install_dir}/closure-library/closure/bin/build/closurebuilder.py") }
@@ -103,6 +108,7 @@ bash "download closure-compiler" do
   mkdir -p closure-compiler && \
   unzip -d closure-compiler compiler-latest.zip && \
   rm compiler-latest.zip && \
+  chmod -R 755 closure-compiler/ && \
   echo 'export HUTMAP_CLOSURE_COMPILER="#{install_dir}/closure-compiler/compiler.jar"' >> #{profile}
   EOH
   not_if { File.exists?("#{install_dir}/closure-compiler/compiler.jar") }
@@ -115,6 +121,7 @@ bash "download closure-templates" do
   mkdir -p closure-templates && \
   unzip -d closure-templates/ closure-templates-for-javascript-latest.zip && \
   rm closure-templates-for-javascript-latest.zip && \
+  chmod -R 755 closure-templates/ && \
   echo 'export HUTMAP_CLOSURE_TEMPLATES="#{install_dir}/closure-templates/SoyToJsSrcCompiler.jar"' >> #{profile}
   EOH
   not_if { File.exists?("#{install_dir}/closure-templates/SoyToJsSrcCompiler.jar") }
