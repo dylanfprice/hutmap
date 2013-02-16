@@ -6,7 +6,6 @@ include_recipe "mysql::server"
 ## Variables ##
 hutmap_grants = "/etc/mysql/hutmap_grants.sql"
 profile = "/etc/profile.d/hutmap.sh"
-install_dir = "/usr/src"
 
 ## MySQL config ##
 
@@ -93,38 +92,35 @@ end
 
 bash "download closure-library" do
   code <<-EOH
-  cd #{install_dir}
+  cd #{node[:install_dir]}
   svn checkout http://closure-library.googlecode.com/svn/trunk/ closure-library && \
-  chmod -R 755 closure-library/ && \
-  echo 'export HUTMAP_CLOSURE_LIBRARY="#{install_dir}/closure-library"' >> #{profile}
+  chmod -R 755 closure-library/
   EOH
-  not_if { File.exists?("#{install_dir}/closure-library/closure/bin/build/closurebuilder.py") }
+  not_if { File.exists?("#{node[:install_dir]}/closure-library/closure/bin/build/closurebuilder.py") }
 end
 
 bash "download closure-compiler" do
   code <<-EOH
-  cd #{install_dir}
+  cd #{node[:install_dir]}
   wget https://closure-compiler.googlecode.com/files/compiler-latest.zip && \
   mkdir -p closure-compiler && \
   unzip -d closure-compiler compiler-latest.zip && \
   rm compiler-latest.zip && \
-  chmod -R 755 closure-compiler/ && \
-  echo 'export HUTMAP_CLOSURE_COMPILER="#{install_dir}/closure-compiler/compiler.jar"' >> #{profile}
+  chmod -R 755 closure-compiler/
   EOH
-  not_if { File.exists?("#{install_dir}/closure-compiler/compiler.jar") }
+  not_if { File.exists?("#{node[:install_dir]}/closure-compiler/compiler.jar") }
 end
 
 bash "download closure-templates" do
   code <<-EOH
-  cd #{install_dir}
+  cd #{node[:install_dir]}
   wget https://closure-templates.googlecode.com/files/closure-templates-for-javascript-latest.zip && \
   mkdir -p closure-templates && \
   unzip -d closure-templates/ closure-templates-for-javascript-latest.zip && \
   rm closure-templates-for-javascript-latest.zip && \
-  chmod -R 755 closure-templates/ && \
-  echo 'export HUTMAP_CLOSURE_TEMPLATES="#{install_dir}/closure-templates/SoyToJsSrcCompiler.jar"' >> #{profile}
+  chmod -R 755 closure-templates/
   EOH
-  not_if { File.exists?("#{install_dir}/closure-templates/SoyToJsSrcCompiler.jar") }
+  not_if { File.exists?("#{node[:install_dir]}/closure-templates/SoyToJsSrcCompiler.jar") }
 end
 
 
@@ -132,7 +128,7 @@ end
 
 bash "install geos" do
   code <<-EOH
-  cd #{install_dir}
+  cd #{node[:install_dir]}
   wget http://download.osgeo.org/geos/geos-3.2.2.tar.bz2 && \
   tar -xjf geos-3.2.2.tar.bz2 && \
   rm geos-3.2.2.tar.bz2 && \
@@ -147,14 +143,14 @@ end
 
 bash "install proj" do
   code <<-EOH
-  cd #{install_dir}
+  cd #{node[:install_dir]}
   wget http://download.osgeo.org/proj/proj-4.7.0.tar.gz && \
   wget http://download.osgeo.org/proj/proj-datumgrid-1.5.zip && \
   tar -xzf proj-4.7.0.tar.gz && \
   cd proj-4.7.0/nad && \
   unzip ../../proj-datumgrid-1.5.zip && \
-  rm #{install_dir}/proj-4.7.0.tar.gz && \
-  rm #{install_dir}/proj-datumgrid-1.5.zip && \
+  rm #{node[:install_dir]}/proj-4.7.0.tar.gz && \
+  rm #{node[:install_dir]}/proj-datumgrid-1.5.zip && \
   cd .. && \
   ./configure && \
   make && \
@@ -166,7 +162,7 @@ end
 
 bash "install gdal" do
   code <<-EOH
-  cd #{install_dir}
+  cd #{node[:install_dir]}
   wget http://download.osgeo.org/gdal/gdal-1.8.0.tar.gz && \
   tar -xzf gdal-1.8.0.tar.gz && \
   rm gdal-1.8.0.tar.gz && \

@@ -14,7 +14,9 @@ Vagrant::Config.run do |config|
         :server_root_password   => 'vagrant',
         :server_repl_password   => 'repl',
       },
-      :usr_libs => '/usr/local/lib',
+      :usr_libs =>    '/usr/local/lib',
+      :install_dir => '/usr/src',
+      :dev_path => File.expand_path(File.join(File.dirname(__FILE__), '..'))
     }
     # Pass on hutmap env vars
     ENV.each do |key, value|

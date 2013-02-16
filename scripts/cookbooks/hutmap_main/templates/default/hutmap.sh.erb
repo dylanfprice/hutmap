@@ -3,4 +3,7 @@
 export <%= key %>='<%= value %>'  
   <% end %>
 <% end %>
-
+export HUTMAP_CLOSURE_LIBRARY='<%= node[:install_dir] %>/closure-library'
+export HUTMAP_CLOSURE_COMPILER='<%= node[:install_dir] %>/closure-compiler/compiler.jar'
+export HUTMAP_CLOSURE_TEMPLATES='<%= node[:install_dir] %>/closure-templates/SoyToJsSrcCompiler.jar'
+export HUTMAP_DEV_PATH='<%= node[:dev_path] %>'
