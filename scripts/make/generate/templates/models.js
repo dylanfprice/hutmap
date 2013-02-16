@@ -27,20 +27,26 @@ hutmap.{{ model.name }} = function(values) {
   {% endfor %}
 
   {% for field in model.fields %}
-  this.{{ field }}_display = (values.{{ field }} !== null &&
-    values.{{ field }} !== undefined &&
-    values.{{ field }} !== '') ?
-    values.{{ field }} : 'unknown';
+  if (this.{{ field }} !== undefined &&
+      this.{{ field }} !== null &&
+      this.{{ field }} !== '') {
+    this.{{ field }}_display =  values.{{ field }};
+  } else {
+    this.{{ field }}_display = 'unknown';
+  }
   {% endfor %}
 };
 
 hutmap.{{ model.name }}.prototype.equals = function(other) {
-  return 
   {% for field in model.fields %}
-  {% if not forloop.last %}
-  this.{{ field }} === other.{{ field }} &&
-  {% else %}
-  this.{{ field }} === other.{{ field }};
+  {% if forloop.first %}
+  return this.{{ field }} === other.{{ field }} && 
+  {% endif %}
+  {% if not forloop.first and not forloop.last %}
+    this.{{ field }} === other.{{ field }} && 
+  {% endif %}
+  {% if forloop.last %}
+    this.{{ field }} === other.{{ field }};
   {% endif %}
   {% endfor %}
 };

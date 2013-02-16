@@ -12,12 +12,18 @@ def generate_deps():
   """Generate deps.js"""
   calc_deps = join(config.CLOSURE_LIBRARY, 'closure', 'bin', 'calcdeps.py')
 
-  subprocess.check_call(
+  js_path = relpath(config.JS_PATH, os.getcwd())
+  #js_test_path = relpath(config.JS_TEST_PATH, os.getcwd())
+  proc = subprocess.Popen(
       ['python', calc_deps, 
        '--dep={0}'.format(config.CLOSURE_LIBRARY),
-       '--path={0}'.format(config.JS_PATH),
-       '--output_mode=deps',
-       '--output_file={0}'.format(join(config.JS_TEST_PATH, 'deps.js'))])
+       '--path={0}'.format(js_path),
+       '--output_mode=deps'],
+      stdout=subprocess.PIPE)
+  deps,stderrdata = proc.communicate()
+  dev_path = '../'*10 + config.DEV_PATH
+  deps = deps.replace('/vagrant', dev_path)
+  util.write_file(deps, join(config.JS_TEST_PATH, 'deps.js'))
 
 def generate_alltests():
   """Generate alltests.js"""

@@ -30,8 +30,9 @@ def build_js():
     ['python', closure_builder, 
      '--root={0}'.format(config.CLOSURE_LIBRARY),
      '--root={0}'.format(config.JS_PATH),
-     '--namespace={0}'.format('hutmap.map'),
-     '--namespace={0}'.format('hutmap.index'),
+     #'--namespace={0}'.format('hutmap.map'),
+     #'--namespace={0}'.format('hutmap.index'),
+     '--namespace={0}'.format('hutmap.test'),
      '--output_mode=compiled',
      '--compiler_jar={0}'.format(config.CLOSURE_COMPILER),
      '--output_file={0}'.format(join(config.JS_DEST, 'hutmap-compiled.js'))])

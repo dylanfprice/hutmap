@@ -4,6 +4,7 @@ import os
 CLOSURE_LIBRARY = os.environ['HUTMAP_CLOSURE_LIBRARY']
 CLOSURE_COMPILER = os.environ['HUTMAP_CLOSURE_COMPILER']
 CLOSURE_TEMPLATES = os.environ['HUTMAP_CLOSURE_TEMPLATES']
+DEV_PATH = os.environ['HUTMAP_DEV_PATH']
 
 LOCAL_PATH = normpath(join(dirname(__file__), '.'))
 BASE_PATH = join(LOCAL_PATH, '..', '..')
