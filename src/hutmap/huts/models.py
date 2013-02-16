@@ -118,7 +118,7 @@ class Region(models.Model):
   country = CountryField()
   state = models.CharField(max_length=20, blank=True)
   region = models.CharField(max_length=50)
-  area = models.PolygonField(null=True, spatial_index=False)
+  #area = models.PolygonField(null=True, spatial_index=False)
   objects = models.GeoManager()
 
   def __unicode__(self):
