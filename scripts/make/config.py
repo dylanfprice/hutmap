@@ -20,6 +20,6 @@ CSS_DEST = join(PUBLIC_PATH, 'static', 'css')
 
 MODEL_LIST = [
   {'name': 'Hut',    'skip_fields': ['created', 'updated']},
-  {'name': 'Agency', 'skip_fields': []},
-  {'name': 'Region', 'skip_fields': []},
+  {'name': 'Agency', 'skip_fields': ['hut']},
+  {'name': 'Region', 'skip_fields': ['hut']},
 ]
