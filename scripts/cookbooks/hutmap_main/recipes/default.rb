@@ -3,9 +3,14 @@ include_recipe "vim"
 include_recipe "passenger_apache2::mod_rails"
 include_recipe "mysql::server"
 
+## Variables ##
+hutmap_grants = "/etc/mysql/hutmap_grants.sql"
+profile = "/etc/profile.d/hutmap.sh"
+install_dir = "/usr/src"
+
 ## MySQL config ##
 
-template "/etc/mysql/hutmap_grants.sql" do
+template "#{hutmap_grants}" do
   source "hutmap_grants.sql.erb"
   owner "root"
   group "root"
@@ -16,9 +21,9 @@ end
 execute "mysql install application privileges" do
   command "/usr/bin/mysql -u root "\
     "#{node['mysql']['server_root_password'].empty? ? '' : '-p'}"\
-    "'#{node['mysql']['server_root_password']}' < /etc/mysql/hutmap_grants.sql"
+    "'#{node['mysql']['server_root_password']}' < #{hutmap_grants}"
   action :nothing
-  subscribes :run, "template[/etc/mysql/hutmap_grants.sql]", :immediately
+  subscribes :run, "template[#{hutmap_grants}]", :immediately
 end
 
 
@@ -36,7 +41,7 @@ web_app "hutmap" do
   notifies :reload, "service[apache2]", :delayed
 end
 
-template "/etc/profile.d/hutmap.sh" do
+template "#{profile}" do
   source "hutmap.sh.erb"
   mode "644"
   action :create_if_missing
@@ -72,16 +77,61 @@ bash "install python modules" do
 end
 
 
+## Install dev dependencies ##
+
+package "subversion" do
+  action :install
+end
+
+package "unzip" do
+  action :install
+end
+
+bash "download closure-library" do
+  code <<-EOH
+  cd #{install_dir}
+  svn checkout http://closure-library.googlecode.com/svn/trunk/ closure-library && \
+  echo 'export HUTMAP_CLOSURE_LIBRARY="#{install_dir}/closure-library"' >> #{profile}
+  EOH
+  not_if { File.exists?("#{install_dir}/closure-library/closure/bin/build/closurebuilder.py") }
+end
+
+bash "download closure-compiler" do
+  code <<-EOH
+  cd #{install_dir}
+  wget https://closure-compiler.googlecode.com/files/compiler-latest.zip && \
+  mkdir -p closure-compiler && \
+  unzip -d closure-compiler compiler-latest.zip && \
+  rm compiler-latest.zip && \
+  echo 'export HUTMAP_CLOSURE_COMPILER="#{install_dir}/closure-compiler/compiler.jar"' >> #{profile}
+  EOH
+  not_if { File.exists?("#{install_dir}/closure-compiler/compiler.jar") }
+end
+
+bash "download closure-templates" do
+  code <<-EOH
+  cd #{install_dir}
+  wget https://closure-templates.googlecode.com/files/closure-templates-for-javascript-latest.zip && \
+  mkdir -p closure-templates && \
+  unzip -d closure-templates/ closure-templates-for-javascript-latest.zip && \
+  rm closure-templates-for-javascript-latest.zip && \
+  echo 'export HUTMAP_CLOSURE_TEMPLATES="#{install_dir}/closure-templates/SoyToJsSrcCompiler.jar"' >> #{profile}
+  EOH
+  not_if { File.exists?("#{install_dir}/closure-templates/SoyToJsSrcCompiler.jar") }
+end
+
+
 ## Install libraries required by geodjango ##
 
 bash "install geos" do
   code <<-EOH
-  cd /usr/src
-  wget http://download.osgeo.org/geos/geos-3.2.2.tar.bz2
-  tar -xjf geos-3.2.2.tar.bz2
-  cd geos-3.2.2
-  ./configure
-  make
+  cd #{install_dir}
+  wget http://download.osgeo.org/geos/geos-3.2.2.tar.bz2 && \
+  tar -xjf geos-3.2.2.tar.bz2 && \
+  rm geos-3.2.2.tar.bz2 && \
+  cd geos-3.2.2 && \
+  ./configure && \
+  make && \
   make install
   EOH
   not_if { ::File.exists?("#{node[:usr_libs]}/libgeos_c.so") }
@@ -90,15 +140,17 @@ end
 
 bash "install proj" do
   code <<-EOH
-  cd /usr/src
-  wget http://download.osgeo.org/proj/proj-4.7.0.tar.gz
-  wget http://download.osgeo.org/proj/proj-datumgrid-1.5.zip
-  tar -xzf proj-4.7.0.tar.gz
-  cd proj-4.7.0/nad
-  unzip ../../proj-datumgrid-1.5.zip
-  cd ..
-  ./configure
-  make
+  cd #{install_dir}
+  wget http://download.osgeo.org/proj/proj-4.7.0.tar.gz && \
+  wget http://download.osgeo.org/proj/proj-datumgrid-1.5.zip && \
+  tar -xzf proj-4.7.0.tar.gz && \
+  cd proj-4.7.0/nad && \
+  unzip ../../proj-datumgrid-1.5.zip && \
+  rm #{install_dir}/proj-4.7.0.tar.gz && \
+  rm #{install_dir}/proj-datumgrid-1.5.zip && \
+  cd .. && \
+  ./configure && \
+  make && \
   make install
   EOH
   not_if { ::File.exists?("#{node[:usr_libs]}/libproj.so") }
@@ -107,12 +159,13 @@ end
 
 bash "install gdal" do
   code <<-EOH
-  cd /usr/src
-  wget http://download.osgeo.org/gdal/gdal-1.8.0.tar.gz
-  tar -xzf gdal-1.8.0.tar.gz
-  cd gdal-1.8.0
-  ./configure
-  make
+  cd #{install_dir}
+  wget http://download.osgeo.org/gdal/gdal-1.8.0.tar.gz && \
+  tar -xzf gdal-1.8.0.tar.gz && \
+  rm gdal-1.8.0.tar.gz && \
+  cd gdal-1.8.0 && \
+  ./configure && \
+  make && \
   make install
   EOH
   not_if { ::File.exists?("#{node[:usr_libs]}/libgdal.so") }
