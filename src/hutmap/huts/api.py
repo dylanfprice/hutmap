@@ -1,7 +1,7 @@
 from django.contrib.gis.geos import Polygon, MultiPolygon
 from tastypie import fields
 from tastypie.resources import ModelResource
-from huts.models import Hut, HutType, Region, Agency
+from huts.models import Hut, Region, Agency
 
 class RegionResource(ModelResource):
   class Meta:
@@ -13,15 +13,15 @@ class AgencyResource(ModelResource):
     queryset = Agency.objects.all()
     allowed_methods = ['get']
 
-class HutTypeResource(ModelResource):
-  class Meta:
-    queryset = HutType.objects.all()
-    allowed_methods = ['get']
+#class HutTypeResource(ModelResource):
+#  class Meta:
+#    queryset = HutType.objects.all()
+#    allowed_methods = ['get']
 
 class HutResource(ModelResource):
   region = fields.ForeignKey(RegionResource, 'region', full=True)
   agency = fields.ForeignKey(AgencyResource, 'agency', full=True)
-  type = fields.ForeignKey(HutTypeResource, 'type', full=True)
+  #type = fields.ForeignKey(HutTypeResource, 'type', full=True)
 
   class Meta:
     queryset = Hut.objects.all()
