@@ -2,7 +2,7 @@ from os.path import join, relpath
 import os
 import subprocess
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'django_settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'make.generate.django_settings'
 from django.template.loader import render_to_string
 
 import make.config as config
