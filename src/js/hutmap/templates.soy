@@ -13,19 +13,21 @@
 /**
  * Renders the information about a hut for use in the sidebar.
  * @param hut the hut to render info for
+ * @param img
  */
 {template .hut_info}
   <h4 id="sidebar_title">{$hut.name_display}</h3>
   <span class="hut_detail_table">
     <div id="sidebar_img">
       {if isNonnull($hut.photo_url)}
-        {let $img: '<img src="{$hut.photo_url}" alt="Broken photo link!"></img>'}
+        {let $img: '<img src="$hut.photo_url" alt="Broken photo link!"></img>' /}
       {else}
-        {let $img: '<img src="/static/img/no-image-available.gif" alt="No image available"></img>'}
+        {let $img: '<img src="/static/img/no-image-available.gif" alt="No image available"></img>' /}
       {/if}
       {call .wrap_with_link}
         {param url: $hut.url /}
         {param value: $img /}
+        {param truncate_length: 0 /}
       {/call}
     </div>
     <table>
@@ -50,7 +52,8 @@
         <td class="hut_detail">
           {call .wrap_with_link}
             {param url: $hut.agency?.url /}
-            {param value: {$hut.agency_display.name|truncate:20} /}
+            {param value: $hut.agency_display.name /}
+            {param truncate_length: 20 /}
           {/call}
         </td>
       </tr>
@@ -65,12 +68,17 @@
  *
  * @param url
  * @param value
+ * @param truncate_length length to truncate value to. If 0, do not truncate.
  */
 {template .wrap_with_link}
   {if isNonnull($url)}
     <a href="{$url}">
   {/if}
-  {$value}
+  {if $truncate_length > 0}
+    {$value|truncate:$truncate_length}
+  {else}
+    {$value}
+  {/if}
   {if isNonnull($url)}
     </a>
   {/if}
