@@ -7,8 +7,37 @@ body {
   color: black;
 }
 
+#navbar-search {
+  float:right;
+}
+
+#navbar-search input {
+  line-height:15px;
+  height:15px;
+  margin-top:2px;
+  margin-bottom:2px;
+  padding-right:29px;
+}
+
+#navbar-search span {
+  position:absolute;
+  top:7px;
+  right:11px;
+}
+
+#navbar-search span input {
+  width:inherit;
+  height:inherit;
+}
+
 .hidden {
   display: none;
+}
+
+.transparent {
+  color: transparent; 
+  background-color: transparent; 
+  border-color: transparent;
 }
 
 .bold {
