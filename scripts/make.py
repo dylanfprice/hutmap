@@ -20,22 +20,33 @@ if __name__ == '__main__':
     sys.exit(1)
 
   command = sys.argv[1]
+  subcommand = 'all'
+  if len(sys.argv) >= 3:
+    subcommand = sys.argv[2]
+
   if command == 'build':
-    build.build_js()
-    print('Successfully compiled js.')
-    build.build_css()
-    print('Successfully copied css.')
+    if subcommand == 'all' or subcommand == 'js':
+      build.build_js()
+      print('Successfully compiled js.')
+    if subcommand == 'all' or subcommand == 'css':
+      build.build_css()
+      print('Successfully copied css.')
   elif command == 'generate':
-    generate.js.generate_soy()
-    print('Successfully generated templates.js')
-    generate.js.generate_models(config.MODEL_LIST)
-    print('Successfully generated models.js')
-    generate.js_test.generate_deps()
-    print('Successfully generated deps.js')
-    generate.js_test.generate_alltests()
-    print('Successfully generated alltests.js')
-    generate.docs.generate_readme()
-    print('Successfully generated README.md')
+    if subcommand == 'all' or subcommand == 'soy':
+      generate.js.generate_soy()
+      print('Successfully generated templates.js')
+    if subcommand == 'all' or subcommand == 'models':
+      generate.js.generate_models(config.MODEL_LIST)
+      print('Successfully generated models.js')
+    if subcommand == 'all' or subcommand == 'deps':
+      generate.js_test.generate_deps()
+      print('Successfully generated deps.js')
+    if subcommand == 'all' or subcommand == 'alltests':
+      generate.js_test.generate_alltests()
+      print('Successfully generated alltests.js')
+    if subcommand == 'all' or subcommand == 'readme':
+      generate.docs.generate_readme()
+      print('Successfully generated README.md')
   else:
     print_unknown_command(command)
     print_help()
