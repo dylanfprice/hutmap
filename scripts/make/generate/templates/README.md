@@ -36,6 +36,8 @@ Next install [Vagrant](http://www.vagrantup.com). Vagrant requires both
 I'm not sure if the installer installs these for you or not so you may need to
 install those first.
 
+<!-- TODO: add something about testing js -->
+
 ## Configure ##
 
 After you've installed the dependencies, add the following to your ~/.profile
