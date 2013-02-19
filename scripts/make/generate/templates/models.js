@@ -45,6 +45,13 @@ hutmap.{{ model.name }} = function(values) {
 
   {% for field in model.fields %}
   this.{{ field }} = values.{{ field }};
+  {% for model2 in models %}
+  {% ifequal model2.name|lower field|lower %}
+  {% ifnotequal model.name|lower field|lower %}
+  this.{{ field }} = new hutmap.{{ model2.name }}(values.{{ field }});
+  {% endifnotequal %}
+  {% endifequal %}
+  {% endfor %}
   {% endfor %}
 
   {% for field in model.fields %}
