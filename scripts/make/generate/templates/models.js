@@ -16,11 +16,32 @@ Context:
 {% for model in models %}
 goog.provide('hutmap.{{ model.name }}');
 {% endfor %}
+goog.require('goog.structs.Map');
+goog.require('goog.array');
 
 {% for model in models %}
 hutmap.{{ model.name }} = function(values) {
   if (!values)
     values = {};
+
+  if (goog.DEBUG) {
+    var map = new goog.structs.Map(values);
+    keys = map.getKeys();
+    fields = [
+      {% for field in model.fields %}
+        {% if not forloop.last %}
+          '{{ field }}',
+        {% else %}
+          '{{ field }}'
+        {% endif %}
+      {% endfor %}
+    ];
+    goog.array.forEach(keys, function(key, index, array) {
+      if (!goog.array.contains(fields, key)) {
+        throw "hutmap.{{ model.name }}(): Invalid field '" + key + "' given in values parameter.";
+      }
+    });
+  }
 
   {% for field in model.fields %}
   this.{{ field }} = values.{{ field }};
@@ -33,6 +54,13 @@ hutmap.{{ model.name }} = function(values) {
     this.{{ field }}_display =  values.{{ field }};
   } else {
     this.{{ field }}_display = 'unknown';
+    {% for model2 in models %}
+    {% ifequal model2.name|lower field|lower %}
+    {% ifnotequal model.name|lower field|lower %}
+    this.{{ field }}_display = new hutmap.{{ model2.name }}();
+    {% endifnotequal %}
+    {% endifequal %}
+    {% endfor %}
   }
   {% endfor %}
 };
