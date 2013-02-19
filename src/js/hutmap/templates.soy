@@ -6,42 +6,46 @@
  */
 {template .hut_tooltip}
   <div class="bold">{$hut.name_display}</div>
-  <div>Agency: {$hut.agency_display.name}</div>
+  <div>Agency: {$hut.agency_display.name_display}</div>
   <div>Location accuracy: {$hut.location_accuracy_display}</div>
 {/template}
 
 /**
  * Renders the information about a hut for use in the sidebar.
  * @param hut the hut to render info for
- * @param img
  */
 {template .hut_info}
   <h4 id="sidebar_title">{$hut.name_display}</h3>
   <span class="hut_detail_table">
     <div id="sidebar_img">
       {if isNonnull($hut.photo_url)}
-        {let $img: '<img src="$hut.photo_url" alt="Broken photo link!"></img>' /}
+        {call .wrap_with_link}
+          {param url: $hut.hut_url /}
+          {param value: '<img src="' + $hut.photo_url + '" alt="Broken photo link!"></img>' /}
+          {param truncate_length: 0 /}
+          {param escape: false /}
+        {/call}
       {else}
-        {let $img: '<img src="/static/img/no-image-available.gif" alt="No image available"></img>' /}
+        {call .wrap_with_link}
+          {param url: $hut.hut_url /}
+          {param value: '<img src="/static/img/no-image-available.gif" alt="No image available"></img>' /}
+          {param truncate_length: 0 /}
+          {param escape: false /}
+        {/call}
       {/if}
-      {call .wrap_with_link}
-        {param url: $hut.url /}
-        {param value: $img /}
-        {param truncate_length: 0 /}
-      {/call}
     </div>
     <table>
       <tr>
         <td class="hut_detail_title">Country:</td>
-        <td class="hut_detail">{$hut.country_display}</td>
+        <td class="hut_detail">{$hut.region_display.country_display}</td>
       </tr>
       <tr>
         <td class="hut_detail_title">State:</td>
-        <td class="hut_detail">{$hut.state_display}</td>
+        <td class="hut_detail">{$hut.region_display.state_display}</td>
       </tr>
       <tr>
         <td class="hut_detail_title">Location:</td>
-        <td class="hut_detail">{$hut.latlon_display}</td>
+        <td class="hut_detail">{$hut.location_display}</td>
       </tr>
       <tr>
         <td class="hut_detail_title">Accuracy:</td>
@@ -54,12 +58,20 @@
             {param url: $hut.agency?.url /}
             {param value: $hut.agency_display.name /}
             {param truncate_length: 20 /}
+            {param escape: true /}
           {/call}
         </td>
       </tr>
       <tr>
         <td class="hut_detail_title">Hut Url:</td>
-        <td class="hut_detail"><a href="{$hut.url}">{$hut.url_display|truncate:20}</a></td>
+        <td class="hut_detail">
+          {call .wrap_with_link}
+            {param url: $hut.hut_url /}
+            {param value: $hut.hut_url_display /}
+            {param truncate_length: 20 /}
+            {param escape: true /}
+          {/call}
+        </td>
       </tr>
     </table>
 {/template}
@@ -69,15 +81,20 @@
  * @param url
  * @param value
  * @param truncate_length length to truncate value to. If 0, do not truncate.
+ * @param escape true to escape html tags in the contents of value.
  */
-{template .wrap_with_link}
+{template .wrap_with_link private="true"}
   {if isNonnull($url)}
-    <a href="{$url}">
+    <a href="{$url}" target="blank">
   {/if}
-  {if $truncate_length > 0}
+  {if $truncate_length > 0 and $escape}
     {$value|truncate:$truncate_length}
-  {else}
+  {elseif $truncate_length > 0 and not $escape}
+    {$value|truncate:$truncate_length|noAutoescape}
+  {elseif $truncate_length <= 0 and $escape}
     {$value}
+  {elseif $truncate_length <= 0 and not $escape}
+    {$value|noAutoescape}
   {/if}
   {if isNonnull($url)}
     </a>
