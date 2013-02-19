@@ -58,7 +58,7 @@ hutmap.{{ model.name }} = function(values) {
   if (this.{{ field }} !== undefined &&
       this.{{ field }} !== null &&
       this.{{ field }} !== '') {
-    this.{{ field }}_display =  values.{{ field }};
+    this.{{ field }}_display =  this.{{ field }};
   } else {
     this.{{ field }}_display = 'unknown';
     {% for model2 in models %}
