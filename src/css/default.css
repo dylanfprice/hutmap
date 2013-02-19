@@ -2,17 +2,58 @@ body {
   background-image: url('/static/img/gray-jean.png');
 }
 
+.hidden {
+  display: none;
+}
+
+.transparent {
+  color: transparent; 
+  background-color: transparent; 
+  border-color: transparent;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.floatright {
+  float: right !important;
+}
+
+.up1 {
+  position: relative;
+  top: -1px;
+}
+
+.up2 {
+  position: relative;
+  top: -2px;
+}
+
+.clearfix:before, .clearfix:after { 
+  content: ""; 
+  display: table; 
+}
+
+.clearfix:after { 
+  clear: both; 
+}
+
+.clearfix { 
+  zoom: 1; 
+}
+
 #top_unit {
   background-image: url('/static/img/mint-hut.jpg');
   color: black;
 }
 
+/* navbar */
+
 #navbar .brand img {
   width: 18px;
   height: 18px;
   margin-right: 3px;
-  position: relative;
-  top: -2px;
 }
 
 #navbar-search {
@@ -38,19 +79,7 @@ body {
   height:inherit;
 }
 
-.hidden {
-  display: none;
-}
-
-.transparent {
-  color: transparent; 
-  background-color: transparent; 
-  border-color: transparent;
-}
-
-.bold {
-  font-weight: bold;
-}
+/* /navbar */
 
 .vertical_gradient {
   /* IE10 Consumer Preview */ 
