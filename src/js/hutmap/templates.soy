@@ -15,9 +15,9 @@
  * @param hut the hut to render info for
  */
 {template .hut_info}
-  <h4 id="sidebar_title">{$hut.name_display}</h3>
-  <span class="hut_detail_table">
-    <div id="sidebar_img">
+  <h4 class="hut_info_title">{$hut.name_display}</h3>
+  <span class="hut_info_detail_table">
+    <div class="hut_info_img">
       {if isNonnull($hut.photo_url)}
         {call .wrap_with_link}
           {param url: $hut.hut_url /}
@@ -36,35 +36,35 @@
     </div>
     <table>
       <tr>
-        <td class="hut_detail_title">Country:</td>
-        <td class="hut_detail">{$hut.region_display.country_display}</td>
+        <td class="hut_info_detail_title">Country:</td>
+        <td class="hut_info_detail">{$hut.region_display.country_display}</td>
       </tr>
       <tr>
-        <td class="hut_detail_title">State:</td>
-        <td class="hut_detail">{$hut.region_display.state_display}</td>
+        <td class="hut_info_detail_title">State:</td>
+        <td class="hut_info_detail">{$hut.region_display.state_display}</td>
       </tr>
       <tr>
-        <td class="hut_detail_title">Location:</td>
-        <td class="hut_detail">{$hut.location_display}</td>
+        <td class="hut_info_detail_title">Location:</td>
+        <td class="hut_info_detail">{$hut.location_display}</td>
       </tr>
       <tr>
-        <td class="hut_detail_title">Accuracy:</td>
-        <td class="hut_detail">{$hut.location_accuracy_display}</td>
+        <td class="hut_info_detail_title">Accuracy:</td>
+        <td class="hut_info_detail">{$hut.location_accuracy_display}</td>
       </tr>
       <tr>
-        <td class="hut_detail_title">Agency:</td>
-        <td class="hut_detail">
+        <td class="hut_info_detail_title">Agency:</td>
+        <td class="hut_info_detail">
           {call .wrap_with_link}
             {param url: $hut.agency?.url /}
-            {param value: $hut.agency_display.name /}
+            {param value: $hut.agency_display.name_display /}
             {param truncate_length: 20 /}
             {param escape: true /}
           {/call}
         </td>
       </tr>
       <tr>
-        <td class="hut_detail_title">Hut Url:</td>
-        <td class="hut_detail">
+        <td class="hut_info_detail_title">Hut Url:</td>
+        <td class="hut_info_detail">
           {call .wrap_with_link}
             {param url: $hut.hut_url /}
             {param value: $hut.hut_url_display /}
