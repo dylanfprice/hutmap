@@ -18,21 +18,9 @@
   <h4 class="hut_info_title">{$hut.name_display}</h3>
   <span class="hut_info_detail_table">
     <div class="hut_info_img">
-      {if isNonnull($hut.photo_url)}
-        {call .wrap_with_link}
-          {param url: $hut.hut_url /}
-          {param value: '<img src="' + $hut.photo_url + '" alt="Broken photo link!"></img>' /}
-          {param truncate_length: 0 /}
-          {param escape: false /}
-        {/call}
-      {else}
-        {call .wrap_with_link}
-          {param url: $hut.hut_url /}
-          {param value: '<img src="/static/img/no-image-available.gif" alt="No image available"></img>' /}
-          {param truncate_length: 0 /}
-          {param escape: false /}
-        {/call}
-      {/if}
+      {call .hut_photo}
+        {param hut: $hut /}
+      {/call}
     </div>
     <table>
       <tr>
@@ -77,6 +65,96 @@
 {/template}
 
 /**
+ * Renders a list of huts.
+ * @param huts a list of huts to render. May be an empty list.
+ */
+{template .hut_list}
+  {if length($huts) > 0}
+    <ol class="huts">
+      {foreach $hut in $huts}
+        <li class="hut clearfix">
+          {call .hut_list_title}
+            {param hut: $hut /}
+          {/call}
+          {call .hut_list_meta}
+            {param hut: $hut /}
+          {/call}
+        </li>
+      {/foreach}
+    </ol>
+  {/if}
+{/template}
+
+/**
+ * Renders the title div of a hut in a hut list.
+ * @param hut
+ */
+{template .hut_list_title}
+  <div class="title">
+    <figure>
+      {call .hut_photo}
+        {param hut: $hut /}
+      {/call}
+    </figure>
+    <h5><a href="{$hut.hut_url}">{$hut.name_display}</a></h5>
+    <h6>{$hut.region_display.region_display}, {$hut.region_display.state_display}, {$hut.region_display.country_display}</h6>
+  </div>
+{/template}
+
+/**
+ * Renders the meta divs of a hut in a hut list.
+ * @param hut
+ */
+{template .hut_list_meta}
+  <div class="meta">
+    <table>
+      <tbody>
+      <tr>
+        <td>Location:</td>
+        <td><span class="floatright">{$hut.location_display}</span></td>
+      </tr>
+      <tr>
+        <td>Accuracy:</td>
+        <td><span class="rating-4star rating-{$hut.location_accuracy * 10} floatright up1"></span></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="meta">
+    <table>
+      <tbody>
+      <tr>
+        <td>Agency:</td> 
+        <td><a href="{$hut.agency?.url}">{$hut.agency_display.name_display|truncate:20}</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+{/template}
+
+/**
+ * Renders the hut photo, linked to the hut url. Handles the case where there is no photo url.
+ * @param hut
+ */
+{template .hut_photo private="true"}
+  {if isNonnull($hut.photo_url)}
+    {call .wrap_with_link}
+      {param url: $hut.hut_url /}
+      {param value: '<img src="' + $hut.photo_url + '" alt="Broken photo link!"></img>' /}
+      {param truncate_length: 0 /}
+      {param escape: false /}
+    {/call}
+  {else}
+    {call .wrap_with_link}
+      {param url: $hut.hut_url /}
+      {param value: '<img src="/static/img/no-image-available.gif" alt="No image available"></img>' /}
+      {param truncate_length: 0 /}
+      {param escape: false /}
+    {/call}
+  {/if}
+{/template}
+
+/**
  *
  * @param url
  * @param value
@@ -101,10 +179,5 @@
   {/if}
 {/template}
 
-/**
- * Renders a list of huts.
- * @param huts a list of huts to render. May be an empty list.
-{template .hut_list}
-// TODO
-{/template}
+
 
