@@ -7,6 +7,14 @@ body {
   color: black;
 }
 
+#navbar .brand img {
+  width: 18px;
+  height: 18px;
+  margin-right: 3px;
+  position: relative;
+  top: -2px;
+}
+
 #navbar-search {
   float:right;
 }
