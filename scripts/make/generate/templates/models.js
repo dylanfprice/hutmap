@@ -28,12 +28,15 @@ hutmap.{{ model.name }} = function(values) {
     var map = new goog.structs.Map(values);
     keys = map.getKeys();
     fields = [
+      {# put all methods added to the models here #}
+      'equals',
       {% for field in model.fields %}
-        {% if not forloop.last %}
-          '{{ field }}',
-        {% else %}
-          '{{ field }}'
-        {% endif %}
+      '{{ field }}',
+      {% if not forloop.last %}
+      '{{ field }}_display',
+      {% else %}
+      '{{ field }}_display'
+      {% endif %}
       {% endfor %}
     ];
     goog.array.forEach(keys, function(key, index, array) {
