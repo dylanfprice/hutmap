@@ -86,18 +86,22 @@ goog.scope(function() {
   /** Filters */
 
   /**
-   * @return {Array.<hutmap.Filter>} the filters contained in this
+   * @return {Object.<string, hutmap.Filter>} the filters contained in this
    */
   hutmap.FilteredHuts.prototype.get_filters = function() {
     throw "not implemented";
   };
 
   /**
-   * @param {string} name a name for the filter. If a filter with the given
-   *                      name already exists, it will be replaced.
+   * @param {string} field the field of a hutmap.Hut the filter should be
+   *                       applied to. You may include dots in the field name
+   *                       to traverse into other objects. For example,
+   *                       'agency.name' will be translated into an access to
+   *                       hut['agency']['name']. If a filter for the given
+   *                       field already exists, it will be replaced.
    * @param {hutmap.Filter} filter the filter
    */
-  hutmap.FilteredHuts.prototype.set_filter = function(name, filter) {
+  hutmap.FilteredHuts.prototype.set_filter = function(field, filter) {
     throw "not implemented";
   };
 
