@@ -70,7 +70,7 @@
 .rating-5star {
   height: 16px;
   display: block;
-  background: url('file:///home/dylan/Workspace/hutmap/public/static/img/star-rating.png') 0 0 no-repeat;
+  background: url('/static/img/star-rating.png') 0 0 no-repeat;
 }
 
 .rating-4star { width: 48px; }
