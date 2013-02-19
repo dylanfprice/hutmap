@@ -3,10 +3,43 @@
 goog.provide('hutmap.Hut');
 goog.provide('hutmap.Agency');
 goog.provide('hutmap.Region');
+goog.require('goog.structs.Map');
+goog.require('goog.array');
 hutmap.Hut = function(values) {
   if (!values)
     values = {};
+  if (goog.DEBUG) {
+    var map = new goog.structs.Map(values);
+    keys = map.getKeys();
+    fields = [
+      'equals',
+      'agency',
+      'agency_display',
+      'hut_references',
+      'hut_references_display',
+      'hut_url',
+      'hut_url_display',
+      'id',
+      'id_display',
+      'location',
+      'location_display',
+      'location_accuracy',
+      'location_accuracy_display',
+      'name',
+      'name_display',
+      'photo_url',
+      'photo_url_display',
+      'region',
+      'region_display'
+    ];
+    goog.array.forEach(keys, function(key, index, array) {
+      if (!goog.array.contains(fields, key)) {
+        throw "hutmap.Hut(): Invalid field '" + key + "' given in values parameter.";
+      }
+    });
+  }
   this.agency = values.agency;
+  this.agency = new hutmap.Agency(values.agency);
   this.hut_references = values.hut_references;
   this.hut_url = values.hut_url;
   this.id = values.id;
@@ -15,108 +48,194 @@ hutmap.Hut = function(values) {
   this.name = values.name;
   this.photo_url = values.photo_url;
   this.region = values.region;
-  this.agency_display = (values.agency !== null &&
-    values.agency !== undefined &&
-    values.agency !== '') ?
-    values.agency : 'unknown';
-  this.hut_references_display = (values.hut_references !== null &&
-    values.hut_references !== undefined &&
-    values.hut_references !== '') ?
-    values.hut_references : 'unknown';
-  this.hut_url_display = (values.hut_url !== null &&
-    values.hut_url !== undefined &&
-    values.hut_url !== '') ?
-    values.hut_url : 'unknown';
-  this.id_display = (values.id !== null &&
-    values.id !== undefined &&
-    values.id !== '') ?
-    values.id : 'unknown';
-  this.location_display = (values.location !== null &&
-    values.location !== undefined &&
-    values.location !== '') ?
-    values.location : 'unknown';
-  this.location_accuracy_display = (values.location_accuracy !== null &&
-    values.location_accuracy !== undefined &&
-    values.location_accuracy !== '') ?
-    values.location_accuracy : 'unknown';
-  this.name_display = (values.name !== null &&
-    values.name !== undefined &&
-    values.name !== '') ?
-    values.name : 'unknown';
-  this.photo_url_display = (values.photo_url !== null &&
-    values.photo_url !== undefined &&
-    values.photo_url !== '') ?
-    values.photo_url : 'unknown';
-  this.region_display = (values.region !== null &&
-    values.region !== undefined &&
-    values.region !== '') ?
-    values.region : 'unknown';
+  this.region = new hutmap.Region(values.region);
+  if (this.agency !== undefined &&
+      this.agency !== null &&
+      this.agency !== '') {
+    this.agency_display =  this.agency;
+  } else {
+    this.agency_display = 'unknown';
+    this.agency_display = new hutmap.Agency();
+  }
+  if (this.hut_references !== undefined &&
+      this.hut_references !== null &&
+      this.hut_references !== '') {
+    this.hut_references_display =  this.hut_references;
+  } else {
+    this.hut_references_display = 'unknown';
+  }
+  if (this.hut_url !== undefined &&
+      this.hut_url !== null &&
+      this.hut_url !== '') {
+    this.hut_url_display =  this.hut_url;
+  } else {
+    this.hut_url_display = 'unknown';
+  }
+  if (this.id !== undefined &&
+      this.id !== null &&
+      this.id !== '') {
+    this.id_display =  this.id;
+  } else {
+    this.id_display = 'unknown';
+  }
+  if (this.location !== undefined &&
+      this.location !== null &&
+      this.location !== '') {
+    this.location_display =  this.location;
+  } else {
+    this.location_display = 'unknown';
+  }
+  if (this.location_accuracy !== undefined &&
+      this.location_accuracy !== null &&
+      this.location_accuracy !== '') {
+    this.location_accuracy_display =  this.location_accuracy;
+  } else {
+    this.location_accuracy_display = 'unknown';
+  }
+  if (this.name !== undefined &&
+      this.name !== null &&
+      this.name !== '') {
+    this.name_display =  this.name;
+  } else {
+    this.name_display = 'unknown';
+  }
+  if (this.photo_url !== undefined &&
+      this.photo_url !== null &&
+      this.photo_url !== '') {
+    this.photo_url_display =  this.photo_url;
+  } else {
+    this.photo_url_display = 'unknown';
+  }
+  if (this.region !== undefined &&
+      this.region !== null &&
+      this.region !== '') {
+    this.region_display =  this.region;
+  } else {
+    this.region_display = 'unknown';
+    this.region_display = new hutmap.Region();
+  }
 };
 hutmap.Hut.prototype.equals = function(other) {
-  return 
-  this.agency === other.agency &&
-  this.hut_references === other.hut_references &&
-  this.hut_url === other.hut_url &&
-  this.id === other.id &&
-  this.location === other.location &&
-  this.location_accuracy === other.location_accuracy &&
-  this.name === other.name &&
-  this.photo_url === other.photo_url &&
-  this.region === other.region;
+  return this.agency === other.agency && 
+    this.hut_references === other.hut_references && 
+    this.hut_url === other.hut_url && 
+    this.id === other.id && 
+    this.location === other.location && 
+    this.location_accuracy === other.location_accuracy && 
+    this.name === other.name && 
+    this.photo_url === other.photo_url && 
+    this.region === other.region;
 };
 hutmap.Agency = function(values) {
   if (!values)
     values = {};
+  if (goog.DEBUG) {
+    var map = new goog.structs.Map(values);
+    keys = map.getKeys();
+    fields = [
+      'equals',
+      'id',
+      'id_display',
+      'name',
+      'name_display',
+      'url',
+      'url_display'
+    ];
+    goog.array.forEach(keys, function(key, index, array) {
+      if (!goog.array.contains(fields, key)) {
+        throw "hutmap.Agency(): Invalid field '" + key + "' given in values parameter.";
+      }
+    });
+  }
   this.id = values.id;
   this.name = values.name;
   this.url = values.url;
-  this.id_display = (values.id !== null &&
-    values.id !== undefined &&
-    values.id !== '') ?
-    values.id : 'unknown';
-  this.name_display = (values.name !== null &&
-    values.name !== undefined &&
-    values.name !== '') ?
-    values.name : 'unknown';
-  this.url_display = (values.url !== null &&
-    values.url !== undefined &&
-    values.url !== '') ?
-    values.url : 'unknown';
+  if (this.id !== undefined &&
+      this.id !== null &&
+      this.id !== '') {
+    this.id_display =  this.id;
+  } else {
+    this.id_display = 'unknown';
+  }
+  if (this.name !== undefined &&
+      this.name !== null &&
+      this.name !== '') {
+    this.name_display =  this.name;
+  } else {
+    this.name_display = 'unknown';
+  }
+  if (this.url !== undefined &&
+      this.url !== null &&
+      this.url !== '') {
+    this.url_display =  this.url;
+  } else {
+    this.url_display = 'unknown';
+  }
 };
 hutmap.Agency.prototype.equals = function(other) {
-  return 
-  this.id === other.id &&
-  this.name === other.name &&
-  this.url === other.url;
+  return this.id === other.id && 
+    this.name === other.name && 
+    this.url === other.url;
 };
 hutmap.Region = function(values) {
   if (!values)
     values = {};
+  if (goog.DEBUG) {
+    var map = new goog.structs.Map(values);
+    keys = map.getKeys();
+    fields = [
+      'equals',
+      'country',
+      'country_display',
+      'id',
+      'id_display',
+      'region',
+      'region_display',
+      'state',
+      'state_display'
+    ];
+    goog.array.forEach(keys, function(key, index, array) {
+      if (!goog.array.contains(fields, key)) {
+        throw "hutmap.Region(): Invalid field '" + key + "' given in values parameter.";
+      }
+    });
+  }
   this.country = values.country;
   this.id = values.id;
   this.region = values.region;
   this.state = values.state;
-  this.country_display = (values.country !== null &&
-    values.country !== undefined &&
-    values.country !== '') ?
-    values.country : 'unknown';
-  this.id_display = (values.id !== null &&
-    values.id !== undefined &&
-    values.id !== '') ?
-    values.id : 'unknown';
-  this.region_display = (values.region !== null &&
-    values.region !== undefined &&
-    values.region !== '') ?
-    values.region : 'unknown';
-  this.state_display = (values.state !== null &&
-    values.state !== undefined &&
-    values.state !== '') ?
-    values.state : 'unknown';
+  if (this.country !== undefined &&
+      this.country !== null &&
+      this.country !== '') {
+    this.country_display =  this.country;
+  } else {
+    this.country_display = 'unknown';
+  }
+  if (this.id !== undefined &&
+      this.id !== null &&
+      this.id !== '') {
+    this.id_display =  this.id;
+  } else {
+    this.id_display = 'unknown';
+  }
+  if (this.region !== undefined &&
+      this.region !== null &&
+      this.region !== '') {
+    this.region_display =  this.region;
+  } else {
+    this.region_display = 'unknown';
+  }
+  if (this.state !== undefined &&
+      this.state !== null &&
+      this.state !== '') {
+    this.state_display =  this.state;
+  } else {
+    this.state_display = 'unknown';
+  }
 };
 hutmap.Region.prototype.equals = function(other) {
-  return 
-  this.country === other.country &&
-  this.id === other.id &&
-  this.region === other.region &&
-  this.state === other.state;
+  return this.country === other.country && 
+    this.id === other.id && 
+    this.region === other.region && 
+    this.state === other.state;
 };
