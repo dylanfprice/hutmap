@@ -2,12 +2,18 @@ goog.provide('hutmap.RangeFilter');
 goog.provide('hutmap.CompareFilter');
 goog.provide('hutmap.BooleanFilter');
 goog.provide('hutmap.SetFilter');
+goog.provide('hutmap.FilterType');
+goog.provide('hutmap.CompareType');
 
 goog.require('goog.asserts');
+goog.require('goog.structs.Set');
 
 goog.scope(function() {
-  var assertInstanceOf = goog.asserts.assertInstanceOf;
+  var assert = goog.asserts.assert;
+  var assertObject = goog.asserts.assertObject;
   var assertNumber = goog.asserts.assertNumber;
+  var assertArray = goog.asserts.assertArray;
+  var Set = goog.structs.Set;
 
   /**
    * @enum {Object}
@@ -26,7 +32,7 @@ goog.scope(function() {
    * @constructor
    */
   hutmap.Filter = function(type) {
-    this.type = assertInstanceOf(type, hutmap.FilterType);
+    this.type = assertObject(type);
   };
 
   /**
@@ -46,13 +52,17 @@ goog.scope(function() {
 
   /**
    * Filter that tests whether a number is between two numbers (inclusive).
+   * @param {number} start the beginning of the range
+   * @param {number} end the end of the range. Does not necessarily need to be
+   *                     greater than start.
    * @constructor
    */
-  hutmap.RangeFilter = function(low, hi) {
-    throw "not implemented";
+  hutmap.RangeFilter = function(start, end) {
     goog.base(this, hutmap.FilterType.RANGE);
-    this.lo = assertNumber(lo);
-    this.hi = assertNumber(hi);
+    assertNumber(start);
+    assertNumber(end);
+    this.lo = Math.min(start, end);
+    this.hi = Math.max(start, end);
   };
 
   goog.inherits(hutmap.RangeFilter, hutmap.Filter);
@@ -61,67 +71,97 @@ goog.scope(function() {
    * @override
    */
   hutmap.RangeFilter.prototype.filter = function(value) {
-    throw "not implemented";
     assertNumber(value);
-    return (lo <= value && value <= hi);
+    return (this.lo <= value && value <= this.hi);
   };
 
   /**
    * @enum {Object}
    */
   hutmap.CompareType = {
-    LESS_THAN_OR_EQUAL: {},
     LESS_THAN: {},
-    EQUAL_TO: {},
-    GREATER_THAN: {},
-    GREATER_THAN_OR_EQUAL: {}
+    LESS_THAN_OR_EQUAL: {},
+    EQUAL: {},
+    GREATER_THAN_OR_EQUAL: {},
+    GREATER_THAN: {}
   };
   if (Object.freeze) { Object.freeze(hutmap.CompareType); }
 
   /**
    * Filter that tests how a value compares to another value
-   * @param {hutmap.CompareType} compare_type  the type of comparison to make
-   * @param {Object} value the value to compare to
+   * @param {hutmap.CompareType} compare_type the type of comparison to make
+   * @param {number} value the value to compare to
    * @constructor
    */
   hutmap.CompareFilter = function(compare_type, value) {
-    throw "not implemented";
+    goog.base(this, hutmap.FilterType.COMPARE);
+    this.compare_type = assertObject(compare_type);
+    this.value = assertNumber(value);
   };
+
+  goog.inherits(hutmap.CompareFilter, hutmap.Filter);
 
   /**
    * @override
    */
   hutmap.CompareFilter.prototype.filter = function(value) {
-    throw "not implemented";
+    assertNumber(value);
+    switch (this.compare_type) {
+      case hutmap.CompareType.LESS_THAN:
+        return value < this.value;
+        break;
+      case hutmap.CompareType.LESS_THAN_OR_EQUAL:
+        return value <= this.value;
+        break;
+      case hutmap.CompareType.EQUAL:
+        return value == this.value;
+        break;
+      case hutmap.CompareType.GREATER_THAN_OR_EQUAL:
+        return value >= this.value;
+        break;
+      case hutmap.CompareType.GREATER_THAN:
+        return value > this.value;
+        break;
+      default:
+        goog.asserts.fail("CompareFilter constructed with compare_type not of hutmap.CompareType.");
+        break;
+    }
   };
 
   /**
    * Filter that tests whether a value is true or false.
    */
   hutmap.BooleanFilter = function() {
-    throw "not implemented";
+    goog.base(this, hutmap.FilterType.BOOLEAN);
   };
+
+  goog.inherits(hutmap.BooleanFilter, hutmap.Filter);
 
   /**
    * @override
    */
   hutmap.BooleanFilter.prototype.filter = function(value) {
-    throw "not implemented";
+    assert(value != null);
+    return Boolean(value);
   };
 
   /**
    * Filter that tests whether a value is in a set of values.
-   * @param {Array} values the values for the set
+   * @param {Array.<number>|Array.<string>} values the values for the set
    * @constructor
    */
   hutmap.SetFilter = function(values) {
-    throw "not implemented";
+    goog.base(this, hutmap.FilterType.SET);
+    this.set = new Set(assertArray(values));
   };
+
+  goog.inherits(hutmap.SetFilter, hutmap.Filter);
 
   /**
    * @override
    */
   hutmap.SetFilter.prototype.filter = function(value) {
-    throw "not implemented";
+    assert(value != null);
+    return this.set.contains(value);
   };
 });
