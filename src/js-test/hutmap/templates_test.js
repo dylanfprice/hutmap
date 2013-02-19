@@ -24,13 +24,13 @@ setUp = function() {
 /** hut_tooltip */
  
 var test_hut_tooltip_null = function() {
-  var error = false;
+  var error = null;
   try {
     hutmap.templates.hut_tooltip({hut: null});
   } catch (err) {
-    error = true;
+    error = err;
   }
-  assertTrue(error);
+  assertEquals('opt_data.hut is null', error.message);
 };
 
 var test_hut_tooltip_empty_hut = function() {
@@ -54,26 +54,30 @@ var test_hut_tooltip_complete_hut = function() {
 /** hut_info */
 
 var test_hut_info_null = function() {
-  var error = false;
+  var error = null;
   try {
-    hutmap.template.hut_info({hut: null});
+    hutmap.templates.hut_info({hut: null});
   } catch (err) {
-    error = true;
+    error = err;
   }
-  assertTrue(error);
+  assertEquals('opt_data.hut is null', error.message);
 };
 
 var test_hut_info_empty_hut = function() {
+  var expected = '<h4 class="hut_info_title">unknown</h3><span class="hut_info_detail_table"><div class="hut_info_img"><img src="/static/img/no-image-available.gif" alt="No image available"></img></div><table><tr><td class="hut_info_detail_title">Country:</td><td class="hut_info_detail">unknown</td></tr><tr><td class="hut_info_detail_title">State:</td><td class="hut_info_detail">unknown</td></tr><tr><td class="hut_info_detail_title">Location:</td><td class="hut_info_detail">unknown</td></tr><tr><td class="hut_info_detail_title">Accuracy:</td><td class="hut_info_detail">unknown</td></tr><tr><td class="hut_info_detail_title">Agency:</td><td class="hut_info_detail">unknown</td></tr><tr><td class="hut_info_detail_title">Hut Url:</td><td class="hut_info_detail">unknown</td></tr></table>'
   var actual = hutmap.templates.hut_info({hut: this.empty_hut});
+  console.log("actual: " + actual);
+  assertEquals(expected, actual);
 };
 
 var test_hut_info_incomplete_hut = function() {
+  var expected = '<h4 class="hut_info_title">The Hut</h3><span class="hut_info_detail_table"><div class="hut_info_img"><img src="/static/img/no-image-available.gif" alt="No image available"></img></div><table><tr><td class="hut_info_detail_title">Country:</td><td class="hut_info_detail">unknown</td></tr><tr><td class="hut_info_detail_title">State:</td><td class="hut_info_detail">unknown</td></tr><tr><td class="hut_info_detail_title">Location:</td><td class="hut_info_detail">47, -120</td></tr><tr><td class="hut_info_detail_title">Accuracy:</td><td class="hut_info_detail">unknown</td></tr><tr><td class="hut_info_detail_title">Agency:</td><td class="hut_info_detail">unknown</td></tr><tr><td class="hut_info_detail_title">Hut Url:</td><td class="hut_info_detail">unknown</td></tr></table>';
   var actual = hutmap.templates.hut_info({hut: this.incomplete_hut});
+  assertEquals(expected, actual);
 };
 
 var test_hut_info_complete_hut = function() {
-  var expected = '<h4 id="sidebar_title">The Hut</h3><span class="hut_detail_table"><div id="sidebar_img"><a href="http://hutwebsite.com" target="blank"><img src="http://hutphoto.com" alt="Broken photo link!"></img></a></div><table><tr><td class="hut_detail_title">Country:</td><td class="hut_detail">USA</td></tr><tr><td class="hut_detail_title">State:</td><td class="hut_detail">WA</td></tr><tr><td class="hut_detail_title">Location:</td><td class="hut_detail">47, -120</td></tr><tr><td class="hut_detail_title">Accuracy:</td><td class="hut_detail">3</td></tr><tr><td class="hut_detail_title">Agency:</td><td class="hut_detail"><a href="http://fs.usda.gov" target="blank">USDA Forest Service</a></td></tr><tr><td class="hut_detail_title">Hut Url:</td><td class="hut_detail"><a href="http://hutwebsite.com" target="blank">http://hutwebsite...</a></td></tr></table>'
+  var expected = '<h4 class="hut_info_title">The Hut</h3><span class="hut_info_detail_table"><div class="hut_info_img"><a href="http://hutwebsite.com" target="blank"><img src="http://hutphoto.com" alt="Broken photo link!"></img></a></div><table><tr><td class="hut_info_detail_title">Country:</td><td class="hut_info_detail">USA</td></tr><tr><td class="hut_info_detail_title">State:</td><td class="hut_info_detail">WA</td></tr><tr><td class="hut_info_detail_title">Location:</td><td class="hut_info_detail">47, -120</td></tr><tr><td class="hut_info_detail_title">Accuracy:</td><td class="hut_info_detail">3</td></tr><tr><td class="hut_info_detail_title">Agency:</td><td class="hut_info_detail"><a href="http://fs.usda.gov" target="blank">USDA Forest Service</a></td></tr><tr><td class="hut_info_detail_title">Hut Url:</td><td class="hut_info_detail"><a href="http://hutwebsite.com" target="blank">http://hutwebsite...</a></td></tr></table>'
   var actual = hutmap.templates.hut_info({hut: this.complete_hut});
-  console.log("actual: " + actual);
   assertEquals(expected, actual);
 };
