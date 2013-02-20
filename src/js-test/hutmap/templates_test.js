@@ -1,48 +1,29 @@
 goog.require('hutmap.templates');
-goog.require('hutmap.Hut');
-goog.require('hutmap.Agency');
-goog.require('hutmap.Region');
+goog.require('hutmap.test_data');
 
 goog.require('goog.testing.jsunit');
 
 
 setUp = function() {
-  this.empty_hut = new hutmap.Hut();
-  this.incomplete_hut = new hutmap.Hut({name: "The Hut", location: "47, -120"});
-  this.complete_hut = new hutmap.Hut({
-    id: 0,
-    name: "The Hut",
-    agency: new hutmap.Agency({name: "USDA Forest Service", url: "http://fs.usda.gov"}),
-    region: new hutmap.Region({country: "USA", state: "WA", region: "Snoqualmie National Forest"}),
-    hut_url: "http://hutwebsite.com",
-    photo_url: "http://hutphoto.com",
-    location: "47, -120",
-    location_accuracy: 3
-  });
+  var td = hutmap.test_data;
+  this.empty_hut = td.empty_hut();
+  this.incomplete_hut = td.incomplete_hut0();
+  this.complete_hut = td.hut0();  
   this.list_empty_huts = [
-    new hutmap.Hut(),
-    new hutmap.Hut()
+    td.empty_hut(),
+    td.empty_hut()
   ];
   this.list_null_huts = [
     null,
     null
   ];
   this.incomplete_list = [
-    this.incomplete_hut,
-    new hutmap.Hut({name: "The Hut2", agency: new hutmap.Agency({name: "USDA Forest Service", url: "http://fs.usda.gov"})})
+    td.incomplete_hut0(),
+    td.incomplete_hut1()
   ];
   this.complete_list = [
-    this.complete_hut,
-    new hutmap.Hut({
-      id: 1,
-      name: "The Hut2",
-      agency: new hutmap.Agency({name: "BC Mountaineering Club", url: "http://bcmountaineeringclub.com"}),
-      region: new hutmap.Region({country: "Canada", state: "BC", region: "A Region"}),
-      hut_url: "http://hutwebsite2.com",
-      photo_url: "http://assets.alltrails.com/uploads/photo/image/10237683/icon_5b75a2d3d533177951eef43dd7cc5a75.jpg",
-      location: "48, -125",
-      location_accuracy: 0
-    })
+    td.hut0(),
+    td.hut1()
   ];
 };
 
@@ -116,7 +97,7 @@ var test_hut_list_empty = function() {
 };
 
 var test_hut_list_list_empty_huts = function() {
-  var expected = '<ol class="huts"><li class="hut clearfix"><div class="title"><figure><img src="/static/img/no-image-available.gif" alt="No image available"></img></figure><h5><a href="undefined">unknown</a></h5><h6>unknown, unknown, unknown</h6></div><div class="meta"><table><tbody><tr><td>Location:</td><td><span class="floatright">unknown</span></td></tr><tr><td>Accuracy:</td><td><span class="rating-4star rating-NaN floatright up1"></span></td></tr></tbody></table></div><div class="meta"><table><tbody><tr><td>Agency:</td><td><a href="undefined">unknown</a></td></tr></tbody></table></div></li><li class="hut clearfix"><div class="title"><figure><img src="/static/img/no-image-available.gif" alt="No image available"></img></figure><h5><a href="undefined">unknown</a></h5><h6>unknown, unknown, unknown</h6></div><div class="meta"><table><tbody><tr><td>Location:</td><td><span class="floatright">unknown</span></td></tr><tr><td>Accuracy:</td><td><span class="rating-4star rating-NaN floatright up1"></span></td></tr></tbody></table></div><div class="meta"><table><tbody><tr><td>Agency:</td><td><a href="undefined">unknown</a></td></tr></tbody></table></div></li></ol>';
+  var expected = '<ol class="huts"><li class="hut clearfix"><div class="title"><figure><img src="/static/img/no-image-available.gif" alt="No image available"></img></figure><h5><a href="null">unknown</a></h5><h6>unknown, unknown, unknown</h6></div><div class="meta"><table><tbody><tr><td>Location:</td><td><span class="floatright">unknown</span></td></tr><tr><td>Accuracy:</td><td><span class="rating-4star rating-0 floatright up1"></span></td></tr></tbody></table></div><div class="meta"><table><tbody><tr><td>Agency:</td><td><a href="null">unknown</a></td></tr></tbody></table></div></li><li class="hut clearfix"><div class="title"><figure><img src="/static/img/no-image-available.gif" alt="No image available"></img></figure><h5><a href="null">unknown</a></h5><h6>unknown, unknown, unknown</h6></div><div class="meta"><table><tbody><tr><td>Location:</td><td><span class="floatright">unknown</span></td></tr><tr><td>Accuracy:</td><td><span class="rating-4star rating-0 floatright up1"></span></td></tr></tbody></table></div><div class="meta"><table><tbody><tr><td>Agency:</td><td><a href="null">unknown</a></td></tr></tbody></table></div></li></ol>';
   var actual = hutmap.templates.hut_list({huts: this.list_empty_huts});
   assertHTMLEquals(expected, actual);
 };
@@ -129,7 +110,7 @@ var test_hut_list_list_null_huts = function() {
 };
 
 var test_hut_list_incomplete_huts = function() {
-  var expected = '<ol class="huts"><li class="hut clearfix"><div class="title"><figure><img src="/static/img/no-image-available.gif" alt="No image available"></img></figure><h5><a href="undefined">The Hut</a></h5><h6>unknown, unknown, unknown</h6></div><div class="meta"><table><tbody><tr><td>Location:</td><td><span class="floatright">47, -120</span></td></tr><tr><td>Accuracy:</td><td><span class="rating-4star rating-NaN floatright up1"></span></td></tr></tbody></table></div><div class="meta"><table><tbody><tr><td>Agency:</td><td><a href="undefined">unknown</a></td></tr></tbody></table></div></li><li class="hut clearfix"><div class="title"><figure><img src="/static/img/no-image-available.gif" alt="No image available"></img></figure><h5><a href="undefined">The Hut2</a></h5><h6>unknown, unknown, unknown</h6></div><div class="meta"><table><tbody><tr><td>Location:</td><td><span class="floatright">unknown</span></td></tr><tr><td>Accuracy:</td><td><span class="rating-4star rating-NaN floatright up1"></span></td></tr></tbody></table></div><div class="meta"><table><tbody><tr><td>Agency:</td><td><a href="http://fs.usda.gov">USDA Forest Service</a></td></tr></tbody></table></div></li></ol>';
+  var expected = '<ol class="huts"><li class="hut clearfix"><div class="title"><figure><img src="/static/img/no-image-available.gif" alt="No image available"></img></figure><h5><a href="null">The Hut</a></h5><h6>unknown, unknown, unknown</h6></div><div class="meta"><table><tbody><tr><td>Location:</td><td><span class="floatright">47, -120</span></td></tr><tr><td>Accuracy:</td><td><span class="rating-4star rating-0 floatright up1"></span></td></tr></tbody></table></div><div class="meta"><table><tbody><tr><td>Agency:</td><td><a href="null">unknown</a></td></tr></tbody></table></div></li><li class="hut clearfix"><div class="title"><figure><img src="/static/img/no-image-available.gif" alt="No image available"></img></figure><h5><a href="null">The Hut2</a></h5><h6>unknown, unknown, unknown</h6></div><div class="meta"><table><tbody><tr><td>Location:</td><td><span class="floatright">unknown</span></td></tr><tr><td>Accuracy:</td><td><span class="rating-4star rating-0 floatright up1"></span></td></tr></tbody></table></div><div class="meta"><table><tbody><tr><td>Agency:</td><td><a href="http://fs.usda.gov">USDA Forest Service</a></td></tr></tbody></table></div></li></ol>';
   var actual = hutmap.templates.hut_list({huts: this.incomplete_list});
   assertHTMLEquals(expected, actual);
 };
