@@ -6,7 +6,7 @@ goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Work
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/third-party/wicket.src.js", ['Wkt.Wkt'], []);
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/models.js", ['hutmap.Hut', 'hutmap.Agency', 'hutmap.Region'], ['goog.structs.Map', 'goog.array']);
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/tooltip.js", [], []);
-goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/filtered_huts.js", ['hutmap.FilteredHuts'], ['goog.asserts']);
+goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/filtered_huts.js", ['hutmap.FilteredHuts'], ['goog.asserts', 'goog.events', 'goog.events.EventTarget']);
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/templates.js", ['hutmap.templates'], ['soy', 'soydata']);
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/test.js", ['hutmap.test'], ['goog.events.EventType', 'goog.ui.AdvancedTooltip', 'hutmap.templates', 'hutmap.Hut']);
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/map/map.js", [], []);
@@ -26,7 +26,7 @@ goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Work
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap_old/init/index-init.js", ['hutmap.index'], ['hutmap.Search']);
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js-test/alltests.js", [], []);
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js-test/deps.js", [], []);
-goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js-test/hutmap/templates_test.js", [], ['hutmap.templates', 'hutmap.Hut', 'hutmap.Agency', 'hutmap.Region', 'goog.testing.jsunit', 'hutmap.test_data']);
-goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js-test/hutmap/filtered_huts_test.js", [], ['hutmap.FilteredHuts', 'hutmap.Hut', 'hutmap.Agency', 'hutmap.Region', 'goog.testing.jsunit']);
-goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js-test/hutmap/test_data.js", ['hutmap.test_data'], []);
+goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js-test/hutmap/templates_test.js", [], ['hutmap.templates', 'hutmap.test_data', 'goog.testing.jsunit']);
+goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js-test/hutmap/filtered_huts_test.js", [], ['hutmap.Agency', 'hutmap.BooleanFilter', 'hutmap.CompareFilter', 'hutmap.CompareType', 'hutmap.FilterType', 'hutmap.FilteredHuts', 'hutmap.Hut', 'hutmap.RangeFilter', 'hutmap.Region', 'hutmap.SetFilter', 'hutmap.test_data', 'goog.array', 'goog.events', 'goog.structs.Map', 'goog.testing.jsunit']);
+goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js-test/hutmap/test_data.js", ['hutmap.test_data'], ['hutmap.Hut', 'hutmap.Agency', 'hutmap.Region']);
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js-test/hutmap/filters/filters_test.js", [], ['hutmap.RangeFilter', 'hutmap.CompareFilter', 'hutmap.BooleanFilter', 'hutmap.SetFilter', 'hutmap.FilterType', 'hutmap.CompareType', 'goog.testing.jsunit']);
