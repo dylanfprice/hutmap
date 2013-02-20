@@ -51,3 +51,28 @@ hutmap.test_data.hut1 = function() {
   });
 };
 
+hutmap.test_data.hut2 = function() {
+  return new hutmap.Hut({
+    id: 2,
+    name: "The Hut Again",
+    agency: new hutmap.Agency({name: "Another Agency", url: "http://anotheragency.com"}),
+    region: new hutmap.Region({country: "USA", state: "HI", region: "Near The Big Mountain"}),
+    hut_url: "http://thehutagain.com",
+    photo_url: "http://assets.alltrails.com/uploads/photo/image/10237683/icon_5b75a2d3d533177951eef43dd7cc5a75.jpg",
+    location: "21, -157",
+    location_accuracy: 4
+  });
+};
+
+hutmap.test_data.hut3 = function() {
+  return new hutmap.Hut({
+    id: 3,
+    name: "The Hut Again Again",
+    agency: new hutmap.Agency({name: "Another Agency", url: "http://anotheragency.com"}),
+    region: new hutmap.Region({country: "USA", state: "CO", region: "Near The Big Mountain"}),
+    hut_url: "http://thehutagainagain.com",
+    photo_url: "http://assets.alltrails.com/uploads/photo/image/10237683/icon_5b75a2d3d533177951eef43dd7cc5a75.jpg",
+    location: "21, -157",
+    location_accuracy: 2
+  });
+};
