@@ -1,6 +1,8 @@
 goog.provide('hutmap.FilteredHuts');
 
 goog.require('goog.asserts');
+goog.require('goog.events');
+goog.require('goog.events.EventTarget');
 
 goog.scope(function() {
   var assertArray = goog.asserts.assertArray;
@@ -9,7 +11,9 @@ goog.scope(function() {
    * Applies a set of filters to a set of huts to obtain a new set of huts.
    *
    * @param {Array.<hutmap.Hut>} huts a list of hutmap.Hut objects
-   * @param {Array.<hutmap.Filter>} filters a list of hutmap.Filter objects
+   * @param {Object.<string, hutmap.Filter>} filters an object mapping field
+   *    names to filters. See set_filters for information on what can be used
+   *    as field names.
    * @constructor
    */
   hutmap.FilteredHuts = function(huts, filters) {
@@ -35,6 +39,13 @@ goog.scope(function() {
     throw "not implemented";
   };
 
+  /**
+   * @return {number} the number of huts which match all the filters.
+   */
+  hutmap.FilteredHuts.prototype.get_filtered_huts_count = function() {
+    throw "not implemented";
+  };
+
   /** Huts */
 
   /**
@@ -54,14 +65,6 @@ goog.scope(function() {
   };
 
   /**
-   * @param hut {hutmap.Hut} add the hut to this. If a hut with the same id as
-   *                         the given hut already exists, it will be replaced.
-   */
-  hutmap.FilteredHuts.prototype.add_hut = function(hut) {
-    throw "not implemented";
-  };
-
-  /**
    * @return {Array.<hutmap.Hut> a list of the huts contained in this
    */
   hutmap.FilteredHuts.prototype.get_huts = function() {
@@ -76,8 +79,16 @@ goog.scope(function() {
   };
 
   /**
+   * @param hut {hutmap.Hut} add the hut to this. If a hut with the same id as
+   *    the given hut already exists, it will be replaced.
+   */
+  hutmap.FilteredHuts.prototype.add_hut = function(hut) {
+    throw "not implemented";
+  };
+
+  /**
    * @param {Array.<hutmap.Hut> huts the huts to set for this. All previous huts
-   *                                will be cleared.
+   *    will be cleared.
    */
   hutmap.FilteredHuts.prototype.set_huts = function(huts) {
     throw "not implemented";
