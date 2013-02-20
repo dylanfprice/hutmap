@@ -38,17 +38,17 @@ hutmap.Hut = function(values) {
       }
     });
   }
-  this.agency = values.agency;
-  this.agency = new hutmap.Agency(values.agency);
-  this.hut_references = values.hut_references;
-  this.hut_url = values.hut_url;
-  this.id = values.id;
-  this.location = values.location;
-  this.location_accuracy = values.location_accuracy;
-  this.name = values.name;
-  this.photo_url = values.photo_url;
-  this.region = values.region;
-  this.region = new hutmap.Region(values.region);
+  this.agency = (values.agency == undefined) ? null : values.agency;
+  this.agency = new hutmap.Agency(this.agency);
+  this.hut_references = (values.hut_references == undefined) ? null : values.hut_references;
+  this.hut_url = (values.hut_url == undefined) ? null : values.hut_url;
+  this.id = (values.id == undefined) ? null : values.id;
+  this.location = (values.location == undefined) ? null : values.location;
+  this.location_accuracy = (values.location_accuracy == undefined) ? null : values.location_accuracy;
+  this.name = (values.name == undefined) ? null : values.name;
+  this.photo_url = (values.photo_url == undefined) ? null : values.photo_url;
+  this.region = (values.region == undefined) ? null : values.region;
+  this.region = new hutmap.Region(this.region);
   if (this.agency !== undefined &&
       this.agency !== null &&
       this.agency !== '') {
@@ -147,9 +147,9 @@ hutmap.Agency = function(values) {
       }
     });
   }
-  this.id = values.id;
-  this.name = values.name;
-  this.url = values.url;
+  this.id = (values.id == undefined) ? null : values.id;
+  this.name = (values.name == undefined) ? null : values.name;
+  this.url = (values.url == undefined) ? null : values.url;
   if (this.id !== undefined &&
       this.id !== null &&
       this.id !== '') {
@@ -200,10 +200,10 @@ hutmap.Region = function(values) {
       }
     });
   }
-  this.country = values.country;
-  this.id = values.id;
-  this.region = values.region;
-  this.state = values.state;
+  this.country = (values.country == undefined) ? null : values.country;
+  this.id = (values.id == undefined) ? null : values.id;
+  this.region = (values.region == undefined) ? null : values.region;
+  this.state = (values.state == undefined) ? null : values.state;
   if (this.country !== undefined &&
       this.country !== null &&
       this.country !== '') {
