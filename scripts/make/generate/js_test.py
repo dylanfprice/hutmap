@@ -12,12 +12,11 @@ def generate_deps():
   """Generate deps.js"""
   calc_deps = join(config.CLOSURE_LIBRARY, 'closure', 'bin', 'calcdeps.py')
 
-  js_path = relpath(config.JS_PATH, os.getcwd())
-  #js_test_path = relpath(config.JS_TEST_PATH, os.getcwd())
   proc = subprocess.Popen(
       ['python', calc_deps, 
        '--dep={0}'.format(config.CLOSURE_LIBRARY),
-       '--path={0}'.format(js_path),
+       '--path={0}'.format(config.JS_PATH),
+       '--path={0}'.format(config.JS_TEST_PATH),
        '--output_mode=deps'],
       stdout=subprocess.PIPE)
   deps,stderrdata = proc.communicate()
