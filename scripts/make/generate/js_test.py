@@ -12,7 +12,7 @@ def generate_deps():
   """Generate deps.js"""
   calc_deps = join(config.CLOSURE_LIBRARY, 'closure', 'bin', 'calcdeps.py')
 
-  deps_file = join(config.JS_TEST_PATH, 'deps.js')
+  deps_file = join(config.JS_DEST, 'deps.js')
   subprocess.check_call(
       ['python', calc_deps, 
        '--dep={0}'.format(config.CLOSURE_LIBRARY),
@@ -20,6 +20,7 @@ def generate_deps():
        '--path={0}'.format(config.JS_TEST_PATH),
        '--output_mode=deps',
        '--output_file={0}'.format(deps_file)])
+  os.chmod(deps_file, 0755)
 
 def generate_alltests():
   """Generate alltests.js"""
