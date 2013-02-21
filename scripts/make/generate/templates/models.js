@@ -67,6 +67,8 @@ hutmap.{{ model.name }}.prototype._check_ctor_args = function(values) {
   fields = [
     {# put all methods added to the models here #}
     'equals',
+    '_check_ctor_args',
+    '_check_rep',
     {% for field in model.fields %}
     '{{ field }}',
     {% if not forloop.last %}
