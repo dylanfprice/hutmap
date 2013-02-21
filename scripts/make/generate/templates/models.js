@@ -18,7 +18,7 @@ goog.provide('hutmap.{{ model.name }}');
 {% endfor %}
 goog.requier('goog.asserts');
 goog.require('goog.array');
-goog.require('goog.structs.Map');
+goog.require('goog.object');
 
 {% for model in models %}
 hutmap.{{ model.name }} = function(values) {
@@ -63,8 +63,7 @@ hutmap.{{ model.name }} = function(values) {
 };
 
 hutmap.{{ model.name }}.prototype._check_ctor_args = function(values) {
-  var map = new goog.structs.Map(values);
-  keys = map.getKeys();
+  keys = goog.object.getKeys(values);
   fields = [
     {# put all methods added to the models here #}
     'equals',
