@@ -13,9 +13,11 @@ Context:
 
 // This file generated from the template at scripts/make/generate/templates/models.js
 // Please do not edit by hand.
+goog.provide('hutmap.models');
 {% for model in models %}
 goog.provide('hutmap.{{ model.name }}');
 {% endfor %}
+
 goog.require('goog.asserts');
 goog.require('goog.array');
 goog.require('goog.object');
@@ -97,14 +99,24 @@ hutmap.{{ model.name }}.prototype._check_rep = function() {
 hutmap.{{ model.name }}.prototype.equals = function(other) {
   {% for field in model.fields %}
   {% if forloop.first %}
-  return this.{{ field }} === other.{{ field }} && 
+  return hutmap.models.equals(this.{{ field }}, other.{{ field }}) && 
   {% endif %}
   {% if not forloop.first and not forloop.last %}
-    this.{{ field }} === other.{{ field }} && 
+    hutmap.models.equals(this.{{ field }}, other.{{ field }}) &&
   {% endif %}
   {% if forloop.last %}
-    this.{{ field }} === other.{{ field }};
+    hutmap.models.equals(this.{{ field }}, other.{{ field }});
   {% endif %}
   {% endfor %}
 };
 {% endfor %}
+
+hutmap.models.equals = function(a, b) {
+  var not_null = (a != null && b != null);
+  var has_equals = not_null && (a.equals && b.equals);
+  if (has_equals) {
+    return a.equals(b);
+  } else {
+    return a === b;
+  }
+};
