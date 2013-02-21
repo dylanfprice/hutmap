@@ -85,8 +85,10 @@ hutmap.{{ model.name }}.prototype._check_ctor_args = function(values) {
 
 hutmap.{{ model.name }}.prototype._check_rep = function() {
   {% if 'id' in model.fields %}
-  goog.asserts.assertNumber(this.id);
-  goog.asserts.assert(this.id >= 0);
+  if (this.id != null) {
+    goog.asserts.assertNumber(this.id);
+    goog.asserts.assert(this.id >= 0);
+  }
   {% endif %}
 };
 
