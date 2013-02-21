@@ -4,9 +4,9 @@ goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Work
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/third-party/utm.js", [], []);
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/third-party/markerclusterer.js", ['markerclusterer.MarkerClusterer'], []);
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/third-party/wicket.src.js", ['Wkt.Wkt'], []);
-goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/models.js", ['hutmap.Hut', 'hutmap.Agency', 'hutmap.Region'], ['goog.structs.Map', 'goog.array']);
+goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/models.js", ['hutmap.models', 'hutmap.Hut', 'hutmap.Agency', 'hutmap.Region'], ['goog.asserts', 'goog.array', 'goog.object']);
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/tooltip.js", [], []);
-goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/filtered_huts.js", ['hutmap.FilteredHuts'], ['goog.asserts', 'goog.events', 'goog.events.EventTarget']);
+goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/filtered_huts.js", ['hutmap.FilteredHuts'], ['goog.array', 'goog.asserts', 'goog.events', 'goog.events.EventTarget', 'goog.object', 'goog.structs', 'goog.structs.Map']);
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/templates.js", ['hutmap.templates'], ['soy', 'soydata']);
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/test.js", ['hutmap.test'], ['goog.events.EventType', 'goog.ui.AdvancedTooltip', 'hutmap.templates', 'hutmap.Hut']);
 goog.addDependency("../../../../..../../../../../../../../../..//home/dylan/Workspace/hutmap/src/js/hutmap/map/map.js", [], []);
