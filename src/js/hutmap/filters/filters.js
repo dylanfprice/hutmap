@@ -90,13 +90,13 @@ goog.scope(function() {
   /**
    * Filter that tests how a value compares to another value
    * @param {hutmap.CompareType} compare_type the type of comparison to make
-   * @param {number} value the value to compare to
+   * @param {number|string} value the value to compare to
    * @constructor
    */
   hutmap.CompareFilter = function(compare_type, value) {
     goog.base(this, hutmap.FilterType.COMPARE);
     this.compare_type = assertObject(compare_type);
-    this.value = assertNumber(value);
+    this.value = value;
   };
 
   goog.inherits(hutmap.CompareFilter, hutmap.Filter);
