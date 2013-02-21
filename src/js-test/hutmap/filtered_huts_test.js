@@ -15,7 +15,6 @@ goog.require('goog.events');
 goog.require('goog.structs.Map');
 goog.require('goog.testing.jsunit');
 
-
 var setUp = function() {
   this.td = hutmap.test_data;
   this.huts = [
@@ -50,7 +49,8 @@ var test_constructor = function() {
 var test_constructor_null = function() {
   expect_error(function() {
     new hutmap.FilteredHuts(null, null);
-  }, "message");
+  }, 
+  'Assertion failed: Expected array but got null: null.');
 };
 
 var test_get_filtered_huts = function() {
@@ -63,7 +63,8 @@ var test_get_filtered_huts_count = function() {
 };
 
 var test_get_filtered_huts_updates = function() {
-  this.fh.set_filter('id', new hutmap.SetFilter(['1', '2']));
+  this.fh.get_filtered_huts(); // to trigger computing of filtered huts
+  this.fh.set_filter('id', new hutmap.SetFilter([1, 2]));
   var filtered_huts = this.fh.get_filtered_huts();
   assertTrue(this.td.hut2().equals(filtered_huts[0]));
 };
@@ -71,7 +72,8 @@ var test_get_filtered_huts_updates = function() {
 var test_get_hut_null = function() {
   expect_error(function() {
     this.fh.get_hut(null);
-  }, "message");
+  }, 
+  'Assertion failed: Expected number but got null: null.');
 };
 
 var test_get_hut = function() {
@@ -80,10 +82,16 @@ var test_get_hut = function() {
   assertTrue(expected.equals(actual));
 };
 
+var test_get_hut_not_there = function() {
+  var hut = this.fh.get_hut(999);
+  assertEquals(null, hut);
+};
+
 var test_contains_hut_null = function() {
   expect_error(function() {
     this.fh.contains_hut(null);
-  }, "message");
+  }, 
+  'Assertion failed: Expected number but got null: null.');
 };
 
 var test_contains_hut = function() {
@@ -108,12 +116,13 @@ var test_get_huts_count = function() {
 var test_add_hut_null = function() {
   expect_error(function() {
     this.fh.add_hut(null);
-  }, "message");
+  }, 
+  'Assertion failed: instanceof check failed.');
 };
 
 var test_add_hut = function() {
   this.fh.add_hut(this.td.hut3());
-  assertTrue(this.fh.contains(3));
+  assertTrue(this.fh.contains_hut(3));
 };
 
 var test_add_hut_replace = function() {
@@ -127,14 +136,15 @@ var test_add_hut_replace = function() {
 var test_set_huts_null = function() {
   expect_error(function() {
     this.fh.set_huts(null);
-  }, "message");
+  }, 
+  'Assertion failed: Expected array but got null: null.');
 };
 
 var test_set_huts = function() {
   var new_huts = [this.td.hut1(), this.td.hut2()];
   this.fh.set_huts(new_huts);
   assertEquals(2, this.fh.get_huts_count());
-  assertEquals(0, this.gh.get_filtered_huts_count()); 
+  assertEquals(0, this.fh.get_filtered_huts_count()); 
 };
 
 var test_get_filters = function() {
@@ -146,7 +156,8 @@ var test_get_filters = function() {
 var test_set_filter_null = function() {
   expect_error(function() {
     this.fh.set_filter(null, null);
-  }, "message");
+  }, 
+  'Assertion failed: Expected string but got null: null.');
 };
 
 var test_set_filter = function() {
@@ -163,8 +174,8 @@ var test_set_filter_replace = function() {
 
 var test_clear_filters = function() {
   this.fh.clear_filters();
-  var filters = new google.structs.Map(this.fh.get_filters());
-  assertTrue(filter.isEmpty());
+  var filters = new goog.structs.Map(this.fh.get_filters());
+  assertTrue(filters.isEmpty());
 };
 
 var test_huts_changed_event = function() {
@@ -186,5 +197,4 @@ var test_filters_changed_event = function() {
   this.fh.clear_filters();
   assertEquals(2, callback_call_count);
 };
-
 
