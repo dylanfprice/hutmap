@@ -16,7 +16,7 @@ Context:
 {% for model in models %}
 goog.provide('hutmap.{{ model.name }}');
 {% endfor %}
-goog.requier('goog.asserts');
+goog.require('goog.asserts');
 goog.require('goog.array');
 goog.require('goog.object');
 
