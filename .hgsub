@@ -1,1 +1,3 @@
-public/lib/closure-library = [git]https://code.google.com/p/closure-library/
+#https://code.google.com/p/closure-library/
+
+public/lib/closure-library = [git]git://code.google.com/p/closure-library.git 
