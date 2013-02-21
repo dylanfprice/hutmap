@@ -1,11 +1,22 @@
 goog.provide('hutmap.FilteredHuts');
 
+goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
+goog.require('goog.object');
+goog.require('goog.structs');
+goog.require('goog.structs.Map');
 
 goog.scope(function() {
+  var array = goog.array;
+  var assert = goog.asserts.assert;
   var assertArray = goog.asserts.assertArray;
+  var assertInstanceof = goog.asserts.assertInstanceof;
+  var assertObject = goog.asserts.assertObject;
+  var assertString = goog.asserts.assertString;
+  var object = goog.object;
+  var structs = goog.structs;
 
   /**
    * Applies a set of filters to a set of huts to obtain a new set of huts.
@@ -17,11 +28,37 @@ goog.scope(function() {
    * @constructor
    */
   hutmap.FilteredHuts = function(huts, filters) {
-    throw "not implemented";
-    this.huts = assertArray(huts);
+    assertArray(huts);
+    this.huts = [];
+    array.forEach(huts, function(hut, index, array) {
+      var id = hut.id;
+      assert(id != null, "FilteredHuts(): all given huts must have an id.");
+      this.huts[id] = hut;  
+    }, this);
+    
+    this.filters = new structs.Map(assertObject(filters));
+
+    this.recompute_filtered_huts = true;
+    this.filtered_huts = [];
+
+    if (goog.DEBUG) {
+      this._check_rep();
+    }
   };
 
   goog.inherits(hutmap.FilteredHuts, goog.events.EventTarget);
+
+  hutmap.FilteredHuts.prototype._check_rep = function() {
+    array.forEach(this.huts, function(hut, index, array) {
+      assertInstanceof(hut, hutmap.Hut);
+      assert(index === hut.id);
+    }, this);
+
+    structs.forEach(this.filters, function(filter, field, filters) {
+      assertString(field);
+      assertInstanceof(filter, hutmap.Filter);
+    }, this);
+  };
 
   /**
    * Event types for hutmap.FilteredHuts
@@ -36,14 +73,38 @@ goog.scope(function() {
    * @return {Array.<hutmap.Hut>} the set of huts which match all the filters.
    */
   hutmap.FilteredHuts.prototype.get_filtered_huts = function() {
-    throw "not implemented";
+    if (this.recompute_filtered_huts)  {
+      this._compute_filtered_huts();
+    }
+    return object.createImmutableView(this.filtered_huts);
+  };
+
+  hutmap.FilteredHuts.prototype._compute_filtered_huts = function() {
+    this.filtered_huts = [];
+    array.forEach(this.huts, function(hut, index, huts) {
+      if (this._apply_filters(hut)) {
+        this.filtered_huts.push(hut);
+      }
+    }, this);
+  };
+
+  hutmap.FilteredHuts.prototype._apply_filters = function(hut) {
+    return structs.every(this.filters, 
+    function(filter, field, filters) {
+      field_array = field.split('.');
+      var value = object.getValueByKeys(hut, field_array);
+      return filter.filter(value);
+    }, this);
   };
 
   /**
    * @return {number} the number of huts which match all the filters.
    */
   hutmap.FilteredHuts.prototype.get_filtered_huts_count = function() {
-    throw "not implemented";
+    if (this.recompute_filtered_huts)  {
+      this._compute_filtered_huts();
+    }
+    return this.filtered_huts.length;
   };
 
   /** Huts */
