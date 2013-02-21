@@ -20,7 +20,11 @@ goog.scope(function() {
   var structs = goog.structs;
 
   /**
-   * Applies a set of filters to a set of huts to obtain a new set of huts.
+   * Applies a set of filters to a set of huts to obtain a filtered set of huts.
+   * FilteredHuts publishes two events:
+   *  - hutmap.FilteredHuts.EventType.HUTS_CHANGED when the huts are modified
+   *  - hutmap.FilteredHuts.EventType.FILTERS_CHANGED when the filters are
+   *    modified.
    *
    * @param {Array.<hutmap.Hut>} huts a list of hutmap.Hut objects
    * @param {Object.<string, hutmap.Filter>} filters an object mapping field
