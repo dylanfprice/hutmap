@@ -12,7 +12,7 @@ def generate_deps():
   """Generate deps.js"""
   calc_deps = join(config.CLOSURE_LIBRARY, 'closure', 'bin', 'calcdeps.py')
 
-  deps_file = join(config.JS_DEST, 'deps.js')
+  deps_file = join(config.PUBLIC_DEV_PATH, 'deps.js')
   subprocess.check_call(
       ['python', calc_deps, 
        '--dep={0}'.format(config.CLOSURE_LIBRARY),

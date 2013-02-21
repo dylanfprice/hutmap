@@ -25,7 +25,6 @@ goog.addDependency("../../../../../src/js/hutmap_old/map/map.js", ['hutmap.map.M
 goog.addDependency("../../../../../src/js/hutmap_old/init/map-init.js", ['hutmap.map'], ['hutmap.History', 'hutmap.Huts', 'hutmap.Search', 'hutmap.consts', 'hutmap.map.Map', 'goog.array', 'goog.debug.Logger', 'goog.dom', 'goog.style', 'goog.ui.Zippy', 'goog.ui.TwoThumbSlider']);
 goog.addDependency("../../../../../src/js/hutmap_old/init/index-init.js", ['hutmap.index'], ['hutmap.Search']);
 goog.addDependency("../../../../../src/js-test/alltests.js", [], []);
-goog.addDependency("../../../../../src/js-test/deps.js", [], []);
 goog.addDependency("../../../../../src/js-test/hutmap/templates_test.js", [], ['hutmap.templates', 'hutmap.test_data', 'goog.testing.jsunit']);
 goog.addDependency("../../../../../src/js-test/hutmap/filtered_huts_test.js", [], ['hutmap.Agency', 'hutmap.BooleanFilter', 'hutmap.CompareFilter', 'hutmap.CompareType', 'hutmap.FilterType', 'hutmap.FilteredHuts', 'hutmap.Hut', 'hutmap.RangeFilter', 'hutmap.Region', 'hutmap.SetFilter', 'hutmap.test_data', 'goog.array', 'goog.events', 'goog.structs.Map', 'goog.testing.jsunit']);
 goog.addDependency("../../../../../src/js-test/hutmap/test_data.js", ['hutmap.test_data'], ['hutmap.Hut', 'hutmap.Agency', 'hutmap.Region']);
