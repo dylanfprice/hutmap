@@ -14,8 +14,7 @@ PUBLIC_PATH = join(BASE_PATH, 'public')
 JS_DEST = join(PUBLIC_PATH, 'static', 'js')
 CSS_DEST = join(PUBLIC_PATH, 'static', 'css')
 
-PUBLIC_DEV_PATH = join(PUBLIC_PATH, 'dev')
-CLOSURE_LIBRARY = join(PUBLIC_DEV_PATH, 'closure-library')
+CLOSURE_LIBRARY = join(JS_PATH, 'third-party', 'closure-library')
 CLOSURE_COMPILER = os.environ['HUTMAP_CLOSURE_COMPILER']
 CLOSURE_TEMPLATES = os.environ['HUTMAP_CLOSURE_TEMPLATES']
 DEV_PATH = os.environ['HUTMAP_DEV_PATH']
