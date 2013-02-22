@@ -4,7 +4,7 @@ goog.require('hutmap.test_data');
 goog.require('goog.testing.jsunit');
 
 
-setUp = function() {
+var setUp = function() {
   var td = hutmap.test_data;
   this.empty_hut = td.empty_hut();
   this.incomplete_hut = td.incomplete_hut0();
