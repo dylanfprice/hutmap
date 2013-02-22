@@ -21,10 +21,11 @@ goog.scope(function() {
 
   /**
    * Applies a set of filters to a set of huts to obtain a filtered set of huts.
-   * FilteredHuts publishes two events:
+   * FilteredHuts fires two types of events:
    *  - hutmap.FilteredHuts.EventType.HUTS_CHANGED when the huts are modified
    *  - hutmap.FilteredHuts.EventType.FILTERS_CHANGED when the filters are
    *    modified.
+   * Neither of these events carry any extra data when they are fired.
    *
    * @param {Array.<hutmap.Hut>} huts a list of hutmap.Hut objects
    * @param {Object.<string, hutmap.Filter>} filters an object mapping field
