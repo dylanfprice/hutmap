@@ -78,25 +78,12 @@ end
 
 ## Install dev dependencies ##
 
-package "subversion" do
-  action :install
-end
-
 package "unzip" do
   action :install
 end
 
 package "openjdk-6-jre" do
   action :install
-end
-
-bash "download closure-library" do
-  code <<-EOH
-  cd #{node[:install_dir]}
-  svn checkout http://closure-library.googlecode.com/svn/trunk/ closure-library && \
-  chmod -R 755 closure-library/
-  EOH
-  not_if { File.exists?("#{node[:install_dir]}/closure-library/closure/bin/build/closurebuilder.py") }
 end
 
 bash "download closure-compiler" do
