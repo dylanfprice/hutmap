@@ -37,26 +37,26 @@
   float: left;
   height: 50px;
   padding: 5px;
-  width: 220px;
+  width: 230px;
 }
 
-.huts .hut .title h5 {
-  line-height: 16px;
+.huts .hut div.meta-small {
+  width: 180px;
+}
+
+.huts .hut div.title h5 {
   margin: 2px 0px 2px;
-}
-
-.huts .hut h6 {
-  line-height: 14px;
-  margin: 1px 0px 1px;
+  font-size: 130%;
 }
 
 .huts .hut div.title h6 {
+  margin: 1px 0px 1px;
   font-style: italic;
+  font-size: 100%;
 }
 
 .huts .hut div.meta table td {
   line-height: 14px;
-  font-size: 12.75px;
   padding: 4px 7px 4px;
   color: rgb(45, 45, 45);
 }

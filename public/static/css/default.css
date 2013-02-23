@@ -57,7 +57,9 @@ body {
 }
 
 #navbar-search {
-  float:right;
+  position: absolute;
+  right: 0px;
+  z-index: 0;
 }
 
 #navbar-search input {
@@ -68,15 +70,20 @@ body {
   padding-right:29px;
 }
 
-#navbar-search span {
+#navbar-search span,
+#navbar-search .search-button {
   position:absolute;
-  top:7px;
-  right:11px;
+  top:4px;
+  right: 11px;
+  z-index: 10;
 }
 
-#navbar-search span input {
-  width:inherit;
+#navbar-search .search-button {
+  width:15px;
   height:inherit;
+  z-index: 20;
+  padding: 0;
+  margin: 0;
 }
 
 /* /navbar */
