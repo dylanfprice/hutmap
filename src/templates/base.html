@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <title>{% block title %}Hutmap{% endblock title %}</title>
@@ -8,6 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
+  <link href='http://fonts.googleapis.com/css?family=Vollkorn:400,400italic,700' rel='stylesheet' type='text/css'>
   <link href="/static/css/bootstrap.css" rel="stylesheet">
   <link href="/static/css/default.css" rel="stylesheet">
   {% block styles %}{% endblock styles %}
@@ -40,12 +42,10 @@
         {% endblock navbar %}
       </ul>
       <form id="navbar-search" class="navbar-search pull-right">
-        <input type="text" class="search-query" placeholder="Search huts by name or location...">
-        <span class="icon-search">
-          <input type="submit" class="transparent" />
-        </span>
+        <input type="text" class="search-query" placeholder="Search huts by name or location..." />
+        <span class="icon-search"></span>
+        <input id="test" type="submit" class="search-button transparent" />
       </form>
-
     </div>
   </div>
 
