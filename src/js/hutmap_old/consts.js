@@ -1,4 +1,4 @@
-goog.provide('hutmap.consts')
+//goog.provide('hutmap.consts')
 
 hutmap.consts.EARTH_MEAN_RADIUS_MILES = 3959;
 

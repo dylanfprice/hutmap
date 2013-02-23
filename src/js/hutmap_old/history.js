@@ -1,4 +1,4 @@
-goog.provide('hutmap.History');
+//goog.provide('hutmap.History');
 
 goog.require('goog.Uri.QueryData');
 goog.require('goog.debug.Logger');

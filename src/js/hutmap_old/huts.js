@@ -1,4 +1,4 @@
-goog.provide('hutmap.Huts');
+//goog.provide('hutmap.Huts');
 
 goog.require('goog.array');
 goog.require('goog.events');

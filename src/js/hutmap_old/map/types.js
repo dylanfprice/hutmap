@@ -1,4 +1,4 @@
-goog.provide('hutmap.map.Types')
+//goog.provide('hutmap.map.Types')
 
 /**
  * Defines custom map types which can be displayed on a google map.

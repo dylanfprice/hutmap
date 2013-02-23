@@ -1,4 +1,4 @@
-goog.provide('hutmap.Ajax');
+//goog.provide('hutmap.Ajax');
 
 goog.require('goog.dom');
 goog.require('goog.net.XhrIo');

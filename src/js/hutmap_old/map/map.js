@@ -1,4 +1,4 @@
-goog.provide('hutmap.map.Map');
+//goog.provide('hutmap.map.Map');
 
 goog.require('goog.Uri.QueryData');
 goog.require('goog.array');

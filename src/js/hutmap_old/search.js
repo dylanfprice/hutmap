@@ -1,4 +1,4 @@
-goog.provide('hutmap.Search');
+//goog.provide('hutmap.Search');
 
 goog.require('goog.debug.Logger');
 goog.require('goog.dom.DomHelper');

@@ -1,4 +1,4 @@
-goog.provide('hutmap.consts.g')
+//goog.provide('hutmap.consts.g')
 
 /**
  * Constants from the server-side of things.
