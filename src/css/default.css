@@ -12,6 +12,17 @@ body {
   border-color: transparent;
 }
 
+.visuallyhidden {
+  border: 0 none;
+  clip: rect(0px, 0px, 0px, 0px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -43,11 +54,6 @@ body {
   zoom: 1; 
 }
 
-#top_unit {
-  background-image: url('/static/img/mint-hut.jpg');
-  color: black;
-}
-
 /* navbar */
 
 #navbar .brand img {
@@ -56,50 +62,33 @@ body {
   margin-right: 3px;
 }
 
-#navbar-search {
-  position: absolute;
-  right: 0px;
-  z-index: 0;
-}
-
 #navbar-search input {
-  line-height:15px;
-  height:15px;
-  margin-top:2px;
-  margin-bottom:2px;
-  padding-right:29px;
+  padding-right: 20px;
 }
 
-#navbar-search span,
-#navbar-search .search-button {
-  position:absolute;
-  top:4px;
-  right: 11px;
+#navbar-search .search-icon {
+  cursor: pointer;
+  display: block;
+  height: 100%;
+  width: 30px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 5;
+}
+
+#navbar-search .search-icon .icon-search {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+}
+
+#navbar-search .search-icon button {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  right: 0px;
   z-index: 10;
-}
-
-#navbar-search .search-button {
-  width:15px;
-  height:inherit;
-  z-index: 20;
-  padding: 0;
-  margin: 0;
-}
-
-/* /navbar */
-
-.vertical_gradient {
-  /* IE10 Consumer Preview */ 
-  background-image: -ms-linear-gradient(top, rgb(3, 60, 115) 0%, #FFFFFF 100%);
-  /* Mozilla Firefox */ 
-  background-image: -moz-linear-gradient(top, rgb(3, 60, 115) 0%, #FFFFFF 100%);
-  /* Opera */ 
-  background-image: -o-linear-gradient(top, rgb(3, 60, 115) 0%, #FFFFFF 100%);
-  /* Webkit (Safari/Chrome 10) */ 
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgb(3, 60, 115)), color-stop(1.0, #FFFFFF));
-  /* Webkit (Chrome 11+) */ 
-  background-image: -webkit-linear-gradient(top, rgb(3, 60, 115) 0%, #FFFFFF 100%);
-  /* W3C Markup, IE10 Release Preview */ 
-  background-image: linear-gradient(to bottom, rgb(3, 60, 115) 0%, #FFFFFF 100%);
 }
 
