@@ -28,7 +28,7 @@ def build_js():
 
   subprocess.check_call(
     ['python', closure_builder, 
-     '--root={0}'.format(config.CLOSURE_LIBRARY),
+     #'--root={0}'.format(config.CLOSURE_LIBRARY),
      '--root={0}'.format(config.JS_PATH),
      #'--namespace={0}'.format('hutmap.map'),
      #'--namespace={0}'.format('hutmap.index'),
