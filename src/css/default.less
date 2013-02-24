@@ -1,0 +1,101 @@
+body {
+  background-image: url('/static/img/gray-jean.png');
+}
+
+.hide {
+  display: none;
+}
+
+.transparent {
+  color: transparent; 
+  background-color: transparent; 
+  border-color: transparent;
+}
+
+.visuallyhidden {
+  border: 0 none;
+  clip: rect(0px, 0px, 0px, 0px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.floatright {
+  float: right !important;
+}
+
+.up1 {
+  position: relative;
+  top: -1px;
+}
+
+.up2 {
+  position: relative;
+  top: -2px;
+}
+
+.clearfix { 
+  zoom: 1; 
+  &:before, &:after {
+    content: ""; 
+    display: table; 
+    // Fixes Opera/contenteditable bug:
+    // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
+    line-height: 0;
+  }
+  &:after {
+    clear: both; 
+  }
+}
+
+/* navbar */
+
+#navbar {
+  .brand img {
+    width: 18px;
+    height: 18px;
+    margin-right: 3px;
+  }
+
+  #navbar-search {
+    input {
+      padding-right: 20px;
+    }
+
+    .search-icon {
+      cursor: pointer;
+      display: block;
+      height: 100%;
+      width: 30px;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      z-index: 5;
+
+      .icon-search {
+        position: absolute;
+        top: 6px;
+        right: 10px;
+        color: @grayLight;
+      }
+
+      button {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        z-index: 10;
+      }
+
+    }
+  }
+}
+
