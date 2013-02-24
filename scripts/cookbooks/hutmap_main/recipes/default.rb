@@ -86,6 +86,28 @@ package "openjdk-6-jre" do
   action :install
 end
 
+bash "install node and less" do
+  code <<-EOH
+  cd #{node[:install_dir]}
+  wget http://nodejs.org/dist/v0.8.20/node-v0.8.20-linux-x86.tar.gz && \
+  tar -xzf node-v0.8.20-linux-x86.tar.gz && \
+  rm node-v0.8.20-linux-x86.tar.gz && \
+  mv node-v0.8.20-linux-x86 node && \
+  chmod -R 755 node && \
+  cd node/bin/ && \
+  ./npm install -g less
+  EOH
+  not_if { File.exists?("#{node[:install_dir]}/node/bin/node") }
+end
+
+bash "install shovel, argparse, bottle" do
+  code <<-EOH
+  pip install shovel
+  pip install argparse
+  pip install bottle
+  EOH
+end
+
 bash "download closure-compiler" do
   code <<-EOH
   cd #{node[:install_dir]}
