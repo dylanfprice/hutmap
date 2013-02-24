@@ -1,13 +1,15 @@
-from os.path import join
+from os.path import join, dirname, normpath
+import imp
 import os
 import subprocess
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'make.generate.django_settings'
+path = normpath(join(dirname(__file__)))
+config = imp.load_source('config', join(path, '..', 'config.py'))
+util = imp.load_source('util', join(path, 'util.py'))
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'django_settings'
 from django.contrib.gis.db import models
 from django.template.loader import render_to_string
-
-import make.config as config
-import util
 
 def generate_soy():
   """Generates templates.js"""

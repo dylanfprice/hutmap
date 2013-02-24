@@ -1,12 +1,14 @@
-from os.path import join, relpath
+from os.path import join, relpath, normpath, dirname
+import imp
 import os
 import subprocess
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'make.generate.django_settings'
-from django.template.loader import render_to_string
+path = normpath(join(dirname(__file__)))
+config = imp.load_source('config', join(path, '..', 'config.py'))
+util = imp.load_source('util', join(path, 'util.py'))
 
-import make.config as config
-import util
+os.environ['DJANGO_SETTINGS_MODULE'] = 'django_settings'
+from django.template.loader import render_to_string
 
 def generate_deps():
   """Generate deps.js"""
