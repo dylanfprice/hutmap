@@ -27,9 +27,16 @@
      */
     var MapController = function($scope, $element, $attrs) {
 
-      this._id = getMapId($element);
+      var mapId = $attrs.mapId;
+      if (!mapId) { throw 'map must have non-empty mapId attribute'; }
+
+      var mapDiv = $element.find('[id]');
+      mapDiv.attr('id', mapId);
+      console.log(mapDiv);
+
+      this._id = getMapId(mapDiv);
       var config = this._getConfig(this._id, $scope, gMConfig, gMCDefaults);
-      this._map = this._createMap(this._id, $element.find('#map'), config, gMContainer);
+      this._map = this._createMap(this._id, mapDiv, config, gMContainer);
       this.markers = {};
       this.dragging = false;
 
@@ -85,7 +92,7 @@
 
 
     // Constant for toUrlValue() of google.maps.LatLng
-    MapController.precision = 3;
+    MapController.precision = 4;
 
 
     MapController.prototype._getConfig = function(id, $scope, gMConfig, gMCDefaults) {
@@ -112,9 +119,6 @@
 
       // Merge configs
       angular.extend(finalConfig, extraConfig);
-
-      // Make sure noClear is true so we don't delete any child directives!
-      //finalConfig.noClear = true;
 
       return finalConfig;
     };
@@ -320,7 +324,7 @@
       restrict: 'AE',
       priority: 100,
       template: '<div>' + 
-                  '<div id="map" style="width:100%;height:100%;"></div>' + 
+                  '<div id="" style="width:100%;height:100%;"></div>' + 
                   '<div ng-transclude></div>' + 
                 '</div>',
       transclude: true,
