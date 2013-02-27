@@ -20,7 +20,7 @@ DATABASES = {
 SECRET_KEY = os.environ['HUTMAP_SECRET_KEY']
 
 DEBUG = os.getenv('HUTMAP_DEBUG', 'false').lower() != 'false'
-TEMPLATE_DEBUG = os.getenv('HUTMAP_TEMPLATE_DEBUG', 'false').lower() != 'false'
+TEMPLATE_DEBUG = DEBUG
 
 # Special setting for dreamhost account
 if node() == 'fulton':
