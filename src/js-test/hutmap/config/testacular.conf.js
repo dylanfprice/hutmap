@@ -10,6 +10,10 @@ files = [
   'unit/**/*.js'
 ];
 
+exclude = [
+  '../../js/hutmap/config.js' // references google.maps
+];
+
 autoWatch = true;
 
 browsers = ['Firefox'];
