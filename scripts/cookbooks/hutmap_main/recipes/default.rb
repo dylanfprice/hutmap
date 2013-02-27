@@ -78,10 +78,6 @@ end
 
 ## Install dev dependencies ##
 
-package "unzip" do
-  action :install
-end
-
 package "openjdk-6-jre" do
   action :install
 end
@@ -108,32 +104,12 @@ bash "install shovel, argparse, bottle" do
   EOH
 end
 
-bash "download closure-compiler" do
-  code <<-EOH
-  cd #{node[:install_dir]}
-  wget https://closure-compiler.googlecode.com/files/compiler-latest.zip && \
-  mkdir -p closure-compiler && \
-  unzip -d closure-compiler compiler-latest.zip && \
-  rm compiler-latest.zip && \
-  chmod -R 755 closure-compiler/
-  EOH
-  not_if { File.exists?("#{node[:install_dir]}/closure-compiler/compiler.jar") }
-end
-
-bash "download closure-templates" do
-  code <<-EOH
-  cd #{node[:install_dir]}
-  wget https://closure-templates.googlecode.com/files/closure-templates-for-javascript-latest.zip && \
-  mkdir -p closure-templates && \
-  unzip -d closure-templates/ closure-templates-for-javascript-latest.zip && \
-  rm closure-templates-for-javascript-latest.zip && \
-  chmod -R 755 closure-templates/
-  EOH
-  not_if { File.exists?("#{node[:install_dir]}/closure-templates/SoyToJsSrcCompiler.jar") }
-end
-
 
 ## Install libraries required by geodjango ##
+
+package "unzip" do
+  action :install
+end
 
 bash "install geos" do
   code <<-EOH

@@ -9,8 +9,7 @@
     Allow from all
   </Directory> 
 
-  Alias /dev/closure-library/ /vagrant/src/js/third-party/closure-library/
-  Alias /dev/deps.js /vagrant/src/js-test/deps.js
+  Alias /dev /vagrant/src
 
   LogLevel info
   ErrorLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
