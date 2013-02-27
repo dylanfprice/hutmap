@@ -11,7 +11,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'django_settings'
 from django.template.loader import render_to_string
 
 @task
-def generate_readme():
+def readme():
   """Generates README.md"""
   rendered = render_to_string('README.md', {})
   util.write_file(rendered, join(config.BASE_PATH, 'README.md'), remove_blank_lines=False)

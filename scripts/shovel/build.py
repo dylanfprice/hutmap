@@ -9,31 +9,36 @@ file = os.path.normpath(os.path.join(os.path.dirname(__file__), 'config.py'))
 config = imp.load_source('config', file)
 
 
-#TODO: rewrite to use closure compiler.jar
-#@task
-#def js():
-#  """Compiles javascript using closure"""
-#  closure_builder = join(config.CLOSURE_LIBRARY, 'closure', 
-#                         'bin', 'build', 'closurebuilder.py')
-#
-#  try:
-#    shutil.rmtree(config.JS_DEST, ignore_errors=True)
-#    os.makedirs(config.JS_DEST)
-#  except:
-#    pass
-#
-#  subprocess.check_call(
-#    ['python', closure_builder, 
-#     #'--root={0}'.format(config.CLOSURE_LIBRARY),
-#     '--root={0}'.format(config.JS_PATH),
-#     #'--namespace={0}'.format('hutmap.map'),
-#     #'--namespace={0}'.format('hutmap.index'),
-#     '--namespace={0}'.format('hutmap.test'),
-#     '--output_mode=compiled',
-#     '--compiler_jar={0}'.format(config.CLOSURE_COMPILER),
-#     '--output_file={0}'.format(join(config.JS_DEST, 'hutmap-compiled.js'))])
-#
-#  set_permissions(config.JS_DEST)
+@task
+def js():#(nomin=False): #TODO: add minification
+  """Compiles javascript using closure"""
+
+  try:
+    shutil.rmtree(config.JS_DEST, ignore_errors=True)
+    os.makedirs(config.JS_DEST)
+  except:
+    pass
+
+  js_files = []
+  for dirpath,dirnames,filenames in os.walk(join(config.JS_PATH, 'hutmap')):
+    for filename in filenames:
+      path = join(dirpath, filename)
+      if filename.endswith('js'):
+        if filename.startswith('app') or filename.startswith('module'):
+          js_files.insert(0, path)
+        else:
+          js_files.append(path)
+
+  cmd = ['java', '-jar', config.CLOSURE_COMPILER]
+  cmd.append('--js')
+  cmd.extend(' --js '.join(js_files).split(' '))
+  cmd.extend(['--compilation_level', 'WHITESPACE_ONLY'])
+  cmd.extend(['--js_output_file', '{0}/hutmap.min.js'.format(config.JS_DEST)])
+
+  subprocess.check_call(cmd)
+
+  set_permissions(config.JS_DEST)
+
 
 @task
 def css(nomin=False):
