@@ -3,9 +3,9 @@ basePath = '../';
 files = [
   JASMINE,
   JASMINE_ADAPTER,
-  '../../../deps/angular-seed/app/lib/angular/angular.js',
-  '../../../deps/angular-seed/app/lib/angular/angular-*.js',
+  'http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js',
   '../lib/angular/angular-mocks.js',
+  '../../js/hutmap/app.js',
   '../../js/hutmap/**/*.js',
   'unit/**/*.js'
 ];
