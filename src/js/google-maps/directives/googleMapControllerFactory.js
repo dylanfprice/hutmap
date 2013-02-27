@@ -24,7 +24,7 @@
     var MapController = function($scope, $element, $attrs) {
 
       var mapId = $attrs.mapId;
-      if (!mapId) { throw 'map must have non-empty mapId attribute'; }
+      if (!mapId) { throw 'googleMap must have non-empty mapId attribute'; }
 
       var mapDiv = $element.find('[id]');
       mapDiv.attr('id', mapId);
