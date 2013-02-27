@@ -11,11 +11,6 @@
 
     function link(scope, element, attrs, controller) {
       // Check what's defined in attrs
-      var hasOnMarkerSelected = false;
-
-      if (attrs.hasOwnProperty('onMarkerSelected')) {
-        hasOnMarkerSelected = true;
-      }
 
       // Add marker (testing only)
       var marker = new google.maps.Marker({
@@ -28,14 +23,12 @@
       controller.addMarker(marker);
 
       // Set up onMarkerSelected callbacks
-      if (hasOnMarkerSelected) {
-        var onMarkerSelected = $parse(attrs.onMarkerSelected);
-
+      if (scope.onMarkerSelected) {
         angular.forEach(controller.markers, function(marker, i) {
           google.maps.event.addListener(marker, 'click', function() {
             $timeout(function() {
               var locals = {'$marker': marker};
-              onMarkerSelected(scope.$parent, locals);
+              scope.onMarkerSelected(locals);
             });
           });
         });
@@ -46,7 +39,9 @@
     return {
       restrict: 'AE',
       priority: 100,
-      scope: false,
+      scope: {
+        onMarkerSelected: '&'
+      },
       require: '^googleMap',
       link: link
     };

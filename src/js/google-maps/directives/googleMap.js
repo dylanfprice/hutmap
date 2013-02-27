@@ -32,7 +32,6 @@
 
       var mapDiv = $element.find('[id]');
       mapDiv.attr('id', mapId);
-      console.log(mapDiv);
 
       this._id = getMapId(mapDiv);
       var config = this._getConfig(this._id, $scope, gMConfig, gMCDefaults);
@@ -179,8 +178,6 @@
       var hash = position.toUrlValue(MapController.precision);
       this.markers[hash] = marker;
       marker.setMap(this._map);
-      console.log(hash);
-      console.log(this.markers);
       return true;
     };      
 
@@ -195,7 +192,6 @@
         throw 'latLng was null';
 
       var hash = latLng.toUrlValue(MapController.precision);
-      console.log(hash);
       if (hash in this.markers) {
         return this.markers[hash];
       } else {
