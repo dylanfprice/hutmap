@@ -29,10 +29,25 @@
       return defer.promise;
     }
 
+    /**
+     * Removes map with given mapId from this container. Really only for
+     * testing since the google.maps.Map object still exists and is still bound
+     * to the DOM.
+     */
+    function removeMap(mapId) {
+      if (mapId in maps) {
+        delete maps[mapId];
+      }
+      if (mapId in defers) {
+        delete defers[mapId];
+      }
+    }
+
     return {
       addMap: addMap,
       getMap: getMap,
-      getMapPromise: getMapPromise
+      getMapPromise: getMapPromise,
+      removeMap: removeMap
     }
   }]);
 })();
