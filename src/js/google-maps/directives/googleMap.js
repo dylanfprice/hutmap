@@ -78,7 +78,6 @@
                 isNaN(newValue.lng));
             var changed = (newValue !== oldValue);
             if (ok && changed && !controller.dragging) {
-              console.log(ok, newValue);
               controller.center = new google.maps.LatLng(lat, lng);          
             }
           }
@@ -106,7 +105,6 @@
             });
             var changed = (newValue !== oldValue);
             if (ok && changed && !controller.dragging) {
-              console.log(ok, newValue);
               controller.bounds = new google.maps.LatLngBounds(
                 new google.maps.LatLng(values[0], values[1]),
                 new google.maps.LatLng(values[2], values[3]));
