@@ -19,11 +19,11 @@
 
       // Add marker (testing only)
       var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(46.87916, -120)
+        position: new google.maps.LatLng(46.8791, -120)
       });
       controller.addMarker(marker);
       marker = new google.maps.Marker({
-        position: new google.maps.LatLng(60, -122)
+        position: new google.maps.LatLng(46.8791, -120.0001)
       });
       controller.addMarker(marker);
 

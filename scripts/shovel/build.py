@@ -11,8 +11,7 @@ config = imp.load_source('config', file)
 
 @task
 def js():#(nomin=False): #TODO: add minification
-  """Compiles javascript using closure"""
-
+  """Minifies javascript using closure"""
   try:
     shutil.rmtree(config.JS_DEST, ignore_errors=True)
     os.makedirs(config.JS_DEST)
@@ -20,7 +19,14 @@ def js():#(nomin=False): #TODO: add minification
     pass
 
   js_files = []
-  for dirpath,dirnames,filenames in os.walk(join(config.JS_PATH, 'hutmap')):
+  for dirpath,dirnames,filenames in os.walk(config.JS_PATH, topdown=True):
+    if 'hutmap_old' in dirnames:
+      i = dirnames.index('hutmap_old')
+      del dirnames[i]
+    if 'third-party' in dirnames:
+      i = dirnames.index('third-party')
+      del dirnames[i]
+      
     for filename in filenames:
       path = join(dirpath, filename)
       if filename.endswith('js'):
