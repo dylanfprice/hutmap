@@ -32,7 +32,7 @@
       this._id = getMapId(mapDiv);
       var config = this._getConfig(this._id, $scope, gMConfig, gMCDefaults);
       this._map = this._createMap(this._id, mapDiv, config, gMContainer);
-      this.markers = {};
+      this._markers = {};
       this.dragging = false;
 
       Object.defineProperty(this, 'center', {
@@ -93,7 +93,7 @@
     MapController.prototype._getConfig = function(id, $scope, gMConfig, gMCDefaults) {
       // Get config or defaults
       var finalConfig = {};
-      if (id in gMConfig.maps) {
+      if (gMConfig.maps && id in gMConfig.maps) {
         finalConfig = gMConfig.maps[id];
       } else {
         finalConfig = gMCDefaults.maps['default'];
@@ -125,7 +125,7 @@
         map = gMContainer.addMap(id, element[0], config);
       } else {
         throw 'A map with id ' + id + ' already exists. You must use' +
-          'different ids for each instance of the googleMap directive.';
+          ' different ids for each instance of the googleMap directive.';
       }
       return map;
     };
@@ -172,7 +172,7 @@
       }
       
       var hash = position.toUrlValue(MapController.precision);
-      this.markers[hash] = marker;
+      this._markers[hash] = marker;
       marker.setMap(this._map);
       return true;
     };      
@@ -188,8 +188,8 @@
         throw 'latLng was null';
 
       var hash = latLng.toUrlValue(MapController.precision);
-      if (hash in this.markers) {
-        return this.markers[hash];
+      if (hash in this._markers) {
+        return this._markers[hash];
       } else {
         return null;
       }
@@ -202,12 +202,12 @@
 
       var removed = false;
       var hash = latLng.toUrlValue(MapController.precision);
-      var marker = this.markers[hash];
+      var marker = this._markers[hash];
       if (marker) {
         marker.setMap(null);
         removed = true;
       }
-      this.markers[hash] = null;
+      this._markers[hash] = null;
       return removed;
     };
 
@@ -215,7 +215,7 @@
     MapController.prototype.fitToMarkers = function () {
       var bounds = new google.maps.LatLngBounds();
 
-      angular.forEach(this.markers, function (m, i) {
+      angular.forEach(this._markers, function (m, i) {
         bounds.extend(m.getPosition());
       });
 
