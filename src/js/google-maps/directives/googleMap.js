@@ -71,11 +71,16 @@
       
       if (hasCenter) {
         scope.$watch('center', function (newValue, oldValue) {
-          var ok = (newValue != null && !isNaN(newValue));
-          var changed = (newValue !== oldValue);
-          if (ok && changed && !controller.dragging) {
-            controller.center = new google.maps.LatLng(newValue.lat, 
-                newValue.lng);          
+          if (newValue != null) {
+            var lat = newValue.lat;
+            var lng = newValue.lng;
+            var ok = !(lat == null || lng == null) && !(isNaN(newValue.lat) ||
+                isNaN(newValue.lng));
+            var changed = (newValue !== oldValue);
+            if (ok && changed && !controller.dragging) {
+              console.log(ok, newValue);
+              controller.center = new google.maps.LatLng(lat, lng);          
+            }
           }
         }, true);
       }
@@ -91,12 +96,21 @@
 
       if (hasBounds) {
         scope.$watch('bounds', function(newValue, oldValue) {
-          var ok = (newValue != null && !isNaN(newValue));
-          var changed = (newValue !== oldValue);
-          if (ok && changed && !controller.dragging) {
-            controller.bounds = new google.maps.LatLngBounds(
-              new google.maps.LatLng(newValue.southWest),
-              new google.maps.LatLng(newValue.northEast));
+          if (newValue != null && newValue.southWest && newValue.northEast) {
+            var values = [newValue.southWest.lat, newValue.southWest.lng,
+              newValue.northEast.lat, newValue.northEast.lng];
+            var ok = true;
+            angular.forEach(values, function(value, i) {
+              if (value == null || isNaN(value))
+                ok = false;
+            });
+            var changed = (newValue !== oldValue);
+            if (ok && changed && !controller.dragging) {
+              console.log(ok, newValue);
+              controller.bounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(values[0], values[1]),
+                new google.maps.LatLng(values[2], values[3]));
+            }
           }
         });
       }

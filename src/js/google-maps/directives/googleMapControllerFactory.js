@@ -40,7 +40,7 @@
                return this._map.getCenter();
              },
         set: function(center) {
-               if (!isLatLngNullOrNaN(center)) 
+               if (isLatLngNullOrNaN(center)) 
                  throw 'center contains null or NaN';
                var changed = !latLngEqual(this.center, center);
                if (changed) {
