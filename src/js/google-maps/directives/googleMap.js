@@ -24,9 +24,15 @@
         scope.bounds = {};
       }
 
+      // Make sure mapId is defined
+      // Note: redundant check in MapController. Can't hurt.
+      if (!attrs.hasOwnProperty('mapId')) {
+        throw 'googleMap must have non-empty mapId attribute';
+      }
+
       // Check what's defined in attrs
-      // NOTE: this is redundant since angular will throw an exception if these
-      // attributes are not set. I may make these optional in the future
+      // Note: this is also redundant since angular will throw an exception if
+      // these attributes are not set. I may make these optional in the future
       // (pending angular support).
       var hasCenter = false;
       var hasZoom = false;
