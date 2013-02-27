@@ -25,6 +25,9 @@
       }
 
       // Check what's defined in attrs
+      // NOTE: this is redundant since angular will throw an exception if these
+      // attributes are not set. I may make these optional in the future
+      // (pending angular support).
       var hasCenter = false;
       var hasZoom = false;
       var hasBounds = false;
