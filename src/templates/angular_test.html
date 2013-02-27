@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load verbatim %}
+
+{% block styles %}
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places,geometry&key=AIzaSyDKzNYkeusCcplMH7XWA9l0QLZ8Cwn01_M"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
+  <script src="/static/js/hutmap/app.js"></script>
+  <script src="/static/js/hutmap/config.js"></script>
+  <script src="/static/js/hutmap/controllers.js"></script>
+  <!--
+  <script src="/static/js/hutmap/services.js"></script>
+  <script src="/static/js/hutmap/filters.js"></script>
+  <script src="/static/js/hutmap/directives.js"></script>
+  -->
+  <script src="/static/js/hutmap/google-maps/module.js"></script>
+  <script src="/static/js/hutmap/google-maps/services/googleMapsUtils.js"></script>
+  <script src="/static/js/hutmap/google-maps/services/googleMapsContainer.js"></script>
+  <script src="/static/js/hutmap/google-maps/directives/googleMap.js"></script>
+  <script src="/static/js/hutmap/google-maps/directives/googleMapMarkers.js"></script>
+{% endblock %}
+
+{% block content %}
+{% verbatim %}
+<div ng-app="hutmap" ng-cloak>
+  <div ng-controller="MapCtrl">
+    <div class="row">
+      <div class="hut-sidebar">
+        <h4>Click to add a marker!</h4>
+        <p>{{center}}</p>
+        <p>{{zoom}}</p>
+        <p>{{bounds}}</p>
+        <p>{{selectedMarker.getPosition().lat()}}</p>
+        <span class="btn" ng-click="log()">Log</span>
+        <!--
+        <ul>
+          <li ng-repeat="marker in markers">
+            <span class="btn" ng-click="gmap.panTo(marker.getPosition())">Pan to Marker {{$index}}</a>
+          </li>
+        </ul>
+        -->
+         
+        <!-- this is the confusing part. we have to point the map marker directive
+        at an existing google.maps.Marker object, so it can hook up events -->
+        <!--
+        <div ng-repeat="marker in markers" ui-map-marker="markers[$index]"
+          ui-event="{
+           'map-click': 'openMarkerInfo(marker)',
+           'map-mouseover': 'marker.setAnimation(google.maps.Animation.BOUNCE)',
+           'map-mouseout': 'setAnimation(marker, false)'}">
+        </div>
+         
+        <div ui-map-info-window="infoWindow">
+          <h1>Marker</h1>
+          Lat: <input ng-model="currentMarkerLat">, Lng: <input ng-model="currentMarkerLng">
+          <a ng-click="setMarkerPosition(currentMarker, currentMarkerLat, currentMarkerLng)">Set Position</a>
+        </div>
+        -->
+      </div>
+      <google-map id="map_canvas" center="center" zoom="zoom" bounds="bounds" class="map">
+        <google-map-markers on-marker-selected="selectedMarker = $marker"></google-map-markers>
+      </google-map>
+    </div>
+  </div>
+
+</div>
+{% endverbatim %}
+{% endblock %}
