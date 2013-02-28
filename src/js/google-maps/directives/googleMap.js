@@ -26,6 +26,9 @@
    * necessary. All three have bi-directional association, i.e. drag or zoom
    * the map and they will update, update them and the map will change. 
    *
+   * Configuration of the map (the google.maps.MapOptions) is done through the
+   * googleMapsConfig service, see module.js for more information.
+   *
    * If you need to get a handle on the google.maps.Map object, see
    * googleMapsContainer.js
    *

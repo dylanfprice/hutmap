@@ -3,6 +3,9 @@
 (function () {
   angular.module('google-maps').
 
+  /**
+   * Common utility functions.
+   */
   factory('googleMapsUtils', [function() {
 
     /**

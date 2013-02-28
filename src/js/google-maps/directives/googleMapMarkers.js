@@ -4,7 +4,7 @@
   angular.module('google-maps').
 
   /**
-   * Modified version of Nicolas Laplante's angular-google-maps directive
+   * Inspired by Nicolas Laplante's angular-google-maps directive
    * https://github.com/nlaplante/angular-google-maps
    */
   directive('googleMapMarkers', ['$timeout', '$parse', function($timeout, $parse) {
@@ -13,13 +13,13 @@
       // Check what's defined in attrs
 
       // Add marker (testing only)
-      var marker = new google.maps.Marker({
+      var marker = {
         position: new google.maps.LatLng(46.8791, -120)
-      });
+      };
       controller.addMarker(marker);
-      marker = new google.maps.Marker({
+      marker = {
         position: new google.maps.LatLng(46.8791, -120.0001)
-      });
+      };
       controller.addMarker(marker);
 
       // Set up onMarkerSelected callbacks

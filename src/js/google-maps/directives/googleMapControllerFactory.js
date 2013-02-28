@@ -3,6 +3,10 @@
 (function () {
   angular.module('google-maps').
 
+  /**
+   * Directive controller which is owned by the googleMap directive and shared
+   * among all other google maps directives.
+   */
   factory('googleMapControllerFactory', ['googleMapsUtils', 'googleMapsConfig', 'googleMapsConfigDefaults', 'googleMapsContainer',  
     function (googleMapsUtils, googleMapsConfig, googleMapsConfigDefaults, googleMapsContainer) {
 
