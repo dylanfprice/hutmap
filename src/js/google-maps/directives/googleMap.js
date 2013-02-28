@@ -157,7 +157,8 @@
       scope: {
         center: '=',
         zoom: '=',
-        bounds: '='
+        bounds: '=',
+        mapOptions: '&'
       },
       controller: googleMapControllerFactory.MapController,
       link: link

@@ -7,7 +7,7 @@
    * Directive controller which is owned by the googleMap directive and shared
    * among all other google maps directives.
    */
-  factory('googleMapControllerFactory', ['googleMapsUtils', 'googleMapsDefaults', 'googleMapsContainer',  
+  factory('googleMapControllerFactory', ['googleMapsUtils', 'googleMapsDefaults', 'googleMapsContainer',
     function (googleMapsUtils, googleMapsDefaults, googleMapsContainer) {
 
     /** aliases */
@@ -32,7 +32,7 @@
       var mapDiv = $element.find('[id]');
       mapDiv.attr('id', mapId);
 
-      var config = this._getConfig($attrs, gMDefaults);
+      var config = this._getConfig($scope, gMDefaults);
 
       // 'private' properties
       this._map = this._createMap(mapId, mapDiv, config, gMContainer);
@@ -94,16 +94,11 @@
     MapController.precision = 4;
 
 
-    MapController.prototype._getConfig = function($attrs, gMDefaults) {
+    MapController.prototype._getConfig = function($scope, gMDefaults) {
       // Get config or defaults
-      var configStr = $attrs.mapOptions;
       var defaults = gMDefaults.mapOptions;
       var config = {};
-      if (configStr) {
-        angular.extend(config, defaults, angular.fromJson(configStr));
-      } else {
-        config = defaults;
-      }
+      angular.extend(config, defaults, $scope.mapOptions());
       return config;
     };
 
