@@ -11,7 +11,11 @@
     function ($timeout, googleMapsUtils, googleMapControllerFactory) {
   
     /** aliases **/
+    var objToLatLng = googleMapsUtils.objToLatLng;
+    var objToBounds = googleMapsUtils.objToBounds;
     var latLngToObj = googleMapsUtils.latLngToObj;
+    var boundsToObj = googleMapsUtils.boundsToObj;
+
 
     /** link function **/
 
@@ -61,10 +65,7 @@
               if (hasBounds) {
                 var b = controller.bounds;
                 if (b) {
-                  scope.bounds = {
-                    southWest: latLngToObj(b.getSouthWest()),
-                    northEast: latLngToObj(b.getNorthEast())
-                  };
+                  scope.bounds = boundsToObj(b);
                 }
               }
             });
@@ -80,15 +81,11 @@
       
       if (hasCenter) {
         scope.$watch('center', function (newValue, oldValue) {
-          if (newValue != null) {
-            var lat = newValue.lat;
-            var lng = newValue.lng;
-            var ok = !(lat == null || lng == null) && !(isNaN(newValue.lat) ||
-                isNaN(newValue.lng));
-            var changed = (newValue !== oldValue);
-            if (ok && changed && !controller.dragging) {
-              controller.center = new google.maps.LatLng(lat, lng);          
-            }
+          var changed = (newValue !== oldValue);
+          if (changed && !controller.dragging) {
+            var latLng = objToLatLng(newValue);
+            if (latLng)
+              controller.center = latLng;
           }
         }, true);
       }
@@ -104,20 +101,11 @@
 
       if (hasBounds) {
         scope.$watch('bounds', function(newValue, oldValue) {
-          if (newValue != null && newValue.southWest && newValue.northEast) {
-            var values = [newValue.southWest.lat, newValue.southWest.lng,
-              newValue.northEast.lat, newValue.northEast.lng];
-            var ok = true;
-            angular.forEach(values, function(value, i) {
-              if (value == null || isNaN(value))
-                ok = false;
-            });
-            var changed = (newValue !== oldValue);
-            if (ok && changed && !controller.dragging) {
-              controller.bounds = new google.maps.LatLngBounds(
-                new google.maps.LatLng(values[0], values[1]),
-                new google.maps.LatLng(values[2], values[3]));
-            }
+          var changed = (newValue !== oldValue);
+          if (changed && !controller.dragging) {
+            var bounds = objToBounds(newValue);
+            if (bounds)
+              controller.bounds = bounds; 
           }
         });
       }
