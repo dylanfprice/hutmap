@@ -7,30 +7,6 @@
 
   constant('hutmapMapId', 'map_canvas').
 
-  value('googleMapsConfig', {
-    maps: {
-      'map_canvas': {
-        zoom : 8,
-        center : new google.maps.LatLng(46.87916, -120),
-        mapTypeId : google.maps.MapTypeId.TERRAIN
-      }
-    },
-    markerTypes: {
-      'hut': {
-        //icon: 'http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_gray.png'
-      },
-      'filtered-hut': {
-        //icon: 'http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_red.png'
-      }
-    },
-    selectedMarker: {
-      //icon: 'http://www.google.com/mapfiles/ms/micons/red.png'
-    },
-    getLatLng: function(hut) {
-      // TODO
-    }
-  }).
-  
   /**
    * Add new map types to our Google Map.
    */
