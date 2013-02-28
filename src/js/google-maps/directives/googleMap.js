@@ -11,19 +11,24 @@
    *
    * myMapId:       just a string that is a unique identifier for your map (you may
    *                have multiple maps/instances of the directive)
+   *
    * myCenter:      name that you want a center variable in the current scope to
    *                have. The value will be of the form { lat: 40, lng: -120 } 
+   *
    * myZoom:        name that you want for a zoom variable in the current scope.
    *                Value will be an integer.
+   *
    * myBounds:      name that you want for a bounds variable in the current scope.
    *                Value will be of the form { 
    *                  southWest: { lat: 40, lng: -120 }, 
    *                  northEast: { lat: 40, lng: -120 }
    *                }
-   * myMapOptions:  object literal that is a google.maps.MapOptions object. If
-   *                unspecified, will use the values in
-   *                googleMapsDefaults.mapOptions.  'googleMapsDefaults' is a
-   *                service, so it is both injectable and overrideable.
+   *
+   * myMapOptions:  object in the current scope that is a
+   *                google.maps.MapOptions object. If unspecified, will use the
+   *                values in googleMapsDefaults.mapOptions.
+   *                'googleMapsDefaults' is a service, so it is both injectable
+   *                and overrideable.
    *
    * All attributes expect mapOptions are required. The myCenter, myZoom, and
    * myBounds variables do not have to exist in the current scope--they will be
