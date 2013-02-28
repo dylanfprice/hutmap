@@ -29,10 +29,13 @@
       var mapDiv = $element.find('[id]');
       mapDiv.attr('id', mapId);
 
+      // 'private' properties
       this._id = getMapId(mapDiv);
       var config = this._getConfig(this._id, $scope, gMConfig, gMCDefaults);
       this._map = this._createMap(this._id, mapDiv, config, gMContainer);
       this._markers = {};
+
+      // public properties
       this.dragging = false;
 
       Object.defineProperty(this, 'center', {
