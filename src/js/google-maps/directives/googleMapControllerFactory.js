@@ -7,16 +7,15 @@
    * Directive controller which is owned by the googleMap directive and shared
    * among all other google maps directives.
    */
-  factory('googleMapControllerFactory', ['googleMapsUtils', 'googleMapsConfig', 'googleMapsConfigDefaults', 'googleMapsContainer',  
-    function (googleMapsUtils, googleMapsConfig, googleMapsConfigDefaults, googleMapsContainer) {
+  factory('googleMapControllerFactory', ['googleMapsUtils', 'googleMapsDefaults', 'googleMapsContainer',  
+    function (googleMapsUtils, googleMapsDefaults, googleMapsContainer) {
 
     /** aliases */
     var latLngEqual = googleMapsUtils.latLngEqual;
     var boundsEqual = googleMapsUtils.boundsEqual;
     var latLngToObj = googleMapsUtils.latLngToObj;
     var hasNaN = googleMapsUtils.hasNaN;
-    var gMConfig = googleMapsConfig;
-    var gMCDefaults = googleMapsConfigDefaults;
+    var gMDefaults = googleMapsDefaults;
     var gMContainer = googleMapsContainer;
 
 
@@ -33,12 +32,13 @@
       var mapDiv = $element.find('[id]');
       mapDiv.attr('id', mapId);
 
+      var config = this._getConfig($attrs, gMDefaults);
+
       // 'private' properties
-      var config = this._getConfig(mapId, $scope, gMConfig, gMCDefaults);
       this._map = this._createMap(mapId, mapDiv, config, gMContainer);
       this._markers = {};
 
-      // public properties
+      // 'public' properties
       this.dragging = false;
 
       Object.defineProperty(this, 'center', {
@@ -94,32 +94,17 @@
     MapController.precision = 4;
 
 
-    MapController.prototype._getConfig = function(id, $scope, gMConfig, gMCDefaults) {
+    MapController.prototype._getConfig = function($attrs, gMDefaults) {
       // Get config or defaults
-      var finalConfig = {};
-      if (gMConfig.maps && id in gMConfig.maps) {
-        finalConfig = gMConfig.maps[id];
+      var configStr = $attrs.mapOptions;
+      var defaults = gMDefaults.mapOptions;
+      var config = {};
+      if (configStr) {
+        angular.extend(config, defaults, angular.fromJson(configStr));
       } else {
-        finalConfig = gMCDefaults.maps['default'];
+        config = defaults;
       }
-
-      // Get extra config from scope
-      var extraConfig = {};
-
-      if (angular.isDefined($scope.center) &&
-          angular.isDefined($scope.center.lat) &&
-          angular.isDefined($scope.center.lng)) {
-        extraConfig.center = new google.maps.LatLng($scope.center.lat, $scope.center.lng);
-      }
-
-      if (angular.isDefined($scope.zoom)) {
-        extraConfig.zoom = $scope.zoom;
-      }
-
-      // Merge configs
-      angular.extend(finalConfig, extraConfig);
-
-      return finalConfig;
+      return config;
     };
 
 
@@ -127,7 +112,7 @@
       var map = gMContainer.getMap(id);
       if (!map) {
         map = new google.maps.Map(element[0], config);
-        map = gMContainer.addMap(id, map);
+        gMContainer.addMap(id, map);
       } else {
         throw 'A map with id ' + id + ' already exists. You must use' +
           ' different ids for each instance of the googleMap directive.';
@@ -167,12 +152,14 @@
     /**
      * @param {google.maps.MarkerOptions} markerOptions
      */
-    MapController.prototype.addMarker = function (markerOptions) {
-      if (!(marker instanceof google.maps.Marker))
-          throw 'marker was null';
+    MapController.prototype.addMarker = function(markerOptions) {
+      var opts = {};
+      angular.extend(opts, gMDefaults.markerOptions, markerOptions);
+
+      var marker = new google.maps.Marker(opts);
 
       var position = marker.getPosition();
-      if (this.hasMarker(position)) {
+      if (this.hasMarker(position.lat(), position.lng())) {
         return false;
       }
       
@@ -183,15 +170,16 @@
     };      
 
 
-    MapController.prototype.hasMarker = function(latLng) {
-      return (this.getMarker(latLng) instanceof google.maps.Marker);
+    MapController.prototype.hasMarker = function(lat, lng) {
+      return (this.getMarker(lat, lng) instanceof google.maps.Marker);
     };
 
 
-    MapController.prototype.getMarker = function (latLng) {
-      if (!(latLng instanceof google.maps.LatLng))
-        throw 'latLng was null';
+    MapController.prototype.getMarker = function (lat, lng) {
+      if (lat == null || lng == null)
+        throw 'lat or lng was null';
 
+      var latLng = new google.maps.LatLng(lat, lng);
       var hash = latLng.toUrlValue(MapController.precision);
       if (hash in this._markers) {
         return this._markers[hash];
@@ -201,9 +189,11 @@
     };  
 
 
-    MapController.prototype.removeMarker = function(latLng) {
-      if (!(latLng instanceof google.maps.LatLng))
-        throw 'latLng was null';
+    MapController.prototype.removeMarker = function(lat, lng) {
+      if (lat == null || lng == null)
+        throw 'lat or lng was null';
+
+      var latLng = new google.maps.LatLng(lat, lng);
 
       var removed = false;
       var hash = latLng.toUrlValue(MapController.precision);
@@ -227,9 +217,18 @@
       this._map.fitBounds(bounds);
     };
 
+
+    MapController.prototype.forEachMarker = function(fn) {
+      angular.forEach(this._markers, function(marker, hash) {
+        fn(marker);
+      });
+    };
+
+
     return {
       MapController: MapController
     };
+
   }]);
 })();
 
