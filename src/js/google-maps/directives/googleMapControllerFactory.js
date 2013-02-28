@@ -7,10 +7,10 @@
     function (googleMapsUtils, googleMapsConfig, googleMapsConfigDefaults, googleMapsContainer) {
 
     /** aliases */
-    var getMapId = googleMapsUtils.getMapId;
     var latLngEqual = googleMapsUtils.latLngEqual;
+    var boundsEqual = googleMapsUtils.boundsEqual;
     var latLngToObj = googleMapsUtils.latLngToObj;
-    var isLatLngNullOrNaN = googleMapsUtils.isLatLngNullOrNaN;
+    var hasNaN = googleMapsUtils.hasNaN;
     var gMConfig = googleMapsConfig;
     var gMCDefaults = googleMapsConfigDefaults;
     var gMContainer = googleMapsContainer;
@@ -30,9 +30,8 @@
       mapDiv.attr('id', mapId);
 
       // 'private' properties
-      this._id = getMapId(mapDiv);
-      var config = this._getConfig(this._id, $scope, gMConfig, gMCDefaults);
-      this._map = this._createMap(this._id, mapDiv, config, gMContainer);
+      var config = this._getConfig(mapId, $scope, gMConfig, gMCDefaults);
+      this._map = this._createMap(mapId, mapDiv, config, gMContainer);
       this._markers = {};
 
       // public properties
@@ -43,7 +42,7 @@
                return this._map.getCenter();
              },
         set: function(center) {
-               if (isLatLngNullOrNaN(center)) 
+               if (hasNaN(center)) 
                  throw 'center contains null or NaN';
                var changed = !latLngEqual(this.center, center);
                if (changed) {
@@ -71,14 +70,12 @@
                return this._map.getBounds();
              },
         set: function(bounds) {
-               var swEq = latLngEqual(this.bounds.getSouthWest(), bounds.getSouthWest());
-               var neEq = latLngEqual(this.bounds.getNorthEast(), bounds.getNorthEast());
-               var numbers = !isLatLngNullOrNaN(bounds.getSouthWest()) &&
-                             !isLatLngNullOrNaN(bounds.getNorthEast());
+               var numbers = !hasNaN(bounds.getSouthWest()) &&
+                             !hasNaN(bounds.getNorthEast());
                if (!numbers) 
                  throw 'bounds contains null or NaN';
 
-               var changed = !(swEq && neEq);
+               var changed = !(boundsEqual(this.bounds, bounds));
                if (changed) {
                  this._map.fitBounds(bounds);
                }

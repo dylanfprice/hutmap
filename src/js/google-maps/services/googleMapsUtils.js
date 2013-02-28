@@ -5,25 +5,6 @@
 
   factory('googleMapsUtils', [function() {
 
-    var counter = 0;
-    function getCount() {
-      return counter++;
-    }
-
-    /**
-     * @param {Object} a jQuery/angular element
-     * @return a unique id for the given element (as long as you don't use
-     * integers for html id attributes)
-     */
-    function getMapId(elm) {
-      var id = elm.attr('id') || elm.data('id');
-      if (!id) {
-        id = getCount();
-        elm.data('id', id);
-      }
-      return id;
-    }
-   
     /**
      * Check if two floating point numbers are equal. 
      * @return true if f1 and f2 are 'very close'
@@ -62,7 +43,7 @@
       var ne1 = b1.getNorthEast();
       var ne2 = b2.getNorthEast();
 
-      return latLngEqual(sw1, sw2) && latLngEqual(ne1 && ne2);
+      return latLngEqual(sw1, sw2) && latLngEqual(ne1, ne2);
     }
 
     /**
@@ -154,24 +135,24 @@
      * @param {google.maps.LatLng} latLng
      * @return true if either lat or lng of latLng is null or isNaN
      */
-    function isLatLngNullOrNaN(latLng) {
-      if (latLng == null) {
-        return false;
-      } 
+    function hasNaN(latLng) {
+      if (!(latLng instanceof google.maps.LatLng))
+        throw 'latLng must be a google.maps.LatLng';
+
+      // google.maps.LatLng converts NaN to null, so check for both
       var isNull = (latLng.lat() == null || latLng.lng() == null);
       var isNotaN =  isNaN(latLng.lat()) || isNaN(latLng.lng());
       return isNull || isNotaN;
     }
 
     return {
-      getMapId: getMapId,
       latLngEqual: latLngEqual,
       boundsEqual: boundsEqual,
       latLngToObj: latLngToObj,
       objToLatLng: objToLatLng,
       boundsToObj: boundsToObj,
       objToBounds: objToBounds,
-      isLatLngNullOrNaN: isLatLngNullOrNaN
+      hasNaN: hasNaN
     }
   }]);
 })();
