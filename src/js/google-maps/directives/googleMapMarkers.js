@@ -24,7 +24,7 @@
 
       // Set up onMarkerSelected callbacks
       if (scope.onMarkerSelected) {
-        angular.forEach(controller.markers, function(marker, i) {
+        controller.forEachMarker(function(marker) {
           google.maps.event.addListener(marker, 'click', function() {
             $timeout(function() {
               var locals = {'$marker': marker};
