@@ -8,19 +8,21 @@
   <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places,geometry&key=AIzaSyDKzNYkeusCcplMH7XWA9l0QLZ8Cwn01_M"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
-  <script src="/static/js/hutmap/app.js"></script>
-  <script src="/static/js/hutmap/config.js"></script>
-  <script src="/static/js/hutmap/controllers.js"></script>
+  <!--<script src="/static/js/hutmap.min.js"></script>-->
+  <script src="/dev/js/google-maps/module.js"></script>
+  <script src="/dev/js/google-maps/services/googleMapsUtils.js"></script>
+  <script src="/dev/js/google-maps/services/googleMapsContainer.js"></script>
+  <script src="/dev/js/google-maps/directives/googleMapControllerFactory.js"></script>
+  <script src="/dev/js/google-maps/directives/googleMap.js"></script>
+  <script src="/dev/js/google-maps/directives/googleMapMarkers.js"></script>
+  <script src="/dev/js/hutmap/app.js"></script>
+  <script src="/dev/js/hutmap/config.js"></script>
+  <script src="/dev/js/hutmap/controllers.js"></script>
+  <script src="/dev/js/hutmap/services.js"></script>
+  <script src="/dev/js/hutmap/filters.js"></script>
+  <script src="/dev/js/hutmap/directives.js"></script>
   <!--
-  <script src="/static/js/hutmap/services.js"></script>
-  <script src="/static/js/hutmap/filters.js"></script>
-  <script src="/static/js/hutmap/directives.js"></script>
   -->
-  <script src="/static/js/hutmap/google-maps/module.js"></script>
-  <script src="/static/js/hutmap/google-maps/services/googleMapsUtils.js"></script>
-  <script src="/static/js/hutmap/google-maps/services/googleMapsContainer.js"></script>
-  <script src="/static/js/hutmap/google-maps/directives/googleMap.js"></script>
-  <script src="/static/js/hutmap/google-maps/directives/googleMapMarkers.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -60,8 +62,13 @@
         </div>
         -->
       </div>
-      <google-map id="map_canvas" center="center" zoom="zoom" bounds="bounds" class="map">
-        <google-map-markers on-marker-selected="selectedMarker = $marker"></google-map-markers>
+      <google-map class="map" map-id="map_canvas" center="center" zoom="zoom" bounds="bounds" map-options="mapOptions">
+        <!-- Alert: When the google-map-markers element gets transcluded, the
+                    ng-transclude directive creates a new scope. The
+                    google-map-markers element's scope becomes a child of this
+                    scope. So the correct sibling scope of google-map is the
+                    $parent of the google-map-markers scope. -->
+        <google-map-markers on-marker-selected="$parent.selectedMarker = $marker"></google-map-markers>
       </google-map>
     </div>
   </div>
