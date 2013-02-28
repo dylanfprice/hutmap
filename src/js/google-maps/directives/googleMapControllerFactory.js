@@ -96,7 +96,7 @@
 
     // Constant for toUrlValue() of google.maps.LatLng
     // used for hashing LatLng objects
-    MapController.precision = 4;
+    MapController.precision = 3;
 
 
     // Retrieve google.maps.MapOptions
@@ -166,19 +166,20 @@
      * Adds a new marker to the map.
      * @param {google.maps.MarkerOptions} markerOptions
      * @return {boolean} true if a marker was added, false if there was already
-     *   a marker at this position
+     *   a marker at this position. 'at this position' means delta_lat and
+     *   delta_lng are < 0.0005
      * @throw if markerOptions does not have all required options (i.e. position)
      */
     MapController.prototype.addMarker = function(markerOptions) {
       var opts = {};
-      angular.extend(opts, gMDefaults.markerOptions, markerOptions);
+      angular.extend(opts, markerOptions);
 
-      var marker = new google.maps.Marker(opts);
-
-      var position = marker.getPosition();
-      if (position == null) {
+      if (!(opts.position instanceof google.maps.LatLng)) {
         throw 'markerOptions did not contain a position';
       }
+
+      var marker = new google.maps.Marker(opts);
+      var position = marker.getPosition();
       if (this.hasMarker(position.lat(), position.lng())) {
         return false;
       }
@@ -246,12 +247,17 @@
 
     /**
      * Changes bounds of map to view all markers.
+     *
+     * Note: after calling this function, this.bounds, this.center, and
+     * this.zoom may temporarily be null as the map moves. Therefore, use
+     * this.addListenerOnce if you need to access these values immediately
+     * after calling fitToMarkers.
      */
     MapController.prototype.fitToMarkers = function () {
       var bounds = new google.maps.LatLngBounds();
 
-      angular.forEach(this._markers, function (m, i) {
-        bounds.extend(m.getPosition());
+      this.forEachMarker(function(marker) {
+        bounds.extend(marker.getPosition());
       });
 
       this._map.fitBounds(bounds);
