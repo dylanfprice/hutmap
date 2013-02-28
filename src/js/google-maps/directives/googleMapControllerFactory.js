@@ -125,7 +125,8 @@
     MapController.prototype._createMap = function(id, element, config, gMContainer) {
       var map = gMContainer.getMap(id);
       if (!map) {
-        map = gMContainer.addMap(id, element[0], config);
+        map = new google.maps.Map(element[0], config);
+        map = gMContainer.addMap(id, map);
       } else {
         throw 'A map with id ' + id + ' already exists. You must use' +
           ' different ids for each instance of the googleMap directive.';
@@ -163,9 +164,9 @@
 
 
     /**
-     * @param {google.maps.Marker} marker
+     * @param {google.maps.MarkerOptions} markerOptions
      */
-    MapController.prototype.addMarker = function (marker) {
+    MapController.prototype.addMarker = function (markerOptions) {
       if (!(marker instanceof google.maps.Marker))
           throw 'marker was null';
 

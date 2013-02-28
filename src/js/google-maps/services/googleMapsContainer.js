@@ -7,11 +7,10 @@
     var maps = {};
     var defers = {};
 
-    function addMap(mapId, mapDiv, mapOptions) {
+    function addMap(mapId, map) {
       if (mapId in maps) {
-        return getMap(mapId);
+        throw 'already contain map with id ' + mapId;
       }
-      var map = new google.maps.Map(mapDiv, mapOptions);
       maps[mapId] = map;
       if (mapId in defers) {
         defers[mapId].resolve(map);
