@@ -109,6 +109,23 @@ describe('googleMap', function() {
   }));
 
 
+  it('ignores initial scope values', inject(function($timeout) {
+    scope.pCenter = { lat: 8, lng: 9 };
+    scope.pZoom = 10;
+    scope.pBounds = {
+      southWest: {lat: 11, lng: 12},
+      northEast: {lat: 13, lng: 14}
+    };
+
+    runListeners('bounds_changed');
+    $timeout.flush();
+
+    expect(scope.pCenter).not.toEqual(initCenter);
+    expect(scope.pZoom).not.toEqual(initZoom);
+    expect(scope.pBounds).not.toEqual(initBounds);
+  }));
+
+
   // center and bounds changed, but zoom is same
   function testMapMovedEvent($timeout, event) {
     mapCtrl.center = new google.maps.LatLng(8, 9);
