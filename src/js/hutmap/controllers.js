@@ -4,7 +4,8 @@
   angular.module('hutmap').
 
   controller('MapCtrl',
-    ['$scope', '$timeout', function ($scope, $timeout) {
+    ['$scope', '$timeout', 'mapOptions', function ($scope, $timeout, mapOptions) {
+      $scope.mapOptions = mapOptions;
 
       $scope.selectedMarker;
 

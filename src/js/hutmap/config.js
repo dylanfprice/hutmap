@@ -7,6 +7,12 @@
 
   constant('hutmapMapId', 'map_canvas').
 
+  value('mapOptions', {
+    zoom : 3,
+    center : new google.maps.LatLng(46.87916, -120),
+    mapTypeId : google.maps.MapTypeId.ROADMAP
+  }).
+
   /**
    * Add new map types to our Google Map.
    */
