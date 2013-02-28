@@ -36,10 +36,11 @@
      * @param {google.maps.LatLng} l1
      * @param {google.maps.LatLng} l2
      * @return {boolean} true if l1 and l2 are 'very close'. If either are null
-     * returns false.
+     * or not google.maps.LatLng objects returns false.
      */
     function latLngEqual(l1, l2) {
-      if (l1 == null || l2 == null) {
+      if (!(l1 instanceof google.maps.LatLng && 
+            l2 instanceof google.maps.LatLng)) {
         return false; 
       }
       return floatEqual(l1.lat(), l2.lat()) && floatEqual(l1.lng(), l2.lng());
@@ -50,6 +51,9 @@
      * @return {Object} object literal with 'lat' and 'lng' properties
      */
     function latLngToObj(latLng) {
+      if (!(latLng instanceof google.maps.LatLng)) 
+        throw 'latLng not a google.maps.LatLng';
+
       return {
         lat: latLng.lat(),
         lng: latLng.lng()
