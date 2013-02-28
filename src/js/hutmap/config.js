@@ -70,7 +70,7 @@
           name: "MSR-USGS",
           alt: "USGS topos from Microsoft Research",
           minZoom: 1,
-          maxZoom: 20,
+          maxZoom: 15,
           tileSize: new google.maps.Size(256, 256),
           isPng: false,
           getTileUrl: getTile.MSR_TOPO
