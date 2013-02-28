@@ -41,7 +41,6 @@
       if (mapId in defers) {
         defers[mapId].resolve(map);
       }
-      return map;
     }
 
     /**
@@ -81,11 +80,21 @@
       }
     }
 
+    /**
+     * Removes all maps and unresolved map promises. Only for testing, see
+     * #removeMap(mapId).
+     */
+    function clear() {
+      maps = {};
+      defers = {};
+    }
+
     return {
       addMap: addMap,
       getMap: getMap,
       getMapPromise: getMapPromise,
-      removeMap: removeMap
+      removeMap: removeMap,
+      clear: clear
     }
   }]);
 })();
