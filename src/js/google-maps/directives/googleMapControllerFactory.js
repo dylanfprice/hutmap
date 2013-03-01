@@ -45,55 +45,58 @@
       // 'public' properties
       this.dragging = false;
 
-      Object.defineProperty(this, 'precision', {
-        value: MapController.precision,
-        writeable: false,
-      });
+      Object.defineProperties(this, {
+        'precision': {
+          value: MapController.precision,
+          writeable: false,
+        },
 
-      Object.defineProperty(this, 'center', {
-        get: function() {
-               return this._map.getCenter();
-             },
-        set: function(center) {
-               if (hasNaN(center)) 
-                 throw 'center contains null or NaN';
-               var changed = !latLngEqual(this.center, center);
-               if (changed) {
-                 // TODO: change to panTo
-                 this._map.setCenter(center);
-               }
-             }
-      });
+        'center': {
+          get: function() {
+             return this._map.getCenter();
+           },
+          set: function(center) {
+            if (hasNaN(center)) 
+              throw 'center contains null or NaN';
+            var changed = !latLngEqual(this.center, center);
+            if (changed) {
+              // TODO: change to panTo
+              //this._map.setCenter(center);
+              this._map.panTo(center);
+            }
+          } 
+        },
 
-      Object.defineProperty(this, 'zoom', {
-        get: function() {
-               return this._map.getZoom();
-             },
-        set: function(zoom) {
-               if (!(zoom != null && !isNaN(zoom))) 
-                 throw 'zoom was null or NaN';
-               var changed = this.zoom !== zoom;
-               if (changed) {
-                 this._map.setZoom(zoom);
-               }
-             }
-      });
+        'zoom': {
+          get: function() {
+            return this._map.getZoom();
+          },
+          set: function(zoom) {
+            if (!(zoom != null && !isNaN(zoom))) 
+              throw 'zoom was null or NaN';
+            var changed = this.zoom !== zoom;
+            if (changed) {
+              this._map.setZoom(zoom);
+            }
+          }
+        },
 
-      Object.defineProperty(this, 'bounds', {
-        get: function() {
-               return this._map.getBounds();
-             },
-        set: function(bounds) {
-               var numbers = !hasNaN(bounds.getSouthWest()) &&
-                             !hasNaN(bounds.getNorthEast());
-               if (!numbers) 
-                 throw 'bounds contains null or NaN';
+        'bounds': {
+          get: function() {
+            return this._map.getBounds();
+          },
+          set: function(bounds) {
+            var numbers = !hasNaN(bounds.getSouthWest()) &&
+                          !hasNaN(bounds.getNorthEast());
+            if (!numbers) 
+              throw 'bounds contains null or NaN';
 
-               var changed = !(boundsEqual(this.bounds, bounds));
-               if (changed) {
-                 this._map.fitBounds(bounds);
-               }
-             }
+            var changed = !(boundsEqual(this.bounds, bounds));
+            if (changed) {
+              this._map.fitBounds(bounds);
+            }
+          }
+        }
       });
 
       this._initDragListeners();
