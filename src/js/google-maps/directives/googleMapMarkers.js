@@ -64,7 +64,6 @@
             angular.forEach(handlers, function(handler, event) {
               controller.addListener(marker, event, function() {
                 $timeout(function() {
-                  console.log('called');
                        // scope is this directive's isolate scope
                        // scope.$parent is the scope of ng-transclude
                        // scope.$parent.$parent is the one we want
