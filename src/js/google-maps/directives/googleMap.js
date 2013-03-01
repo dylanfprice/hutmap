@@ -114,8 +114,7 @@
       controller.addMapListener('drag', updateScope);
       controller.addMapListener('zoom_changed', updateScope);
       controller.addMapListener('center_changed', updateScope);
-      // update values when map is loaded
-      controller.addMapListenerOnce('bounds_changed', updateScope);
+      controller.addMapListener('bounds_changed', updateScope);
       
       if (hasCenter) {
         scope.$watch('center', function (newValue, oldValue) {
