@@ -2,34 +2,29 @@ describe('googleMap', function() {
   var elm, scope, mapCtrl; 
   var listeners, listenersOnce;
   var initCenter, initZoom, initBounds;
+  var map;
 
   beforeEach(function() {
     module('google-maps');
+    module('google-maps-test');
   });
 
 
-  beforeEach(inject(function($rootScope, $compile, googleMapControllerFactory) {
-    // mock MapController
-    mapCtrl = jasmine.createSpyObj('MapController', [
-      'dragging', 'center', 'zoom', 'bounds', 'addListener', 'addListenerOnce',
-      'addMarker', 'hasMarker', 'getMarker', 'removeMarker', 'fitToMarkers']);
+  beforeEach(inject(function($rootScope, $compile, gmtestMapController, googleMapsContainer, googleMapsUtils) {
+    // compile googleMap directive
+    elm = angular.element('<google-map map-id="test" center="pCenter" zoom="pZoom" bounds="pBounds" map-options="mapOptions">' +
+                            '<gmtest-get-map-controller></gmtest-get-map-controller>' +
+                          '</google-map>');
 
-    spyOn(googleMapControllerFactory, 'MapController').andCallFake(function() {
-      return mapCtrl;
-    });
-    
-    listeners = {};
-    listenersOnce = {};
-    mapCtrl.addMapListener = createAddListener(listeners);
-    mapCtrl.addMapListenerOnce = createAddListener(listenersOnce);
+    scope = $rootScope.$new();
+    scope.mapOptions = {
+      center: new google.maps.LatLng(1, 2),
+      zoom: 3
+    }
+    $compile(elm)(scope);
+    scope.$digest();
 
-    // set initial state on mock
-    mapCtrl.dragging = false;
-    mapCtrl.center = new google.maps.LatLng(1, 2);
-    mapCtrl.zoom = 3;
-    mapCtrl.bounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(4, 5),
-      new google.maps.LatLng(6, 7));
+    map = googleMapsContainer.getMap('test');
 
     initCenter = { lat: 1, lng: 2 };
     initZoom = 3;
@@ -37,24 +32,31 @@ describe('googleMap', function() {
       southWest: {lat: 4, lng: 5},
       northEast: {lat: 6, lng: 7}
     };
+    
+    // get MapController
+    mapCtrl = gmtestMapController();
+    var center, zoom, bounds;
+    Object.defineProperties(mapCtrl, {
+      'center': {
+        get: function() {return center;},
+        set: function(newC) {center = newC;},
+      },
+      'zoom': {
+        get: function() { return zoom;},
+        set: function(newZ) {zoom = newZ;},
+      },
+      'bounds': {
+        get: function() { return bounds;},
+        set: function(newB) {bounds = newB;},
+      },
+    });
 
-    // compile googleMap directive
-    elm = angular.element('<google-map map-id="test" center="pCenter" zoom="pZoom" bounds="pBounds"></google-map>');
-
-    scope = $rootScope.$new();
-    $compile(elm)(scope);
-    scope.$digest();
+    var objToLatLng = googleMapsUtils.objToLatLng;
+    var objToBounds = googleMapsUtils.objToBounds;
+    mapCtrl.center = objToLatLng(initCenter);
+    mapCtrl.zoom = initZoom;
+    mapCtrl.bounds = objToBounds(initBounds);
   }));
-
-
-  function createAddListener(listeners) {
-    return function(event, handler) {
-      if (!(event in listeners)) {
-        listeners[event] = [];
-      }
-      listeners[event].push(handler);
-    };
-  }
 
 
   function testRequiredAttribute($rootScope, $compile, googleMapsContainer, elm) {
@@ -90,19 +92,11 @@ describe('googleMap', function() {
   }));
 
 
-  function runListeners(event) {
-    angular.forEach(listeners[event], function(val, i) { val(); });
-    angular.forEach(listenersOnce[event], function(val, i) { val(); });
-    if (event in listenersOnce) {
-      delete listenersOnce[event];
-    }
-  }
-
-
   it('updates scope on map initialization', inject(function($timeout) {
-    runListeners('bounds_changed');
-    $timeout.flush();
+    google.maps.event.trigger(map, 'bounds_changed');
 
+    $timeout.flush();
+    
     expect(scope.pCenter).toEqual(initCenter);
     expect(scope.pZoom).toEqual(initZoom);
     expect(scope.pBounds).toEqual(initBounds);
@@ -117,7 +111,7 @@ describe('googleMap', function() {
       northEast: {lat: 13, lng: 14}
     };
 
-    runListeners('bounds_changed');
+    google.maps.event.trigger(map, 'bounds_changed');
     $timeout.flush();
 
     expect(scope.pCenter).not.toEqual(initCenter);
@@ -139,7 +133,7 @@ describe('googleMap', function() {
       northEast: {lat: 12, lng: 13}
     };
 
-    runListeners('drag');
+    google.maps.event.trigger(map, event);
     $timeout.flush();
 
     expect(scope.pCenter).toEqual(center);
@@ -162,7 +156,7 @@ describe('googleMap', function() {
     mapCtrl.zoom = initZoom + 2;
     var zoom = initZoom + 2;
 
-    runListeners('zoom_changed');
+    google.maps.event.trigger(map, 'zoom_changed');
     $timeout.flush();
 
     expect(scope.pZoom).toEqual(zoom);
