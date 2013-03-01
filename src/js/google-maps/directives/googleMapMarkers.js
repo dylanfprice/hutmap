@@ -7,58 +7,104 @@
    * Inspired by Nicolas Laplante's angular-google-maps directive
    * https://github.com/nlaplante/angular-google-maps
    */
-  directive('googleMapMarkers', ['$log', '$timeout', 'googleMapsUtils', function($log, $timeout, googleMapsUtils) {
+  directive('googleMapMarkers', ['$log', '$parse', '$timeout', 'googleMapsUtils', 
+    function($log, $parse, $timeout, googleMapsUtils) {
 
     /** aliases */
+    var latLngEqual = googleMapsUtils.latLngEqual;
     var objToLatLng = googleMapsUtils.objToLatLng;
 
+
     function link(scope, element, attrs, controller) {
+      // check attrs
+      if (!('objects' in attrs)) {
+        throw 'objects attribute required';
+      } else if (!('getLatLng' in attrs)) {
+        throw 'getLatLng attribute required';
+      }
 
-      var updateMarkers = function(objects) {
-        angular.forEach(objects, function(object, i) {
-          var latLngObj = scope.getLatLng({object: object});
-          var position = objToLatLng(latLngObj);
-          var options = {};
-          angular.extend(options, scope.markerOptions(), {position: position});
-          var added = controller.addMarker(options);
-          if (!added) {
-            $log.error('Already have a marker for object with position ', position, '.');
-          } else {
-            var marker = controller.getMarker(latLngObj.lat, latLngObj.lng);
-          }
-        });
-      };
+      var handlers = {}; // map events -> handlers
 
-      scope.$watch('objects()', function(newValue, oldValue) {
-        if (newValue != null && newValue !== oldValue) {
-          updateMarkers(newValue);
+      // retrieve on-___ handlers
+      angular.forEach(attrs, function(value, key) {
+        if (key.lastIndexOf('on', 0) === 0) {
+          var event = angular.lowercase(key.substring(2));
+          var fn = $parse(value);
+          handlers[event] = fn;
         }
       });
 
-      
-      // Add marker (testing only)
-      /*
-      var marker = {
-        position: new google.maps.LatLng(46.8791, -120)
-      };
-      controller.addMarker(marker);
-      marker = {
-        position: new google.maps.LatLng(46.8791, -120.0001)
-      };
-      controller.addMarker(marker);
+      // fn for updating markers from objects
+      var updateMarkers = function(objects) {
 
-      // Set up onMarkerSelected callbacks
-      if (scope.onMarkerSelected) {
-        controller.forEachMarker(function(marker) {
-          google.maps.event.addListener(marker, 'click', function() {
-            $timeout(function() {
-              var locals = {'$marker': marker};
-              scope.onMarkerSelected(locals);
+        var markerOptions = scope.markerOptions();
+        var objectHash = {};
+
+        angular.forEach(objects, function(object, i) {
+          var latLngObj = scope.getLatLng({object: object});
+          var position = objToLatLng(latLngObj);
+          if (position == null) {
+            return;
+          }
+
+          // hash objects for quick access
+          var hash = position.toUrlValue(controller.precision);
+          objectHash[hash] = object;
+
+          // add marker
+          if (!controller.hasMarker(latLngObj.lat, latLngObj.lng)) {
+
+            var options = {};
+            angular.extend(options, markerOptions, {position: position});
+
+            controller.addMarker(options);
+            var marker = controller.getMarker(latLngObj.lat, latLngObj.lng);
+
+            // set up marker event handlers
+            angular.forEach(handlers, function(handler, event) {
+              controller.addListener(marker, event, function() {
+                $timeout(function() {
+                  console.log('called');
+                       // scope is this directive's isolate scope
+                       // scope.$parent is the scope of ng-transclude
+                       // scope.$parent.$parent is the one we want
+                  handler(scope.$parent.$parent, {
+                    object: object,
+                    marker: marker
+                  });
+                });
+              });
             });
-          });
+          }
         });
-      }
-      */
+
+        // remove 'orphaned' markers
+        var orphaned = [];
+        
+        controller.forEachMarker(function(marker) {
+          var markerPosition = marker.getPosition();
+          var hash = markerPosition.toUrlValue(controller.precision);
+
+          if (!(hash in objectHash)) {
+            orphaned.push(marker);
+          }
+        });
+
+        angular.forEach(orphaned, function(marker, i) {
+          var position = marker.getPosition();
+          controller.removeMarker(position.lat(), position.lng());
+        });
+      }; // end updateMarkers()
+
+      // watch objects
+      scope.$watch('objects().length', function(newValue, oldValue) {
+        if (newValue != null && newValue !== oldValue) {
+          updateMarkers(scope.objects());
+        }
+      });
+
+      // initialize markers
+      $timeout(angular.bind(this, updateMarkers, scope.objects()));
     }
 
 
@@ -75,62 +121,3 @@
     };
   }]);
 })();
-
-/**
-   
-    
-    
-   
-        // Markers
-        scope.$watch('markers', function (newValue, oldValue) {
-          
-          $timeout(function () {
-            
-            angular.forEach(newValue, function (v, i) {
-              if (!_m.hasMarker(v.latitude, v.longitude)) {
-                _m.addMarker(v.latitude, v.longitude);
-              }
-            });
-            
-            // Clear orphaned markers
-            var orphaned = [];
-            
-            angular.forEach(_m.getMarkerInstances(), function (v, i) {
-              // Check our scope if a marker with equal latitude and longitude. 
-              // If not found, then that marker has been removed form the scope.
-              
-              var pos = v.getPosition(),
-                lat = pos.lat(),
-                lng = pos.lng(),
-                found = false;
-              
-              // Test against each marker in the scope
-              for (var si = 0; si < scope.markers.length; si++) {
-                
-                var sm = scope.markers[si];
-                
-                if (floatEqual(sm.latitude, lat) && floatEqual(sm.longitude, lng)) {
-                  // Map marker is present in scope too, don't remove
-                  found = true;
-                }
-              }
-              
-              // Marker in map has not been found in scope. Remove.
-              if (!found) {
-                orphaned.push(v);
-              }
-            });
-
-            orphaned.length && _m.removeMarkers(orphaned);           
-            
-            // Fit map when there are more than one marker. 
-            // This will change the map center coordinates
-            if (attrs.fit == 'true' && newValue.length > 1) {
-              _m.fit();
-            }
-          });
-          
-        }, true);
-        
-
-*/
