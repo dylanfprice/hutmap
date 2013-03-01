@@ -80,6 +80,31 @@ describe('googleMapControllerFactory', function() {
   });
 
 
+  it('adds generic listeners', function() {
+    var called = false;
+    var object = {};
+    mapCtrl.addListener(object, 'event', function() {
+      called = true;
+    });
+    google.maps.event.trigger(object, 'event');
+
+    expect(called).toBeTruthy();
+  });
+
+
+  it('adds generic one time listeners', function() {
+    var callCount = 0;
+    var object = {};
+    mapCtrl.addListenerOnce(object, 'event', function() {
+      callCount++;
+    });
+    google.maps.event.trigger(object, 'event');
+    google.maps.event.trigger(object, 'event');
+
+    expect(callCount).toEqual(1);
+  });
+
+
   describe('marker functions', function() {
     var position, positionSame, positionVeryClose, position2;
     var markerOptions, markerOptionsSame, markerOptionsVeryClose, markerOptions2;

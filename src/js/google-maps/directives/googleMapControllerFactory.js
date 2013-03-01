@@ -141,7 +141,7 @@
 
     
     /**
-     * Alias for google.maps.Map.addListener(map, event, handler)
+     * Alias for google.maps.event.addListener(map, event, handler)
      * @param {string} event an event defined on google.maps.Map
      * @param {function} a handler for the event
      */
@@ -152,13 +152,29 @@
 
 
     /**
-     * Alias for google.maps.Map.addListenerOnce(map, event, handler)
+     * Alias for google.maps.event.addListenerOnce(map, event, handler)
      * @param {string} event an event defined on google.maps.Map
      * @param {function} a handler for the event
      */
     MapController.prototype.addMapListenerOnce = function(event, handler) {
       google.maps.event.addListenerOnce(this._map, 
           event, handler);
+    };
+
+
+    /**
+     * Alias for google.maps.event.addListener(object, event, handler)
+     */
+    MapController.prototype.addListener = function(object, event, handler) {
+      google.maps.event.addListener(object, event, handler);
+    };
+
+
+    /**
+     * Alias for google.maps.event.addListenerOnce(object, event, handler)
+     */
+    MapController.prototype.addListenerOnce = function(object, event, handler) {
+      google.maps.event.addListenerOnce(object, event, handler);
     };
 
 

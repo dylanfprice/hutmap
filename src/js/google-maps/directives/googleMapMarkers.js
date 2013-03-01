@@ -7,12 +7,37 @@
    * Inspired by Nicolas Laplante's angular-google-maps directive
    * https://github.com/nlaplante/angular-google-maps
    */
-  directive('googleMapMarkers', ['$timeout', '$parse', function($timeout, $parse) {
+  directive('googleMapMarkers', ['$log', '$timeout', 'googleMapsUtils', function($log, $timeout, googleMapsUtils) {
+
+    /** aliases */
+    var objToLatLng = googleMapsUtils.objToLatLng;
 
     function link(scope, element, attrs, controller) {
-      // Check what's defined in attrs
 
+      var updateMarkers = function(objects) {
+        angular.forEach(objects, function(object, i) {
+          var latLngObj = scope.getLatLng({object: object});
+          var position = objToLatLng(latLngObj);
+          var options = {};
+          angular.extend(options, scope.markerOptions(), {position: position});
+          var added = controller.addMarker(options);
+          if (!added) {
+            $log.error('Already have a marker for object with position ', position, '.');
+          } else {
+            var marker = controller.getMarker(latLngObj.lat, latLngObj.lng);
+          }
+        });
+      };
+
+      scope.$watch('objects()', function(newValue, oldValue) {
+        if (newValue != null && newValue !== oldValue) {
+          updateMarkers(newValue);
+        }
+      });
+
+      
       // Add marker (testing only)
+      /*
       var marker = {
         position: new google.maps.LatLng(46.8791, -120)
       };
@@ -33,6 +58,7 @@
           });
         });
       }
+      */
     }
 
 
@@ -40,7 +66,9 @@
       restrict: 'AE',
       priority: 100,
       scope: {
-        onMarkerSelected: '&'
+        objects: '&',
+        getLatLng: '&',
+        markerOptions: '&'
       },
       require: '^googleMap',
       link: link
