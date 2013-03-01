@@ -46,7 +46,7 @@
       this.dragging = false;
 
       Object.defineProperty(this, 'precision', {
-        value: 3,
+        value: MapController.precision,
         writeable: false,
       });
 
@@ -59,7 +59,8 @@
                  throw 'center contains null or NaN';
                var changed = !latLngEqual(this.center, center);
                if (changed) {
-                 this._map.panTo(center);
+                 // TODO: change to panTo
+                 this._map.setCenter(center);
                }
              }
       });
@@ -73,7 +74,7 @@
                  throw 'zoom was null or NaN';
                var changed = this.zoom !== zoom;
                if (changed) {
-                this._map.setZoom(self.zoom);
+                 this._map.setZoom(zoom);
                }
              }
       });
@@ -97,6 +98,10 @@
 
       this._initDragListeners();
     };
+
+
+    // used for hashing marker objects
+    MapController.precision = 3;
 
 
     // Retrieve google.maps.MapOptions
