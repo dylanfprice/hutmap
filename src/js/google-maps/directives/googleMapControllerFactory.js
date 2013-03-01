@@ -45,6 +45,11 @@
       // 'public' properties
       this.dragging = false;
 
+      Object.defineProperty(this, 'precision', {
+        value: 3,
+        writeable: false,
+      });
+
       Object.defineProperty(this, 'center', {
         get: function() {
                return this._map.getCenter();
@@ -92,11 +97,6 @@
 
       this._initDragListeners();
     };
-
-
-    // Constant for toUrlValue() of google.maps.LatLng
-    // used for hashing LatLng objects
-    MapController.precision = 3;
 
 
     // Retrieve google.maps.MapOptions
@@ -200,7 +200,7 @@
         return false;
       }
       
-      var hash = position.toUrlValue(MapController.precision);
+      var hash = position.toUrlValue(this.precision);
       this._markers[hash] = marker;
       marker.setMap(this._map);
       return true;
@@ -228,7 +228,7 @@
         throw 'lat or lng was null';
 
       var latLng = new google.maps.LatLng(lat, lng);
-      var hash = latLng.toUrlValue(MapController.precision);
+      var hash = latLng.toUrlValue(this.precision);
       if (hash in this._markers) {
         return this._markers[hash];
       } else {
@@ -250,7 +250,7 @@
       var latLng = new google.maps.LatLng(lat, lng);
 
       var removed = false;
-      var hash = latLng.toUrlValue(MapController.precision);
+      var hash = latLng.toUrlValue(this.precision);
       var marker = this._markers[hash];
       if (marker) {
         marker.setMap(null);
@@ -282,7 +282,7 @@
 
     /**
      * Applies a function to each marker.
-     * @param {function} fn
+     * @param {function} fn will called with marker as first argument
      * @throw if fn is null or undefined
      */
     MapController.prototype.forEachMarker = function(fn) {
