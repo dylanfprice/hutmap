@@ -111,11 +111,11 @@
         });
       };
 
-      controller.addListener('drag', updateScope);
-      controller.addListener('zoom_changed', updateScope);
-      controller.addListener('center_changed', updateScope);
+      controller.addMapListener('drag', updateScope);
+      controller.addMapListener('zoom_changed', updateScope);
+      controller.addMapListener('center_changed', updateScope);
       // update values when map is loaded
-      controller.addListenerOnce('bounds_changed', updateScope);
+      controller.addMapListenerOnce('bounds_changed', updateScope);
       
       if (hasCenter) {
         scope.$watch('center', function (newValue, oldValue) {

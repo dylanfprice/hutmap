@@ -59,7 +59,7 @@ describe('googleMapControllerFactory', function() {
 
   it('adds listeners to the map', function() {
     var called = false;
-    mapCtrl.addListener('center_changed', function() {
+    mapCtrl.addMapListener('center_changed', function() {
       called = true;
     });
     google.maps.event.trigger(mapCntr.getMap('test'), 'center_changed');
@@ -70,7 +70,7 @@ describe('googleMapControllerFactory', function() {
 
   it('adds one time listeners to the map', function() {
     var callCount = 0;
-    mapCtrl.addListenerOnce('center_changed', function() {
+    mapCtrl.addMapListenerOnce('center_changed', function() {
       callCount++;
     });
     google.maps.event.trigger(mapCntr.getMap('test'), 'center_changed');
@@ -183,7 +183,7 @@ describe('googleMapControllerFactory', function() {
     it('fits the map to markers', function() {
       mapCtrl.addMarker(markerOptions2);
       mapCtrl.fitToMarkers();
-      mapCtrl.addListener('bounds_changed', function() {
+      mapCtrl.addMapListener('bounds_changed', function() {
         expect(mapCtrl.bounds.contains(markerOptions.position)).toBeTruthy();
         expect(mapCtrl.bounds.contains(markerOptions.position)).toBeTruthy();
       });

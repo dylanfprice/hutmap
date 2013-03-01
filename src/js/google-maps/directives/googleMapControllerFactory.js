@@ -54,7 +54,7 @@
                  throw 'center contains null or NaN';
                var changed = !latLngEqual(this.center, center);
                if (changed) {
-                 this._map.setCenter(center);
+                 this._map.panTo(center);
                }
              }
       });
@@ -126,37 +126,37 @@
     // Set up listeners to update this.dragging
     MapController.prototype._initDragListeners = function() {
       var self = this;
-      this.addListener('dragstart', function () {
+      this.addMapListener('dragstart', function () {
         self.dragging = true;
       });
       
-      this.addListener('idle', function () {
+      this.addMapListener('idle', function () {
         self.dragging = false;
       });
       
-      this.addListener('drag', function() {
+      this.addMapListener('drag', function() {
         self.dragging = true;   
       });
     };
 
     
     /**
-     * Alias for google.maps.Map.addListener
+     * Alias for google.maps.Map.addListener(map, event, handler)
      * @param {string} event an event defined on google.maps.Map
      * @param {function} a handler for the event
      */
-    MapController.prototype.addListener = function(event, handler) {
+    MapController.prototype.addMapListener = function(event, handler) {
       google.maps.event.addListener(this._map, 
           event, handler);
     };
 
 
     /**
-     * Alias for google.maps.Map.addListenerOnce
+     * Alias for google.maps.Map.addListenerOnce(map, event, handler)
      * @param {string} event an event defined on google.maps.Map
      * @param {function} a handler for the event
      */
-    MapController.prototype.addListenerOnce = function(event, handler) {
+    MapController.prototype.addMapListenerOnce = function(event, handler) {
       google.maps.event.addListenerOnce(this._map, 
           event, handler);
     };
@@ -250,7 +250,7 @@
      *
      * Note: after calling this function, this.bounds, this.center, and
      * this.zoom may temporarily be null as the map moves. Therefore, use
-     * this.addListenerOnce if you need to access these values immediately
+     * this.addMapListenerOnce if you need to access these values immediately
      * after calling fitToMarkers.
      */
     MapController.prototype.fitToMarkers = function () {

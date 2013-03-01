@@ -20,8 +20,8 @@ describe('googleMap', function() {
     
     listeners = {};
     listenersOnce = {};
-    mapCtrl.addListener = createAddListener(listeners);
-    mapCtrl.addListenerOnce = createAddListener(listenersOnce);
+    mapCtrl.addMapListener = createAddListener(listeners);
+    mapCtrl.addMapListenerOnce = createAddListener(listenersOnce);
 
     // set initial state on mock
     mapCtrl.dragging = false;
