@@ -24,8 +24,8 @@ describe('googleMapControllerFactory', function() {
 
     // set up element
     var elm = angular.element('<div map-id="test" center="center" zoom="zoom" bounds="bounds" map-options="mapOptions">' +
-                            '<div id="test"></div>' +
-                          '</div');
+                                '<div id="test"></div>' +
+                              '</div');
 
     mapCtrl = new googleMapControllerFactory.MapController(scope, elm, attrs);
     mapCntr = googleMapsContainer;
