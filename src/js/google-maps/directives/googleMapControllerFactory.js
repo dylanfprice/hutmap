@@ -52,6 +52,7 @@
         },
 
         'center': {
+          configurable: true, // for testing so we can mock
           get: function() {
              return this._map.getCenter();
            },
@@ -68,6 +69,7 @@
         },
 
         'zoom': {
+          configurable: true, // for testing so we can mock
           get: function() {
             return this._map.getZoom();
           },
@@ -82,6 +84,7 @@
         },
 
         'bounds': {
+          configurable: true, // for testing so we can mock
           get: function() {
             return this._map.getBounds();
           },
