@@ -2,7 +2,7 @@ from django.contrib.gis.db import models
 from huts.utils.countries import CountryField
 
 class Hut(models.Model):
-  LOCATION_ACCURACY_CHOICES = (
+  ACCURACY_CHOICES = (
     (0, 'wild ass guess'), 
     (1, 'hut not found on map, only word description of location'), 
     (2, 'hut not found on imagery or topo, but location eyeballed from agency \
@@ -25,7 +25,7 @@ class Hut(models.Model):
   # location
   region = models.ForeignKey('Region')
   location = models.PointField()
-  location_accuracy = models.IntegerField(choices=LOCATION_ACCURACY_CHOICES, 
+  accuracy = models.IntegerField(choices=ACCURACY_CHOICES, 
                                          null=True, blank=True)
   #altitude_m = models.IntegerField('altitude (m)',
   #                              null=True, blank=True)

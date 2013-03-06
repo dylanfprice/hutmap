@@ -18,7 +18,28 @@ class Command(BaseCommand):
       for values in reader:
         save_hut(values)
 
+def get_datetime(value):
+  if not value:
+    return None
+  else:
+    return datetime.strptime(value, '%Y-%m-%d')
+
+def get_accuracy(accuracy_value):
+  accuracy = accuracy_value;
+  if accuracy == '3,4':
+    accuracy = 5
+  elif not accuracy:
+    accuracy = None
+  else:
+    accuracy = int(accuracy)
+  return accuracy
+
+
 def save_hut(values):
+  # skip huts without location info
+  if not values['Longitude'] and not values['Latitude']:
+    return
+
   try:
     region, created = Region.objects.get_or_create(
       country=lookup_country_code(values['Country']),
@@ -34,12 +55,12 @@ def save_hut(values):
     #type, created = HutType.objects.get_or_create(name=values['Type'])
 
     hut, created = Hut.objects.get_or_create(
-      id=values['Hut_ID'],
-      created=datetime.strptime(values['Date_Added'], '%Y-%m-%d'),
-      updated=datetime.strptime(values['Date_Updated'], '%Y-%m-%d'),
+      #id=values['Hut_ID'],
+      created=get_datetime(values['Date_Added']),
+      updated=get_datetime(values['Date_Updated']),
       region=region,
       location='POINT({0} {1})'.format(values['Longitude'], values['Latitude']),
-      location_accuracy=values['Location_Accuracy'] or None,
+      accuracy=get_accuracy(values['Accuracy']),
       #altitude=values['Altitude'] or None,
       #name=values['Name'],
       #access=values['Backcountry'],
