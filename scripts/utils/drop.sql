@@ -10,3 +10,6 @@ drop table if exists django_admin_log;
 drop table if exists django_content_type;
 drop table if exists django_session;
 drop table if exists django_site;
+drop table if exists huts_hut;
+drop table if exists huts_region;
+drop table if exists huts_agency;
