@@ -62,7 +62,8 @@ def save_hut(values):
       location='POINT({0} {1})'.format(values['Longitude'], values['Latitude']),
       accuracy=get_accuracy(values['Accuracy']),
       #altitude=values['Altitude'] or None,
-      #name=values['Name'],
+      # TODO: handle multiple names
+      name=values['Names'],
       #access=values['Backcountry'],
       #type=type,
       #num_structures=values['Structures'] or None,
