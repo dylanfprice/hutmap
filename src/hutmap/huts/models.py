@@ -103,9 +103,9 @@ class Hut(models.Model):
   #                                null=True, blank=True)
   #reservations = models.BooleanField('reservations accepted')
   # urls
-  hut_url = models.URLField()
-  photo_url = models.URLField()
-  hut_references = models.CharField(max_length=200)
+  hut_url = models.URLField(max_length=250)
+  photo_url = models.URLField(max_length=250)
+  hut_references = models.CharField(max_length=300)
   # agency
   agency = models.ForeignKey('Agency')
   # for geodjango
@@ -116,7 +116,7 @@ class Hut(models.Model):
 
 class Region(models.Model):
   country = CountryField()
-  state = models.CharField(max_length=20, blank=True)
+  state = models.CharField(max_length=50, blank=True)
   region = models.CharField(max_length=50)
   #area = models.PolygonField(null=True, spatial_index=False)
   objects = models.GeoManager()
