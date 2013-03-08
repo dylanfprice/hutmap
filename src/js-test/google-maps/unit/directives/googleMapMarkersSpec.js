@@ -131,6 +131,7 @@ describe('googleMapMarkers', function() {
     expect(mapCtrl.addListener).toHaveBeenCalledWith(jasmine.any(Object), 'mouseover', jasmine.any(Function));
   });
 
+
   it('calls event handlers when event fired', function() {
     var person = scope.people[0];
     var marker = mapCtrl.getMarker(person.lat, person.lng);
@@ -148,4 +149,5 @@ describe('googleMapMarkers', function() {
       expect(scope.mouseovered.person).toEqual(person);
     });
   });
+
 });
