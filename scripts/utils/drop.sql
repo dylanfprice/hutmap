@@ -1,4 +1,4 @@
-use hutdatabase;
+use hutmap;
 drop table if exists auth_group;
 drop table if exists auth_group_permissions;
 drop table if exists auth_message;
