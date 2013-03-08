@@ -1,7 +1,8 @@
-from django.contrib.gis.geos import Polygon, MultiPolygon
-from tastypie import fields
-from tastypie.resources import ModelResource
+from django.contrib.gis.geos import Polygon, MultiPolygon, GEOSGeometry
 from huts.models import Hut, Region, Agency
+from tastypie import fields
+from tastypie.cache import SimpleCache
+from tastypie.resources import ModelResource
 
 class RegionResource(ModelResource):
   class Meta:
@@ -27,12 +28,19 @@ class HutResource(ModelResource):
     queryset = Hut.objects.all()
     allowed_methods = ['get']
     filtering = {
-      'id' : ('in',),
-      'fee_person_min' : ('lte',),
-      'capacity_max' : ('gte',),
-      'access' : ('exact'),
+      'id' : ('in', 'exact'),
     }
+    cache = SimpleCache()
 
+  def dehydrate_location(self, bundle):
+    point = GEOSGeometry(bundle.data['location'])
+    coords = point.coords
+    return { 'lat': coords[1], 'lng': coords[0] };
+
+  def hydrate_location(self, bundle):
+    coords = bundle.data['location']
+    return 'POINT({0}, {1})'.format(coords['lng'], coords['lat'])
+    
   def build_filters(self, filters=None):
     if filters is None:
       filters = {}
