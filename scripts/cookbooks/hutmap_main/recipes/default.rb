@@ -69,6 +69,7 @@ bash "install python modules" do
   pip install pip --upgrade
   pip install "http://pypi.python.org/packages/source/M/MySQL-python/MySQL-python-1.2.4b4.tar.gz#md5=0958cb9c23d5a656caac031c4886b1cf"
   pip install "django==1.2.7"
+  pip install "unittest2"
   pip install "mimeparse==0.1.3"
   pip install "python-dateutil==1.5"
   pip install "django-tastypie==0.9.11"
