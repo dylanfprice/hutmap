@@ -1,7 +1,8 @@
 'use strict';
 
 (function() {
-  angular.module('hutmap', ['google-maps']).
+  angular.module('hutmap', ['hutmapServices', 'hutmapFilters', 'google-maps',
+    'ngResource', '$strap.directives']).
  
   config(['$routeProvider', function($routeProvider) {
 
