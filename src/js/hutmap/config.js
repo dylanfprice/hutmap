@@ -13,6 +13,17 @@
     mapTypeId : google.maps.MapTypeId.ROADMAP
   }).
 
+  value('markerOptions', {
+    huts: {
+      icon: 'http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_gray.png',
+      zIndex: 0
+    },
+    selected: {
+      icon: 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/blue.png',
+      zIndex: 1
+    }
+  }).
+
   /**
    * Add new map types to our Google Map.
    */
