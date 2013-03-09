@@ -1,27 +1,37 @@
 {% extends "base.html" %}
-
-{% block styles %}
-    <link href="/static/css/map.css" rel="stylesheet"> 
-{% endblock %}
+{% load verbatim %}
 
 {% block content %}
-<div id="map_canvas"></div>
-  {% include "huts/map_filter.html" %}
+{% verbatim %}
+<div ng-cloak>
+  <div ng-controller="HutCtrl">
+  <div ng-controller="MapCtrl">
+    <div class="row">
+      <div class="hut-sidebar">
+        {% endverbatim %}{% include "huts/hut_info.html" %}{% verbatim %}
+        <!--
+        <p>num huts: {{huts.length}}</p>
+        <p>{{center}}</p>
+        <p>{{zoom}}</p>
+        <p>{{bounds}}</p>
+        -->
+      </div>
+      <google-map class="map" map-id="map_canvas" center="center" zoom="zoom" bounds="bounds" map-options="mapOptions">
+        <!-- Alert: When the google-map-markers element gets transcluded, the
+                    ng-transclude directive creates a new scope. The
+                    google-map-markers element's scope becomes a child of this
+                    scope. So the correct sibling scope of google-map is the
+                    $parent of the google-map-markers scope. -->
+        <google-map-markers objects="huts" 
+                            get-lat-lng="{lat:object.location.lat, lng:object.location.lng}" 
+                            marker-options="markerOptions.huts"
+                            on-click="selectHut(marker, object)">
+        </google-map-markers>
+      </google-map>
+    </div>
+  </div>
+  </div>
+
 </div>
-<div id="sidebar" >
-  {% include "huts/map_sidebar_content.html" %}
-</div>
-<div id="sidebar_toggle" title="Toggle Sidebar">
-  <div id="sidebar_toggle_padding"></div>
-  <div id="sidebar_toggle_icon"><i class="icon-chevron-right"></i></div>
-</div>
+{% endverbatim %}
 {% endblock %}
-
-{% block scripts %}
-  {% include 'google-maps.html' %}
-  <script>
-    window.onload = hutmap.map.init;
-  </script>
-{% endblock %}
-
-
