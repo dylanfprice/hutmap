@@ -125,10 +125,21 @@ end
 
 bash "install shovel, argparse, bottle" do
   code <<-EOH
-  pip install shovel
-  pip install argparse
-  pip install bottle
+  pip install shovel && \
+  pip install argparse && \
+  pip install bottle && \
+  # Temporary fix since shovel package is broken
+  cd /usr/local/lib/python2.6/dist-packages/shovel/ && \
+  mkdir templates && \
+  cd templates && \
+  wget https://raw.github.com/seomoz/shovel/master/shovel/templates/help.tpl && \
+  wget https://raw.github.com/seomoz/shovel/master/shovel/templates/results.tpl && \
+  cd ../ && \
+  mkdir -p static/css/ && \
+  cd static/css && \
+  wget https://raw.github.com/seomoz/shovel/master/shovel/static/css/style.css
   EOH
+  not_if { File.exists?("/usr/local/lib/python2.6/dist-packages/shovel/templates/help.tpl") }
 end
 
 
