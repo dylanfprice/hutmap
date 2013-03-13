@@ -34,7 +34,7 @@ elif command == 'start':
   start()
   print('Shovel server started. Try going to http://localhost:3000/help in your browser.')
 elif command == 'stop':
-  if stop():
+  if stop() == 0:
     print('Shovel server stopped.')
 else:
   help_text(1)
