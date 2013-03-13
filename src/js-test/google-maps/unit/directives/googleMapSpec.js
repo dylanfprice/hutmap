@@ -26,12 +26,12 @@ describe('gmMap', function() {
 
     map = googleMapsContainer.getMap('test');
 
-    initCenter = { lat: 1, lng: 2 };
+    initCenter = new google.maps.LatLng(1, 2);
     initZoom = 3;
-    initBounds = {
-      southWest: {lat: 4, lng: 5},
-      northEast: {lat: 6, lng: 7}
-    };
+    initBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(4, 5),
+      new google.maps.LatLng(6, 7)
+    );
     
     // get MapController
     mapCtrl = gmtestMapController();
@@ -51,11 +51,9 @@ describe('gmMap', function() {
       },
     });
 
-    var objToLatLng = googleMapsUtils.objToLatLng;
-    var objToBounds = googleMapsUtils.objToBounds;
-    mapCtrl.center = objToLatLng(initCenter);
+    mapCtrl.center = initCenter;
     mapCtrl.zoom = initZoom;
-    mapCtrl.bounds = objToBounds(initBounds);
+    mapCtrl.bounds = initBounds;
   }));
 
 
@@ -122,16 +120,13 @@ describe('gmMap', function() {
 
   // center and bounds changed, but zoom is same
   function testMapMovedEvent($timeout, event) {
-    mapCtrl.center = new google.maps.LatLng(8, 9);
-    mapCtrl.bounds = new google.maps.LatLngBounds(
+    var center = new google.maps.LatLng(8, 9);
+    var bounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(10, 11),
       new google.maps.LatLng(12, 13));
 
-    var center = { lat: 8, lng: 9 };
-    var bounds = {
-      southWest: {lat: 10, lng: 11},
-      northEast: {lat: 12, lng: 13}
-    };
+    mapCtrl.center = center;
+    mapCtrl.bounds = bounds;
 
     google.maps.event.trigger(map, event);
     $timeout.flush();
@@ -164,9 +159,10 @@ describe('gmMap', function() {
 
 
   it('updates map on scope center changed', function() {
-    scope.pCenter = {lat: 8, lng: 9};
+    var center = new google.maps.LatLng(8, 9);
+    scope.pCenter = center;
     scope.$digest();
-    expect(mapCtrl.center).toEqual(new google.maps.LatLng(8, 9));
+    expect(mapCtrl.center).toEqual(center);
   });
 
   
@@ -178,14 +174,14 @@ describe('gmMap', function() {
 
   
   it('updates map on scope bounds changed', function() {
-    scope.pBounds = {
-      southWest: { lat: 8, lng: 9 },
-      northEast: { lat: 10, lng: 11 }
-    };
+    var bounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(8, 9),
+      new google.maps.LatLng(10, 11));
+
+    scope.pBounds = bounds;
     scope.$digest();
-    expect(mapCtrl.bounds).toEqual(new google.maps.LatLngBounds(
-        new google.maps.LatLng(8, 9),
-        new google.maps.LatLng(10, 11)));
+
+    expect(mapCtrl.bounds).toEqual(bounds);
   });
 
 

@@ -110,22 +110,22 @@ describe('googleMapControllerFactory', function() {
     var markerOptions, markerOptionsSame, markerOptionsVeryClose, markerOptions2;
 
     beforeEach(function() {
-      position = {lat:1,lng:2};
-      positionSame ={lat:1.0004,lng:2.0004};
-      positionVeryClose ={lat:1.0005,lng:2.0005};
-      position2 = {lat:3,lng:4};
+      position = new google.maps.LatLng(1, 2);
+      positionSame = new google.maps.LatLng(1.0004, 2.0004);
+      positionVeryClose = new google.maps.LatLng(1.0005, 2.0005);
+      position2 = new google.maps.LatLng(3, 4);
 
       markerOptions = {
-        position: new google.maps.LatLng(1, 2)
-      };
-      markerOptionsVeryClose = {
-        position: new google.maps.LatLng(1.0005, 2.0005)
+        position: position
       };
       markerOptionsSame = {
-        position: new google.maps.LatLng(1.0004, 2.0004)
+        position: positionSame
+      };
+      markerOptionsVeryClose = {
+        position: positionVeryClose
       };
       markerOptions2 = {
-        position: new google.maps.LatLng(3, 4)
+        position: position2
       };
 
       mapCtrl.addMarker(markerOptions);
@@ -162,25 +162,25 @@ describe('googleMapControllerFactory', function() {
     describe('getMarker', function() {
 
       it('retrieves markers that are on the map', function() {
-        var marker = mapCtrl.getMarker(position.lat, position.lng);
+        var marker = mapCtrl.getMarker(position.lat(), position.lng());
         expect(marker.getPosition()).toEqual(markerOptions.position);
       });
 
 
       it('returns null for marker not on the map', function() {
-        var marker = mapCtrl.getMarker(position2.lat, position2.lng);
+        var marker = mapCtrl.getMarker(position2.lat(), position2.lng());
         expect(marker).toBeNull();
       });
 
 
       it('retrives markers given a lat and lng that are within 0.0005', function() {
-        var marker = mapCtrl.getMarker(positionSame.lat, positionSame.lng);
+        var marker = mapCtrl.getMarker(positionSame.lat(), positionSame.lng());
         expect(marker.getPosition()).toEqual(markerOptions.position);
       });
 
 
       it('does not retrieve marker given lat and lng more than 0.0005 away', function() {
-        var marker = mapCtrl.getMarker(positionVeryClose.lat, positionVeryClose.lng);
+        var marker = mapCtrl.getMarker(positionVeryClose.lat(), positionVeryClose.lng());
         expect(marker).toBeNull();
       });
 
@@ -190,16 +190,16 @@ describe('googleMapControllerFactory', function() {
     describe('removeMarker', function() {
 
       it('removes markers from the map', function() {
-        var removed = mapCtrl.removeMarker(position.lat, position.lng);
+        var removed = mapCtrl.removeMarker(position.lat(), position.lng());
         expect(removed).toBeTruthy();
-        expect(mapCtrl.getMarker(position.lat, position.lng)).toBeNull();
+        expect(mapCtrl.getMarker(position.lat(), position.lng())).toBeNull();
       });
 
 
       it('does not remove markers not on the map', function() {
-        var removed = mapCtrl.removeMarker(position2.lat, position2.lng);
+        var removed = mapCtrl.removeMarker(position2.lat(), position2.lng());
         expect(removed).toBeFalsy();
-        expect(mapCtrl.getMarker(position.lat, position.lng)).not.toBeNull();
+        expect(mapCtrl.getMarker(position.lat(), position.lng())).not.toBeNull();
       });
 
     });

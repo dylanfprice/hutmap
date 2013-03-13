@@ -13,16 +13,13 @@
    *                have multiple maps/instances of the directive)
    *
    * myCenter:      name that you want a center variable in the current scope to
-   *                have. The value will be of the form { lat: 40, lng: -120 } 
+   *                have. The value will be a google.maps.LatLng object.
    *
    * myZoom:        name that you want for a zoom variable in the current scope.
    *                Value will be an integer.
    *
    * myBounds:      name that you want for a bounds variable in the current scope.
-   *                Value will be of the form { 
-   *                  southWest: { lat: 40, lng: -120 }, 
-   *                  northEast: { lat: 40, lng: -120 }
-   *                }
+   *                Value will be a google.maps.LatLngBounds object.
    *
    * myMapOptions:  object in the current scope that is a
    *                google.maps.MapOptions object. If unspecified, will use the
@@ -45,16 +42,9 @@
    * Inspired by Nicolas Laplante's angular-google-maps directive
    * https://github.com/nlaplante/angular-google-maps
    */
-  directive('gmMap', ['$timeout', 'googleMapsUtils', 'googleMapControllerFactory',
-    function ($timeout, googleMapsUtils, googleMapControllerFactory) {
+  directive('gmMap', ['$timeout', 'googleMapControllerFactory',
+    function ($timeout, googleMapControllerFactory) {
   
-    /** aliases **/
-    var objToLatLng = googleMapsUtils.objToLatLng;
-    var objToBounds = googleMapsUtils.objToBounds;
-    var latLngToObj = googleMapsUtils.latLngToObj;
-    var boundsToObj = googleMapsUtils.boundsToObj;
-
-
     /** link function **/
 
     function link(scope, element, attrs, controller) {
@@ -95,7 +85,7 @@
           if (hasCenter || hasZoom || hasBounds) {
             scope.$apply(function (s) {
               if (hasCenter) {
-                scope.gmCenter = latLngToObj(controller.center);
+                scope.gmCenter = controller.center;
               }
               if (hasZoom) {
                 scope.gmZoom = controller.zoom;
@@ -103,7 +93,7 @@
               if (hasBounds) {
                 var b = controller.bounds;
                 if (b) {
-                  scope.gmBounds = boundsToObj(b);
+                  scope.gmBounds = b;
                 }
               }
             });
@@ -120,7 +110,7 @@
         scope.$watch('gmCenter', function (newValue, oldValue) {
           var changed = (newValue !== oldValue);
           if (changed && !controller.dragging) {
-            var latLng = objToLatLng(newValue);
+            var latLng = newValue;
             if (latLng)
               controller.center = latLng;
           }
@@ -140,7 +130,7 @@
         scope.$watch('gmBounds', function(newValue, oldValue) {
           var changed = (newValue !== oldValue);
           if (changed && !controller.dragging) {
-            var bounds = objToBounds(newValue);
+            var bounds = newValue;
             if (bounds)
               controller.bounds = bounds; 
           }

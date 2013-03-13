@@ -83,58 +83,6 @@
     }
 
     /**
-     * @param {google.maps.LatLngBounds} bounds
-     * @return {Object} object literal of the form { 
-     *    southWest: {lat: 40, lng: -120}, 
-     *    northEast: {lat: 40, lng: -120}
-     *  }
-     * @throw if bounds not instanceof google.maps.LatLngBounds
-     */
-    function boundsToObj(bounds) {
-      if (!(bounds instanceof google.maps.LatLngBounds)) {
-        throw 'bounds not a google.maps.LatLngBounds';
-      }
-      var sw = bounds.getSouthWest();
-      var ne = bounds.getNorthEast();
-      return {
-        southWest: {
-          lat: sw.lat(),
-          lng: sw.lng()
-        },
-        northEast: {
-          lat: ne.lat(),
-          lng: ne.lng()
-        }
-      };
-    }
-
-    /**
-     * @param {Object} obj literal of the form { 
-     *    southWest: {lat: 40, lng: -120}, 
-     *    northEast: {lat: 40, lng: -120}
-     *  }
-     * @return {google.maps.LatLngBounds} returns null if problems with obj
-     * (null, NaN, etc.)
-     */
-    function objToBounds(obj) {
-      if (obj != null && obj.southWest && obj.northEast) {
-        var values = [obj.southWest.lat, obj.southWest.lng,
-          obj.northEast.lat, obj.northEast.lng];
-        var ok = true;
-        angular.forEach(values, function(value, i) {
-          if (value == null || isNaN(value))
-            ok = false;
-        });
-        if (ok) {
-          return new google.maps.LatLngBounds(
-            new google.maps.LatLng(values[0], values[1]),
-            new google.maps.LatLng(values[2], values[3]));
-        }
-      }
-      return null;
-    }
-
-    /**
      * @param {google.maps.LatLng} latLng
      * @return true if either lat or lng of latLng is null or isNaN
      */
@@ -153,8 +101,6 @@
       boundsEqual: boundsEqual,
       latLngToObj: latLngToObj,
       objToLatLng: objToLatLng,
-      boundsToObj: boundsToObj,
-      objToBounds: objToBounds,
       hasNaN: hasNaN
     }
   }]);

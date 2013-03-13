@@ -3,14 +3,10 @@ describe('googleMapsUtils', function() {
       boundsEqual,
       latLngToObj,
       objToLatLng,
-      boundsToObj,
-      objToBounds,
       hasNaN;
 
   var latLngG,
-      latLngObj,
-      boundsG,
-      boundsObj;
+      latLngObj;
 
   beforeEach(function() {
     module('google-maps');
@@ -21,16 +17,10 @@ describe('googleMapsUtils', function() {
     boundsEqual = googleMapsUtils.boundsEqual;
     latLngToObj = googleMapsUtils.latLngToObj;
     objToLatLng = googleMapsUtils.objToLatLng;
-    boundsToObj = googleMapsUtils.boundsToObj;
-    objToBounds = googleMapsUtils.objToBounds;
     hasNaN = googleMapsUtils.hasNaN;
 
     latLngG = new google.maps.LatLng(1, 2);
     latLngObj = {lat: 1, lng: 2};
-    boundsG = bounds(3,4,5,6);
-    boundsObj = {
-      southWest: {lat: 3, lng: 4},
-      northEast: {lat: 5, lng: 6}};
   }));
 
   function bounds(swLat, swLng, neLat, neLng) {
@@ -116,34 +106,6 @@ describe('googleMapsUtils', function() {
     it('returns null on NaN', function() {
       var latLng = objToLatLng({lat: NaN, lng: 5});
       expect(latLng).toBeNull();
-    });
-
-  });
-
-  describe('boundsToObj', function() {
-
-    it('converts bounds to an object', function() {
-      var obj = boundsToObj(boundsG);
-      expect(obj).toEqual(boundsObj);
-    });
-
-    it('throws on null', function() {
-      var fn = angular.bind(this, boundsToObj, null);
-      expect(fn).toThrow();
-    });
-
-  });
-
-  describe('objToBounds', function() {
-
-    it('converts an object to a bounds', function() {
-      var bnds = objToBounds(boundsObj);
-      expect(bnds).toEqual(boundsG);
-    });
-
-    it('returns null on NaN', function() {
-      var bnds = objToBounds(bounds(1,2,3,NaN));
-      expect(bnds).toBeNull();
     });
 
   });

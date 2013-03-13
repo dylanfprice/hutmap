@@ -13,7 +13,6 @@
     /** aliases */
     var latLngEqual = googleMapsUtils.latLngEqual;
     var boundsEqual = googleMapsUtils.boundsEqual;
-    var latLngToObj = googleMapsUtils.latLngToObj;
     var hasNaN = googleMapsUtils.hasNaN;
     var gMDefaults = googleMapsDefaults;
     var gMContainer = googleMapsContainer;
