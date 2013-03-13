@@ -94,10 +94,10 @@ bash "install node" do
   wget http://nodejs.org/dist/v0.10.0/#{nodejs}.tar.gz && \
   tar -xzf #{nodejs}.tar.gz && \
   rm #{nodejs}.tar.gz && \
-  mv #{nodejs} node && \
+  ln -s #{nodejs} node && \
   chmod -R 755 node
   EOH
-  not_if { File.exists?("#{node[:install_dir]}/node/bin/node") }
+  not_if { File.exists?("#{node[:install_dir]}/#{nodejs}/bin/node") }
 end
 
 execute "install less" do
@@ -117,10 +117,10 @@ bash "install phantomjs" do
   wget http://phantomjs.googlecode.com/files/#{phantomjs}.tar.bz2 && \
   tar -xjf #{phantomjs}.tar.bz2 && \
   rm #{phantomjs}.tar.bz2 && \
-  mv #{phantomjs} phantomjs && \
+  ln -s #{phantomjs} phantomjs && \
   chmod -R 755 phantomjs
   EOH
-  not_if { File.exists?("#{node[:install_dir]}/phantomjs/bin/phantomjs") }
+  not_if { File.exists?("#{node[:install_dir]}/#{phantomjs}/bin/phantomjs") }
 end
 
 bash "install shovel, argparse, bottle" do
