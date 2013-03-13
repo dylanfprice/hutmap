@@ -16,7 +16,7 @@ exclude = [
 
 autoWatch = true;
 
-browsers = ['Firefox'];
+browsers = ['PhantomJS'];
 
 junitReporter = {
   outputFile: 'test_out/unit.xml',
