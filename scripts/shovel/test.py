@@ -8,20 +8,22 @@ config = imp.load_source('config', file)
 
 
 @task
-def hutmap_js():
+def hutmapjs():
   """Tests hutmap javascript application"""
   subprocess.check_call([
-    'testacular', 'start', '--no-auto-watch',
-    '{0}/hutmap/config/testacular.conf.js'].format(config.JS_TEST_PATH))
+    'testacular', 'start',
+    '{0}/hutmap/config/testacular.conf.js'.format(config.JS_TEST_PATH),
+    '--single-run'])
 
   subprocess.check_call([
     'testacular', 'start',
-    '{0}/hutmap/config/testacular-e2e.conf.js'].format(config.JS_TEST_PATH))
+    '{0}/hutmap/config/testacular-e2e.conf.js'.format(config.JS_TEST_PATH)])
 
 
 @task
-def gmaps_js():
+def gmapsjs():
   """Tests google-maps angular module"""
   subprocess.check_call([
-    'testacular', 'start', '--no-auto-watch',
-    '{0}/google-maps/config/testacular.conf.js'].format(config.JS_TEST_PATH))
+    'testacular', 'start',
+    '{0}/google-maps/config/testacular.conf.js'.format(config.JS_TEST_PATH),
+    '--single-run'])
