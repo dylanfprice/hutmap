@@ -83,18 +83,44 @@ package "openjdk-6-jre" do
   action :install
 end
 
-bash "install node and less" do
+package "libfontconfig1" do
+  action :install
+end
+
+bash "install node" do
+  nodejs = "node-v0.10.0-linux-x86"
   code <<-EOH
   cd #{node[:install_dir]}
-  wget http://nodejs.org/dist/v0.8.20/node-v0.8.20-linux-x86.tar.gz && \
-  tar -xzf node-v0.8.20-linux-x86.tar.gz && \
-  rm node-v0.8.20-linux-x86.tar.gz && \
-  mv node-v0.8.20-linux-x86 node && \
-  chmod -R 755 node && \
-  cd node/bin/ && \
-  ./npm install -g less
+  wget http://nodejs.org/dist/v0.10.0/#{nodejs}.tar.gz && \
+  tar -xzf #{nodejs}.tar.gz && \
+  rm #{nodejs}.tar.gz && \
+  mv #{nodejs} node && \
+  chmod -R 755 node
   EOH
   not_if { File.exists?("#{node[:install_dir]}/node/bin/node") }
+end
+
+execute "install less" do
+  command "#{node[:install_dir]}/node/bin/npm install -g less"
+  not_if { File.exists?("#{node[:install_dir]}/node/bin/lessc") }
+end
+
+execute "install testacular" do
+  command "#{node[:install_dir]}/node/bin/npm install -g testacular"
+  not_if { File.exists?("#{node[:install_dir]}/node/bin/testacular") }
+end
+
+bash "install phantomjs" do
+  phantomjs = "phantomjs-1.8.2-linux-i686" 
+  code <<-EOH
+  cd #{node[:install_dir]}
+  wget http://phantomjs.googlecode.com/files/#{phantomjs}.tar.bz2 && \
+  tar -xjf #{phantomjs}.tar.bz2 && \
+  rm #{phantomjs}.tar.bz2 && \
+  mv #{phantomjs} phantomjs && \
+  chmod -R 755 phantomjs
+  EOH
+  not_if { File.exists?("#{node[:install_dir]}/phantomjs/bin/phantomjs") }
 end
 
 bash "install shovel, argparse, bottle" do
