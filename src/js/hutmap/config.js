@@ -10,12 +10,17 @@
   value('mapOptions', {
     zoom : 3,
     center : new google.maps.LatLng(46.87916, -120),
-    mapTypeId : google.maps.MapTypeId.ROADMAP
+    mapTypeId : google.maps.MapTypeId.ROADMAP,
+    streetViewControl: false
   }).
 
   value('markerOptions', {
     huts: {
-      icon: 'http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_gray.png',
+      icon: '/static/img/mm_20_gray.png',
+      shape: {
+        coord: [6, 0, 2, 2, 0, 6, 6, 13, 12, 6, 10, 2, 6, 0],
+        type: 'poly'
+      },
       zIndex: 0
     },
     selected: {
