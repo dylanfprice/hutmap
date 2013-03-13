@@ -46,6 +46,8 @@ def js():#(nomin=False): #TODO: add minification
 
   set_permissions(config.JS_DEST)
 
+  print('Successfully built js.')
+
 
 @task
 def css(nomin=False):
@@ -68,6 +70,8 @@ def css(nomin=False):
     file.writelines(stdoutdata)
 
   set_permissions(config.CSS_DEST)
+
+  print('Successfully built css')
 
 
 def set_permissions(folder):
