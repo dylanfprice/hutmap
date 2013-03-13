@@ -13,6 +13,12 @@ def help_text(retcode):
   print("Usage: shovel-server.py start|stop")
   sys.exit(retcode)
 
+def start():
+  subprocess.check_call(['vagrant', 'ssh', '-c', 'cd /vagrant/scripts && echo "shovel-server --port 3000" | at now'])
+
+def stop():
+  return subprocess.call(['vagrant', 'ssh', '-c', 'killall shovel-server'])
+
 if len(sys.argv) < 2:
   help_text(1)
 
@@ -24,11 +30,12 @@ except:
 if command == '-h' or command == '--help' or command == 'help':
   help_text(0)
 elif command == 'start':
-  subprocess.check_call(['vagrant', 'ssh', '-c', 'cd /vagrant/scripts && echo "shovel-server --port 3000" | at now'])
+  stop()
+  start()
   print('Shovel server started. Try going to http://localhost:3000/help in your browser.')
 elif command == 'stop':
-  subprocess.check_call(['vagrant', 'ssh', '-c', 'killall shovel-server'])
-  print('Shovel server stopped.')
+  if stop():
+    print('Shovel server stopped.')
 else:
   help_text(1)
 
