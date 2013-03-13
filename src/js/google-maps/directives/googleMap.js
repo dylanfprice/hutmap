@@ -7,7 +7,7 @@
    * A directive for embedding google maps into your app. 
    *
    * Usage:
-   * <google-map map-id="myMapId" center="myCenter" zoom="myZoom" bounds="myBounds" mapOptions="myMapOptions"></google-map>
+   * <gm-map gm-map-id="myMapId" gm-center="myCenter" gm-zoom="myZoom" gm-bounds="myBounds" gm-map-options="myMapOptions"></gm-map>
    *
    * myMapId:       just a string that is a unique identifier for your map (you may
    *                have multiple maps/instances of the directive)
@@ -28,9 +28,9 @@
    *                google.maps.MapOptions object. If unspecified, will use the
    *                values in googleMapsDefaults.mapOptions.
    *                'googleMapsDefaults' is a service, so it is both injectable
-   *                and overrideable.
+   *                and overrideable (using $provide.decorator).
    *
-   * All attributes expect mapOptions are required. The myCenter, myZoom, and
+   * All attributes expect map-options are required. The myCenter, myZoom, and
    * myBounds variables do not have to exist in the current scope--they will be
    * created if necessary. All three have bi-directional association, i.e. drag
    * or zoom the map and they will update, update them and the map will change.
@@ -45,7 +45,7 @@
    * Inspired by Nicolas Laplante's angular-google-maps directive
    * https://github.com/nlaplante/angular-google-maps
    */
-  directive('googleMap', ['$timeout', 'googleMapsUtils', 'googleMapControllerFactory',
+  directive('gmMap', ['$timeout', 'googleMapsUtils', 'googleMapControllerFactory',
     function ($timeout, googleMapsUtils, googleMapControllerFactory) {
   
     /** aliases **/
@@ -59,17 +59,17 @@
 
     function link(scope, element, attrs, controller) {
       // initialize scope
-      if (!angular.isDefined(scope.center)) {
+      if (!angular.isDefined(scope.gmCenter)) {
         scope.center = {};
       }
-      if (!angular.isDefined(scope.bounds)) {
+      if (!angular.isDefined(scope.gmBounds)) {
         scope.bounds = {};
       }
 
-      // Make sure mapId is defined
+      // Make sure gmMapId is defined
       // Note: redundant check in MapController. Can't hurt.
-      if (!attrs.hasOwnProperty('mapId')) {
-        throw 'googleMap must have non-empty mapId attribute';
+      if (!attrs.hasOwnProperty('gmMapId')) {
+        throw 'googleMap must have non-empty gmMapId attribute';
       }
 
       // Check what's defined in attrs
@@ -80,13 +80,13 @@
       var hasZoom = false;
       var hasBounds = false;
 
-      if (attrs.hasOwnProperty('center')) {
+      if (attrs.hasOwnProperty('gmCenter')) {
         hasCenter = true;
       }
-      if (attrs.hasOwnProperty('zoom')) {
+      if (attrs.hasOwnProperty('gmZoom')) {
         hasZoom = true;
       }
-      if (attrs.hasOwnProperty('bounds')) {
+      if (attrs.hasOwnProperty('gmBounds')) {
         hasBounds = true;
       }
 
@@ -95,15 +95,15 @@
           if (hasCenter || hasZoom || hasBounds) {
             scope.$apply(function (s) {
               if (hasCenter) {
-                scope.center = latLngToObj(controller.center);
+                scope.gmCenter = latLngToObj(controller.center);
               }
               if (hasZoom) {
-                scope.zoom = controller.zoom;
+                scope.gmZoom = controller.zoom;
               }
               if (hasBounds) {
                 var b = controller.bounds;
                 if (b) {
-                  scope.bounds = boundsToObj(b);
+                  scope.gmBounds = boundsToObj(b);
                 }
               }
             });
@@ -117,7 +117,7 @@
       controller.addMapListener('bounds_changed', updateScope);
       
       if (hasCenter) {
-        scope.$watch('center', function (newValue, oldValue) {
+        scope.$watch('gmCenter', function (newValue, oldValue) {
           var changed = (newValue !== oldValue);
           if (changed && !controller.dragging) {
             var latLng = objToLatLng(newValue);
@@ -128,7 +128,7 @@
       }
       
       if (hasZoom) {
-        scope.$watch('zoom', function (newValue, oldValue) {
+        scope.$watch('gmZoom', function (newValue, oldValue) {
           var ok = (newValue != null && !isNaN(newValue));
           if (ok && newValue !== oldValue) {
             controller.zoom = newValue;
@@ -137,7 +137,7 @@
       }
 
       if (hasBounds) {
-        scope.$watch('bounds', function(newValue, oldValue) {
+        scope.$watch('gmBounds', function(newValue, oldValue) {
           var changed = (newValue !== oldValue);
           if (changed && !controller.dragging) {
             var bounds = objToBounds(newValue);
@@ -159,10 +159,10 @@
       transclude: true,
       replace: true,
       scope: {
-        center: '=',
-        zoom: '=',
-        bounds: '=',
-        mapOptions: '&'
+        gmCenter: '=',
+        gmZoom: '=',
+        gmBounds: '=',
+        gmMapOptions: '&'
       },
       controller: googleMapControllerFactory.MapController,
       link: link

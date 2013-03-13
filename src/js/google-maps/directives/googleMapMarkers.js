@@ -4,10 +4,52 @@
   angular.module('google-maps').
 
   /**
-   * Inspired by Nicolas Laplante's angular-google-maps directive
-   * https://github.com/nlaplante/angular-google-maps
+   * A directive for adding markers to a gmMap. You may have multiple per gmMap.
+   *
+   * To use, you specify an array of custom objects you define and tell the
+   * directive how to extract location data from them. A marker will be created
+   * for each of your objects. If you update the array of objects, the markers
+   * will also update.
+   *
+   * Usage:
+   * <gm-map ...>
+   *   <gm-markers gm-objects="myObjects" gm-get-lat-lng="myGetLatLng" gm-marker-options="myMarkerOptions" gm-on-*event*="myEventHandler"></gm-markers>
+   * </gm-map>
+   *
+   * myObjects:        an array of objects in the current scope. These can be
+   *                   any objects you wish to attach to markers, the only
+   *                   requirement is that they have a uniform method of
+   *                   accessing a lat and lng.
+   *
+   * myGetLatLng:      an angular expression that given an object from
+   *                   myObjects, evaluates to an object with lat and lng
+   *                   properties. Your object can be accessed through the
+   *                   variable 'object'.  For example, if myObjects is [
+   *                     {id: 0, location: {lat:5,lng:5}}, 
+   *                     {id: 1, location: {lat:6,lng:6}}
+   *                   ]
+   *                   then myGetLatLng would look like
+   *                     { lat: object.location.lat, lng: object.location.lng }.
+   *
+   * myMarkerOptions:  object in the current scope that is a
+   *                   google.maps.MarkerOptions object. If unspecified, google
+   *                   maps api defaults will be used.
+   *
+   * myEventHandler:   an angular expression which evaluates to an event
+   *                   handler. This handler will be attached to each marker's
+   *                   *event* event. The variables 'object' and 'marker'
+   *                   evaluate to your object and the google.maps.Marker,
+   *                   respectively. For example:
+   *                     gm-on-click="myClickFn(object, marker)"
+   *                   will call your myClickFn whenever a marker is clicked.
+   *                   You may have multiple gm-on-*event* handlers, but only
+   *                   one for each type of event.
+   *
+   *
+   * All attributes expect gm-on-*event* are required.
+   *
    */
-  directive('googleMapMarkers', ['$log', '$parse', '$timeout', 'googleMapsUtils', 
+  directive('gmMarkers', ['$log', '$parse', '$timeout', 'googleMapsUtils', 
     function($log, $parse, $timeout, googleMapsUtils) {
 
     /** aliases */
@@ -17,18 +59,18 @@
 
     function link(scope, element, attrs, controller) {
       // check attrs
-      if (!('objects' in attrs)) {
-        throw 'objects attribute required';
-      } else if (!('getLatLng' in attrs)) {
-        throw 'getLatLng attribute required';
+      if (!('gmObjects' in attrs)) {
+        throw 'gmObjects attribute required';
+      } else if (!('gmGetLatLng' in attrs)) {
+        throw 'gmGetLatLng attribute required';
       }
 
       var handlers = {}; // map events -> handlers
 
-      // retrieve on-___ handlers
+      // retrieve gm-on-___ handlers
       angular.forEach(attrs, function(value, key) {
-        if (key.lastIndexOf('on', 0) === 0) {
-          var event = angular.lowercase(key.substring(2));
+        if (key.lastIndexOf('gmOn', 0) === 0) {
+          var event = angular.lowercase(key.substring(4));
           var fn = $parse(value);
           handlers[event] = fn;
         }
@@ -37,11 +79,11 @@
       // fn for updating markers from objects
       var updateMarkers = function(objects) {
 
-        var markerOptions = scope.markerOptions();
+        var markerOptions = scope.gmMarkerOptions();
         var objectHash = {};
 
         angular.forEach(objects, function(object, i) {
-          var latLngObj = scope.getLatLng({object: object});
+          var latLngObj = scope.gmGetLatLng({object: object});
           var position = objToLatLng(latLngObj);
           if (position == null) {
             return;
@@ -96,14 +138,14 @@
       }; // end updateMarkers()
 
       // watch objects
-      scope.$watch('objects().length', function(newValue, oldValue) {
+      scope.$watch('gmObjects().length', function(newValue, oldValue) {
         if (newValue != null && newValue !== oldValue) {
-          updateMarkers(scope.objects());
+          updateMarkers(scope.gmObjects());
         }
       });
 
       // initialize markers
-      $timeout(angular.bind(this, updateMarkers, scope.objects()));
+      $timeout(angular.bind(this, updateMarkers, scope.gmObjects()));
     }
 
 
@@ -111,11 +153,11 @@
       restrict: 'AE',
       priority: 100,
       scope: {
-        objects: '&',
-        getLatLng: '&',
-        markerOptions: '&'
+        gmObjects: '&',
+        gmGetLatLng: '&',
+        gmMarkerOptions: '&'
       },
-      require: '^googleMap',
+      require: '^gmMap',
       link: link
     };
   }]);

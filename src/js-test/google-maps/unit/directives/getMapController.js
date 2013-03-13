@@ -12,7 +12,7 @@
   directive('gmtestGetMapController', function() {
     return {
       restrict: 'AE',
-      require: '^googleMap',
+      require: '^gmMap',
       link: function(scope, element, attrs, controller) {
         mapCtrl = controller;
       }

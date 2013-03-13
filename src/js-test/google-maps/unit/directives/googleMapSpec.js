@@ -1,4 +1,4 @@
-describe('googleMap', function() {
+describe('gmMap', function() {
   var elm, scope, mapCtrl; 
   var listeners, listenersOnce;
   var initCenter, initZoom, initBounds;
@@ -12,9 +12,9 @@ describe('googleMap', function() {
 
   beforeEach(inject(function($rootScope, $compile, gmtestMapController, googleMapsContainer, googleMapsUtils) {
     // compile googleMap directive
-    elm = angular.element('<google-map map-id="test" center="pCenter" zoom="pZoom" bounds="pBounds" map-options="mapOptions">' +
+    elm = angular.element('<gm-map gm-map-id="test" gm-center="pCenter" gm-zoom="pZoom" gm-bounds="pBounds" gm-map-options="mapOptions">' +
                             '<gmtest-get-map-controller></gmtest-get-map-controller>' +
-                          '</google-map>');
+                          '</gm-map>');
 
     scope = $rootScope.$new();
     scope.mapOptions = {
@@ -68,26 +68,26 @@ describe('googleMap', function() {
 
 
   it('requires the mapId attribute', inject(function($rootScope, $compile) {
-    elm = angular.element('<google-map center="pCenter" zoom="pZoom" bounds="pBounds"></google-map>');
+    elm = angular.element('<gm-map gm-center="pCenter" gm-zoom="pZoom" gm-bounds="pBounds"></gm-map>');
     scope = scope.$new();
     expect(angular.bind(this, $compile(elm), scope)).toThrow();
   }));
 
 
   it('requires the center attribute', inject(function($rootScope, $compile, googleMapsContainer) {
-    elm = angular.element('<google-map map-id="test2" zoom="pZoom" bounds="pBounds"></google-map>');
+    elm = angular.element('<gm-map gm-map-id="test2" gm-zoom="pZoom" gm-bounds="pBounds"></gm-map>');
     testRequiredAttribute($rootScope, $compile, googleMapsContainer, elm);
   }));
 
 
   it('requires the zoom attribute', inject(function($rootScope, $compile, googleMapsContainer) {
-    elm = angular.element('<google-map map-id="test2" center="pCenter" bounds="pBounds"></google-map>');
+    elm = angular.element('<gm-map gm-map-id="test2" gm-center="pCenter" gm-bounds="pBounds"></gm-map>');
     testRequiredAttribute($rootScope, $compile, googleMapsContainer, elm);
   }));
 
 
   it('requires the bounds attribute', inject(function($rootScope, $compile, googleMapsContainer) {
-    elm = angular.element('<google-map map-id="test2" center="pCenter" zoom="pZoom"></google-map>');
+    elm = angular.element('<gm-map gm-map-id="test2" gm-center="pCenter" gm-zoom="pZoom"></gm-map>');
     testRequiredAttribute($rootScope, $compile, googleMapsContainer, elm);
   }));
 

@@ -30,8 +30,8 @@
      */
     var MapController = function($scope, $element, $attrs) {
 
-      var mapId = $attrs.mapId;
-      if (!mapId) { throw 'googleMap must have non-empty mapId attribute'; }
+      var mapId = $attrs.gmMapId;
+      if (!mapId) { throw 'googleMap must have non-empty gmMapId attribute'; }
 
       var mapDiv = $element.find('[id]');
       mapDiv.attr('id', mapId);
@@ -115,7 +115,7 @@
       // Get config or defaults
       var defaults = gMDefaults.mapOptions;
       var config = {};
-      angular.extend(config, defaults, $scope.mapOptions());
+      angular.extend(config, defaults, $scope.gmMapOptions());
       return config;
     };
 

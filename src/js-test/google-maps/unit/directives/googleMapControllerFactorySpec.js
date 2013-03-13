@@ -9,7 +9,7 @@ describe('googleMapControllerFactory', function() {
   beforeEach(inject(function($rootScope, googleMapControllerFactory, googleMapsContainer) {
     // set up scope
     var scope = $rootScope.$new();
-    scope.mapOptions = function() {
+    scope.gmMapOptions = function() {
       return {
         center: new google.maps.LatLng(2, 3),
         zoom: 1,
@@ -19,11 +19,11 @@ describe('googleMapControllerFactory', function() {
 
     // set up attrs
     var attrs = {
-      mapId: 'test'
+      gmMapId: 'test'
     };
 
     // set up element
-    var elm = angular.element('<div map-id="test" center="center" zoom="zoom" bounds="bounds" map-options="mapOptions">' +
+    var elm = angular.element('<div gm-map-id="test" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">' +
                                 '<div id="test"></div>' +
                               '</div');
 
@@ -43,13 +43,13 @@ describe('googleMapControllerFactory', function() {
 
   it('constructs the map using defaults when there are no options', inject(function($rootScope, googleMapControllerFactory, googleMapsDefaults) {
     var scope = $rootScope.$new();
-    scope.mapOptions = function() { };
+    scope.gmMapOptions = function() { };
     var attrs = {
-      mapId: 'test2'
+      gmMapId: 'test2'
     };
-    var elm = angular.element('<div map-id="test2" center="center" zoom="zoom" bounds="bounds">' +
-                            '<div id="test2"></div>' +
-                          '</div');
+    var elm = angular.element('<div gm-map-id="test2" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
+                                '<div id="test2"></div>' +
+                              '</div');
     mapCtrl = new googleMapControllerFactory.MapController(scope, elm, attrs);
 
     expect(mapCtrl.center).toEqual(googleMapsDefaults.mapOptions.center);

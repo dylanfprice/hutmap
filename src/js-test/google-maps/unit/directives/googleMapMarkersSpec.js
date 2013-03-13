@@ -1,4 +1,4 @@
-describe('googleMapMarkers', function() {
+describe('gmMarkers', function() {
   var elm, scope, mapCtrl; 
   var timeout;
 
@@ -21,16 +21,16 @@ describe('googleMapMarkers', function() {
     timeout = $timeout;
 
     // compile googleMapMarkers directive
-    elm = angular.element('<google-map map-id="test" center="center" zoom="zoom" bounds="bounds">' +
-                            '<google-map-markers ' +
-                              'objects="people"' + 
-                              'get-lat-lng="{lat:object.lat,lng:object.lng}"' + 
-                              'marker-options="opts"' + 
-                              'on-click="selected = {person: object, marker: marker}"' +
-                              'on-mouseover="mouseovered = {person: object, marker: marker}">' + 
-                            '</google-map-markers>' + 
+    elm = angular.element('<gm-map gm-map-id="test" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
+                            '<gm-markers ' +
+                              'gm-objects="people"' + 
+                              'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' + 
+                              'gm-marker-options="opts"' + 
+                              'gm-on-click="selected = {person: object, marker: marker}"' +
+                              'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' + 
+                            '</gm-markers>' + 
                             '<gmtest-get-map-controller></gmtest-get-map-controller>' +
-                          '</google-map>');
+                          '</gm-map>');
 
     $compile(elm)(scope);
 
@@ -45,28 +45,28 @@ describe('googleMapMarkers', function() {
 
 
   it('requires the objects attribute', inject(function($compile) {
-    elm = angular.element('<google-map map-id="test2" center="center" zoom="zoom" bounds="bounds">' +
-                            '<google-map-markers ' +
-                              'get-lat-lng="{lat:object.lat,lng:object.lng}"' + 
-                              'marker-options="opts"' + 
-                              'on-click="selected = {person: object, marker: marker}"' +
-                              'on-mouseover="mouseovered = {person: object, marker: marker}">' + 
-                            '</google-map-markers>' + 
-                          '</google-map>');
+    elm = angular.element('<gm-map gm-map-id="test2" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
+                            '<gm-markers ' +
+                              'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' + 
+                              'gm-marker-options="opts"' + 
+                              'gm-on-click="selected = {person: object, marker: marker}"' +
+                              'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' + 
+                            '</gm-markers>' + 
+                          '</gm-map>');
 
     scope = scope.$new();
     expect(angular.bind(this, $compile(elm), scope)).toThrow();
   }));
 
   it('requires the getLatLng attribute', inject(function($compile) {
-    elm = angular.element('<google-map map-id="test3" center="center" zoom="zoom" bounds="bounds">' +
-                            '<google-map-markers ' +
-                              'objects="people"' + 
-                              'marker-options="opts"' + 
-                              'on-click="selected = {person: object, marker: marker}"' +
-                              'on-mouseover="mouseovered = {person: object, marker: marker}">' + 
-                            '</google-map-markers>' + 
-                          '</google-map>');
+    elm = angular.element('<gm-map gm-map-id="test3" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
+                            '<gm-markers ' +
+                              'gm-objects="people"' + 
+                              'gm-marker-options="opts"' + 
+                              'gm-on-click="selected = {person: object, marker: marker}"' +
+                              'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' + 
+                            '</gm-markers>' + 
+                          '</gm-map>');
 
     scope = scope.$new();
     expect(angular.bind(this, $compile(elm), scope)).toThrow();
