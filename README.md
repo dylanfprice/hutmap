@@ -1,3 +1,9 @@
+
+<!--
+This file generated from the template at scripts/make/generate/templates/README.md
+Please do not edit by hand.
+-->
+
 # About #
 This is the code that powers [hutmap.com](http://www.hutmap.com).
 
@@ -24,22 +30,7 @@ Next install [Vagrant](http://www.vagrantup.com). Vagrant requires both
 I'm not sure if the installer installs these for you or not so you may need to
 install those first.
 
-Finally, grab [Google Closure](https://developers.google.com/closure/), the Closure
-Compiler, and the Closure Templates Library:
-
-    :::bash
-    # Closure
-    svn checkout http://closure-library.googlecode.com/svn/trunk/ closure-library
-    # Closure Compiler
-    wget http://closure-compiler.googlecode.com/files/compiler-latest.zip
-    mkdir closure-compiler
-    unzip -d closure-compiler compiler-latest.zip
-    rm compiler-latest.zip
-    # Closure Templates Library
-    wget http://closure-templates.googlecode.com/files/closure-templates-for-javascript-latest.zip
-    mkdir closure-templates
-    unzip -d closure-templates/ closure-templates-for-javascript-latest.zip
-    rm closure-templates-for-javascript-latest.zip
+<!-- TODO: add something about testing js -->
 
 ## Configure ##
 
@@ -53,7 +44,6 @@ the vm when it builds it). Warning: Don't change the values after you call
 'vagrant destroy', then 'vagrant up' again.
 
     :::bash
-    ## Run settings
     export HUTMAP_DB_NAME='hutmap' 
     export HUTMAP_DB_USER='hutmap'
     export HUTMAP_DB_PASSWORD='hutmap'
@@ -62,11 +52,6 @@ the vm when it builds it). Warning: Don't change the values after you call
     export HUTMAP_SECRET_KEY='6b1c3b50-14b3-11e2-892e-0800200c9a66'
     export HUTMAP_DEBUG='true'
     export HUTMAP_TEMPLATE_DEBUG='true'
-    ## Dev settings
-    # Make sure you set the next three to the right locations for your system
-    export HUTMAP_CLOSURE_LIBRARY='/path/to/closure-library/'
-    export HUTMAP_CLOSURE_COMPILER='/path/to/closure-compiler/compiler.jar'
-    export HUTMAP_CLOSURE_TEMPLATES='/path/to/closure-templates/SoyToJsSrcCompiler.jar'
 
 ## Setup Dev Environment ##
 

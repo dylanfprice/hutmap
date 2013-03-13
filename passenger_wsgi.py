@@ -1,21 +1,31 @@
-import sys, os
-
-# Added for paste to be on python path
-#paste_dir = os.path.join(os.getcwd(), 'deps')
-#sys.stdout = sys.stderr
-#sys.path.insert(0, paste_dir)
-
-# Add hutmap dir to the python path
-src_dir = os.path.join(os.getcwd(), 'src')
-hutmap_dir = os.path.join(src_dir, 'hutmap')
-sys.path.append(hutmap_dir)
-
-sys.path.append(src_dir)
-os.environ['DJANGO_SETTINGS_MODULE'] = "hutmap.settings"
-
+import sys 
+import os
+import logging
 import django.core.handlers.wsgi
-application = django.core.handlers.wsgi.WSGIHandler()
 
-# Add paste middleware for uncaught exceptions from django
-#from paste.exceptions.errormiddleware import ErrorMiddleware
-#application = ErrorMiddleware(application, debug=True)
+CWD = os.getcwd()
+
+# configure logging
+logfilename = os.path.join(CWD, 'passenger_wsgi.log')
+logging.basicConfig(filename=logfilename, level=logging.DEBUG)
+logging.info("Running %s", __file__)
+logging.info("environ: %s", str(os.environ))
+
+# add hutmap dir to the python path
+try:
+  src_dir = os.path.join(CWD, 'src')
+  hutmap_dir = os.path.join(src_dir, 'hutmap')
+  sys.path.insert(0, src_dir)
+  sys.path.insert(0, hutmap_dir)
+except Exception as e:
+  logging.exception(e) 
+  raise e
+
+# start django
+try:
+  os.environ['DJANGO_SETTINGS_MODULE'] = "hutmap.settings"
+  application = django.core.handlers.wsgi.WSGIHandler()
+  logging.info("application executed successfully")
+except Exception as e:
+  logging.exception("Error: %s", e)
+  raise e

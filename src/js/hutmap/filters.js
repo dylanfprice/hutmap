@@ -1,12 +1,32 @@
-goog.provide('hutmap.filters');
+'use strict';
 
-hutmap.filters.create_price_hut_filter = function(price_low, price_hi) {
-  var price_low = price_low;
-  var price_hi = price_hi;
-  return function(hut) {
-    if (hut.price_hut_min <= price_low)
-      return hut.price_hut_max >= price_low;
-    else 
-      return hut.price_hut_min <= price_hi;
-  };
-};
+(function () {
+  angular.module('hutmapFilters', []).
+
+  /**
+  * Truncate Filter
+  * @Param string
+  * @Param int, default = 10
+  * @Param string, default = "..."
+  * @return string
+  */
+  filter('truncate', function () {
+    return function (text, length, end) {
+      if (isNaN(length))
+        length = 10;
+         
+      if (end === undefined)
+        end = "...";
+         
+      if (text == null || text.length == 0) {
+        return null;
+      } else if (text.length <= length || text.length - end.length <= length) {
+        return text;
+      }
+      else {
+        return String(text).substring(0, length-end.length) + end;
+      }
+    };
+  });
+
+})();

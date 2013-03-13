@@ -1,7 +1,8 @@
-from django.contrib.gis.geos import Polygon, MultiPolygon
+from django.contrib.gis.geos import Polygon, MultiPolygon, GEOSGeometry
+from huts.models import Hut, Region, Agency
 from tastypie import fields
+from tastypie.cache import SimpleCache
 from tastypie.resources import ModelResource
-from huts.models import Hut, HutType, Region, Agency
 
 class RegionResource(ModelResource):
   class Meta:
@@ -13,26 +14,33 @@ class AgencyResource(ModelResource):
     queryset = Agency.objects.all()
     allowed_methods = ['get']
 
-class HutTypeResource(ModelResource):
-  class Meta:
-    queryset = HutType.objects.all()
-    allowed_methods = ['get']
+#class HutTypeResource(ModelResource):
+#  class Meta:
+#    queryset = HutType.objects.all()
+#    allowed_methods = ['get']
 
 class HutResource(ModelResource):
   region = fields.ForeignKey(RegionResource, 'region', full=True)
   agency = fields.ForeignKey(AgencyResource, 'agency', full=True)
-  type = fields.ForeignKey(HutTypeResource, 'type', full=True)
+  #type = fields.ForeignKey(HutTypeResource, 'type', full=True)
 
   class Meta:
     queryset = Hut.objects.all()
     allowed_methods = ['get']
     filtering = {
-      'id' : ('in',),
-      'fee_person_min' : ('lte',),
-      'capacity_max' : ('gte',),
-      'access' : ('exact'),
+      'id' : ('in', 'exact'),
     }
+    cache = SimpleCache()
 
+  def dehydrate_location(self, bundle):
+    point = GEOSGeometry(bundle.data['location'])
+    coords = point.coords
+    return { 'lat': coords[1], 'lng': coords[0] };
+
+  def hydrate_location(self, bundle):
+    coords = bundle.data['location']
+    return 'POINT({0}, {1})'.format(coords['lng'], coords['lat'])
+    
   def build_filters(self, filters=None):
     if filters is None:
       filters = {}

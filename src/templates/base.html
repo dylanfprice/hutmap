@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <title>{% block title %}Hutmap{% endblock title %}</title>
@@ -8,8 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/static/css/default.css" rel="stylesheet">
+  <link href="/static/css/hutmap.min.css" rel="stylesheet">
   {% block styles %}{% endblock styles %}
   
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -28,42 +28,71 @@
 
 <body>
 
-  <div id="navbar" class="navbar navbar-inverse navbar-static-top">
-    <div class="navbar-inner">
-      <a class="brand" href="{% url hutmap_home %}">Hutmap</a>
-        <ul class="nav">
+  <div ng-app="hutmap">
+
+    <div id="navbar" class="navbar navbar-inverse navbar-static-top">
+      <div class="navbar-inner">
+        <a class="brand" href="{% url hutmap_home %}"><img class="up2" src="/static/img/logo.png"/>Hutmap</a>
+        <ul class="nav" ng-controller="NavbarCtrl">
           {% block navbar %}
-            <li><a href="{% url hutmap_home %}">Home</a></li>
-            <li><a href="{% url hutmap_map %}">Map</a></li>
-            <li><a href="/blog">Blog</a></li>
-            <li><a href="/about">About</a></li>
+          <li ng-class="{% templatetag openbrace %} active: isPath('{% url hutmap_home %}'){% templatetag closebrace %}">
+            <a href="{% url hutmap_home %}">
+              Home
+            </a>
+          </li>
+          <li>
+          <li ng-class="{% templatetag openbrace %} active: isPath('{% url hutmap_map %}'){% templatetag closebrace %}">
+            <a href="{% url hutmap_map %}">
+              Map
+            </a>
+          </li>
+          <li ng-class="{% templatetag openbrace %} active: isPath('/about/'){% templatetag closebrace %}">
+            <a href="/about/">
+              About
+            </a>
+          </li>
           {% endblock navbar %}
         </ul>
+        <form id="navbar-search" class="navbar-search pull-right" action="/searchTODO">
+          <input type="text" class="search-query" placeholder="Search huts by name or location..." />
+          <span class="search-icon">
+            <span class="icon-search"></span>
+            <button class="transparent" type="submit">
+              <span class="visuallyhidden">Search</span>
+            </button>
+          </span>
+        </form>
+      </div>
     </div>
+
+
+    {% block content %}
+    {% endblock content %}
+    
   </div>
 
-
-  {% block content %}
-  {% endblock content %}
-
-  <script src="/static/js/hutmap-compiled.js"></script>
-
-  <!-- Highlight active tab in navbar -->
-  <script>
-    goog.require('goog.dom');
-    goog.require('goog.Uri');
-    goog.require('goog.array');
-  </script>
-  <script>
-    var navbar = goog.dom.getElement('navbar');
-    var lis = goog.dom.getElementsByTagNameAndClass('li', undefined, navbar);
-    goog.array.forEach(lis, function(li, index, array) {
-      var a = goog.dom.getFirstElementChild(li);
-      if (window.location.pathname === goog.Uri.parse(a.href).getPath()) {
-        li.className += 'active';
-      }
-    });
-  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places,geometry&key=AIzaSyDKzNYkeusCcplMH7XWA9l0QLZ8Cwn01_M"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.6.6/angular-strap.min.js"></script>
+  {% if not DEBUG %}
+  <script src="/static/js/hutmap.min.js"></script>
+  {% else %}
+  <script src="/dev/js/google-maps/module.js"></script>
+  <script src="/dev/js/google-maps/services/googleMapsUtils.js"></script>
+  <script src="/dev/js/google-maps/services/googleMapsContainer.js"></script>
+  <script src="/dev/js/google-maps/directives/googleMapControllerFactory.js"></script>
+  <script src="/dev/js/google-maps/directives/gmMap.js"></script>
+  <script src="/dev/js/google-maps/directives/gmMarkers.js"></script>
+  <script src="/dev/js/hutmap/app.js"></script>
+  <script src="/dev/js/hutmap/config.js"></script>
+  <script src="/dev/js/hutmap/controllers.js"></script>
+  <script src="/dev/js/hutmap/services.js"></script>
+  <script src="/dev/js/hutmap/filters.js"></script>
+  <script src="/dev/js/hutmap/directives.js"></script>
+  {% endif %}
   {% block scripts %}
   {% endblock scripts %}
 
