@@ -1,4 +1,5 @@
-from django.conf.urls import *
+from django.conf.urls import patterns, url, include
+from django.views.generic.base import TemplateView
 from tastypie.api import Api
 
 from huts.api import HutResource, RegionResource, AgencyResource
@@ -13,7 +14,7 @@ urlpatterns = patterns('',
   (r'^api/', include(api.urls)),
 )
 
-urlpatterns += patterns('django.views.generic.simple',
-  url(r'^map/', 'direct_to_template', {'template': 'huts/map.html'}, name='hutmap_map'),
+urlpatterns += patterns('',
+  url(r'^map/', TemplateView.as_view(template_name='huts/map.html'), name='hutmap_map'),
 )
 

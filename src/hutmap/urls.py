@@ -1,12 +1,12 @@
-from django.conf.urls import *
-from django.conf import settings
+from django.conf.urls import patterns, url, include
+from django.views.generic.base import TemplateView
 
 from django.contrib.gis import admin
 admin.autodiscover()
 
-urlpatterns = patterns('django.views.generic.simple',
-  url(r'^$',  'direct_to_template', {'template': 'index.html'}, name='hutmap_home'),
-  url(r'^test$',  'direct_to_template', {'template': 'test.html'}),
+urlpatterns = patterns('',
+  url(r'^$', TemplateView.as_view(template_name='index.html'), name='hutmap_home'),
+  url(r'^test$',  TemplateView.as_view(template_name='test.html')),
 )
 
 urlpatterns += patterns('',
