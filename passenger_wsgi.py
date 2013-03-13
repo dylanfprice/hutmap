@@ -3,6 +3,11 @@ import os
 import logging
 import django.core.handlers.wsgi
 
+# run in our virtualenv
+INTERP = os.path.join(os.environ['HOME'], '.pythonbrew', 'venvs', 'Python-2.7.3', 'hutmap', 'bin', 'python')
+if sys.executable != INTERP:
+  os.execl(INTERP, INTERP, *sys.argv)
+
 CWD = os.getcwd()
 
 # configure logging
