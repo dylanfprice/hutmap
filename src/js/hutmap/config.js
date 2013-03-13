@@ -16,7 +16,7 @@
 
   value('markerOptions', {
     huts: {
-      icon: '/static/img/mm_20_gray.png',
+      icon: '/static/img/marker_gray_small.png',
       shape: {
         coord: [6, 0, 2, 2, 0, 6, 6, 13, 12, 6, 10, 2, 6, 0],
         type: 'poly'
@@ -24,7 +24,7 @@
       zIndex: 0
     },
     selected: {
-      icon: 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/blue.png',
+      icon: '/static/img/marker_blue.png',
       zIndex: 1
     }
   }).
