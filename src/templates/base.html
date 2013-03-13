@@ -32,17 +32,17 @@
 
     <div id="navbar" class="navbar navbar-inverse navbar-static-top">
       <div class="navbar-inner">
-        <a class="brand" href="{% url hutmap_home %}"><img class="up2" src="/static/img/logo.png"/>Hutmap</a>
+        <a class="brand" href="{% url 'hutmap_home' %}"><img class="up2" src="/static/img/logo.png"/>Hutmap</a>
         <ul class="nav" ng-controller="NavbarCtrl">
           {% block navbar %}
-          <li ng-class="{% templatetag openbrace %} active: isPath('{% url hutmap_home %}'){% templatetag closebrace %}">
-            <a href="{% url hutmap_home %}">
+          <li ng-class="{% templatetag openbrace %} active: isPath('{% url 'hutmap_home' %}'){% templatetag closebrace %}">
+            <a href="{% url 'hutmap_home' %}">
               Home
             </a>
           </li>
           <li>
-          <li ng-class="{% templatetag openbrace %} active: isPath('{% url hutmap_map %}'){% templatetag closebrace %}">
-            <a href="{% url hutmap_map %}">
+          <li ng-class="{% templatetag openbrace %} active: isPath('{% url 'hutmap_map' %}'){% templatetag closebrace %}">
+            <a href="{% url 'hutmap_map' %}">
               Map
             </a>
           </li>
@@ -54,7 +54,7 @@
           {% endblock navbar %}
         </ul>
         <form id="navbar-search" class="navbar-search pull-right" action="/searchTODO">
-          <input type="text" class="search-query" placeholder="Search huts by name or location..." />
+          <input type="text" class="search-query" placeholder="Search huts by location..." />
           <span class="search-icon">
             <span class="icon-search"></span>
             <button class="transparent" type="submit">
