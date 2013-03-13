@@ -16,18 +16,13 @@
         <p>{{bounds}}</p>
         -->
       </div>
-      <google-map class="map" map-id="map_canvas" center="center" zoom="zoom" bounds="bounds" map-options="mapOptions">
-        <!-- Alert: When the google-map-markers element gets transcluded, the
-                    ng-transclude directive creates a new scope. The
-                    google-map-markers element's scope becomes a child of this
-                    scope. So the correct sibling scope of google-map is the
-                    $parent of the google-map-markers scope. -->
-        <google-map-markers objects="huts" 
-                            get-lat-lng="{lat:object.location.lat, lng:object.location.lng}" 
-                            marker-options="markerOptions.huts"
-                            on-click="selectHut(marker, object)">
-        </google-map-markers>
-      </google-map>
+      <gm-map class="map" gm-map-id="map_canvas" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">
+        <gm-markers gm-objects="huts" 
+                    gm-get-lat-lng="{lat:object.location.lat, lng:object.location.lng}" 
+                    gm-marker-options="markerOptions.huts"
+                    gm-on-click="selectHut(marker, object)">
+        </gm-markers>
+      </gm-map>
     </div>
   </div>
   </div>
