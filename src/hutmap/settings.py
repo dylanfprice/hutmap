@@ -13,7 +13,7 @@ if node() == 'fulton':
   proc = subprocess.Popen(command, stdout = subprocess.PIPE)
   stdoutdata, stderrdata = proc.communicate()
 
-  for line in stdoutdata:
+  for line in stdoutdata.splitlines():
     (key, _, value) = line.partition("=")
     if key.startswith('HUTMAP'):
       os.environ[key] = value.rstrip()
