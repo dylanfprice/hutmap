@@ -4,7 +4,12 @@ import sys
 cwd = os.getcwd()
 
 # configure 'logging'
-logfilename = os.path.join(cwd, 'logs', 'passenger_wsgi.log')
+logs = os.path.join(cwd, 'logs')
+try:
+  os.makedirs(logs) 
+except: 
+  pass
+logfilename = os.path.join(logs, 'passenger_wsgi.log')
 logfile = open(logfilename, 'w')
 logfile.write("Running {0}\n".format(__file__))
 logfile.write("environ: {0}\n".format(str(os.environ)))
