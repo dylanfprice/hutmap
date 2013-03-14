@@ -1,4 +1,5 @@
 .pyc$
+logs/
 deps/
 .vagrant
 .swp
