@@ -1,14 +1,10 @@
-from platform import node
 import django.core.handlers.wsgi
 import logging
 import os
 import sys 
 
 # run in our virtualenv
-INTERP = os.path.join('/usr', 'local', 'pythonbrew', 'venvs', 'Python-2.7.3', 'hutmap', 'bin', 'python')
-
-if node() == 'fulton': # special settings for dreamhost
-  INTERP = os.path.join(os.environ['HOME'], '.pythonbrew', 'venvs', 'Python-2.7.3', 'hutmap', 'bin', 'python')
+INTERP = os.path.join(os.environ['HOME'], '.pythonbrew', 'venvs', 'Python-2.7.3', 'hutmap', 'bin', 'python')
 
 if sys.executable != INTERP:
   os.execl(INTERP, INTERP, *sys.argv)
