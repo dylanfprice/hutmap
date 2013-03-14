@@ -6,7 +6,7 @@ cwd = os.getcwd()
 
 # configure logging
 logfilename = os.path.join(cwd, 'passenger_wsgi.log')
-logging.basicConfig(filename=logfilename, level=logging.DEBUG)
+logging.basicConfig(filename=logfilename, level=logging.WARNING)
 logging.info("Running %s", __file__)
 logging.info("environ: %s", str(os.environ))
 
