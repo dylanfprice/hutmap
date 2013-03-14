@@ -15,7 +15,8 @@ if node() == 'fulton':
 
   for line in stdoutdata:
     (key, _, value) = line.partition("=")
-    os.environ[key] = value.rstrip()
+    if key.startswith('HUTMAP'):
+      os.environ[key] = value.rstrip()
 
 
 ### Per machine settings ###
