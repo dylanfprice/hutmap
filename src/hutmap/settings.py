@@ -37,6 +37,13 @@ SECRET_KEY = os.environ['HUTMAP_SECRET_KEY']
 DEBUG = os.getenv('HUTMAP_DEBUG', 'false').lower() != 'false'
 TEMPLATE_DEBUG = DEBUG
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ['HUTMAP_EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['HUTMAP_EMAIL_HOST_PASSWORD']
+EMAIL_SUBJECT_PREFIX = '[Django@{node}] '.format(node=node())
+
 
 ### All other settings ###
 
@@ -48,6 +55,10 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
+
+SERVER_EMAIL = 'django@hutmap.com'
+
+ALLOWED_HOSTS = ['.hutmap.com']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -102,6 +113,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
@@ -123,3 +135,52 @@ INSTALLED_APPS = (
     'huts',
 )
 
+LOGGING = {
+  'version': 1,
+  'formatters': {
+    'verbose': {
+      'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+    },
+    'simple': {
+      'format': '%(levelname)s %(message)s'
+    },
+  },
+  'filters': {
+    'require_debug_false': {
+      '()': 'django.utils.log.RequireDebugFalse',
+     }
+  },
+  'handlers': {
+    'null': {
+      'level': 'DEBUG',
+      'class': 'logging.NullHandler',
+    },
+    'file':{
+      'level': 'DEBUG',
+      'formatter': 'simple',
+      'class': 'logging.handlers.TimedRotatingFileHandler',
+      'filename':  join(LOCAL_PATH, '..', '..', 'logs', 'django.log'),
+      'when': 'midnight',
+      'interval': 1,
+      'backupCount': 5,
+    },
+    'mail_admins': {
+      'level': 'ERROR',
+      'filters': ['require_debug_false'],
+      'class': 'django.utils.log.AdminEmailHandler',
+      'include_html': True,
+    }
+  },
+  'loggers': {
+    'django': {
+      'handlers': ['file'],
+      'propagate': True,
+      'level': 'DEBUG' if DEBUG else 'WARNING',
+    },
+    'django.request': {
+      'handlers': ['mail_admins'],
+      'level': 'ERROR',
+      'propagate': True,
+    },
+  }
+}
