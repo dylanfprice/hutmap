@@ -49,31 +49,48 @@ end
 
 ## Install Python and modules ##
 
-package "python2.6" do
-  action :install
-  notifies :reload, "service[apache2]", :delayed
-end
-
-package "python2.6-dev" do
+package "python" do
   action :install
 end
 
-package "python-setuptools" do
+package "curl" do
   action :install
 end
 
-bash "install python modules" do
+bash "install pythonbrew" do
+  user "vagrant"
+  environment ({'HOME' => '/home/vagrant'})
   code <<-EOH
-  easy_install pip
-  pip install distribute --upgrade
-  pip install pip --upgrade
-  pip install "http://pypi.python.org/packages/source/M/MySQL-python/MySQL-python-1.2.4b4.tar.gz#md5=0958cb9c23d5a656caac031c4886b1cf"
-  pip install "django==1.2.7"
-  pip install "unittest2"
-  pip install "mimeparse==0.1.3"
-  pip install "python-dateutil==1.5"
-  pip install "django-tastypie==0.9.11"
+  curl -kL http://xrl.us/pythonbrewinstall | bash && \
+  echo '[[ -s $HOME/.pythonbrew/etc/bashrc ]] && source $HOME/.pythonbrew/etc/bashrc' >> $HOME/.bashrc
   EOH
+  not_if { File.exists?("/home/vagrant/.pythonbrew") }
+end
+
+bash "install python and virtualenv" do
+  user "vagrant"
+  environment ({'HOME' => '/home/vagrant'})
+  pythonbrew = '/home/vagrant/.pythonbrew/bin/pythonbrew'
+  code <<-EOH
+  #{pythonbrew} install 2.7.3 && \
+  #{pythonbrew} switch 2.7.3 && \
+  #{pythonbrew} venv init
+  EOH
+  #not_if { File.exists?("/home/vagrant/.pythonbrew/pythons/Python-2.7.3") }
+end
+
+bash "set up hutmap virtualenv" do
+  user "vagrant"
+  environment ({'HOME' => '/home/vagrant'})
+  pythonbrew = '/home/vagrant/.pythonbrew/bin/pythonbrew'
+  pip = '/home/vagrant/.pythonbrew/venvs/Python-2.7.3/hutmap/bin/pip'
+  code <<-EOH
+  #{pythonbrew} venv create hutmap -p 2.7.3 && \
+  #{pip} install "http://pypi.python.org/packages/source/M/MySQL-python/MySQL-python-1.2.4b4.tar.gz#md5=0958cb9c23d5a656caac031c4886b1cf" && \
+  #{pip} install django==1.5 && \
+  #{pip} install django-tastypie==0.9.12
+  EOH
+  #not_if { File.exists?("/home/vagrant/.pythonbrew/venvs/Python-2.7.3/hutmap") }
 end
 
 
