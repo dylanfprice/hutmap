@@ -76,7 +76,7 @@ bash "install python and virtualenv" do
   #{pythonbrew} switch 2.7.3 && \
   #{pythonbrew} venv init
   EOH
-  #not_if { File.exists?("/home/vagrant/.pythonbrew/pythons/Python-2.7.3") }
+  not_if { File.exists?("/home/vagrant/.pythonbrew/pythons/Python-2.7.3") }
 end
 
 bash "set up hutmap virtualenv" do
@@ -90,7 +90,7 @@ bash "set up hutmap virtualenv" do
   #{pip} install django==1.5 && \
   #{pip} install django-tastypie==0.9.12
   EOH
-  #not_if { File.exists?("/home/vagrant/.pythonbrew/venvs/Python-2.7.3/hutmap") }
+  not_if { File.exists?("/home/vagrant/.pythonbrew/venvs/Python-2.7.3/hutmap") }
 end
 
 
