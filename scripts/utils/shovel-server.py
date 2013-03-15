@@ -14,7 +14,13 @@ def help_text(retcode):
   sys.exit(retcode)
 
 def start():
-  subprocess.check_call(['vagrant', 'ssh', '-c', 'cd /vagrant/scripts && echo "shovel-server --port 3000" | at now'])
+  run_server = ' && '.join([
+    'cd /vagrant/scripts/',
+    'echo "$HOME/.pythonbrew/venvs/Python-2.7.3/hutmap/bin/shovel-server --port 3000" | at now'
+  ])
+  cmd = "vagrant ssh -c '{0}'".format(run_server)
+  print(cmd)
+  subprocess.check_call([cmd], shell=True)
 
 def stop():
   return subprocess.call(['vagrant', 'ssh', '-c', 'killall shovel-server'])
