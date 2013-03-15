@@ -15,3 +15,6 @@ BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
 BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
 SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|pdf|swf|ipk)$ no-gzip
 Header append Vary User-Agent env=!dont-vary
+
+AddType text/css .min.css
+AddType application/x-javascript .min.js
