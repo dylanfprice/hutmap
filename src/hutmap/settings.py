@@ -19,6 +19,11 @@ if node() == 'fulton':
       os.environ[key] = value.rstrip()
 
 
+### Version ###
+
+HUTMAP_VERSION = os.environ['HUTMAP_VERSION']
+
+
 ### Per machine settings ###
 
 DATABASES = {
