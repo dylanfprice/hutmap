@@ -8,9 +8,9 @@ ExpiresByType image/gif "access plus 1 hours"
 ExpiresByType image/png "access plus 1 hours"
 ExpiresByType image/jpeg "access plus 1 hours"
 ExpiresByType image/x-icon "access plus 1 hours"
-ExpiresByType application/x-javascript "access plus 15 minutes"
-ExpiresByType application/javascript "access plus 15 minutes"
-ExpiresByType text/css "access plus 1 hours"
+ExpiresByType application/x-javascript "access plus 10 years"
+ExpiresByType application/javascript "access plus 10 years"
+ExpiresByType text/css "access plus 10 years"
 
 SetOutputFilter DEFLATE
 AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/x-javascript application/x-httpd-php
