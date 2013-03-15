@@ -1,6 +1,7 @@
 include_recipe "apt"
 include_recipe "vim"
 include_recipe "passenger_apache2::mod_rails"
+include_recipe "apache2::mod_expires"
 include_recipe "mysql::server"
 
 ## Variables ##
