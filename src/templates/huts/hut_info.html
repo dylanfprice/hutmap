@@ -5,7 +5,7 @@
 <span class="hut-info-detail-table" ng-hide="selectedHut == null">
   <div class="hut-info-img">
     <img class="img-rounded" ng-show="selectedHut.photo_url" src="{{selectedHut.photo_url}}" alt="Broken photo link!"></img>
-    <!--<img class="img-rounded" ng-hide="selectedHut.photo_url" src="/static/img/no-image-available.gif" alt="No image available"></img>-->
+    <!--<img class="img-rounded" ng-hide="selectedHut.photo_url" src="{{ STATIC_URL }}img/no-image-available.gif" alt="No image available"></img>-->
     <img class="img-rounded" ng-hide="selectedHut.photo_url" src="http://maps.googleapis.com/maps/api/staticmap?center={{selectedHut.location.lat}}%2C{{selectedHut.location.lng}}&zoom=19&size=180x130&maptype=satellite&sensor=false&key={% endverbatim %}{{ GOOGLE_API_KEY }}{% verbatim %}"></img>
   </div>
   <table>
