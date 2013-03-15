@@ -1,4 +1,5 @@
-from django.contrib.gis.geos import Polygon, MultiPolygon, GEOSGeometry
+from django.contrib.gis.geos import Polygon, Point, MultiPolygon, GEOSGeometry
+from django.utils.datastructures import SortedDict
 from huts.models import Hut, Region, Agency
 from tastypie import fields
 from tastypie.cache import SimpleCache
@@ -79,3 +80,14 @@ class HutResource(ModelResource):
     if e:
         objects = objects.exclude(**e)
     return objects
+
+  def apply_sorting(self, objects, options=None):
+    # custom order_by_distance
+    if options and 'order_by_distance' in options:
+      sel = SortedDict([('distance', 'distance(location, geomfromtext(%s))')])
+      lat_lng = options['order_by_distance'].split(',')
+      pt = Point(float(lat_lng[1]), float(lat_lng[0]))
+      sel_p = (pt.wkt,)
+      return objects.extra(select=sel, select_params=sel_p, order_by=['distance'])
+    
+    return super(HutResource, self).apply_sorting(objects, options)
