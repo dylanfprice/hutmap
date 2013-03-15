@@ -31,7 +31,7 @@ template "#{hutmap_fns}" do
   source "hutmap_fns.sql.erb"
   owner "root"
   group "root"
-  mode "0600"
+  mode "0666"
   action :create
 end
 
