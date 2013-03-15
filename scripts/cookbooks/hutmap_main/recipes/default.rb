@@ -8,6 +8,7 @@ hutmap_grants = "/etc/mysql/hutmap_grants.sql"
 hutmap_fns = "/etc/mysql/hutmap_fns.sql"
 hutmap_drop = "/etc/mysql/hutmap_drop.sql"
 profile = "/etc/profile.d/hutmap.sh"
+user = "vagrant"
 
 ## MySQL config ##
 
@@ -69,7 +70,7 @@ end
 template "#{profile}" do
   source "hutmap.sh.erb"
   mode "644"
-  action :create_if_missing
+  action :create
 end
 
 
@@ -84,43 +85,70 @@ package "curl" do
 end
 
 bash "install pythonbrew" do
-  user "vagrant"
-  environment ({'HOME' => '/home/vagrant'})
+  user "#{user}"
+  environment ({"HOME" => "/home/#{user}"})
   code <<-EOH
   curl -kL http://xrl.us/pythonbrewinstall | bash && \
   echo '[[ -s $HOME/.pythonbrew/etc/bashrc ]] && source $HOME/.pythonbrew/etc/bashrc' >> $HOME/.bashrc
   EOH
-  not_if { File.exists?("/home/vagrant/.pythonbrew") }
+  not_if { File.exists?("/home/#{user}/.pythonbrew") }
 end
 
-bash "install python and virtualenv" do
-  user "vagrant"
-  environment ({'HOME' => '/home/vagrant'})
-  pythonbrew = '/home/vagrant/.pythonbrew/bin/pythonbrew'
+bash "setup pythonbrew" do
+  user "#{user}"
+  environment ({"HOME" => "/home/#{user}"})
+  pythonbrew = "/home/#{user}/.pythonbrew/bin/pythonbrew"
   code <<-EOH
   #{pythonbrew} install 2.7.3 && \
   #{pythonbrew} switch 2.7.3 && \
   #{pythonbrew} venv init
   EOH
-  not_if { File.exists?("/home/vagrant/.pythonbrew/pythons/Python-2.7.3") }
+  not_if { File.exists?("/home/#{user}/.pythonbrew/pythons/Python-2.7.3") }
+  #action :nothing
+  #subscribes :run, "bash[install pythonbrew]", :immediately
 end
 
 bash "set up hutmap virtualenv" do
-  user "vagrant"
-  environment ({'HOME' => '/home/vagrant'})
-  pythonbrew = '/home/vagrant/.pythonbrew/bin/pythonbrew'
-  pip = '/home/vagrant/.pythonbrew/venvs/Python-2.7.3/hutmap/bin/pip'
+  user "#{user}"
+  environment ({"HOME" => "/home/#{user}"})
+  pythonbrew = "/home/#{user}/.pythonbrew/bin/pythonbrew"
+  pip = "/home/#{user}/.pythonbrew/venvs/Python-2.7.3/hutmap/bin/pip"
   code <<-EOH
   #{pythonbrew} venv create hutmap -p 2.7.3 && \
   #{pip} install "http://pypi.python.org/packages/source/M/MySQL-python/MySQL-python-1.2.4b4.tar.gz#md5=0958cb9c23d5a656caac031c4886b1cf" && \
   #{pip} install django==1.5 && \
   #{pip} install django-tastypie==0.9.12
   EOH
-  not_if { File.exists?("/home/vagrant/.pythonbrew/venvs/Python-2.7.3/hutmap") }
+  not_if { File.exists?("/home/#{user}/.pythonbrew/venvs/Python-2.7.3/hutmap") }
+  #action :nothing
+  #subscribes :run, "bash[setup pythonbrew]", :immediately
 end
 
 
 ## Install dev dependencies ##
+
+bash "install shovel" do
+  user "#{user}"
+  environment ({"HOME" => "/home/#{user}"})
+  pythonbrew = "/home/#{user}/.pythonbrew/bin/pythonbrew"
+  pip = "/home/#{user}/.pythonbrew/venvs/Python-2.7.3/hutmap/bin/pip"
+  code <<-EOH
+  #{pip} install shovel && \
+  #{pip} install argparse && \
+  #{pip} install bottle && \
+  # Temporary fix since shovel package is broken
+  cd /home/#{user}/.pythonbrew/venvs/Python-2.7.3/hutmap/lib/python2.7/site-packages/shovel/ && \
+  mkdir templates && \
+  cd templates && \
+  wget https://raw.github.com/seomoz/shovel/master/shovel/templates/help.tpl && \
+  wget https://raw.github.com/seomoz/shovel/master/shovel/templates/results.tpl && \
+  cd ../ && \
+  mkdir -p static/css/ && \
+  cd static/css && \
+  wget https://raw.github.com/seomoz/shovel/master/shovel/static/css/style.css
+  EOH
+  not_if { File.exists?("/home/#{user}/.pythonbrew/venvs/Python-2.7.3/hutmap/lib/python2.7/site-packages/shovel/templates/help.tpl") }
+end
 
 package "openjdk-6-jre" do
   action :install
@@ -164,25 +192,6 @@ bash "install phantomjs" do
   chmod -R 755 phantomjs
   EOH
   not_if { File.exists?("#{node[:install_dir]}/#{phantomjs}/bin/phantomjs") }
-end
-
-bash "install shovel, argparse, bottle" do
-  code <<-EOH
-  pip install shovel && \
-  pip install argparse && \
-  pip install bottle && \
-  # Temporary fix since shovel package is broken
-  cd /usr/local/lib/python2.6/dist-packages/shovel/ && \
-  mkdir templates && \
-  cd templates && \
-  wget https://raw.github.com/seomoz/shovel/master/shovel/templates/help.tpl && \
-  wget https://raw.github.com/seomoz/shovel/master/shovel/templates/results.tpl && \
-  cd ../ && \
-  mkdir -p static/css/ && \
-  cd static/css && \
-  wget https://raw.github.com/seomoz/shovel/master/shovel/static/css/style.css
-  EOH
-  not_if { File.exists?("/usr/local/lib/python2.6/dist-packages/shovel/templates/help.tpl") }
 end
 
 
