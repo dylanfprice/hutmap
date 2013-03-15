@@ -6,6 +6,7 @@ include_recipe "mysql::server"
 ## Variables ##
 hutmap_grants = "/etc/mysql/hutmap_grants.sql"
 hutmap_fns = "/etc/mysql/hutmap_fns.sql"
+hutmap_drop = "/etc/mysql/hutmap_drop.sql"
 profile = "/etc/profile.d/hutmap.sh"
 
 ## MySQL config ##
@@ -40,6 +41,14 @@ execute "mysql install fns" do
     "'#{node['mysql']['server_root_password']}' < #{hutmap_fns}"
   action :nothing
   subscribes :run, "template[#{hutmap_fns}]", :immediately
+end
+
+template "#{hutmap_drop}" do
+  source "hutmap_drop.sql.erb"
+  owner "root"
+  group "root"
+  mode "0666"
+  action :create
 end
 
 
