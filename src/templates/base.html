@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <link href="{{ STATIC_URL }}css/hutmap.min.css" rel="stylesheet">
+  <link href="{{ STATIC_URL }}css/hutmap-{{ HUTMAP_VERSION }}.min.css" rel="stylesheet">
   {% block styles %}{% endblock styles %}
   
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -78,7 +78,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.6.6/angular-strap.min.js"></script>
   {% if not DEBUG %}
-  <script src="{{ STATIC_URL }}js/hutmap.min.js"></script>
+  <script src="{{ STATIC_URL }}js/hutmap-{{ HUTMAP_VERSION }}.min.js"></script>
   {% else %}
   <script src="/dev/js/google-maps/module.js"></script>
   <script src="/dev/js/google-maps/services/googleMapsUtils.js"></script>

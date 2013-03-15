@@ -40,7 +40,7 @@ def js():#(nomin=False): #TODO: add minification
   cmd.extend(' --js '.join(js_files).split(' '))
   cmd.extend(['--compilation_level', 'WHITESPACE_ONLY'])
   cmd.extend(['--language_in', 'ECMASCRIPT5_STRICT'])
-  cmd.extend(['--js_output_file', '{0}/hutmap.min.js'.format(config.JS_DEST)])
+  cmd.extend(['--js_output_file', '{0}/hutmap-{1}.min.js'.format(config.JS_DEST, config.HUTMAP_VERSION)])
 
   subprocess.check_call(cmd)
 
@@ -66,7 +66,7 @@ def css(nomin=False):
   if proc.returncode != 0:
     raise subprocess.CalledProcessError(proc.returncode, cmd)
 
-  with open(join(config.CSS_DEST, 'hutmap.min.css'), 'w+') as file:
+  with open(join(config.CSS_DEST, 'hutmap-{0}.min.css'.format(config.HUTMAP_VERSION)), 'w+') as file:
     file.writelines(stdoutdata)
 
   set_permissions(config.CSS_DEST)
