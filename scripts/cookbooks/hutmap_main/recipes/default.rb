@@ -124,6 +124,12 @@ bash "set up hutmap virtualenv" do
   #subscribes :run, "bash[setup pythonbrew]", :immediately
 end
 
+directory "/var/tmp/hutmap-django-cache" do
+  owner "#{user}"
+  mode 00600
+  action :create
+end
+
 
 ## Install dev dependencies ##
 
