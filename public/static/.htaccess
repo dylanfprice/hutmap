@@ -1,3 +1,7 @@
+AddType text/css .min.css
+AddType application/x-javascript .min.js
+AddType application/javascript .min.js
+
 ExpiresActive on
 ExpiresDefault "access plus 15 minutes"
 ExpiresByType image/gif "access plus 1 hours"
@@ -5,10 +9,11 @@ ExpiresByType image/png "access plus 1 hours"
 ExpiresByType image/jpeg "access plus 1 hours"
 ExpiresByType image/x-icon "access plus 1 hours"
 ExpiresByType application/x-javascript "access plus 15 minutes"
+ExpiresByType application/javascript "access plus 15 minutes"
 ExpiresByType text/css "access plus 1 hours"
 
 SetOutputFilter DEFLATE
-AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/x-javascript application/x-httpd-php
+AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/x-javascript application/x-httpd-php
 BrowserMatch ^Mozilla/4 gzip-only-text/html
 BrowserMatch ^Mozilla/4\.0[678] no-gzip
 BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
@@ -16,5 +21,3 @@ BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
 SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|pdf|swf|ipk)$ no-gzip
 Header append Vary User-Agent env=!dont-vary
 
-AddType text/css .min.css
-AddType application/x-javascript .min.js
