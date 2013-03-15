@@ -34,6 +34,8 @@ DATABASES = {
 
 SECRET_KEY = os.environ['HUTMAP_SECRET_KEY']
 
+GOOGLE_API_KEY = os.environ['HUTMAP_GOOGLE_API_KEY']
+
 DEBUG = os.getenv('HUTMAP_DEBUG', 'false').lower() != 'false'
 TEMPLATE_DEBUG = DEBUG
 
