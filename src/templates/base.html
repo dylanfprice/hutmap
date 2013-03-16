@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+  {% block head %}
+  {% endblock head %}
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <title>{% block title %}Hutmap{% endblock title %}</title>
@@ -28,7 +29,7 @@
 
 <body>
 
-  <div ng-app="hutmap">
+  <div ng-app="hutmap" ng-controller="PathCtrl">
 
     <div id="navbar" class="navbar navbar-inverse navbar-static-top">
       <div class="navbar-inner">
@@ -41,8 +42,8 @@
             </a>
           </li>
           <li>
-          <li ng-class="{% templatetag openbrace %} active: isPath('{% url 'hutmap_map' %}'){% templatetag closebrace %}">
-            <a href="{% url 'hutmap_map' %}">
+          <li ng-class="{% templatetag openbrace %} active: isHutsPath(mapPath){% templatetag closebrace %}">
+            <a ng-href="{% url 'hutmap_huts' %}{% verbatim %}#{{ mapPath }}{% endverbatim %}">
               Map
             </a>
           </li>
@@ -64,7 +65,6 @@
         </form>
       </div>
     </div>
-
 
     {% block content %}
     {% endblock content %}

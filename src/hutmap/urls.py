@@ -11,7 +11,6 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('',
   url(r'^huts/',       include('huts.urls')),
-  #url(r'^browse/',    include('blog.urls'), name='hutmap_browse'),
   #url(r'^about/',     include('blog.urls'), name='hutmap_about'),
   url(r'^admin/',      include(admin.site.urls)),
   url(r'^admin/doc/',  include('django.contrib.admindocs.urls')),

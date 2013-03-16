@@ -1,13 +1,11 @@
-{% extends "base.html" %}
-
-{% block content %}
 {% verbatim %}
 <div ng-cloak>
-  <div ng-controller="HutCtrl">
+  {{ currentQuery }}
   <div ng-controller="MapCtrl">
     <div class="row">
       <div class="hut-sidebar">
         {% endverbatim %}{% include "huts/hut_info.html" %}{% verbatim %}
+        <button ng-click="setQuery({ limit: 100, order_by_distance: '48.91128,-121.01643' })">Query</button>
         <!--
         <p>num huts: {{huts.length}}</p>
         <p>{{center}}</p>
@@ -24,8 +22,5 @@
       </gm-map>
     </div>
   </div>
-  </div>
-
 </div>
 {% endverbatim %}
-{% endblock %}

@@ -144,6 +144,12 @@
         }
       });
 
+      scope.$watch('gmObjects()', function(newValue, oldValue) {
+        if (newValue != null && newValue !== oldValue) {
+          updateMarkers(scope.gmObjects());
+        }
+      });
+
       // initialize markers
       $timeout(angular.bind(this, updateMarkers, scope.gmObjects()));
     }

@@ -3,8 +3,6 @@
 (function() {
   angular.module('hutmap').
 
-  value('version', '0.1').
-
   constant('hutmapMapId', 'map_canvas').
 
   value('mapOptions', {

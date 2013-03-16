@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('',
-  url(r'^map/', TemplateView.as_view(template_name='huts/map.html'), name='hutmap_map'),
+  url(r'^$', TemplateView.as_view(template_name='huts/huts.html'), name='hutmap_huts'),
+  #url(r'^map/', TemplateView.as_view(template_name='huts/map.html'), name='hutmap_map'),
 )
 

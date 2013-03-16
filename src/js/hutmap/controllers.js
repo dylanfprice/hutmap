@@ -3,13 +3,49 @@
 (function () {
   angular.module('hutmap').
 
-  controller('HutCtrl', ['$scope', 'Huts', function($scope, Huts) {
+  controller('PathCtrl', ['$scope', '$location', function($scope, $location) {
+    $scope.mapPath = '/map/';
+
+    $scope.isHutsPath = function(path) {
+      return $location.path() === path;
+    };
+  }]).
+
+  controller('HutCtrl', ['$scope', '$location', 'Huts', function($scope, $location, Huts) {
     $scope.huts;
     $scope.hutsMeta;
+    $scope.currentQuery;
 
-    var hutQuery = Huts.query({limit: 50}, function() {
-      $scope.huts = hutQuery.objects;
-      $scope.hutsMeta = hutQuery.meta;
+    $scope.setQuery = function(query) {
+      $scope.currentQuery = query;
+    };
+
+    $scope.$watch('currentQuery', function(newQuery, oldQuery) {
+      console.log(newQuery, oldQuery);
+      if (newQuery != null && newQuery !== oldQuery) {
+        var hutQuery = Huts.query(newQuery, function() {
+          $scope.huts = hutQuery.objects;
+          $scope.hutsMeta = hutQuery.meta;
+        });
+        angular.forEach(newQuery, function(value, key) {
+          $location.search(key, value);
+        });
+      }
+    }, true);
+
+    $scope.$watch('$location.search()', function() {
+      var search = $location.search();
+      var newQuery = {};
+      var shouldUpdate = false;
+      angular.forEach(search, function(value, key) {
+        if (key.lastIndexOf('map', 0) !== 0) {
+          newQuery[key] = value;
+          shouldUpdate = true;
+        }
+      });
+      if (shouldUpdate) {
+        $scope.currentQuery = newQuery;
+      }
     });
 
     $scope.$watch('hutsMeta.total_count', function(newValue, oldValue, scope) {
@@ -20,11 +56,43 @@
   }]).
 
   controller('MapCtrl',
-    ['$scope', 'mapOptions', 'markerOptions', function ($scope, mapOptions, markerOptions) {
+    ['$scope', '$location', '$q', 'mapOptions', 'markerOptions', function ($scope, $location, $q, mapOptions, markerOptions) {
       $scope.mapOptions = mapOptions;
       $scope.markerOptions = markerOptions;
-
       $scope.selectedHut;
+      $scope.mapLoaded = $q.defer();
+
+      $scope.$watch('center == null && zoom == null', function() {
+        if ($scope.center != null && $scope.zoom != null) {
+          $scope.mapLoaded.resolve();
+        }
+      });
+
+      $scope.$watch('center', function(newCenter, oldCenter) {
+        if (newCenter != null && newCenter !== oldCenter) {
+          $location.search('map_center', newCenter.toUrlValue());
+        }
+      });
+
+      $scope.$watch('zoom', function(newZoom, oldZoom) {
+        if (newZoom != null && newZoom !== oldZoom) {
+          $location.search('map_zoom', newZoom);
+        }
+      });
+
+      $scope.$watch('$location.search()', function() {
+        var center = $location.search()['map_center'];
+        var zoom = $location.search()['map_zoom'];
+        $scope.mapLoaded.promise.then(function() {
+          if (center != null) {
+            var centerArr = center.split(',');
+            $scope.center = new google.maps.LatLng(centerArr[0], centerArr[1]);
+          }
+          if (zoom != null) {
+            $scope.zoom = Number(zoom);
+          }
+        });
+      });
 
       $scope.selectHut = function(marker, hut) {
         if ($scope.prevSelectedMarker) {
@@ -34,7 +102,6 @@
         marker.setOptions(markerOptions.selected);
         $scope.selectedHut = hut;
       };
-
   }]).
 
   controller('HutInfoCtrl', ['$scope', function($scope) {
@@ -50,7 +117,12 @@
 
   controller('NavbarCtrl', ['$scope', '$window', function($scope, $window) {
     $scope.isPath = function(path) {
-      return $window.location.pathname === path;
+      var curPath = $window.location.pathname + $window.location.hash
+      var index = curPath.lastIndexOf('?');
+      if (index !== -1) {
+        curPath = curPath.substring(0, index);
+      }
+      return curPath === path;
     };
   }]);
 })();
