@@ -96,6 +96,18 @@ describe('gmMarkers', function() {
     });
 
 
+    it('updates markers when objects replaced with objects of same length', function() {
+      var length = scope.people.length;
+      scope.people = [];
+      for (var i = 0; i < length; i++) {
+        scope.people.push({name: 'new' + i, lat: i, lng: i});
+      }
+      scope.$digest();
+      expect(mapCtrl.removeMarker.calls.length).toEqual(length);
+      expect(mapCtrl.addMarker.calls.length).toEqual(length * 2);
+    });
+
+
     it('updates markers with removed objects', function() {
       var person = scope.people.pop();
       scope.$digest();
