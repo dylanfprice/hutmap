@@ -4,7 +4,7 @@
   angular.module('google-maps').
 
   /**
-   * Directive controller which is owned by the googleMap directive and shared
+   * Directive controller which is owned by the gmMap directive and shared
    * among all other google maps directives.
    */
   factory('googleMapControllerFactory', ['googleMapsUtils', 'googleMapsDefaults', 'googleMapsContainer',
@@ -21,7 +21,7 @@
     /** MapController class **/
     
     /* 
-     * Construct a new controller for the googleMap directive.
+     * Construct a new controller for the gmMap directive.
      * @param {angular.Scope} $scope
      * @param {angular.element} $element
      * @param {angular.Attributes} $attrs
@@ -29,7 +29,7 @@
      */
     var MapController = function($scope, $element, $attrs) {
 
-      var mapId = $attrs.gmMapId;
+      var mapId = $scope.gmMapId();
       if (!mapId) { throw 'googleMap must have non-empty gmMapId attribute'; }
 
       var mapDiv = $element.find('[id]');

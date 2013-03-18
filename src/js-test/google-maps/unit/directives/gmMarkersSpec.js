@@ -17,11 +17,12 @@ describe('gmMarkers', function() {
     scope.opts = {
       title: '7'
     };
+    scope.mapId = 'test';
   
     timeout = $timeout;
 
     // compile googleMapMarkers directive
-    elm = angular.element('<gm-map gm-map-id="test" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
+    elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
                             '<gm-markers ' +
                               'gm-objects="people"' + 
                               'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' + 
@@ -45,7 +46,7 @@ describe('gmMarkers', function() {
 
 
   it('requires the objects attribute', inject(function($compile) {
-    elm = angular.element('<gm-map gm-map-id="test2" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
+    elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
                             '<gm-markers ' +
                               'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' + 
                               'gm-marker-options="opts"' + 
@@ -55,11 +56,12 @@ describe('gmMarkers', function() {
                           '</gm-map>');
 
     scope = scope.$new();
+    scope.mapId = 'test2';
     expect(angular.bind(this, $compile(elm), scope)).toThrow();
   }));
 
   it('requires the getLatLng attribute', inject(function($compile) {
-    elm = angular.element('<gm-map gm-map-id="test3" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
+    elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
                             '<gm-markers ' +
                               'gm-objects="people"' + 
                               'gm-marker-options="opts"' + 
@@ -69,6 +71,7 @@ describe('gmMarkers', function() {
                           '</gm-map>');
 
     scope = scope.$new();
+    scope.mapId = 'test3';
     expect(angular.bind(this, $compile(elm), scope)).toThrow();
   }));
 

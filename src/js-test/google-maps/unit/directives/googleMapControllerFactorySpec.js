@@ -16,6 +16,9 @@ describe('googleMapControllerFactory', function() {
         mapTypeId: google.maps.MapTypeId.TERRAIN
       };
     };
+    scope.gmMapId = function() {
+      return 'test';
+    };
 
     // set up attrs
     var attrs = {
@@ -23,7 +26,7 @@ describe('googleMapControllerFactory', function() {
     };
 
     // set up element
-    var elm = angular.element('<div gm-map-id="test" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">' +
+    var elm = angular.element('<div gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">' +
                                 '<div id="test"></div>' +
                               '</div');
 
@@ -44,10 +47,12 @@ describe('googleMapControllerFactory', function() {
   it('constructs the map using defaults when there are no options', inject(function($rootScope, googleMapControllerFactory, googleMapsDefaults) {
     var scope = $rootScope.$new();
     scope.gmMapOptions = function() { };
-    var attrs = {
-      gmMapId: 'test2'
+    scope.gmMapId = function() {
+      return 'test2';
     };
-    var elm = angular.element('<div gm-map-id="test2" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
+    attrs = {};
+
+    var elm = angular.element('<div gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
                                 '<div id="test2"></div>' +
                               '</div');
     mapCtrl = new googleMapControllerFactory.MapController(scope, elm, attrs);

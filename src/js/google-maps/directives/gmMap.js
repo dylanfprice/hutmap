@@ -9,17 +9,19 @@
    * Usage:
    * <gm-map gm-map-id="myMapId" gm-center="myCenter" gm-zoom="myZoom" gm-bounds="myBounds" gm-map-options="myMapOptions"></gm-map>
    *
-   * myMapId:       just a string that is a unique identifier for your map (you may
-   *                have multiple maps/instances of the directive)
+   * myMapId:       angular expression that evaluates to a unique string id for
+   *                the map, e.g. "'map_canvas'" or "myMapId" where myMapId is
+   *                a variable in the current scope. This allows you to have
+   *                multiple maps/instances of the directive.
    *
-   * myCenter:      name that you want a center variable in the current scope to
-   *                have. The value will be a google.maps.LatLng object.
+   * myCenter:      name for a center variable in the current scope.  The value
+   *                will be a google.maps.LatLng object.
    *
-   * myZoom:        name that you want for a zoom variable in the current scope.
-   *                Value will be an integer.
+   * myZoom:        name for a zoom variable in the current scope.  Value will
+   *                be an integer.
    *
-   * myBounds:      name that you want for a bounds variable in the current scope.
-   *                Value will be a google.maps.LatLngBounds object.
+   * myBounds:      name for a bounds variable in the current scope.  Value
+   *                will be a google.maps.LatLngBounds object.
    *
    * myMapOptions:  object in the current scope that is a
    *                google.maps.MapOptions object. If unspecified, will use the
@@ -27,11 +29,12 @@
    *                'googleMapsDefaults' is a service, so it is both injectable
    *                and overrideable (using $provide.decorator).
    *
-   * All attributes expect map-options are required. The myCenter, myZoom, and
-   * myBounds variables do not have to exist in the current scope--they will be
-   * created if necessary. All three have bi-directional association, i.e. drag
-   * or zoom the map and they will update, update them and the map will change.
-   * However, any initial state of these variables will be ignored.
+   * All attributes except gm-map-options are required. The myCenter, myZoom,
+   * and myBounds variables do not have to exist in the current scope--they
+   * will be created if necessary. All three have bi-directional association,
+   * i.e. drag or zoom the map and they will update, update them and the map
+   * will change.  However, any initial state of these three variables will be
+   * ignored.
    *
    * For more on configuring defaults, see module.js.
    *
@@ -58,7 +61,7 @@
 
       // Make sure gmMapId is defined
       // Note: redundant check in MapController. Can't hurt.
-      if (!attrs.hasOwnProperty('gmMapId')) {
+      if (!angular.isDefined(scope.gmMapId)) {
         throw 'googleMap must have non-empty gmMapId attribute';
       }
 
@@ -152,7 +155,8 @@
         gmCenter: '=',
         gmZoom: '=',
         gmBounds: '=',
-        gmMapOptions: '&'
+        gmMapOptions: '&',
+        gmMapId: '&'
       },
       controller: googleMapControllerFactory.MapController,
       link: link
