@@ -27,6 +27,7 @@ describe('gmMarkers', function() {
                               'gm-objects="people"' + 
                               'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' + 
                               'gm-marker-options="opts"' + 
+                              'gm-event="markerEvent"' +
                               'gm-on-click="selected = {person: object, marker: marker}"' +
                               'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' + 
                             '</gm-markers>' + 
@@ -38,6 +39,7 @@ describe('gmMarkers', function() {
     mapCtrl = gmtestMapController();
     spyOn(mapCtrl, 'addMarker').andCallThrough();
     spyOn(mapCtrl, 'removeMarker').andCallThrough();
+    spyOn(mapCtrl, 'trigger').andCallThrough();
     spyOn(mapCtrl, 'addListener').andCallThrough();
 
     scope.$digest();
@@ -45,7 +47,7 @@ describe('gmMarkers', function() {
   }));
 
 
-  it('requires the objects attribute', inject(function($compile) {
+  it('requires the gmObjects attribute', inject(function($compile) {
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
                             '<gm-markers ' +
                               'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' + 
@@ -60,7 +62,7 @@ describe('gmMarkers', function() {
     expect(angular.bind(this, $compile(elm), scope)).toThrow();
   }));
 
-  it('requires the getLatLng attribute', inject(function($compile) {
+  it('requires the gmGetLatLng attribute', inject(function($compile) {
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
                             '<gm-markers ' +
                               'gm-objects="people"' + 
@@ -138,6 +140,23 @@ describe('gmMarkers', function() {
 
   it('uses given marker options', function() {
     expect(mapCtrl.addMarker).toHaveBeenCalledWith({title: '7', position: jasmine.any(Object)});
+  });
+
+
+  it('triggers events', function() {
+    var person = scope.people[0];
+    var position = new google.maps.LatLng(person.lat, person.lng);
+    scope.markerEvent = {
+      event: 'click',
+      location: position,
+    }
+
+    scope.$digest();
+    timeout.flush();
+    var marker = mapCtrl.trigger.mostRecentCall.args[0];
+    var event = mapCtrl.trigger.mostRecentCall.args[1];
+    expect(marker.getPosition()).toEqual(position);
+    expect(event).toEqual('click');
   });
 
 

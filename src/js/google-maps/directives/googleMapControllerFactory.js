@@ -189,6 +189,23 @@
 
 
     /**
+     * Alias for google.maps.event.trigger(map, event)
+     * @param {string} event an event defined on google.maps.Map
+     */
+    MapController.prototype.mapTrigger = function(event) {
+      google.maps.event.trigger(this._map, event);
+    };
+
+
+    /**
+     * Alias for google.maps.event.trigger(object, event)
+     */
+    MapController.prototype.trigger = function(object, event) {
+      google.maps.event.trigger(object, event);
+    };
+
+
+    /**
      * Adds a new marker to the map.
      * @param {google.maps.MarkerOptions} markerOptions
      * @return {boolean} true if a marker was added, false if there was already

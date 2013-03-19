@@ -110,6 +110,29 @@ describe('googleMapControllerFactory', function() {
   });
 
 
+  it('triggers map events', function() {
+    var callCount = 0;
+    mapCtrl.addMapListener('event', function() {
+      callCount++;
+    });
+    mapCtrl.mapTrigger('event');
+
+    expect(callCount).toEqual(1);
+  });
+
+
+  it('triggers generic events', function() {
+    var callCount = 0;
+    var object = {};
+    mapCtrl.addListener(object, 'event', function() {
+      callCount++;
+    });
+    mapCtrl.trigger(object, 'event');
+
+    expect(callCount).toEqual(1);
+  });
+
+
   describe('marker functions', function() {
     var position, positionSame, positionVeryClose, position2;
     var markerOptions, markerOptionsSame, markerOptionsVeryClose, markerOptions2;
