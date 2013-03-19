@@ -20,17 +20,24 @@ def js():#(nomin=False): #TODO: add minification
 
   js_files = []
   for dirpath,dirnames,filenames in os.walk(config.JS_PATH, topdown=True):
+    # do not include old js files
     if 'hutmap_old' in dirnames:
       i = dirnames.index('hutmap_old')
       del dirnames[i]
+
+    # make sure third party js gets processed last (so we can insert it as
+    # first)
     if 'third-party' in dirnames:
       i = dirnames.index('third-party')
       del dirnames[i]
+      dirnames.append('third-party')
       
     for filename in filenames:
       path = join(dirpath, filename)
       if filename.endswith('js'):
-        if filename.startswith('app') or filename.startswith('module'):
+        if dirpath.endswith('third-party'):
+          js_files.insert(0, path)
+        elif filename.startswith('app') or filename.startswith('module'):
           js_files.insert(0, path)
         else:
           js_files.append(path)
