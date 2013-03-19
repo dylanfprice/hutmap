@@ -3,16 +3,14 @@
 (function () {
   angular.module('hutmap').
 
-  controller('PathCtrl', ['$scope', '$location', function($scope, $location) {
-    $scope.mapPath = '/map/';
+  controller('RouteCtrl', ['$scope', '$route', '$location', '$timeout', 'googleMapsContainer', function($scope, $route, $location, $timeout, googleMapsContainer) {
+    $scope.$route = $route;
 
-    $scope.isHutsPath = function(path) {
-      return $location.path() === path;
-    };
   }]).
 
   controller('HutCtrl', ['$scope', '$location', 'Huts', function($scope, $location, Huts) {
     $scope.huts;
+    $scope.hutsById;
     $scope.hutsMeta;
     $scope.currentQuery;
 
@@ -21,7 +19,6 @@
     };
 
     $scope.$watch('currentQuery', function(newQuery, oldQuery) {
-      console.log(newQuery, oldQuery);
       if (newQuery != null && newQuery !== oldQuery) {
         var hutQuery = Huts.query(newQuery, function() {
           $scope.huts = hutQuery.objects;
@@ -33,7 +30,7 @@
       }
     }, true);
 
-    $scope.$watch('$location.search()', function() {
+    $scope.$on('$routeChangeSuccess', function() {
       var search = $location.search();
       var newQuery = {};
       var shouldUpdate = false;
@@ -56,52 +53,104 @@
   }]).
 
   controller('MapCtrl',
-    ['$scope', '$location', '$q', 'mapOptions', 'markerOptions', function ($scope, $location, $q, mapOptions, markerOptions) {
-      $scope.mapOptions = mapOptions;
-      $scope.markerOptions = markerOptions;
-      $scope.selectedHut;
-      $scope.mapLoaded = $q.defer();
+    ['$scope', '$location', '$timeout', '$route', 'googleMapsContainer',
+    'hutmapMapId', 'mapOptions', 'markerOptions', 'utils',
 
-      $scope.$watch('center == null && zoom == null', function() {
-        if ($scope.center != null && $scope.zoom != null) {
-          $scope.mapLoaded.resolve();
+    function ($scope, $location, $timeout, $route, googleMapsContainer,
+      hutmapMapId, mapOptions, markerOptions, utils) {
+
+    $scope.hutmapMapId = hutmapMapId;
+    $scope.mapOptions = mapOptions;
+    $scope.markerOptions = markerOptions;
+    $scope.selectedHut;
+
+    $scope.updateLocation = function() {
+      if ($route.current.activetab == 'map') {
+        if ($scope.center) {
+          $location.search('map_center', $scope.center.toUrlValue());
         }
-      });
-
-      $scope.$watch('center', function(newCenter, oldCenter) {
-        if (newCenter != null && newCenter !== oldCenter) {
-          $location.search('map_center', newCenter.toUrlValue());
+        if ($scope.zoom) {
+          $location.search('map_zoom', $scope.zoom);
         }
-      });
-
-      $scope.$watch('zoom', function(newZoom, oldZoom) {
-        if (newZoom != null && newZoom !== oldZoom) {
-          $location.search('map_zoom', newZoom);
+        if ($scope.selectedHut) {
+          var loc = $scope.selectedHut.location;
+          $location.search('map_selected', loc.lat + ',' + loc.lng);
         }
-      });
+      }
+    };
 
-      $scope.$watch('$location.search()', function() {
-        var center = $location.search()['map_center'];
-        var zoom = $location.search()['map_zoom'];
-        $scope.mapLoaded.promise.then(function() {
+    $scope.$watch('center', function(newCenter, oldCenter) {
+      if (newCenter !== oldCenter) {
+        $scope.updateLocation();
+      }
+    });
+
+    $scope.$watch('zoom', function(newZoom, oldZoom) {
+      if (newZoom !== oldZoom) {
+        $scope.updateLocation();
+      }
+    });
+
+    $scope.$watch('selectedHut', function(newHut, oldHut) {
+      if (newHut !== oldHut) {
+        $scope.updateLocation();
+      }
+    });
+
+    var gmapPromise = googleMapsContainer.getMapPromise(hutmapMapId);
+    var mapResized = false;
+
+    $scope.$on('$routeChangeSuccess', function($event, current, previous) {
+
+      var isMap = current && current.activetab == 'map';
+      var wasMap = previous && previous.activetab == 'map';
+
+      if (isMap && !wasMap) {
+        if (!mapResized) {
+          mapResized = true;
+          gmapPromise.then(function(gmap) {
+            $timeout(function() {
+              google.maps.event.trigger(gmap, 'resize');
+              gmap.setCenter($scope.center);
+            });
+          });
+        }
+      }
+
+      if (isMap) {
+        var center = $location.search().map_center;
+        var zoom = $location.search().map_zoom;
+        gmapPromise.then(function() {
           if (center != null) {
-            var centerArr = center.split(',');
-            $scope.center = new google.maps.LatLng(centerArr[0], centerArr[1]);
+            $scope.center = utils.latLngFromUrlValue(center);
           }
           if (zoom != null) {
             $scope.zoom = Number(zoom);
           }
         });
-      });
+      }
+    });
 
-      $scope.selectHut = function(marker, hut) {
-        if ($scope.prevSelectedMarker) {
-          $scope.prevSelectedMarker.setOptions(markerOptions.huts);
+    $scope.$watch('huts', function() {
+      var selected_loc = $location.search().map_selected;
+      gmapPromise.then(function(gmap) {
+        if (selected_loc != null) {
+          $scope.hutMarkerEvent = {
+            event: 'click',
+            location: utils.latLngFromUrlValue(selected_loc)
+          };
         }
-        $scope.prevSelectedMarker = marker;
-        marker.setOptions(markerOptions.selected);
-        $scope.selectedHut = hut;
-      };
+      });
+    });
+
+    $scope.selectHut = function(marker, hut) {
+      if ($scope.prevSelectedMarker) {
+        $scope.prevSelectedMarker.setOptions(markerOptions.huts);
+      }
+      $scope.prevSelectedMarker = marker;
+      marker.setOptions(markerOptions.selected);
+      $scope.selectedHut = hut;
+    };
   }]).
 
   controller('HutInfoCtrl', ['$scope', function($scope) {
@@ -113,16 +162,6 @@
       'Surveyed with GPS by the Hutmap team.',
       'Found on a map and surveyed by the Hutmap team.'  
     ];
-  }]).
-
-  controller('NavbarCtrl', ['$scope', '$window', function($scope, $window) {
-    $scope.isPath = function(path) {
-      var curPath = $window.location.pathname + $window.location.hash
-      var index = curPath.lastIndexOf('?');
-      if (index !== -1) {
-        curPath = curPath.substring(0, index);
-      }
-      return curPath === path;
-    };
   }]);
+
 })();

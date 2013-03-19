@@ -1,6 +1,5 @@
 {% verbatim %}
 <div ng-cloak>
-  {{ currentQuery }}
   <div ng-controller="MapCtrl">
     <div class="row">
       <div class="hut-sidebar">
@@ -17,6 +16,7 @@
         <gm-markers gm-objects="huts" 
                     gm-get-lat-lng="{lat:object.location.lat, lng:object.location.lng}" 
                     gm-marker-options="markerOptions.huts"
+                    gm-event="hutMarkerEvent"
                     gm-on-click="selectHut(marker, object)">
         </gm-markers>
       </gm-map>

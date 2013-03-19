@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block head %}
+<base href="{% url 'hutmap_huts' %}">
+{% endblock %}
+
+{% block content %}
+<div ng-controller="HutCtrl">
+  <ng-include src="'map-template'"></ng-include>
+</div>
+<script type="text/ng-template" id="map-template">
+  {% include "huts/map.html" %}
+</script>
+{% endblock %}
+

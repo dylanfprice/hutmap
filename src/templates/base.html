@@ -29,25 +29,25 @@
 
 <body>
 
-  <div ng-app="hutmap" ng-controller="PathCtrl">
+  <div ng-app="hutmap" ng-controller="RouteCtrl">
 
     <div id="navbar" class="navbar navbar-inverse navbar-static-top">
       <div class="navbar-inner">
-        <a class="brand" href="{% url 'hutmap_home' %}"><img class="up2" src="{{ STATIC_URL }}img/logo.png"/>Hutmap</a>
-        <ul class="nav" ng-controller="NavbarCtrl">
+        <a class="brand" href="/"><img class="up2" src="{{ STATIC_URL }}img/logo.png"/>Hutmap</a>
+        <ul class="nav">
           {% block navbar %}
-          <li ng-class="{% templatetag openbrace %} active: isPath('{% url 'hutmap_home' %}'){% templatetag closebrace %}">
-            <a href="{% url 'hutmap_home' %}">
+          <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'home'{% templatetag closebrace %}">
+            <a href="/">
               Home
             </a>
           </li>
           <li>
-          <li ng-class="{% templatetag openbrace %} active: isHutsPath(mapPath){% templatetag closebrace %}">
-            <a ng-href="{% url 'hutmap_huts' %}{% verbatim %}#{{ mapPath }}{% endverbatim %}">
+          <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'map'{% templatetag closebrace %}">
+            <a ng-href="/map/">
               Map
             </a>
           </li>
-          <li ng-class="{% templatetag openbrace %} active: isPath('/about/'){% templatetag closebrace %}">
+          <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'about'{% templatetag closebrace %}">
             <a href="/about/">
               About
             </a>
@@ -67,6 +67,18 @@
     </div>
 
     {% block content %}
+      <!--<ng-view></ng-view>-->
+      <span ng-show="$route.current.activetab == 'home'">
+        <span ng-include="'/partials/index.html'"></span>
+      </span>
+      <span ng-controller="HutCtrl">
+        <span ng-show="$route.current.activetab == 'map'">
+          <span ng-include="'/partials/map.html'"></span>
+        </span>
+      </span>
+      <span ng-show="$route.current.activetab == 'about'">
+        <span ng-include="'/partials/about.html'"></span>
+      </span>
     {% endblock content %}
     
   </div>
@@ -80,6 +92,7 @@
   {% if not DEBUG %}
   <script src="{{ STATIC_URL }}js/hutmap-{{ HUTMAP_VERSION }}.min.js"></script>
   {% else %}
+  <script src="/dev/js/third-party/keydragzoom.js"></script>
   <script src="/dev/js/google-maps/module.js"></script>
   <script src="/dev/js/google-maps/services/googleMapsUtils.js"></script>
   <script src="/dev/js/google-maps/services/googleMapsContainer.js"></script>

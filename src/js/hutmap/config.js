@@ -3,6 +3,24 @@
 (function() {
   angular.module('hutmap').
 
+  config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+    $routeProvider.
+      when('/', {
+        templateUrl: '/partials/index.html',
+        activetab: 'home',
+      }).
+      when('/map/', {
+        templateUrl: '/partials/map.html',
+        activetab: 'map',
+      }).
+      when('/about/', {
+        templateUrl: '/partials/about.html',
+        activetab: 'about',
+      });
+
+    $locationProvider.html5Mode(true);
+  }]).
+
   constant('hutmapMapId', 'map_canvas').
 
   value('mapOptions', {
