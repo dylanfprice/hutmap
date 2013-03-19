@@ -29,6 +29,7 @@
 
   /**
    * Add new map types to our Google Map.
+   * Add drag zoom control.
    */
   run(['hutmapMapId', 'googleMapsContainer', function(hutmapMapId, googleMapsContainer) {
     var gmapPromise = googleMapsContainer.getMapPromise(hutmapMapId);
@@ -81,7 +82,7 @@
 
       var mapTypes = {
         MSR_TOPO: new google.maps.ImageMapType({
-          name: "MSR-USGS",
+          name: "MSR USGS",
           alt: "USGS topos from Microsoft Research",
           minZoom: 1,
           maxZoom: 15,
@@ -91,8 +92,8 @@
         }),
 
         ARC_GIS_USA: new google.maps.ImageMapType({
-          name: "ArcGisUSA",
-          alt: "ArcGis USA Topos",
+          name: "ArcGIS USA",
+          alt: "ArcGIS USA Topos",
           minZoom: 1,
           maxZoom: 15,
           tileSize: new google.maps.Size(256, 256),
@@ -101,8 +102,8 @@
         }),
 
         ARC_GIS_WORLD: new google.maps.ImageMapType({
-          name: "ArcGisWorld",
-          alt: "ArcGis World Topos",
+          name: "ArcGIS World",
+          alt: "ArcGIS World Topos",
           minZoom: 1,
           maxZoom: 15,
           tileSize: new google.maps.Size(256, 256),
@@ -125,6 +126,10 @@
                        mapTypes.ARC_GIS_USA.name,
                        mapTypes.ARC_GIS_WORLD.name]
         }
+      });
+
+      gmap.enableKeyDragZoom({
+        visualEnabled: true,
       });
     });
   }]);
