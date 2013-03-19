@@ -102,6 +102,7 @@
       });
 
       this._initDragListeners();
+      $scope.$on('$destroy', angular.bind(this, this._destroy, mapId));
     };
 
 
@@ -147,6 +148,11 @@
       this.addMapListener('drag', function() {
         self.dragging = true;   
       });
+    };
+
+
+    MapController.prototype._destroy = function(mapId) {
+      gMContainer.removeMap(mapId);
     };
 
     

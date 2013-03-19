@@ -1,4 +1,5 @@
 describe('googleMapControllerFactory', function() {
+  var scope;
   var mapCtrl, mapCntr;
 
   beforeEach(function() {
@@ -8,7 +9,7 @@ describe('googleMapControllerFactory', function() {
 
   beforeEach(inject(function($rootScope, googleMapControllerFactory, googleMapsContainer) {
     // set up scope
-    var scope = $rootScope.$new();
+    scope = $rootScope.$new();
     scope.gmMapOptions = function() {
       return {
         center: new google.maps.LatLng(2, 3),
@@ -45,7 +46,7 @@ describe('googleMapControllerFactory', function() {
 
 
   it('constructs the map using defaults when there are no options', inject(function($rootScope, googleMapControllerFactory, googleMapsDefaults) {
-    var scope = $rootScope.$new();
+    scope = $rootScope.$new();
     scope.gmMapOptions = function() { };
     scope.gmMapId = function() {
       return 'test2';
@@ -60,6 +61,13 @@ describe('googleMapControllerFactory', function() {
     expect(mapCtrl.center).toEqual(googleMapsDefaults.mapOptions.center);
     expect(mapCtrl.zoom).toEqual(googleMapsDefaults.mapOptions.zoom);
   }));
+
+
+  it('destroys the map on scope destroy', function() {
+    var mapId = scope.gmMapId();
+    scope.$destroy();
+    expect(mapCntr.getMap(mapId)).toBeUndefined();
+  });
 
 
   it('adds listeners to the map', function() {
