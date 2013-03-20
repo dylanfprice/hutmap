@@ -3,8 +3,14 @@
 (function () {
   angular.module('hutmap').
 
-  controller('RouteCtrl', ['$scope', '$route', '$location', '$timeout', 'googleMapsContainer', function($scope, $route, $location, $timeout, googleMapsContainer) {
+  controller('HutmapCtrl', ['$scope', '$route', '$location', '$timeout', 'googleMapsContainer', function($scope, $route, $location, $timeout, googleMapsContainer) {
     $scope.$route = $route;
+    $scope.loading = false;
+
+    $scope.setLoading = function(loading) {
+      $scope.loading = loading;
+    };
+
   }]).
 
   controller('CarouselCtrl', ['$scope', '$route', function($scope, $route) {

@@ -14,9 +14,11 @@
 
     var doQuery = function(query) {
       if (query) {
+        $scope.setLoading(true);
         var hutQuery = Huts.query(query, function() {
           $scope.huts = hutQuery.objects;
           $scope.hutsMeta = hutQuery.meta;
+          $scope.setLoading(false);
         });
       }
     };
