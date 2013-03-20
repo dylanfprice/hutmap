@@ -1,5 +1,8 @@
 {% verbatim %}
 <div ng-controller="HutCtrl">
+  <div id="alert-topbar" ng-show="alerts.length">
+    <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+  </div> 
   <div class="hut-sidebar">
     {% endverbatim %}{% include "huts/hut_info.html" %}{% verbatim %}
     <button ng-click="setQuery({ limit: 100, order_by_distance: '48.91128,-121.01643' })">Query</button>

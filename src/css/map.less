@@ -9,6 +9,7 @@
   left: @hutBarWidth;
   top: (@navbarHeight + 2);
   bottom: 0px;
+  z-index: 100;
 }
 
 .hut-sidebar {
@@ -17,38 +18,38 @@
   top: (@navbarHeight + 2);
   bottom: 0px;
   width: @hutBarWidth;
-}
+  z-index: 100;
 
-.hut-info-title {
-  text-align: center;
-}
-
-// Hut info
-.hut-info-detail-table {
-  width: 100%;
-  font-size: @fontSizeSmall;
-  text-align: left;
-
-  .hut-info-img {
-    .center;
-    width: @hutInfoImgWidth;
-    height: @hutInfoImgHeight;
-    margin-bottom: 10px;
-
-    img {
-      min-width: @hutInfoImgWidth;
-      max-width: @hutInfoImgWidth;
-      min-height: @hutInfoImgHeight;
-      max-height: @hutInfoImgHeight;
-    }
+  .hut-info-title {
+    text-align: center;
   }
 
-  table {
-    .center;
+  .hut-info-detail-table {
+    width: 100%;
+    font-size: @fontSizeSmall;
+    text-align: left;
 
-    .hut-info-detail-title {
-      color: darkgreen;
-      padding-right: 20px;
+    .hut-info-img {
+      .center;
+      width: @hutInfoImgWidth;
+      height: @hutInfoImgHeight;
+      margin-bottom: 10px;
+
+      img {
+        min-width: @hutInfoImgWidth;
+        max-width: @hutInfoImgWidth;
+        min-height: @hutInfoImgHeight;
+        max-height: @hutInfoImgHeight;
+      }
+    }
+
+    table {
+      .center;
+
+      .hut-info-detail-title {
+        color: darkgreen;
+        padding-right: 20px;
+      }
     }
   }
 }

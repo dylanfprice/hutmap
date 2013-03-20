@@ -76,11 +76,10 @@
     </div>
 
     <div ng-cloak>
-      {% block content %}
+
       <div id="content">
         <ng-view></ng-view>
       </div>
-      {% endblock content %}
 
       <div id="loading-indicator" ng-show="loading">
         <img class="spinner" alt="Loading..." src="{{ STATIC_URL}}img/loading.gif">
@@ -111,9 +110,10 @@
   <script src="/dev/js/hutmap/config.js"></script>
   <script src="/dev/js/hutmap/filters.js"></script>
   <script src="/dev/js/hutmap/directives.js"></script>
-  <script src="/dev/js/hutmap/controllers/HutCtrl.js"></script>
   <script src="/dev/js/hutmap/controllers/controllers.js"></script>
+  <script src="/dev/js/hutmap/controllers/HutCtrl.js"></script>
   <script src="/dev/js/hutmap/controllers/MapCtrl.js"></script>
+  <script src="/dev/js/hutmap/controllers/SearchCtrl.js"></script>
   {% endif %}
   {% block scripts %}
   {% endblock scripts %}
