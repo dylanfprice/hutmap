@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+  {% block head %}
+  {% endblock head %}
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <title>{% block title %}Hutmap{% endblock title %}</title>
@@ -28,46 +29,56 @@
 
 <body>
 
-  <div ng-app="hutmap">
+  <div ng-app="hutmap" ng-controller="HutmapCtrl">
 
     <div id="navbar" class="navbar navbar-inverse navbar-static-top">
       <div class="navbar-inner">
-        <a class="brand" href="{% url 'hutmap_home' %}"><img class="up2" src="{{ STATIC_URL }}img/logo.png"/>Hutmap</a>
-        <ul class="nav" ng-controller="NavbarCtrl">
+        <a class="brand" href="/"><img class="up2" src="{{ STATIC_URL }}img/logo.png"/>Hutmap</a>
+        <ul class="nav">
           {% block navbar %}
-          <li ng-class="{% templatetag openbrace %} active: isPath('{% url 'hutmap_home' %}'){% templatetag closebrace %}">
-            <a href="{% url 'hutmap_home' %}">
+          <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'home'{% templatetag closebrace %}">
+            <a href="/">
               Home
             </a>
           </li>
           <li>
-          <li ng-class="{% templatetag openbrace %} active: isPath('{% url 'hutmap_map' %}'){% templatetag closebrace %}">
-            <a href="{% url 'hutmap_map' %}">
+          <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'map'{% templatetag closebrace %}">
+            <a ng-href="/map/">
               Map
             </a>
           </li>
-          <li ng-class="{% templatetag openbrace %} active: isPath('/about/'){% templatetag closebrace %}">
+          <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'about'{% templatetag closebrace %}">
             <a href="/about/">
               About
             </a>
           </li>
           {% endblock navbar %}
         </ul>
-        <form id="navbar-search" class="navbar-search pull-right" action="/searchTODO">
-          <input type="text" class="search-query" placeholder="Search huts by location..." />
-          <span class="search-icon">
-            <span class="icon-search"></span>
-            <button class="transparent" type="submit">
-              <span class="visuallyhidden">Search</span>
-            </button>
-          </span>
-        </form>
+        <div ng-controller="SearchCtrl">
+          <form id="navbar-search" class="navbar-search pull-right" action="/searchTODO">
+            <input type="text" class="search-query" placeholder="Search huts by location..." />
+            <span class="search-icon">
+              <span class="icon-search"></span>
+              <button class="transparent" type="submit">
+                <span class="visuallyhidden">Search</span>
+              </button>
+            </span>
+          </form>
+        </div>
       </div>
     </div>
 
+    <div ng-cloak>
+      {% block content %}
+      <div id="content">
+          <ng-view></ng-view>
+      </div>
+      {% endblock content %}
 
-    {% block content %}
-    {% endblock content %}
+      <div id="loading-indicator" ng-show="loading">
+        <img class="spinner" alt="Loading..." src="{{ STATIC_URL}}img/loading.gif">
+      </div>
+    </div>
     
   </div>
 
@@ -75,11 +86,13 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/bootstrap.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.6.6/angular-strap.min.js"></script>
   {% if not DEBUG %}
   <script src="{{ STATIC_URL }}js/hutmap-{{ HUTMAP_VERSION }}.min.js"></script>
   {% else %}
+  <script src="/dev/js/third-party/keydragzoom.js"></script>
+  <script src="/dev/js/third-party/ui-bootstrap-tpls-0.2.0.js"></script>
+  <script src="/dev/js/third-party/bootstrap-tooltip.js"></script>
+  <script src="/dev/js/third-party/angularstrap-tooltip.js"></script>
   <script src="/dev/js/google-maps/module.js"></script>
   <script src="/dev/js/google-maps/services/googleMapsUtils.js"></script>
   <script src="/dev/js/google-maps/services/googleMapsContainer.js"></script>
@@ -88,7 +101,9 @@
   <script src="/dev/js/google-maps/directives/gmMarkers.js"></script>
   <script src="/dev/js/hutmap/app.js"></script>
   <script src="/dev/js/hutmap/config.js"></script>
-  <script src="/dev/js/hutmap/controllers.js"></script>
+  <script src="/dev/js/hutmap/controllers/controllers.js"></script>
+  <script src="/dev/js/hutmap/controllers/HutCtrl.js"></script>
+  <script src="/dev/js/hutmap/controllers/MapCtrl.js"></script>
   <script src="/dev/js/hutmap/services.js"></script>
   <script src="/dev/js/hutmap/filters.js"></script>
   <script src="/dev/js/hutmap/directives.js"></script>

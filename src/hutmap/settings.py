@@ -179,12 +179,19 @@ INSTALLED_APPS = (
     'huts',
 )
 
-CACHES = {
-  'default': {
-    'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-    'LOCATION': '/var/tmp/hutmap-django-cache',
+if DEBUG:
+  CACHES = {
+    'default': { 
+      'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
   }
-}
+else:
+  CACHES = {
+    'default': {
+      'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+      'LOCATION': '/var/tmp/hutmap-django-cache',
+    }
+  }
 
 LOGGING = {
   'version': 1,

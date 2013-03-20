@@ -5,14 +5,13 @@ from django.contrib.gis import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-  url(r'^$', TemplateView.as_view(template_name='index.html'), name='hutmap_home'),
+  url(r'^$', TemplateView.as_view(template_name='base.html'), name='hutmap_home'),
+  url(r'^(map/|about/)$', TemplateView.as_view(template_name='base.html')),
+  url(r'^partials/home.html$', TemplateView.as_view(template_name='partials/home.html')),
+  url(r'^partials/map.html$', TemplateView.as_view(template_name='partials/map.html')),
+  url(r'^partials/about.html$', TemplateView.as_view(template_name='partials/about.html')),
+  (r'^huts/', include('huts.urls')),
   url(r'^test$',  TemplateView.as_view(template_name='test.html')),
-)
-
-urlpatterns += patterns('',
-  url(r'^huts/',       include('huts.urls')),
-  #url(r'^browse/',    include('blog.urls'), name='hutmap_browse'),
-  #url(r'^about/',     include('blog.urls'), name='hutmap_about'),
   url(r'^admin/',      include(admin.site.urls)),
   url(r'^admin/doc/',  include('django.contrib.admindocs.urls')),
 )

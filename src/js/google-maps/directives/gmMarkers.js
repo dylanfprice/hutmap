@@ -13,7 +13,13 @@
    *
    * Usage:
    * <gm-map ...>
-   *   <gm-markers gm-objects="myObjects" gm-get-lat-lng="myGetLatLng" gm-marker-options="myMarkerOptions" gm-on-*event*="myEventHandler"></gm-markers>
+   *   <gm-markers 
+   *     gm-objects="myObjects" 
+   *     gm-get-lat-lng="myGetLatLng" 
+   *     gm-marker-options="myMarkerOptions" 
+   *     gm-event="myEvent"
+   *     gm-on-*event*="myEventHandler">
+   *   </gm-markers>
    * </gm-map>
    *
    * myObjects:        an array of objects in the current scope. These can be
@@ -35,6 +41,19 @@
    *                   google.maps.MarkerOptions object. If unspecified, google
    *                   maps api defaults will be used.
    *
+   * myEvent:          name for a variable in the current scope that is used to
+   *                   simulate events on a marker. Setting this variable to an
+   *                   object of the form {
+   *                     event: 'click',
+   *                     location: new google.maps.LatLng(45, -120),
+   *                   }
+   *                   will generate the named event on the marker at the given
+   *                   location, if such a marker exists. Note: when setting
+   *                   the myEvent variable, you must set it to a new object
+   *                   for the changes to be detected. Code like
+   *                   'myEvent["location"] = new google.maps.LatLng(45, -120)'
+   *                   will not work.
+   *
    * myEventHandler:   an angular expression which evaluates to an event
    *                   handler. This handler will be attached to each marker's
    *                   *event* event. The variables 'object' and 'marker'
@@ -46,7 +65,7 @@
    *                   one for each type of event.
    *
    *
-   * All attributes expect gm-on-*event* are required.
+   * Only the gm-objects and gm-get-lat-lng attributes are required.
    *
    */
   directive('gmMarkers', ['$log', '$parse', '$timeout', 'googleMapsUtils', 
@@ -144,6 +163,24 @@
         }
       });
 
+      scope.$watch('gmObjects()', function(newValue, oldValue) {
+        if (newValue != null && newValue !== oldValue) {
+          updateMarkers(scope.gmObjects());
+        }
+      });
+
+      // watch gmEvent
+      scope.$watch('gmEvent()', function(newValue, oldValue) {
+        if (newValue != null && newValue !== oldValue) {
+          var event = newValue.event;
+          var location = newValue.location;
+          var marker = controller.getMarker(location.lat(), location.lng());
+          if (marker != null) {
+            $timeout(angular.bind(this, controller.trigger, marker, event));
+          }
+        }
+      });
+
       // initialize markers
       $timeout(angular.bind(this, updateMarkers, scope.gmObjects()));
     }
@@ -155,7 +192,8 @@
       scope: {
         gmObjects: '&',
         gmGetLatLng: '&',
-        gmMarkerOptions: '&'
+        gmMarkerOptions: '&',
+        gmEvent: '&'
       },
       require: '^gmMap',
       link: link

@@ -12,7 +12,7 @@ describe('gmMap', function() {
 
   beforeEach(inject(function($rootScope, $compile, gmtestMapController, googleMapsContainer, googleMapsUtils) {
     // compile googleMap directive
-    elm = angular.element('<gm-map gm-map-id="test" gm-center="pCenter" gm-zoom="pZoom" gm-bounds="pBounds" gm-map-options="mapOptions">' +
+    elm = angular.element('<gm-map gm-map-id="mapId" gm-center="pCenter" gm-zoom="pZoom" gm-bounds="pBounds" gm-map-options="mapOptions">' +
                             '<gmtest-get-map-controller></gmtest-get-map-controller>' +
                           '</gm-map>');
 
@@ -21,6 +21,7 @@ describe('gmMap', function() {
       center: new google.maps.LatLng(1, 2),
       zoom: 3
     }
+    scope.mapId = 'test';
     $compile(elm)(scope);
     scope.$digest();
 
@@ -59,6 +60,7 @@ describe('gmMap', function() {
 
   function testRequiredAttribute($rootScope, $compile, googleMapsContainer, elm) {
     scope = $rootScope.$new();
+    scope.mapId = 'test2';
     $compile(elm)(scope);
     expect(scope.$digest).toThrow();
     googleMapsContainer.removeMap('test2');
@@ -73,19 +75,19 @@ describe('gmMap', function() {
 
 
   it('requires the center attribute', inject(function($rootScope, $compile, googleMapsContainer) {
-    elm = angular.element('<gm-map gm-map-id="test2" gm-zoom="pZoom" gm-bounds="pBounds"></gm-map>');
+    elm = angular.element('<gm-map gm-map-id="mapId" gm-zoom="pZoom" gm-bounds="pBounds"></gm-map>');
     testRequiredAttribute($rootScope, $compile, googleMapsContainer, elm);
   }));
 
 
   it('requires the zoom attribute', inject(function($rootScope, $compile, googleMapsContainer) {
-    elm = angular.element('<gm-map gm-map-id="test2" gm-center="pCenter" gm-bounds="pBounds"></gm-map>');
+    elm = angular.element('<gm-map gm-map-id="mapId" gm-center="pCenter" gm-bounds="pBounds"></gm-map>');
     testRequiredAttribute($rootScope, $compile, googleMapsContainer, elm);
   }));
 
 
   it('requires the bounds attribute', inject(function($rootScope, $compile, googleMapsContainer) {
-    elm = angular.element('<gm-map gm-map-id="test2" gm-center="pCenter" gm-zoom="pZoom"></gm-map>');
+    elm = angular.element('<gm-map gm-map-id="mapId" gm-center="pCenter" gm-zoom="pZoom"></gm-map>');
     testRequiredAttribute($rootScope, $compile, googleMapsContainer, elm);
   }));
 

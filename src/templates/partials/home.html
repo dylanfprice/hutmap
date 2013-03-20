@@ -1,0 +1,26 @@
+<div class="container">
+  <h1>This is a title.</h1>
+
+  {% verbatim %}
+  <div ng-controller="CarouselCtrl">
+    <carousel interval="carouselInterval">
+      <slide ng-repeat="slide in slides" active="slide.active">
+        <img ng-src="{{slide.image}}" style="margin:auto;">
+        <div class="carousel-caption">
+          <h4>{{slide.title}}</h4>
+          <p>{{slide.text}}</p>
+        </div>
+      </slide>
+    </carousel>
+  </div>
+  {% endverbatim %}
+
+  <!--
+  <img src="{{ STATIC_URL }}img/mint-hut.jpg" class="img-rounded">
+  -->
+  <p class="lead">
+  Find backcountry huts. <a href="/map/">Start now ></a>
+  </p>
+
+
+</div>

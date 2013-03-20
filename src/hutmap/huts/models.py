@@ -25,8 +25,7 @@ class Hut(models.Model):
   # location
   region = models.ForeignKey('Region')
   location = models.PointField()
-  accuracy = models.IntegerField(choices=ACCURACY_CHOICES, 
-                                         null=True, blank=True)
+  accuracy = models.IntegerField(choices=ACCURACY_CHOICES)
   #altitude_m = models.IntegerField('altitude (m)',
   #                              null=True, blank=True)
 

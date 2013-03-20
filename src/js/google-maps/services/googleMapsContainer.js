@@ -12,13 +12,13 @@
    * #getMapPromise(mapId) method so you can guarantee the map will be
    * initialized. For example,
    *
-   * angular.module('myModule').run(function(googleMapsContainer) {
+   * function MyCtrl(googleMapsContainer) {
    *   var gmapPromise = googleMapsContainer.getMapPromise('myMapid');
    *
    *   gmapPromise.then(function(gmap) {
    *     // google map configuration here
    *   });
-   * });
+   * }
    */
   factory('googleMapsContainer', ['$q', function($q) {
     var maps = {};
@@ -67,9 +67,9 @@
     }
 
     /**
-     * Removes map with given mapId from this container. Really only for
-     * testing since the google.maps.Map object still exists and is still bound
-     * to the DOM.
+     * Removes map with given mapId from this container, and deletes the map.
+     * In order for this to work you must ensure there are no references to the
+     * map object.
      */
     function removeMap(mapId) {
       if (mapId in maps) {
