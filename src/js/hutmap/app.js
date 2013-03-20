@@ -2,5 +2,5 @@
 
 (function() {
   angular.module('hutmap', ['hutmapServices', 'hutmapFilters', 'google-maps',
-    'ngResource', '$strap.directives', 'ui.bootstrap.carousel']);
+    'ngResource', '$strap.directives', 'ui.bootstrap']);
 })();
