@@ -75,8 +75,15 @@ body {
 
   #navbar-search {
     .search-query {
+      padding-left: 15px;
       padding-right: 30px;
-      width: 160px;
+      font-size: @baseFontSize - 1px;
+      width: @searchInputWidth;
+    }
+
+    .dropdown-menu {
+      overflow: hidden;
+      width: @searchInputWidth + 45px;
     }
 
     .search-icon {
@@ -89,7 +96,7 @@ body {
       right: 0px;
       z-index: 5;
 
-      .icon-search {
+      span {
         position: absolute;
         top: 6px;
         right: 10px;
