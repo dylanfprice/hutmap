@@ -4,9 +4,18 @@
 <h4 class="hut-info-title">{{selectedHut.name}}</h4>
 <span class="hut-info-detail-table" ng-hide="selectedHut == null">
   <div class="hut-info-img">
-    <img class="img-rounded" ng-show="selectedHut.photo_url" src="{{selectedHut.photo_url}}" alt="Broken photo link!"></img>
-    <!--<img class="img-rounded" ng-hide="selectedHut.photo_url" src="{{ STATIC_URL }}img/no-image-available.gif" alt="No image available"></img>-->
-    <img class="img-rounded" ng-hide="selectedHut.photo_url" src="http://maps.googleapis.com/maps/api/staticmap?center={{selectedHut.location.lat}}%2C{{selectedHut.location.lng}}&zoom=19&size=180x130&maptype=satellite&sensor=false&key={% endverbatim %}{{ GOOGLE_API_KEY }}{% verbatim %}"></img>
+    <img class="img-rounded" 
+         ng-show="selectedHut.photo_url" 
+         src="{{selectedHut.photo_url}}" 
+         alt="Broken photo link!"></img>
+    <img class="img-rounded" 
+         ng-show="!selectedHut.photo_url && selectedHut.accuracy < 3" 
+         src="{% endverbatim %}{{ STATIC_URL }}{% verbatim %}img/no-image-available.gif" 
+         alt="No image available"></img>
+    <img class="img-rounded" 
+         ng-show="!selectedHut.photo_url && selectedHut.accuracy >= 3" 
+         src="http://maps.googleapis.com/maps/api/staticmap?center={{selectedHut.location.lat}}%2C{{selectedHut.location.lng}}&zoom=19&size=180x130&maptype=satellite&sensor=false&key={% endverbatim %}{{ GOOGLE_API_KEY }}{% verbatim %}"
+         alt="No image available"></img>
   </div>
   <table>
     <tr>
@@ -19,7 +28,7 @@
     </tr>
     <tr>
       <td class="hut-info-detail-title">Accuracy:</td>
-      <td class="hut-info-detail"><span class="rating-5star up1" ng-class="'rating-' + (selectedHut.accuracy * 10)" bs-tooltip="accuracy_tooltip[selectedHut.accuracy]"></span></td>
+      <td class="hut-info-detail"><span class="rating-5star up1" ng-class="'rating-' + (selectedHut.accuracy * 10)" tooltip="accuracy_tooltip[selectedHut.accuracy]"></span></td>
     </tr>
     <tr>
       <td class="hut-info-detail-title">Agency:</td>
