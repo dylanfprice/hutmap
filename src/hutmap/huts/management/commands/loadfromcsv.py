@@ -29,7 +29,7 @@ def get_accuracy(accuracy_value):
   if accuracy == '3,4':
     accuracy = 5
   elif not accuracy:
-    accuracy = None
+    accuracy = 0
   else:
     accuracy = int(accuracy)
   return accuracy
