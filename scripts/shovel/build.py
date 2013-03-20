@@ -4,10 +4,21 @@ import os
 import imp
 import shutil
 import subprocess
+import sys
 
 file = os.path.normpath(os.path.join(os.path.dirname(__file__), 'config.py'))
 config = imp.load_source('config', file)
 
+
+def check_command_with_output(cmd, print_stdout=False):
+  proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  stdoutdata,stderrdata = proc.communicate()
+  if print_stdout:
+    sys.stdout.write(stdoutdata)
+  sys.stderr.write(stderrdata)
+  if proc.returncode != 0:
+    raise subprocess.CalledProcessError(proc.returncode, cmd)
+  return (stdoutdata,stderrdata)
 
 @task
 def js():#(nomin=False): #TODO: add minification
@@ -46,10 +57,11 @@ def js():#(nomin=False): #TODO: add minification
   cmd.append('--js')
   cmd.extend(' --js '.join(js_files).split(' '))
   cmd.extend(['--compilation_level', 'WHITESPACE_ONLY'])
+  cmd.extend(['--warning_level', 'VERBOSE'])
   cmd.extend(['--language_in', 'ECMASCRIPT5_STRICT'])
   cmd.extend(['--js_output_file', '{0}/hutmap-{1}.min.js'.format(config.JS_DEST, config.HUTMAP_VERSION)])
 
-  subprocess.check_call(cmd)
+  check_command_with_output(cmd, print_stdout=True)
 
   set_permissions(config.JS_DEST)
 
@@ -68,10 +80,7 @@ def css(nomin=False):
   cmd = ['lessc']
   if str(nomin).lower() == 'false': cmd.append('--yui-compress')
   cmd.append(join(config.CSS_PATH, 'hutmap.less'))
-  proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-  stdoutdata,stderrdata = proc.communicate()
-  if proc.returncode != 0:
-    raise subprocess.CalledProcessError(proc.returncode, cmd)
+  stdoutdata,stderrdata = check_command_with_output(cmd)
 
   with open(join(config.CSS_DEST, 'hutmap-{0}.min.css'.format(config.HUTMAP_VERSION)), 'w+') as file:
     file.writelines(stdoutdata)
