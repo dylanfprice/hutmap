@@ -6,7 +6,7 @@
   config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider.
       when('/', {
-        templateUrl: '/partials/index.html',
+        templateUrl: '/partials/home.html',
         activetab: 'home',
       }).
       when('/map/', {
