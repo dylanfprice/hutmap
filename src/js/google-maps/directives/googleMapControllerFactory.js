@@ -159,7 +159,7 @@
     /**
      * Alias for google.maps.event.addListener(map, event, handler)
      * @param {string} event an event defined on google.maps.Map
-     * @param {function} a handler for the event
+     * @param {Function} a handler for the event
      */
     MapController.prototype.addMapListener = function(event, handler) {
       google.maps.event.addListener(this._map, 
@@ -170,7 +170,7 @@
     /**
      * Alias for google.maps.event.addListenerOnce(map, event, handler)
      * @param {string} event an event defined on google.maps.Map
-     * @param {function} a handler for the event
+     * @param {Function} a handler for the event
      */
     MapController.prototype.addMapListenerOnce = function(event, handler) {
       google.maps.event.addListenerOnce(this._map, 
@@ -315,7 +315,7 @@
 
     /**
      * Applies a function to each marker.
-     * @param {function} fn will called with marker as first argument
+     * @param {Function} fn will called with marker as first argument
      * @throw if fn is null or undefined
      */
     MapController.prototype.forEachMarker = function(fn) {
