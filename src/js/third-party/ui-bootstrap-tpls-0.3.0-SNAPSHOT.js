@@ -270,7 +270,7 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
       if (self.currentSlide && angular.isString(direction) && !$scope.noTransition && nextSlide.$element) { 
         //We shouldn't do class manip in here, but it's the same weird thing bootstrap does. need to fix sometime
         nextSlide.$element.addClass(direction);
-        nextSlide.$element[0].offsetWidth = nextSlide.$element[0].offsetWidth; //force reflow
+        nextSlide.$element.attr('offsetWidth', nextSlide.$element[0].offsetWidth); //force reflow
 
         //Set all other slides to stop doing their stuff for the new transition
         angular.forEach(slides, function(slide) {
@@ -806,7 +806,7 @@ dialogModule.provider("$dialog", function(){
   }];
 });
 
-/*
+/**
  * dropdownToggle - Provides dropdown menu functionality in place of bootstrap js
  * @restrict class or attribute
  * @example:
@@ -1438,7 +1438,7 @@ angular.module('ui.bootstrap.transition', [])
 /**
  * $transition service provides a consistent interface to trigger CSS 3 transitions and to be informed when they complete.
  * @param  {DOMElement} element  The DOMElement that will be animated.
- * @param  {string|object|function} trigger  The thing that will cause the transition to start:
+ * @param  {string|object|Function} trigger  The thing that will cause the transition to start:
  *   - As a string, it represents the css class to be added to the element.
  *   - As an object, it represents a hash of style attributes to be applied to the element.
  *   - As a function, it represents a function to be called that will cause the transition to occur.

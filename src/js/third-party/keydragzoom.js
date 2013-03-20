@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * @name KeyDragZoom for V3
  * @version 2.0.9 [December 17, 2012] NOT YET RELEASED
