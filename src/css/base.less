@@ -1,5 +1,5 @@
 body {
-  background-image: url('@{staticUrl}img/gray-jean.png');
+  .grayjean;
 }
 
 .hide {
@@ -60,6 +60,10 @@ body {
   }
 }
 
+.grayjean {
+  background-image: url('@{staticUrl}img/gray-jean.png');
+}
+
 /* navbar */
 
 #navbar {
@@ -105,3 +109,16 @@ body {
   }
 }
 
+/* content */
+
+#content {
+  .container {
+    .carousel {
+      height: @carouselHeight;
+      border-style: solid;
+      border-color: @grayDarker;
+      border-width: 15px;
+      .border-radius( 5px );
+    }
+  }
+}
