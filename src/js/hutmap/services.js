@@ -9,17 +9,42 @@
     }});
   }]).
 
-  factory('Autocomplete', ['$resource', function($resource) {
-    return $resource('', {}, {
-      query: {
-        method: 'GET', 
-        params: {
-          sensor: false,
-          types: 'geocode',
-          location: '49.2,-101',
-          radius: 4000000
-        }
-    }});
+  factory('Places', ['$q', function($q) {
+    var elt = angular.element('<div id="google-attributions"></div>');
+    var placesService = new google.maps.places.PlacesService(elt[0]);
+    var autocompleteService = new google.maps.places.AutocompleteService();
+
+    function callback(deferred, result, status) {
+      if (status == google.maps.places.PlacesServiceStatus.OK) {
+        deferred.resolve(result);
+      } else {
+        deferred.reject(status);
+      }
+    }
+
+    function getDetails(reference) {
+      var deferred = $q.defer();
+      placesService.getDetails({reference: reference}, angular.bind(this, callback, deferred));
+      return deferred.promise;
+    }
+
+    function textSearch(request) {
+      var deferred = $q.defer();
+      placesService.textSearch(request, angular.bind(this, callback, deferred));
+      return deferred.promise;
+    }
+
+    function getPlacePredictions(input) {
+      var deferred = $q.defer();
+      autocompleteService.getPlacePredictions({input: input}, angular.bind(this, callback, deferred));
+      return deferred.promise;
+    }
+
+    return {
+      getDetails: getDetails,
+      textSearch: textSearch,
+      getPlacePredictions: getPlacePredictions
+    }
   }]).
 
   factory('utils', [function() {

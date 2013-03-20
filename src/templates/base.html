@@ -54,29 +54,31 @@
           </li>
           {% endblock navbar %}
         </ul>
-        <div ng-controller="SearchCtrl">
-          <form id="navbar-search" class="navbar-search pull-right" action="/searchTODO">
-            <input type="text" 
-                   class="search-query" 
-                   placeholder="Search huts by location..." 
-                   autocomplete="off"
-                   ng-model="selected" 
-                   bs-typeahead="typeahead"/>
-            <span class="search-icon">
-              <span class="icon-search"></span>
-              <button class="transparent" type="submit">
-                <span class="visuallyhidden">Search</span>
-              </button>
-            </span>
-          </form>
-        </div>
+        <form id="navbar-search" class="navbar-search pull-right" ng-controller="SearchCtrl" ng-submit="submit()">
+          <input type="text" 
+                 class="search-query" 
+                 placeholder="Search huts by location..." 
+                 autocomplete="off"
+                 ng-model="selected" 
+                 typeahead="place as place.description for place in getPlaces($viewValue)"/>
+          <span class="search-icon">
+            <span ng-class="{% templatetag openbrace %} 
+              'icon-search': !submitting,
+              'icon-spinner': submitting,
+              'icon-spin': submitting
+           {% templatetag closebrace %}"></span>
+            <button class="transparent" type="submit">
+              <span class="visuallyhidden">Search</span>
+            </button>
+          </span>
+        </form>
       </div>
     </div>
 
     <div ng-cloak>
       {% block content %}
       <div id="content">
-          <ng-view></ng-view>
+        <ng-view></ng-view>
       </div>
       {% endblock content %}
 
@@ -84,7 +86,7 @@
         <img class="spinner" alt="Loading..." src="{{ STATIC_URL}}img/loading.gif">
       </div>
     </div>
-    
+
   </div>
 
   <script src="//maps.googleapis.com/maps/api/js?sensor=false&libraries=places&key={{ GOOGLE_API_KEY }}"></script>
@@ -95,7 +97,7 @@
   <script src="{{ STATIC_URL }}js/hutmap-{{ HUTMAP_VERSION }}.min.js"></script>
   {% else %}
   <script src="/dev/js/third-party/keydragzoom.js"></script>
-  <script src="/dev/js/third-party/ui-bootstrap-tpls-0.2.0.js"></script>
+  <script src="/dev/js/third-party/ui-bootstrap-tpls-0.3.0-SNAPSHOT.js"></script>
   <script src="/dev/js/third-party/bootstrap-tooltip.js"></script>
   <script src="/dev/js/third-party/angularstrap-tooltip.js"></script>
   <script src="/dev/js/google-maps/module.js"></script>
