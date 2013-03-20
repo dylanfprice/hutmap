@@ -1,5 +1,5 @@
 from django.test import TestCase
-from huts.tests.util import add_distance_fn
+from huts.management.commands.mysqldistfn import add_distance_fn
 import json
 
 def float_equals(a, b):
