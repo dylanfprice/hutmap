@@ -1,7 +1,6 @@
-from django.conf import settings
 from django.test import TestCase
+from huts.tests.util import add_distance_fn
 import json
-import subprocess
 
 def float_equals(a, b):
   return abs(a - b) < 0.00001
@@ -12,13 +11,7 @@ class HutResourceTestCase(TestCase):
 
   @classmethod
   def setUpClass(cls):
-    # TODO: this is a hack
-    # Create the 'distance' function in mysql
-    cmd = ["mysql -u {user} -p'{passw}' < /etc/mysql/hutmap_fns.sql".format( 
-             user=settings.DATABASES['default']['USER'],
-             passw=settings.DATABASES['default']['PASSWORD'])]
-    subprocess.check_call(cmd, shell=True)
-    print("Added 'distance' function to mysql")
+    add_distance_fn()
 
   def test_query_bbox(self):
     response = self.client.get(self.url + '?bbox=47.05814,-122.79683,49.05814,-120.79683')
