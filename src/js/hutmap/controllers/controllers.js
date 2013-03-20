@@ -31,6 +31,16 @@
       'Surveyed with GPS by the Hutmap team.',
       'Found on a map and surveyed by the Hutmap team.'  
     ];
+  }]).
+
+  controller('SearchCtrl', ['$scope', 'Autocomplete', function($scope, Autocomplete) {
+    var query = {
+      input: 'test'
+    };
+
+    //var results = Autocomplete.query(query, function() {
+    //  console.log(results);
+    //});
   }]);
 
 })();

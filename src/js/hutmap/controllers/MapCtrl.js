@@ -15,6 +15,10 @@
     $scope.hutmapMapId = hutmapMapId;
     $scope.mapOptions = mapOptions;
     $scope.markerOptions = markerOptions;
+    $scope.center;
+    $scope.zoom;
+    $scope.bounds;
+    $scope.hutMarkerEvent;
 
     var updateLocation = function() {
       if ($scope.center) {
@@ -56,8 +60,8 @@
         updateLocation();
     };
 
-    $scope.$watch('center == null', function(n, o) { if (n !== o) scopeInitialized.resolve(); });
-    $scope.$watch('huts == null', function(n, o) { if (n !== o) hutsInitialized.resolve(); });
+    $scope.$watch('center != null && zoom != null', function(v) { if (v) scopeInitialized.resolve(); });
+    $scope.$watch('huts != null', function(v) { if (v) hutsInitialized.resolve(); });
     $scope.$watch('center', valueChange);
     $scope.$watch('zoom', valueChange);
     $scope.$watch('selectedHut', valueChange);
@@ -68,7 +72,7 @@
       }
       $scope.prevSelectedMarker = marker;
       marker.setOptions(markerOptions.selected);
-      $scope.selectedHut = hut;
+      $scope.setSelectedHut(hut);
     };
 
     /**

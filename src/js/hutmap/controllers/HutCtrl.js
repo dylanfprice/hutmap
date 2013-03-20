@@ -3,13 +3,16 @@
 
   controller('HutCtrl', ['$scope', '$location', 'Huts', function($scope, $location, Huts) {
     $scope.huts;
-    $scope.hutsById;
     $scope.hutsMeta;
-    $scope.currentQuery;
+    $scope.query;
     $scope.selectedHut;
 
     $scope.setQuery = function(query) {
-      $scope.currentQuery = query;
+      $scope.query = query;
+    };
+
+    $scope.setSelectedHut = function(hut) {
+      $scope.selectedHut = hut;
     };
 
     var doQuery = function(query) {
@@ -43,11 +46,11 @@
         }
       });
       if (shouldUpdate) {
-        $scope.currentQuery = newQuery;
+        $scope.query = newQuery;
       }
     };
 
-    $scope.$watch('currentQuery', function(newQuery) {
+    $scope.$watch('query', function(newQuery) {
       if (newQuery != null) {
         doQuery(newQuery);
         updateLocation(newQuery);
