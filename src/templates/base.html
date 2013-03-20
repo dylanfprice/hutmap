@@ -54,15 +54,17 @@
           </li>
           {% endblock navbar %}
         </ul>
-        <form id="navbar-search" class="navbar-search pull-right" action="/searchTODO">
-          <input type="text" class="search-query" placeholder="Search huts by location..." />
-          <span class="search-icon">
-            <span class="icon-search"></span>
-            <button class="transparent" type="submit">
-              <span class="visuallyhidden">Search</span>
-            </button>
-          </span>
-        </form>
+        <div ng-controller="SearchCtrl">
+          <form id="navbar-search" class="navbar-search pull-right" action="/searchTODO">
+            <input type="text" class="search-query" placeholder="Search huts by location..." />
+            <span class="search-icon">
+              <span class="icon-search"></span>
+              <button class="transparent" type="submit">
+                <span class="visuallyhidden">Search</span>
+              </button>
+            </span>
+          </form>
+        </div>
       </div>
     </div>
 

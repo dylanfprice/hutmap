@@ -9,6 +9,19 @@
     }});
   }]).
 
+  factory('Autocomplete', ['$resource', function($resource) {
+    return $resource('', {}, {
+      query: {
+        method: 'GET', 
+        params: {
+          sensor: false,
+          types: 'geocode',
+          location: '49.2,-101',
+          radius: 4000000
+        }
+    }});
+  }]).
+
   factory('utils', [function() {
     function latLngFromUrlValue(urlValue) {
       var array = urlValue.split(',');
