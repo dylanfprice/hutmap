@@ -20,6 +20,8 @@ CREATE FUNCTION `distance`(a POINT, b POINT) RETURNS double
 DELIMITER ;
 
 
+CREATE DATABASE IF NOT EXISTS test_<%= node[:HUTMAP_DB_NAME] %>;
+
 USE test_<%= node[:HUTMAP_DB_NAME] %>;
 
 DROP FUNCTION IF EXISTS `distance`;
