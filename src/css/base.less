@@ -74,23 +74,42 @@ body {
   }
 
   #navbar-search {
+    @searchPaddingLeft: 15px;
+    @searchPaddingRight: 30px;
+    @searchBorder: 1px;
+    @searchPadding: 4px;
+
     .search-query {
-      padding-left: 15px;
-      padding-right: 30px;
-      font-size: @baseFontSize - 1px;
+      padding-left: @searchPaddingLeft;
+      padding-right: @searchPaddingRight;
+      border: @searchBorder solid lighten(@grayDarker, 10%);
+      margin: unit(((@navbarHeight - @searchInputHeight - (2*@searchBorder) - (2*@searchPadding))/2), px) 0;
+      font-size: @searchFontSize;
+      height: @searchInputHeight;
       width: @searchInputWidth;
+      color: @grayDarker;
+      background-color: darken(@grayLighter, 15%);
+      .transition(all .2s linear);
+
+      &:focus {
+        padding-top: @searchPadding;
+        padding-bottom: @searchPadding;
+        background-color: darken(@white, 5%);
+        box-shadow: none;
+      }
     }
 
     .dropdown-menu {
       overflow: hidden;
       width: @searchInputWidth + 45px;
+      font-size: @searchFontSize;
     }
 
     .search-icon {
       cursor: pointer;
       display: block;
       height: 100%;
-      width: 30px;
+      width: @searchPaddingRight;
       position: absolute;
       top: 0px;
       right: 0px;
@@ -100,7 +119,8 @@ body {
         position: absolute;
         top: 6px;
         right: 10px;
-        color: @grayDarker;
+        font-size: @searchFontSize;
+        color: @gray;
       }
 
       button {
@@ -111,7 +131,6 @@ body {
         right: 0px;
         z-index: 10;
       }
-
     }
   }
 }
@@ -148,7 +167,7 @@ body {
 
   .spinner {
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.8);
-    border-radius: 10px 10px 10px 10px;
+    .border-radius( 10px );
     height: 32px;
     margin-left: -31px;
     margin-top: -31px;
