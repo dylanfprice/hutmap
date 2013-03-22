@@ -57,7 +57,7 @@
         <form id="navbar-search" class="navbar-search pull-right" ng-controller="SearchCtrl" ng-submit="submit()">
           <input type="text" 
                  class="search-query" 
-                 placeholder="Search huts by location..." 
+                 placeholder="Search huts" 
                  autocomplete="off"
                  ng-model="selected" 
                  typeahead="place as place.description for place in getPlaces($viewValue)"/>
