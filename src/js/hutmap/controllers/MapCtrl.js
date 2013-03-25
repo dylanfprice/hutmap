@@ -29,18 +29,29 @@
       }
     };
 
+    var clickSelected = function() {
+      hutsInitialized.promise.then(function() {
+        $scope.setSelectedHut(null);
+        var selected = $location.search().m_selected;
+        if (selected != null) {
+          $scope.hutMarkerEvent = {
+            event: 'click',
+            location: utils.latLngFromUrlValue(selected)
+          };
+        }
+      });
+    };
+
     var updateScope = function() {
       // get values
       var center = $location.search().m_center;
       var zoom = $location.search().m_zoom;
       var bounds = $location.search().m_bounds;
-      var selected = $location.search().m_selected;
       
       // clear values
       $location.search('m_center', null);
       $location.search('m_zoom', null);
       $location.search('m_bounds', null);
-      $location.search('m_selected', null);
 
       scopeInitialized.promise.then(function() {
         var hasBounds = bounds != null;
@@ -55,14 +66,7 @@
         }
       });
 
-      hutsInitialized.promise.then(function() {
-        if (selected != null) {
-          $scope.hutMarkerEvent = {
-            event: 'click',
-            location: utils.latLngFromUrlValue(selected)
-          };
-        }
-      });
+      clickSelected();
     };
 
     var valueChange = function(newValue, oldValue) {
@@ -82,6 +86,9 @@
           limit: 0
         });
       }
+    });
+    $scope.$watch('huts', function(huts) {
+      if (huts) { clickSelected(); }
     });
 
     updateScope();
