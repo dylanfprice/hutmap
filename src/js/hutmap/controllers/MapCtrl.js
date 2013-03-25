@@ -4,13 +4,13 @@
   angular.module('hutmap').
 
   controller('MapCtrl',
-    ['$scope', '$location', '$timeout', '$q', 'googleMapsContainer',
+    ['$scope', '$location', '$timeout', '$q', 'angulargmContainer',
     'hutmapMapId', 'mapOptions', 'markerOptions', 'utils',
 
-    function ($scope, $location, $timeout, $q, googleMapsContainer,
+    function ($scope, $location, $timeout, $q, angulargmContainer,
       hutmapMapId, mapOptions, markerOptions, utils) {
 
-    var gmapPromise = googleMapsContainer.getMapPromise(hutmapMapId);
+    var gmapPromise = angulargmContainer.getMapPromise(hutmapMapId);
     var scopeInitialized = $q.defer();
     var hutsInitialized = $q.defer();
 

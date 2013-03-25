@@ -5,8 +5,8 @@
 
   controller('HutmapCtrl', 
     ['$scope', '$route', '$location', '$timeout', '$log',
-    'googleMapsContainer', 
-    function($scope, $route, $location, $timeout, $log, googleMapsContainer) {
+    'angulargmContainer', 
+    function($scope, $route, $location, $timeout, $log, angulargmContainer) {
 
     $scope.$route = $route;
     $scope.loading = false;

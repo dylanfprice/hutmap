@@ -56,8 +56,9 @@ def js():#(nomin=False): #TODO: add minification
   cmd = ['java', '-jar', config.CLOSURE_COMPILER]
   cmd.append('--js')
   cmd.extend(' --js '.join(js_files).split(' '))
-  cmd.extend(['--compilation_level', 'WHITESPACE_ONLY'])
+  cmd.extend(['--compilation_level', 'SIMPLE_OPTIMIZATIONS'])
   cmd.extend(['--warning_level', 'VERBOSE'])
+  cmd.extend(['--jscomp_off', 'checkVars'])
   cmd.extend(['--language_in', 'ECMASCRIPT5_STRICT'])
   cmd.extend(['--js_output_file', '{0}/hutmap-{1}.min.js'.format(config.JS_DEST, config.HUTMAP_VERSION)])
 
