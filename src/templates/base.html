@@ -33,7 +33,7 @@
 
     <div id="navbar" class="navbar navbar-inverse navbar-static-top">
       <div class="navbar-inner">
-        <a class="brand" href="/"><img class="up2" src="{{ STATIC_URL }}img/logo.png"/>Hutmap</a>
+        <a class="brand" href="/"><i class="img-logo up1"></i>Hutmap</a>
         <ul class="nav">
           {% block navbar %}
           <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'home'{% templatetag closebrace %}">
