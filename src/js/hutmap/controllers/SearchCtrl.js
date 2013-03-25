@@ -8,21 +8,27 @@
     function($scope, $location, $route, $log, Places) {
 
     $scope.submitting = false;
+    $scope.autocompleting = 0;
     $scope.lastQuery;
     $scope.selected;
 
     $scope.getPlaces = function(query) {
       $scope.lastQuery = query;
       if (query && !$scope.submitting) {
+        $scope.autocompleting++;
         return Places.getPlacePredictions(query).then(
           function(predictions) {
+            $scope.autocompleting--;
             if (!$scope.submitting) {
               return predictions;
             } else {
               return [];
             }
           },
-          function(status) { return []; }
+          function(status) { 
+            $scope.autocompleting--;
+            return []; 
+          }
         );
       } else {
         return [];

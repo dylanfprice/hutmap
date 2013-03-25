@@ -63,9 +63,8 @@
                  typeahead="place as place.description for place in getPlaces($viewValue)"/>
           <span class="search-icon">
             <span ng-class="{% templatetag openbrace %} 
-              'icon-search': !submitting,
-              'icon-spinner': submitting,
-              'icon-spin': submitting
+              'icon-search': !submitting && !autocompleting,
+              'img-spinner': submitting || autocompleting
            {% templatetag closebrace %}"></span>
             <button class="transparent" type="submit">
               <span class="visuallyhidden">Search</span>
@@ -82,8 +81,9 @@
       </div>
 
       <div id="loading-indicator" ng-show="loading">
-        <img class="spinner" alt="Loading..." src="{{ STATIC_URL}}img/loading.gif">
+        <i class="img-loading"></i> 
       </div>
+      
     </div>
 
   </div>
