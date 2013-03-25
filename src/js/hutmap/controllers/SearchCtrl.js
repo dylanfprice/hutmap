@@ -14,7 +14,16 @@
     $scope.getPlaces = function(query) {
       $scope.lastQuery = query;
       if (query && !$scope.submitting) {
-        return Places.getPlacePredictions(query);
+        return Places.getPlacePredictions(query).then(
+          function(predictions) {
+            if (!$scope.submitting) {
+              return predictions;
+            } else {
+              return [];
+            }
+          },
+          function(status) { return []; }
+        );
       } else {
         return [];
       }
@@ -35,6 +44,7 @@
       // TODO: change this to events, or make a parent scope that MapCtrl can watch?
       $location.
         path('/map/').
+        search('m_selected', null).
         search('m_center', place.geometry.location.toUrlValue()).
         search('m_zoom', 8);
         if (place.geometry.viewport) {
