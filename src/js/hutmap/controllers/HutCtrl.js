@@ -4,6 +4,9 @@
   angular.module('hutmap').
 
   controller('HutCtrl', ['$scope', '$location', 'Huts', function($scope, $location, Huts) {
+
+    var count = 0;
+
     $scope.huts;
     $scope.hutsMeta;
     $scope.query;
@@ -19,15 +22,18 @@
 
     var doQuery = function(query) {
       if (query) {
-        $scope.setLoading(true);
+        var id = ++count;
+        $scope.incLoading();
         var hutQuery = Huts.query(query, 
           function() {
-            $scope.huts = hutQuery.objects;
-            $scope.hutsMeta = hutQuery.meta;
-            $scope.setLoading(false);
+            $scope.decLoading();
+            if (id === count) {
+              $scope.huts = hutQuery.objects;
+              $scope.hutsMeta = hutQuery.meta;
+            }
           },
           function(error) {
-            $scope.setLoading(false);
+            $scope.decLoading();
             // TODO: notify of error
           }
         );
@@ -61,7 +67,7 @@
     $scope.$watch('query', function(newQuery) {
       if (newQuery != null) {
         doQuery(newQuery);
-        updateLocation(newQuery);
+        //updateLocation(newQuery);
       }
     });
 
@@ -71,7 +77,7 @@
       }
     });
 
-    updateScope();
+    //updateScope();
 
   }]);
 })();

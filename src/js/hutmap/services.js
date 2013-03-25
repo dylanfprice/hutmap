@@ -48,13 +48,24 @@
   }]).
 
   factory('utils', [function() {
+
     function latLngFromUrlValue(urlValue) {
       var array = urlValue.split(',');
       return new google.maps.LatLng(array[0], array[1]);
     }
 
+    function boundsFromUrlValue(urlValue) {
+      var array = urlValue.split(',');
+      return new google.maps.LatLngBounds(
+        new google.maps.LatLng(array[0], array[1]),
+        new google.maps.LatLng(array[2], array[3])
+      );
+
+    }
+
     return {
-      latLngFromUrlValue: latLngFromUrlValue
+      latLngFromUrlValue: latLngFromUrlValue,
+      boundsFromUrlValue: boundsFromUrlValue
     }
   }]);
 

@@ -5,7 +5,6 @@
   </div> 
   <div class="hut-sidebar">
     {% endverbatim %}{% include "huts/hut_info.html" %}{% verbatim %}
-    <button ng-click="setQuery({ limit: 100, order_by_distance: '48.91128,-121.01643' })">Query</button>
     <!--
     <p>num huts: {{huts.length}}</p>
     <p>{{center}}</p>
@@ -13,15 +12,17 @@
     <p>{{bounds}}</p>
     -->
   </div>
-  <div ng-controller="MapCtrl">
-    <gm-map class="map" gm-map-id="hutmapMapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">
-      <gm-markers gm-objects="huts" 
-                  gm-get-lat-lng="{lat:object.location.lat, lng:object.location.lng}" 
-                  gm-marker-options="markerOptions.huts"
-                  gm-event="hutMarkerEvent"
-                  gm-on-click="selectHut(marker, object)">
-      </gm-markers>
-    </gm-map>
+  <div ng-controller="MapConfigCtrl">
+    <div ng-controller="MapCtrl">
+      <gm-map class="map" gm-map-id="hutmapMapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">
+        <gm-markers gm-objects="huts" 
+                    gm-get-lat-lng="{lat:object.location.lat, lng:object.location.lng}" 
+                    gm-marker-options="markerOptions.huts"
+                    gm-event="hutMarkerEvent"
+                    gm-on-click="selectHut(marker, object)">
+        </gm-markers>
+      </gm-map>
+    </div>
   </div>
 </div>
 {% endverbatim %}

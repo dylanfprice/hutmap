@@ -38,24 +38,24 @@
     var onError = function(status) {
       $scope.submitting = false;
       $log.error(status);
-      $scope.addAlert({
-        type: 'error',
-        msg: 'There was an error retrieving search results. TODO: better messages'
-      });
+      $scope.addAlert('error', 'There was an error retrieving search results. TODO: better messages');
     };
 
     var selectPlace = function(place) {
       $scope.submitting = false;
       $route.reload();
-      // TODO: change this to events, or make a parent scope that MapCtrl can watch?
       $location.
         path('/map/').
-        search('m_selected', null).
-        search('m_center', place.geometry.location.toUrlValue()).
+        search({}).
         search('m_zoom', 8);
-        if (place.geometry.viewport) {
-          $location.search('h_bbox', place.geometry.viewport.toUrlValue());
-        }
+
+      if (place.geometry.location) {
+        $location.search('m_center', place.geometry.location.toUrlValue());
+        $location.search('m_selected', place.geometry.location.toUrlValue());
+      }
+      if (place.geometry.viewport) {
+        $location.search('m_bounds', place.geometry.viewport.toUrlValue());
+      }
     };
 
     $scope.$watch('selected', function(selected) {
@@ -67,6 +67,7 @@
     $scope.submit = function() {
       if ($scope.selected) {
         $scope.submitting = true;
+        $scope.autocompleting = 0;
         var selected = $scope.selected;
         if (selected.reference) {
           Places.getDetails(selected.reference).then(
@@ -80,6 +81,7 @@
         var lastQuery = $scope.lastQuery;
         if (lastQuery) {
           $scope.submitting = true;
+          $scope.autocompleting = 0;
           Places.getPlacePredictions(lastQuery).then(
             function(predictions) {
               Places.getDetails(predictions[0].reference).then(

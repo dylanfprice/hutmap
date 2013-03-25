@@ -25,7 +25,7 @@
   constant('hutmapMapId', 'map_canvas').
 
   value('mapOptions', {
-    zoom : 3,
+    zoom : 8,
     center : new google.maps.LatLng(46.87916, -120),
     mapTypeId : google.maps.MapTypeId.ROADMAP,
     streetViewControl: false
@@ -41,7 +41,7 @@
       zIndex: 0
     },
     selected: {
-      icon: '/static/img/marker_blue.png',
+      icon: '/static/img/marker_yellow_small.png',
       zIndex: 1
     }
   });

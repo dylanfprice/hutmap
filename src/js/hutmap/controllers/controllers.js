@@ -9,19 +9,17 @@
     function($scope, $route, $location, $timeout, $log, angulargmContainer) {
 
     $scope.$route = $route;
-    $scope.loading = false;
+    $scope.loading = 0;
 
-    $scope.setLoading = function(loading) {
-      $scope.loading = loading;
-    };
+    $scope.incLoading = function() { $scope.loading++; };
+    $scope.decLoading = function() { $scope.loading--; };
 
+    // Of the form { type: 'error', msg: 'message' }
     $scope.alerts = [
-      { type: 'error', msg: 'Oh snap! Change a few things up and try submitting again.' }, 
-      { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
     ];
 
-    $scope.addAlert = function(alert) {
-      $scope.alerts.push(alert);
+    $scope.addAlert = function(type, msg) {
+      $scope.alerts.push({type:type,msg:msg});
     };
 
     $scope.closeAlert = function(index) {
