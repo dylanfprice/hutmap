@@ -176,7 +176,8 @@
       });
 
       gmap.enableKeyDragZoom({
-        visualEnabled: true,
+        key: 'alt',
+        visualEnabled: true
       });
     });
 
