@@ -1,4 +1,0 @@
-deps/bootstrap = [git]git://github.com/twitter/bootstrap.git
-deps/Font-Awesome = [git]git://github.com/FortAwesome/Font-Awesome.git
-deps/angular-seed = [git]git://github.com/angular/angular-seed.git
-deps/angular-ui-bootstrap = [git]git://github.com/angular-ui/bootstrap.git
