@@ -4,3 +4,6 @@
 [submodule "deps/Font-Awesome"]
 	path = deps/Font-Awesome
 	url = git://github.com/FortAwesome/Font-Awesome.git
+[submodule "deps/angular-ui"]
+	path = deps/angular-ui
+	url = git://github.com/angular-ui/bootstrap.git
