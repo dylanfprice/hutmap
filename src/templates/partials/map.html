@@ -10,8 +10,8 @@
     <div class="hut-sidebar">
       {% endverbatim %}{% include "partials/components/hut_info.html" %}{% verbatim %}
     </div>
-    <div ng-controller="MapCtrl">
-      <div ng-controller="MapConfigCtrl">
+    <div ng-controller="MapConfigCtrl">
+      <div ng-controller="MapCtrl">
         <gm-map class="map" gm-map-id="hutmapMapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">
           <gm-markers gm-objects="huts" 
                       gm-get-lat-lng="{lat:object.location.lat, lng:object.location.lng}" 
