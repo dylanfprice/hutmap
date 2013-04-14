@@ -4,17 +4,22 @@
   angular.module('hutmap').
 
   controller('HutmapCtrl', 
-    ['$scope', '$route', '$location', '$timeout', '$log',
-    'angulargmContainer', 
-    function($scope, $route, $location, $timeout, $log, angulargmContainer) {
+    ['$scope', '$route', function($scope, $route) {
 
     $scope.$route = $route;
-    $scope.loading = 0;
+  }]).
 
-    $scope.incLoading = function() { $scope.loading++; };
-    $scope.decLoading = function() { $scope.loading--; };
+  controller('CarouselCtrl', ['$scope', '$route', function($scope, $route) {
+    $scope.carouselInterval = 6000;
+    $scope.slides = [
+      {title: 'Big Hut', text: 'lorem ipsum dolor', image: '/static/img/carousel/Big Hut.JPG'},
+      {title: 'Joe River Chickee', text: 'lorem ipsum dolor', image: '/static/img/carousel/Joe River Chickee.JPG'},
+      {title: 'John Muir Shelter', text: 'lorem ipsum dolor', image: '/static/img/carousel/John Muir Shelter.JPG'},
+    ];
+  }]).
 
-    // Of the form { type: 'error', msg: 'message' }
+  controller('AlertCtrl', [function() {
+    // Of the form { type: 'error/warning/info', msg: 'message' }
     $scope.alerts = [
     ];
 
@@ -25,16 +30,6 @@
     $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
     };
-
-  }]).
-
-  controller('CarouselCtrl', ['$scope', '$route', function($scope, $route) {
-    $scope.carouselInterval = 6000;
-    $scope.slides = [
-      {title: 'Big Hut', text: 'lorem ipsum dolor', image: '/static/img/carousel/Big Hut.JPG'},
-      {title: 'Joe River Chickee', text: 'lorem ipsum dolor', image: '/static/img/carousel/Joe River Chickee.JPG'},
-      {title: 'John Muir Shelter', text: 'lorem ipsum dolor', image: '/static/img/carousel/John Muir Shelter.JPG'},
-    ];
   }]).
 
   controller('HutInfoCtrl', ['$scope', function($scope) {
