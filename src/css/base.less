@@ -2,6 +2,11 @@ body {
   .grayjean;
 }
 
+// For AngularJS
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none;
+}
+
 .hide {
   display: none;
 }
@@ -63,6 +68,33 @@ body {
 .grayjean {
   background-image: url('@{staticUrl}img/gray-jean.png');
 }
+
+/* Ratings */
+.rating-4star,
+.rating-5star {
+  height: 16px;
+  display: block;
+  .img-star-rating;
+  background-position: 0 0;
+  backgroun-repeat: no-repeat;
+}
+
+.rating-4star { width: 48px; }
+.rating-5star { width: 60px; }
+
+.rating-50 { background-position: 0 0; }
+.rating-40 { background-position: -12px 0; } 
+.rating-30 { background-position: -24px 0; }
+.rating-20 { background-position: -36px 0; }
+.rating-10 { background-position: -48px 0; }
+.rating-0, .rating-NaN { background-position: -60px 0; }
+
+.rating-5  { background-position: -48px -16px; }
+.rating-15 { background-position: -36px -16px; }
+.rating-25 { background-position: -24px -16px; }
+.rating-35 { background-position: -12px -16px; }
+.rating-45 { background-position: 0 -16px; }
+
 
 /* navbar */
 
@@ -136,18 +168,6 @@ body {
   }
 }
 
-#alert-topbar {
-  position: absolute;
-  top: (@navbarHeight + 1);
-  left: 0px;
-  right: 0px;
-  z-index: 100000;
-
-  .alert {
-    margin: 0px;
-  }
-}
-
 #content {
   .container {
     .carousel {
@@ -159,26 +179,4 @@ body {
     }
   }
 }
-
-#loading-indicator {
-  left: 50%;
-  position: fixed;
-  top: 50%;
-  z-index: 100000;
-
-  background-image: none;
-  background-repeat: repeat;
-  background-attachment: scroll;
-  background-position: 0 0;
-  background-color: rgba(0, 0, 0, 0.8);
-  .border-radius( 10px );
-  margin-left: -31px;
-  margin-top: -31px;
-  padding: 15px;
-  text-align: center;
-  height: 32px;
-  width: 32px;
-}
-
-
 
