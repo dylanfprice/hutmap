@@ -18,7 +18,8 @@
         $scope.autocompleting++;
         return Places.getPlacePredictions(query).then(
           function(predictions) {
-            $scope.autocompleting--;
+            if ($scope.autocompleting > 0)
+              $scope.autocompleting--;
             if (!$scope.submitting) {
               return predictions;
             } else {
@@ -26,7 +27,8 @@
             }
           },
           function(status) { 
-            $scope.autocompleting--;
+            if ($scope.autocompleting > 0)
+              $scope.autocompleting--;
             return []; 
           }
         );
