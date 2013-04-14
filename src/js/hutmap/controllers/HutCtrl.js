@@ -3,14 +3,20 @@
 (function () {
   angular.module('hutmap').
 
-  controller('HutCtrl', ['$scope', '$location', 'Huts', function($scope, $location, Huts) {
+  controller('HutCtrl', 
+    ['$scope', '$location', '$timeout', 'Huts', 
+    function($scope, $location, $timeout, Huts) {
 
-    var count = 0;
+    var curQuery = 0;
 
+    $scope.loading = 0;
     $scope.huts;
     $scope.hutsMeta;
     $scope.query;
     $scope.selectedHut;
+
+    $scope.incLoading = function() { $scope.loading++; };
+    $scope.decLoading = function() { $scope.loading--; };
 
     $scope.setQuery = function(query) {
       $scope.query = query;
@@ -20,16 +26,15 @@
       $scope.selectedHut = hut;
     };
 
-    var doQuery = function(query) {
+    var doQuery = function(id, query) {
       if (query) {
-        var id = ++count;
         $scope.incLoading();
-        var hutQuery = Huts.query(query, 
-          function() {
+        Huts.query(query, 
+          function(resp) {
             $scope.decLoading();
-            if (id === count) {
-              $scope.huts = hutQuery.objects;
-              $scope.hutsMeta = hutQuery.meta;
+            if (id === curQuery) {
+              $scope.huts = resp.objects;
+              $scope.hutsMeta = resp.meta;
             }
           },
           function(error) {
@@ -66,7 +71,13 @@
 
     $scope.$watch('query', function(newQuery) {
       if (newQuery != null) {
-        doQuery(newQuery);
+        var id = ++curQuery;
+        $timeout(function() {
+          // only do query if there is not a newer one
+          if (id === curQuery) {
+            doQuery(id, newQuery);
+          }
+        }, 500);
         //updateLocation(newQuery);
       }
     });

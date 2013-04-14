@@ -1,13 +1,15 @@
 describe('HutCtrl', function() {
   var hutmapScope, hutScope;
   var $httpBackend;
+  var $timeout;
 
   beforeEach(function() {
     module('hutmap');
   });
 
-  beforeEach(inject(function(_$httpBackend_, $rootScope, $controller) {
+  beforeEach(inject(function(_$httpBackend_, _$timeout_, $rootScope, $controller) {
     $httpBackend = _$httpBackend_;
+    $timeout = _$timeout_;
     $httpBackend.whenGET(/.*/).respond('');
 
     hutmapScope = $rootScope.$new();
@@ -16,57 +18,69 @@ describe('HutCtrl', function() {
     var hutCtrl = $controller('HutCtrl', {$scope: hutScope});
   }));
 
-  it('sets query from $location', inject(function($location, $controller) {
-    $location.search({h_key: 'value'});
-    hutScope = hutmapScope.$new();
-    $controller('HutCtrl', {$scope: hutScope});
+  var expectGET = function(num) {
+    $httpBackend.expectGET('/huts/api/v1/hut/?limit=' + num).
+      respond({
+        "meta": {
+          "limit": num,
+        },
+        "objects": [
+          { "id": num, },
+        ]
+      });
+  };
 
-    expect(hutScope.query).toEqual({key: 'value'});
-  }));
-
-  it('sets $location from query', inject(function($location) {
+  var setQuery = function(num) {
     hutScope.setQuery({
-      key: 'value',
+      limit: num,
     });
+  };
 
-    hutScope.$digest();
-
-    expect($location.search().h_key).toEqual('value');
-  }));
-
-  describe('queries for huts', function() {
+  describe('single query', function() {
 
     beforeEach(function() {
-      $httpBackend.expectGET('/huts/api/v1/hut?limit=1').
-        respond({
-          "meta": {
-            "limit": 1,
-          },
-          "objects": [
-            { "id": 1, },
-          ]
-        });
-
-      hutScope.setQuery({
-        limit: 1,
-      });
+      expectGET(1);
+      setQuery(1);
     });
 
-    it('correctly', function() {
+    it('works', function() {
       hutScope.$digest();
+      $timeout.flush();
       $httpBackend.flush();
 
       expect(hutScope.huts[0].id).toEqual(1);
       expect(hutScope.hutsMeta.limit).toEqual(1);
     });
 
-    it('and sets loading', function() {
+    it('sets loading', function() {
       expect(hutScope.loading).toBeFalsy();
       hutScope.$digest();
+      $timeout.flush();
       expect(hutScope.loading).toBeTruthy();
       $httpBackend.flush();
       expect(hutScope.loading).toBeFalsy();
     });
 
   });
+
+  describe('multiple queries', function() {
+
+    it('only runs latest query', function() {
+      expectGET(2);
+      setQuery(1);
+
+      hutScope.$digest();
+      setQuery(2);
+
+      hutScope.$digest();
+      $timeout.flush();
+
+      expect(hutScope.loading).toEqual(1);
+
+      $httpBackend.flush();
+      expect(hutScope.huts[0].id).toEqual(2);
+    });
+
+  });
+
 });
