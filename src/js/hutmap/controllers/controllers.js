@@ -18,7 +18,7 @@
     ];
   }]).
 
-  controller('AlertCtrl', [function() {
+  controller('AlertCtrl', ['$scope', function($scope) {
     // Of the form { type: 'error/warning/info', msg: 'message' }
     $scope.alerts = [
     ];
