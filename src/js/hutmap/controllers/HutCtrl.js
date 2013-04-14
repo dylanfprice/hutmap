@@ -77,7 +77,7 @@
           if (id === curQuery) {
             doQuery(id, newQuery);
           }
-        }, 500);
+        }, 1000);
         //updateLocation(newQuery);
       }
     });
