@@ -3,10 +3,16 @@
 (function () {
   angular.module('hutmapServices', []).
 
-  factory('Huts', ['$resource', function($resource){
-    return $resource('/huts/api/v1/hut', {}, {
-      query: {method:'GET', params:{}
-    }});
+  factory('Huts', ['$http', function($http) {
+    var Huts = {};
+
+    Huts.query = function(params, success, error) {
+      $http.get('/huts/api/v1/hut/', {params:params}).
+        success(success).
+        error(error);
+    };
+
+    return Huts;
   }]).
 
   factory('Places', ['$q', function($q) {
