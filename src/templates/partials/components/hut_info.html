@@ -20,7 +20,7 @@
   <table>
     <tr>
       <td class="hut-info-detail-title">Region:</td>
-      <td class="hut-info-detail">{{selectedHut.region.region}}</td>
+      <td class="hut-info-detail"><span bs-tooltip="selectedHut.region.region">{{selectedHut.region.region|truncate:19}}</span></td>
     </tr>
     <tr>
       <td class="hut-info-detail-title">Location:</td>
@@ -33,7 +33,7 @@
     <tr>
       <td class="hut-info-detail-title">Agency:</td>
       <td class="hut-info-detail">
-        <a ng-href="{{selectedHut.agency.url}}">{{selectedHut.agency.name|truncate:20}}</a>
+        <a ng-href="{{selectedHut.agency.url}}" bs-tooltip="selectedHut.agency.name">{{selectedHut.agency.name|truncate:19}}</a>
       </td>
     </tr>
     <tr>
