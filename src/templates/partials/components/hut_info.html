@@ -14,7 +14,7 @@
          alt="No image available"></img>
     <img class="img-rounded" 
          ng-show="!selectedHut.photo_url && selectedHut.accuracy >= 3" 
-         src="http://maps.googleapis.com/maps/api/staticmap?center={{selectedHut.location.lat}}%2C{{selectedHut.location.lng}}&zoom=19&size=180x130&maptype=satellite&sensor=false&key={% endverbatim %}{{ GOOGLE_API_KEY }}{% verbatim %}"
+         src="http://maps.googleapis.com/maps/api/staticmap?center={{selectedHut.location.coordinates[1]}}%2C{{selectedHut.location.coordinates[0]}}&zoom=19&size=180x130&maptype=satellite&sensor=false&key={% endverbatim %}{{ GOOGLE_API_KEY }}{% verbatim %}"
          alt="No image available"></img>
   </div>
   <table>

@@ -81,7 +81,7 @@ describe('MapCtrl', function() {
     });
 
     it('from selectedHut', function() {
-      mapScope.setSelectedHut({id:2,location:{lat:12,lng:13}});
+      mapScope.setSelectedHut({id:2,location:{type: 'Point', coordinates: [13, 12]}});
       mapScope.$digest();
       expect($location.search().m_selected).toEqual('12,13');
     });

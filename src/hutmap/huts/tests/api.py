@@ -37,8 +37,8 @@ class HutResourceTestCase(ResourceTestCase):
     results = self.deserialize(response)
     hut = results['objects'][0]
     location = hut['location']
-    self.assertTrue(float_equals(38.9635, location['lat']))
-    self.assertTrue(float_equals(-107.03731, location['lng']))
+    self.assertTrue(float_equals(38.9635, location['coordinates'][1]))
+    self.assertTrue(float_equals(-107.03731, location['coordinates'][0]))
 
   def test_order_by_distance(self):
     response = self.client.get(self.url, data={

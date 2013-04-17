@@ -25,7 +25,7 @@
       }
       if ($scope.selectedHut) {
         var loc = $scope.selectedHut.location;
-        $location.search('m_selected', loc.lat + ',' + loc.lng);
+        $location.search('m_selected', loc.coordinates[1] + ',' + loc.coordinates[0]);
       }
     };
 
