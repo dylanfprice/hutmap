@@ -27,10 +27,12 @@ class HutResource(ModelResource):
 
   class Meta:
     queryset = Hut.objects.all()
+    max_limit = 500
     allowed_methods = ['get']
     filtering = {
       'id' : ('in', 'exact'),
     }
+    excludes = ['created', 'updated']
     cache = SimpleCache()
 
   def dehydrate_location(self, bundle):
