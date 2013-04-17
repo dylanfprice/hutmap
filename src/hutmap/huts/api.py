@@ -27,14 +27,31 @@ class HutResource(ModelResource):
 
   class Meta:
     queryset = Hut.objects.all()
-    max_limit = 500
-    allowed_methods = ['get']
+    list_allowed_methods = []
+    detail_allowed_methods = ['get']
+    excludes = ['created', 'updated']
+
+
+class HutSearchResource(ModelResource):
+
+  class Meta:
+    queryset = Hut.objects.all()
+    max_limit = 0
+    list_allowed_methods = ['get']
+    detail_allowed_methods = []
     filtering = {
       'id' : ('in', 'exact'),
     }
-    excludes = ['created', 'updated']
+    ordering = ['name', 'accuracy']
+    fields = ['id', 'name', 'location', 'accuracy']
+    include_resource_uri = False
     cache = SimpleCache()
+    hut_resource = HutResource()
     
+  def dehydrate(self, bundle):
+    bundle.data['resource_uri'] = self._meta.hut_resource.get_resource_uri(bundle)
+    return bundle
+
   def build_filters(self, filters=None):
     if filters is None:
       filters = {}
@@ -42,10 +59,10 @@ class HutResource(ModelResource):
     applicable_filters = {}
     # Normal filtering
     filter_params = dict([(x, filters[x]) for x in filters if not x.startswith('!')])
-    applicable_filters['filter'] = super(HutResource, self).build_filters(filter_params)
+    applicable_filters['filter'] = super(HutSearchResource, self).build_filters(filter_params)
     # Exclude filtering
     exclude_params =  dict([(x[1:], filters[x]) for x in filters if x.startswith('!')])
-    applicable_filters['exclude'] = super(HutResource, self).build_filters(exclude_params)
+    applicable_filters['exclude'] = super(HutSearchResource, self).build_filters(exclude_params)
 
     # Custom bbox filter
     if 'bbox' in filters:
@@ -83,4 +100,4 @@ class HutResource(ModelResource):
       sel_p = (pt.wkt,)
       return objects.extra(select=sel, select_params=sel_p, order_by=['distance'])
     
-    return super(HutResource, self).apply_sorting(objects, options)
+    return super(HutSearchResource, self).apply_sorting(objects, options)

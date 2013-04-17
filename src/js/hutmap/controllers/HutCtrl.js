@@ -14,9 +14,12 @@
     $scope.hutsMeta;
     $scope.query;
     $scope.selectedHut;
+    $scope.selectedHutRegion;
+    $scope.selectedHutAgency;
 
+    $scope.resetLoading = function() { $scope.loading = 0; };
     $scope.incLoading = function() { $scope.loading++; };
-    $scope.decLoading = function() { $scope.loading--; };
+    $scope.decLoading = function() { if ($scope.loading > 0) { $scope.loading--; } };
 
     $scope.setQuery = function(query) {
       $scope.query = query;
@@ -33,6 +36,7 @@
           function(resp) {
             $scope.decLoading();
             if (id === curQuery) {
+              $scope.resetLoading();
               $scope.huts = resp.objects;
               $scope.hutsMeta = resp.meta;
             }

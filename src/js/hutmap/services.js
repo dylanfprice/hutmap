@@ -7,7 +7,7 @@
     var Huts = {};
 
     Huts.query = function(params, success, error) {
-      $http.get('/huts/api/v1/hut/', {params:params}).
+      $http.get('/huts/api/v1/hutsearch/', {params:params}).
         success(success).
         error(error);
     };

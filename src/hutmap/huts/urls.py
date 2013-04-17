@@ -1,10 +1,11 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import patterns, include
 from tastypie.api import Api
 
-from huts.api import HutResource, RegionResource, AgencyResource
+from huts.api import HutResource, HutSearchResource, RegionResource, AgencyResource
 
 api = Api(api_name='v1')
 api.register(HutResource())
+api.register(HutSearchResource())
 api.register(RegionResource())
 api.register(AgencyResource())
 #api.register(HutTypeResource())

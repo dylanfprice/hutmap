@@ -19,7 +19,7 @@ describe('HutCtrl', function() {
   }));
 
   var expectGET = function(num) {
-    $httpBackend.expectGET('/huts/api/v1/hut/?limit=' + num).
+    $httpBackend.expectGET('/huts/api/v1/hutsearch/?limit=' + num).
       respond({
         "meta": {
           "limit": num,

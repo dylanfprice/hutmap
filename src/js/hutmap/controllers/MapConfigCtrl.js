@@ -3,9 +3,13 @@
 (function () {
   angular.module('hutmap').
 
-  controller('MapConfigCtrl', ['$scope', 'hutmapMapId', 'angulargmContainer', 'mapOptions', 'markerOptions',
+  controller('MapConfigCtrl', 
+    
+    ['$scope', '$http', 'hutmapMapId', 'angulargmContainer', 'mapOptions',
+    'markerOptions',
 
-    function ($scope, hutmapMapId, angulargmContainer, mapOptions, markerOptions) {
+    function ($scope, $http, hutmapMapId, angulargmContainer, mapOptions,
+      markerOptions) {
 
     var gmapPromise = angulargmContainer.getMapPromise(hutmapMapId);
     var prevSelectedMarker;
@@ -29,7 +33,11 @@
       }
       prevSelectedMarker = marker;
       marker.setOptions(markerOptions.selected);
-      $scope.setSelectedHut(hut);
+      if (hut) {
+        $http.get(hut.resource_uri).success(function(hut) {
+          $scope.setSelectedHut(hut);
+        });
+      }
     };
 
     /**

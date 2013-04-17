@@ -4,9 +4,9 @@ from tastypie.test import ResourceTestCase
 def float_equals(a, b):
   return abs(a - b) < 0.00001
 
-class HutResourceTestCase(ResourceTestCase):
+class HutSearchResourceTestCase(ResourceTestCase):
   fixtures = ['test_data.json']
-  url = '/huts/api/v1/hut/'
+  url = '/huts/api/v1/hutsearch/'
 
   @classmethod
   def setUpClass(cls):
