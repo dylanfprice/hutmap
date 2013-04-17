@@ -15,7 +15,7 @@
         <gm-map class="map" gm-map-id="hutmapMapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">
           <gm-markers gm-objects="huts" 
                       gm-get-lat-lng="{lat:object.location.coordinates[1], lng:object.location.coordinates[0]}" 
-                      gm-marker-options="markerOptions.huts"
+                      gm-get-marker-options="getMarkerOptions(object)"
                       gm-event="hutMarkerEvent"
                       gm-on-click="selectHut(marker, object)">
           </gm-markers>

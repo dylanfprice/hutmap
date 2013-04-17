@@ -14,6 +14,15 @@
     $scope.mapOptions = mapOptions;
     $scope.markerOptions = markerOptions;
 
+    $scope.getMarkerOptions = function(hut) {
+      return angular.extend(
+        {
+          title: hut.name
+        },
+        $scope.markerOptions.huts
+      );
+    };
+
     $scope.selectHut = function(marker, hut) {
       if (prevSelectedMarker) {
         prevSelectedMarker.setOptions(markerOptions.huts);
