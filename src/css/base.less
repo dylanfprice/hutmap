@@ -7,10 +7,19 @@ body {
 }
 
 #navbar {
-  color: @gray;
+  .navbar-inner {
+    color: @gray;
+    border-width: 0px;
+    background-image: none;
+    background-color: @gray;
+  }
+
   .brand {
+    background-color: lighten(@gray, 10%);
     font-size: 18px;
     font-weight: 600;
+    position: relative;
+    z-index: 10;
 
     i {
       width: 20px;
@@ -21,22 +30,39 @@ body {
   }
 
   #navbar-search {
-    @searchPaddingLeft: 15px;
+    @searchPaddingLeft: 20px;
     @searchPaddingRight: 30px;
     @searchBorder: 1px;
     @searchPadding: 4px;
+    @searchBarShift: 10px;
+
+    margin-right: 10px;
+
+    .arrow-right {
+      width: 0; 
+      height: 0; 
+      border-top: @navbarHeight/2 solid transparent;
+      border-bottom: @navbarHeight/2 solid transparent;
+
+      border-left: @navbarHeight/4 solid lighten(@gray, 10%);
+      position: fixed;
+      z-index: 10;
+    }
 
     .search-query {
       padding-left: @searchPaddingLeft;
       padding-right: @searchPaddingRight;
-      border: @searchBorder solid lighten(@grayDarker, 10%);
+      border: @searchBorder solid darken(@gray, 5%);
       margin: unit(((@navbarHeight - @searchInputHeight - (2*@searchBorder) - (2*@searchPadding))/2), px) 0;
       font-size: @searchFontSize;
       height: @searchInputHeight;
       width: @searchInputWidth;
+      position: relative;
+      right: @searchBarShift;
       color: @grayDarker;
       background-color: darken(@grayLighter, 15%);
       .transition(all .2s linear);
+      z-index: 5;
 
       &:focus {
         padding-top: @searchPadding;
@@ -59,8 +85,8 @@ body {
       width: @searchPaddingRight;
       position: absolute;
       top: 0px;
-      right: 0px;
-      z-index: 5;
+      right: @searchBarShift;
+      z-index: 10;
 
       span {
         position: absolute;
@@ -76,7 +102,7 @@ body {
         position: absolute;
         top: 0px;
         right: 0px;
-        z-index: 10;
+        z-index: 15;
       }
     }
   }

@@ -4,7 +4,7 @@
 
 #alert-topbar {
   position: absolute;
-  top: (@navbarHeight + 1);
+  top: @navbarHeight;
   left: 0px;
   right: 0px;
   z-index: 100000;
@@ -37,7 +37,7 @@
 #hut-sidebar {
   position: absolute;
   left: 0px;
-  top: (@navbarHeight + 1);
+  top: @navbarHeight;
   bottom: 0px;
   width: @hutBarWidth;
   z-index: 100;
@@ -80,8 +80,18 @@
   position: absolute;
   right: 0px;
   left: @hutBarWidth;
-  top: (@navbarHeight + 1);
+  top: @navbarHeight;
   bottom: 0px;
   z-index: 100;
 }
+
+#filter-sidebar {
+  position: absolute;
+  right: 0px;
+  top: @navbarHeight;
+  bottom: 0px;
+  width: @hutBarWidth;
+  z-index: 100;
+}
+
 
