@@ -41,7 +41,10 @@ class HutResourceTestCase(ResourceTestCase):
     self.assertTrue(float_equals(-107.03731, location['lng']))
 
   def test_order_by_distance(self):
-    response = self.client.get(self.url, data={'order_by_distance': '48.25055,-120.0022', 'limit': '3'})
+    response = self.client.get(self.url, data={
+      'order_by_distance': '48.25055,-120.0022', 
+      'limit': '3'
+    })
     results = self.deserialize(response)
     huts = results['objects']
     self.assertEqual("Leecher Mountain Lookout", huts[0]['name'])
