@@ -34,15 +34,6 @@ class HutResource(ModelResource):
     }
     excludes = ['created', 'updated']
     cache = SimpleCache()
-
-  def dehydrate_location(self, bundle):
-    point = GEOSGeometry(bundle.data['location'])
-    coords = point.coords
-    return { 'lat': coords[1], 'lng': coords[0] };
-
-  def hydrate_location(self, bundle):
-    coords = bundle.data['location']
-    return 'POINT({0}, {1})'.format(coords['lng'], coords['lat'])
     
   def build_filters(self, filters=None):
     if filters is None:
