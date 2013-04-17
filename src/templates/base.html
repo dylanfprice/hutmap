@@ -54,12 +54,13 @@
         </form>
         <ul class="nav">
           {% block navbar %}
+          <!--
           <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'home'{% templatetag closebrace %}">
             <a href="/">
               Home
             </a>
           </li>
-          <li>
+          -->
           <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'map'{% templatetag closebrace %}">
             <a ng-href="/map/">
               Map
