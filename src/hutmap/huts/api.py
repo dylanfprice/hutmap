@@ -3,7 +3,7 @@ from django.utils.datastructures import SortedDict
 from huts.models import Hut, Region, Agency
 from tastypie import fields
 from tastypie.cache import SimpleCache
-from tastypie.resources import ModelResource
+from tastypie.contrib.gis.resources import ModelResource
 
 class RegionResource(ModelResource):
   class Meta:
