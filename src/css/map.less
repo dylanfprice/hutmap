@@ -1,10 +1,37 @@
-.map {
+/** 
+ * Styles for map.html
+ */
+
+#alert-topbar {
   position: absolute;
-  right: 0px;
-  left: @hutBarWidth;
   top: (@navbarHeight + 1);
-  bottom: 0px;
-  z-index: 100;
+  left: 0px;
+  right: 0px;
+  z-index: 100000;
+
+  .alert {
+    margin: 0px;
+  }
+}
+
+#loading-indicator {
+  left: 50%;
+  position: fixed;
+  top: 50%;
+  z-index: 100000;
+
+  background-image: none;
+  background-repeat: repeat;
+  background-attachment: scroll;
+  background-position: 0 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  .border-radius( 10px );
+  margin-left: -31px;
+  margin-top: -31px;
+  padding: 15px;
+  text-align: center;
+  height: 32px;
+  width: 32px;
 }
 
 .hut-sidebar {
@@ -49,37 +76,12 @@
   }
 }
 
-#alert-topbar {
+.map {
   position: absolute;
-  top: (@navbarHeight + 1);
-  left: 0px;
   right: 0px;
-  z-index: 100000;
-
-  .alert {
-    margin: 0px;
-  }
+  left: @hutBarWidth;
+  top: (@navbarHeight + 1);
+  bottom: 0px;
+  z-index: 100;
 }
-
-#loading-indicator {
-  left: 50%;
-  position: fixed;
-  top: 50%;
-  z-index: 100000;
-
-  background-image: none;
-  background-repeat: repeat;
-  background-attachment: scroll;
-  background-position: 0 0;
-  background-color: rgba(0, 0, 0, 0.8);
-  .border-radius( 10px );
-  margin-left: -31px;
-  margin-top: -31px;
-  padding: 15px;
-  text-align: center;
-  height: 32px;
-  width: 32px;
-}
-
-
 

@@ -1,0 +1,98 @@
+/**
+ * Reusable mixins and classes.
+ */
+
+// For AngularJS
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.transparent {
+  color: transparent; 
+  background-color: transparent; 
+  border-color: transparent;
+}
+
+.visuallyhidden {
+  border: 0 none;
+  clip: rect(0px, 0px, 0px, 0px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.floatright {
+  float: right !important;
+}
+
+.up1 {
+  position: relative;
+  top: -1px;
+}
+
+.up2 {
+  position: relative;
+  top: -2px;
+}
+
+.center {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.clearfix { 
+  zoom: 1; 
+  &:before, &:after {
+    content: ""; 
+    display: table; 
+    // Fixes Opera/contenteditable bug:
+    // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
+    line-height: 0;
+  }
+  &:after {
+    clear: both; 
+  }
+}
+
+.grayjean {
+  background-image: url('@{staticUrl}img/gray-jean.png');
+}
+
+/* Ratings */
+.rating-4star,
+.rating-5star {
+  height: 16px;
+  display: block;
+  .img-star-rating;
+  background-position: 0 0;
+  backgroun-repeat: no-repeat;
+}
+
+.rating-4star { width: 48px; }
+.rating-5star { width: 60px; }
+
+.rating-50 { background-position: 0 0; }
+.rating-40 { background-position: -12px 0; } 
+.rating-30 { background-position: -24px 0; }
+.rating-20 { background-position: -36px 0; }
+.rating-10 { background-position: -48px 0; }
+.rating-0, .rating-NaN { background-position: -60px 0; }
+
+.rating-5  { background-position: -48px -16px; }
+.rating-15 { background-position: -36px -16px; }
+.rating-25 { background-position: -24px -16px; }
+.rating-35 { background-position: -12px -16px; }
+.rating-45 { background-position: 0 -16px; }
+
+
