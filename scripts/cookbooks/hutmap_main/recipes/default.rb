@@ -183,9 +183,9 @@ execute "install less" do
   not_if { File.exists?("#{node[:install_dir]}/node/bin/lessc") }
 end
 
-execute "install testacular" do
-  command "#{node[:install_dir]}/node/bin/npm install -g testacular"
-  not_if { File.exists?("#{node[:install_dir]}/node/bin/testacular") }
+execute "install karma" do
+  command "#{node[:install_dir]}/node/bin/npm install -g karma"
+  not_if { File.exists?("#{node[:install_dir]}/node/bin/karma") }
 end
 
 bash "install phantomjs" do
