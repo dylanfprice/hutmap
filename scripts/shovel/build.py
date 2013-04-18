@@ -3,26 +3,15 @@ from shovel import task
 import os
 import imp
 import shutil
-import subprocess
-import sys
 
-file = os.path.normpath(os.path.join(os.path.dirname(__file__), 'config.py'))
-config = imp.load_source('config', file)
-
-
-def check_command_with_output(cmd, print_stdout=False):
-  proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-  stdoutdata,stderrdata = proc.communicate()
-  if print_stdout:
-    sys.stdout.write(stdoutdata)
-  sys.stderr.write(stderrdata)
-  if proc.returncode != 0:
-    raise subprocess.CalledProcessError(proc.returncode, cmd)
-  return (stdoutdata,stderrdata)
+config_file = os.path.normpath(os.path.join(os.path.dirname(__file__), 'config.py'))
+common_file = os.path.normpath(os.path.join(os.path.dirname(__file__), 'common.py'))
+config = imp.load_source('config', config_file)
+common = imp.load_source('common', common_file)
 
 @task
 def js():#(nomin=False): #TODO: add minification
-  """Minifies javascript using closure"""
+  """Minifies javascript using closure, into public/static/js/hutmap-{version}.min.js"""
   try:
     shutil.rmtree(config.JS_DEST, ignore_errors=True)
     os.makedirs(config.JS_DEST)
@@ -62,7 +51,7 @@ def js():#(nomin=False): #TODO: add minification
   cmd.extend(['--language_in', 'ECMASCRIPT5_STRICT'])
   cmd.extend(['--js_output_file', '{0}/hutmap-{1}.min.js'.format(config.JS_DEST, config.HUTMAP_VERSION)])
 
-  check_command_with_output(cmd, print_stdout=True)
+  common.check_command_with_output(cmd, print_stdout=True)
 
   set_permissions(config.JS_DEST)
 
@@ -71,7 +60,7 @@ def js():#(nomin=False): #TODO: add minification
 
 @task
 def css(nomin=False):
-  """Compiles less files into public/static/css/hutmap.min.css"""
+  """Compiles less files into public/static/css/hutmap-{version}.min.css"""
   try:
     shutil.rmtree(config.CSS_DEST, ignore_errors=True)
     os.makedirs(config.CSS_DEST)
@@ -81,7 +70,7 @@ def css(nomin=False):
   cmd = ['lessc']
   if str(nomin).lower() == 'false': cmd.append('--yui-compress')
   cmd.append(join(config.CSS_PATH, 'hutmap.less'))
-  stdoutdata,stderrdata = check_command_with_output(cmd)
+  stdoutdata,stderrdata = common.check_command_with_output(cmd)
 
   with open(join(config.CSS_DEST, 'hutmap-{0}.min.css'.format(config.HUTMAP_VERSION)), 'w+') as file:
     file.writelines(stdoutdata)
@@ -92,7 +81,7 @@ def css(nomin=False):
 
 
 def set_permissions(folder):
-  """Sets permissions in public folder so Apache will serve files."""
+  """Sets permissions in folder so Apache will serve files."""
   for dirpath,dirnames,filenames in os.walk(folder):
     os.chmod(dirpath, 0755)
     for filename in filenames:

@@ -19,3 +19,5 @@ CLOSURE_COMPILER = join(DEPS_PATH, 'closure-compiler', 'compiler.jar')
 
 HUTMAP_VERSION = os.environ['HUTMAP_VERSION']
 
+PYTHON = normpath(join(os.environ['HOME'], '.pythonbrew', 'venvs',
+                       'Python-2.7.3', 'hutmap', 'bin', 'python'))

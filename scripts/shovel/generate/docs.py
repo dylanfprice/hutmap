@@ -1,5 +1,5 @@
 from os.path import join, normpath, dirname
-from shovel import task
+#from shovel import task
 import imp
 import os
 
@@ -10,7 +10,7 @@ util = imp.load_source('util', join(path, 'util.py'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'django_settings'
 from django.template.loader import render_to_string
 
-@task
+#@task
 def readme():
   """Generates README.md"""
   rendered = render_to_string('README.md', {})
