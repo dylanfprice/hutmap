@@ -35,7 +35,7 @@ the vm when it builds it). Warning: Don't change the values after you call
 'vagrant up' (see next step) or you will have to rebuild the vm by running
 'vagrant destroy', then 'vagrant up' again.
 
-    :::bash
+    ```bash
     export HUTMAP_VERSION='0.1'
     export HUTMAP_DB_NAME='hutmap' 
     export HUTMAP_DB_USER='hutmap'
@@ -47,24 +47,26 @@ the vm when it builds it). Warning: Don't change the values after you call
     export HUTMAP_GOOGLE_API_KEY='your_google_maps_api_key_here'
     export HUTMAP_EMAIL_HOST_USER=''     # These two are not relevant for development,
     export HUTMAP_EMAIL_HOST_PASSWORD='' # see django docs for usage
+    ```
 
 ## Setup Dev Environment ##
 
 This step will build and provision a development vm for running the hutmap
 code. In the directory containing this README.md, perform the following:
 
-    :::bash
+    ```bash
     $ source ~/.profile
     $ cd scripts/
     $ vagrant box add lucid32 http://files.vagrantup.com/lucid32.box
     $ vagrant up # This will take a while
+    ```
 
 Go to <http://localhost:8080> in your browser and verify you see the homepage.
 
 ## Initialize the Database ##
 Get the database up and running:
 
-    :::bash
+    ```bash
     $ cd scripts/
     $ vagrant ssh
     $ cd /vagrant/src/hutmap
@@ -72,6 +74,7 @@ Get the database up and running:
     $ ./manage.py validate
     $ ./manage.py syncdb
     $ ./manage.py loaddata test_data
+    ```
 
 ## Development and Testing ##
 
@@ -80,8 +83,9 @@ testing, building, deploying, etc. By running a shovel server on the
 development vm, there is no need for you to install or set up anything. Simply
 run:
 
-    :::bash
+    ```bash
     $ scripts/utils/shovel-server.py start
+    ```
 
 Then go to <http://localhost:3000/help> in your browser to see a list of all
 available commands.
@@ -107,12 +111,13 @@ You can run any non-interactive manage.py commands through the endpoint
 If you need to run other manage.py commands, or just want 'normal' access to
 the django project, use the following:
 
-    :::bash
+    ```bash
     $ cd scripts/
     $ vagrant ssh
     $ cd /vagrant/src/hutmap
     $ pythonbrew venv use hutmap
     $ # now do what you want
+    ```
 
 ### Developing Javascript (AngularJS) ###
 
@@ -123,10 +128,11 @@ Run the tests at <http://localhost:3000/test.hutmapjs>, but this may get
 tedious, so you can start a karma server to watch the files for changes and
 automatically re-run tests:
 
-    :::bash
+    ```bash
     $ cd scripts/
     $ vagrant ssh
     $ karma start /vagrant/src/js-test/hutmap/config/karma.conf.js
+    ```
 
 ### Developing CSS ###
 
