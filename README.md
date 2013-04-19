@@ -14,10 +14,10 @@ You can try this on Mac or Windows but I've only ever used Linux so no guarantee
 
 ## Install Dependencies ##
 
-First, make sure you have [Python](http://www.python.org) installed. I'm using
-Python 2.6. Note that this Python installation is *only* used for running
-scripts in scripts/utils, and not for running the code. Vagrant will provision
-a separate Python install for the development vm that runs the code.
+First, make sure you have [Python](http://www.python.org) installed. Any 2.x
+version should do.  Note that this Python installation is *only* used for
+running scripts in scripts/utils/, and not for running the code. Vagrant will
+provision a separate Python install for the development vm that runs the code.
 
 Next install [Vagrant](http://www.vagrantup.com). Vagrant requires both
 [Ruby](http://www.ruby-lang.org) and [VirtualBox](https://www.virtualbox.org),
