@@ -11,8 +11,7 @@ urlpatterns = patterns('',
   url(r'^partials/map.html$', TemplateView.as_view(template_name='partials/map.html')),
   url(r'^partials/about.html$', TemplateView.as_view(template_name='partials/about.html')),
   (r'^huts/', include('huts.urls')),
-  url(r'^test$',  TemplateView.as_view(template_name='test.html')),
-  url(r'^admin/',      include(admin.site.urls)),
-  url(r'^admin/doc/',  include('django.contrib.admindocs.urls')),
+  #url(r'^admin/',      include(admin.site.urls)),
+  #url(r'^admin/doc/',  include('django.contrib.admindocs.urls')),
 )
 
