@@ -93,7 +93,7 @@ server <http://localhost:3000/server.reload>.
 
 You can run any non-interactive manage.py commands through the endpoint
 <http://localhost:3000/django.manage>, e.g.
-<http://localhost:3000/django.manage?syncdb>.
+<http://localhost:3000/django.manage?validate>.
 
 If you need to run other manage.py commands, or just want 'normal' access to
 the django project, use the following:
@@ -127,5 +127,3 @@ The css is located at src/css/. It is written in [less](http://lesscss.org/).
 This means you need to compile it at <http://localhost:3000/build.css> for any
 changes to show up.
 
-# Project Layout #
-TODO
