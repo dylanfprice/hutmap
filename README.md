@@ -63,19 +63,6 @@ code. In the directory containing this README.md, perform the following:
 
 Go to <http://localhost:8080> in your browser and verify you see the homepage.
 
-## Initialize the Database ##
-Get the database up and running:
-
-  ```bash
-  $ cd scripts/
-  $ vagrant ssh
-  $ cd /vagrant/src/hutmap
-  $ pythonbrew venv use hutmap
-  $ ./manage.py validate
-  $ ./manage.py syncdb
-  $ ./manage.py loaddata test_data
-  ```
-
 ## Development and Testing ##
 
 Hutmap uses [shovel](https://github.com/seomoz/shovel) for utility scripts,
@@ -91,9 +78,9 @@ Then go to <http://localhost:3000/help> in your browser to see a list of all
 available commands.
 
 You may want to initialize the database and load in some test data:
-<http://localhost:3000/django.manage?validate>
-<http://localhost:3000/django.manage?syncdb&--noinput>
-<http://localhost:3000/django.manage?loaddata&test_data>
++ <http://localhost:3000/django.manage?validate>
++ <http://localhost:3000/django.manage?syncdb&--noinput>
++ <http://localhost:3000/django.manage?loaddata&test_data>
 
 ### Developing Python (Django) ###
 
