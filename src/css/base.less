@@ -30,24 +30,13 @@ body {
   }
 
   #navbar-search {
-    @searchPaddingLeft: 20px;
+    @searchPaddingLeft: 30px;
     @searchPaddingRight: 30px;
     @searchBorder: 1px;
     @searchPadding: 4px;
     @searchBarShift: 10px;
 
     margin-right: 10px;
-
-    .arrow-right {
-      width: 0; 
-      height: 0; 
-      border-top: @navbarHeight/2 solid transparent;
-      border-bottom: @navbarHeight/2 solid transparent;
-
-      border-left: @navbarHeight/4 solid lighten(@gray, 10%);
-      position: absolute;
-      z-index: 10;
-    }
 
     .search-query {
       padding-left: @searchPaddingLeft;
