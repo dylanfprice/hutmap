@@ -1,0 +1,172 @@
+#content {
+
+  .carousel {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin: 0;
+    z-index: -10;
+  }
+
+  .carousel-inner {
+    height: 100%;
+
+    > .item {
+      height: 100%;
+      .opacity(0);
+      .transition(all 1s ease-in-out);
+    }
+
+    > .active {
+      .opacity(100);
+    }
+
+    > .active,
+    > .next,
+    > .prev { display: block; }
+
+    > .active {
+      left: 0;
+    }
+
+    > .next,
+    > .prev {
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+
+    > .next {
+      //left: 100%;
+      left: 0;
+    }
+    > .prev {
+      //left: -100%;
+      left: 0;
+    }
+    > .next.left,
+    > .prev.right {
+      left: 0;
+      .opacity(100);
+    }
+
+    > .active.left {
+      //left: -100%;
+      left: 0;
+      .opacity(0);
+    }
+    > .active.right {
+      //left: 100%;
+      left: 0;
+      .opacity(0);
+    }
+  }
+
+  .hut-carousel-img {
+    height: 100%;
+  }
+
+  .hut-carousel-caption {
+    position: absolute;
+    right: 0px;
+    bottom: 60px;
+    background: none repeat scroll 0 0 fade(@grayDarker, 90%);
+    height: 95px;
+    padding: 15px;
+
+    table {
+      height: 95px;
+
+      .caption-image {
+        padding-right: 15px;
+
+        img {
+          height: 95px;
+        }
+      }
+
+      .caption-details {
+
+        a:hover {
+          cursor: hand;
+          cursor: pointer;
+        }
+
+        h4, p {
+         color: #FFFFFF;
+         line-height: 21px;
+        }
+
+        h4 {
+          margin: 0 0 5px;
+          font-weight: 600;
+          font-size: 30px;
+        }
+      }
+    }
+  }
+
+  .hut-carousel-control {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    font-size: 15px;
+    font-weight: 100;
+    line-height: 15px;
+    color: @white;
+    text-align: center;
+    background: @grayDarker;
+    border: 3px solid @white;
+    .border-radius(23px);
+    .opacity(70);
+
+    i {
+      padding-top: 2px;
+    }
+    &.info i {
+      padding-top: 0px;
+      padding-bottom: 2px;
+    }
+    
+    // Reposition
+    &.left {
+      right: 140px;
+    }
+    &.right {
+      right: 100px;
+    }
+    &.pause, &.play {
+      right: 60px;
+      font-size: 13px;
+    }
+    &.info {
+      font-size: 18px;
+    }
+
+    // Hover/focus state
+    &:hover {
+      cursor: default;
+    }
+    &:hover,
+    &:focus {
+      color: @white;
+      text-decoration: none;
+      .opacity(90);
+    }
+  }
+
+  .carousel-indicators {
+    top: @navbarHeight + 10px;
+
+    li {
+      width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      margin-left: 10px;
+    }
+  }
+}

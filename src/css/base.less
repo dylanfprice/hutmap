@@ -11,7 +11,7 @@ body {
     color: @gray;
     border-width: 0px;
     background-image: none;
-    background-color: @gray;
+    background-color: fade(@gray, 80%);
   }
 
   .brand {
@@ -94,18 +94,6 @@ body {
         right: 0px;
         z-index: 15;
       }
-    }
-  }
-}
-
-#content {
-  .container {
-    .carousel {
-      height: @carouselHeight;
-      border-style: solid;
-      border-color: @grayDarker;
-      border-width: 15px;
-      .border-radius( 5px );
     }
   }
 }

@@ -10,12 +10,49 @@
   }]).
 
   controller('CarouselCtrl', ['$scope', '$route', function($scope, $route) {
-    $scope.carouselInterval = 6000;
+    $scope.carouselInterval = 10000;
+    $scope.paused = false;
     $scope.slides = [
-      {title: 'Big Hut', text: 'lorem ipsum dolor', image: '/static/img/carousel/Big Hut.JPG'},
-      {title: 'Joe River Chickee', text: 'lorem ipsum dolor', image: '/static/img/carousel/Joe River Chickee.JPG'},
-      {title: 'John Muir Shelter', text: 'lorem ipsum dolor', image: '/static/img/carousel/John Muir Shelter.JPG'},
+      {
+        title: 'Plummer Hut', 
+        location: 'Waddington Range, British Columbia, Canada',
+        hutLink: '/map/?m_selected=51.37361,-125.16458&m_center=51.388403,-125.062053&m_zoom=9',
+        agency: {
+          name: 'BC Mountaineering Club',
+          url:  ''
+        },
+        thumbnail: '/static/img/no-image-available.gif',
+        image: '/static/img/carousel/Plummer Hut.JPG'
+      },
+      {
+        title: 'Joe River Chickee', 
+        location: 'lorem ipsum dolor',
+        hutLink: '',
+        agency: {
+          name: 'lorem ipsum dolor',
+          url:  ''
+        },
+        thumbnail: '/static/img/no-image-available.gif',
+        image: '/static/img/carousel/Joe River Chickee.JPG'
+      },
+      {
+        title: 'John Muir Shelter', 
+        location: 'lorem ipsum dolor',
+        hutLink: '',
+        agency: {
+          name: 'lorem ipsum dolor',
+          url:  ''
+        },
+        thumbnail: '/static/img/no-image-available.gif',
+        image: '/static/img/carousel/John Muir Shelter.JPG'
+      }
     ];
+    $scope.imgStyle = function(imgUrl) {
+      return {
+        'background': 'transparent url(\'' + imgUrl + '\') no-repeat center center fixed',
+        'background-size': 'cover'
+      }
+    };
   }]).
 
   controller('AlertCtrl', ['$scope', function($scope) {
