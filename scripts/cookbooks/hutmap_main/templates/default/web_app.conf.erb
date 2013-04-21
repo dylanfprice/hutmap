@@ -4,7 +4,7 @@
   DocumentRoot <%= @params[:docroot] %>
 
   <Directory <%= @params[:docroot] %>>
-    AllowOverride None
+    AllowOverride All
     Order allow,deny
     Allow from all
   </Directory> 
