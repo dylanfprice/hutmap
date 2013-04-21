@@ -9,9 +9,7 @@
     $scope.$route = $route;
   }]).
 
-  controller('CarouselCtrl', ['$scope', '$route', '$http', function($scope, $route, $http) {
-    $scope.carouselInterval = 10000;
-    $scope.paused = false;
+  controller('CarouselCtrl', ['$scope', '$route', '$http', '$q', function($scope, $route, $http, $q) {
     $scope.slides = [
       {
         title: 'Plummer Hut', 
@@ -52,10 +50,14 @@
         'background-image': 'url(\'' + imgUrl + '\')'
       }
     };
+
     // pre-load images
-    angular.forEach($scope.slides, function(slide) {
-      $http.get(slide.image);
+    $scope.carouselInterval = -1;
+    var imgsLoaded = [];
+    angular.forEach($scope.slides, function(slide, index) {
+      imgsLoaded.push($http.get(slide.image));
     });
+    $q.all(imgsLoaded).then(function() { $scope.carouselInterval = 10000; });
   }]).
 
   controller('AlertCtrl', ['$scope', function($scope) {
