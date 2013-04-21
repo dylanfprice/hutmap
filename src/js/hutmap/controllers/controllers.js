@@ -9,7 +9,7 @@
     $scope.$route = $route;
   }]).
 
-  controller('CarouselCtrl', ['$scope', '$route', function($scope, $route) {
+  controller('CarouselCtrl', ['$scope', '$route', '$http', function($scope, $route, $http) {
     $scope.carouselInterval = 10000;
     $scope.paused = false;
     $scope.slides = [
@@ -52,6 +52,10 @@
         'background-image': 'url(\'' + imgUrl + '\')'
       }
     };
+    // pre-load images
+    angular.forEach($scope.slides, function(slide) {
+      $http.get(slide.image);
+    });
   }]).
 
   controller('AlertCtrl', ['$scope', function($scope) {
