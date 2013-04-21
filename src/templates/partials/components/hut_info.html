@@ -20,7 +20,7 @@
   <table>
     <tr>
       <td class="hut-info-detail-title">Region:</td>
-      <td class="hut-info-detail"><span bs-tooltip="selectedHut.region.region">{{selectedHut.region.region|truncate:19}}</span></td>
+      <td class="hut-info-detail"><span tooltip="{{selectedHut.region.region}}" tooltip-placement="left">{{selectedHut.region.region}}</span></td>
     </tr>
     <tr>
       <td class="hut-info-detail-title">Location:</td>
@@ -28,18 +28,18 @@
     </tr>
     <tr>
       <td class="hut-info-detail-title">Accuracy:</td>
-      <td class="hut-info-detail"><span class="rating-5star up1" ng-class="'rating-' + (selectedHut.accuracy * 10)" bs-tooltip="accuracy_tooltip[selectedHut.accuracy]"></span></td>
+      <td class="hut-info-detail"><span class="rating-5star up1" ng-class="'rating-' + (selectedHut.accuracy * 10)" tooltip="{{accuracy_tooltip[selectedHut.accuracy]}}" tooltip-placement="left"></span></td>
     </tr>
     <tr>
       <td class="hut-info-detail-title">Agency:</td>
       <td class="hut-info-detail">
-        <a ng-href="{{selectedHut.agency.url}}" bs-tooltip="selectedHut.agency.name">{{selectedHut.agency.name|truncate:19}}</a>
+        <a ng-href="{{selectedHut.agency.url}}" tooltip="{{selectedHut.agency.name}}" tooltip-placement="left">{{selectedHut.agency.name}}</a>
       </td>
     </tr>
     <tr>
       <td class="hut-info-detail-title">Hut Url:</td>
       <td class="hut-info-detail">
-        <a ng-href="{{selectedHut.hut_url}}">{{selectedHut.hut_url|truncate:20}}</a>
+        <a ng-href="{{selectedHut.hut_url}}">{{selectedHut.hut_url}}</a>
       </td>
     </tr>
   </table>
