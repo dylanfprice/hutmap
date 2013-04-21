@@ -7,19 +7,21 @@
     <div id="loading-indicator" ng-show="loading">
       <i class="img-loading"></i> 
     </div>
-    <div id="filter-sidebar">
-      {% endverbatim %}{% include "partials/components/hut_info.html" %}{% verbatim %}
-    </div>
-    <div ng-controller="MapConfigCtrl">
-      <div ng-controller="MapCtrl">
-        <gm-map class="map" gm-map-id="hutmapMapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">
-          <gm-markers gm-objects="huts" 
-                      gm-get-lat-lng="{lat:object.location.coordinates[1], lng:object.location.coordinates[0]}" 
-                      gm-get-marker-options="getMarkerOptions(object)"
-                      gm-event="hutMarkerEvent"
-                      gm-on-click="selectHut(marker, object)">
-          </gm-markers>
-        </gm-map>
+    <div ng-controller="FilterCtrl">
+      <div id="filter-sidebar">
+        {% endverbatim %}{% include "partials/components/filters.html" %}{% verbatim %}
+      </div>
+      <div ng-controller="MapConfigCtrl">
+        <div ng-controller="MapCtrl">
+          <gm-map class="map" gm-map-id="hutmapMapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">
+            <gm-markers gm-objects="huts" 
+                        gm-get-lat-lng="{lat:object.location.coordinates[1], lng:object.location.coordinates[0]}" 
+                        gm-get-marker-options="getMarkerOptions(object)"
+                        gm-events="hutMarkerEvents"
+                        gm-on-click="selectHut(marker, object)">
+            </gm-markers>
+          </gm-map>
+        </div>
       </div>
     </div>
     <div id="hut-sidebar">

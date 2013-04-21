@@ -1,0 +1,22 @@
+{% verbatim %}
+<div class="hut-filter-table">
+  <div class="hut-filter-btns-title">Season:</div>
+  <div class="btn-group hut-filter-btns" data-toggle="buttons-checkbox">
+    <button type="button" class="btn" ng-model="season.winter" btn-checkbox ng-change="filter();"><i class="icon-snowflake"></i></button>
+    <button type="button" class="btn" ng-model="season.summer" btn-checkbox ng-change="filter();"><i class="icon-sun"></i></button>
+  </div>
+  <div class="hut-filter-title">Shelter type:</div>
+  <ul class="hut-filter-list">
+    <li ng-repeat="(type, data) in shelterType" 
+        tooltip="{{data.keywords.join(', ')}}"
+        tooltip-placement="right"
+        ng-class="{
+          'not-selected': !data.include, 
+          'selected': data.include
+        }"
+        ng-click="shelterType[type].include = !shelterType[type].include; filter();">
+      {{type}}
+    </li>
+  </ul>
+</div>
+{% endverbatim %}

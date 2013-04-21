@@ -37,6 +37,49 @@
 #filter-sidebar {
   width: @filterBarWidth;
   float: left;
+
+  .hut-filter-table {
+    font-size: @fontSizeSmall;
+  }
+
+  .hut-filter-title {
+    padding-top: 1em;
+    color: @sidebarLabelColor;
+  }
+
+  .hut-filter-btns-title {
+    padding-top: 1em;
+    font-size: @baseFontSize;
+  }
+
+  .hut-filter-btns {
+    text-align: center;
+    width: 100%;
+
+    button {
+      font-size: 25px;
+    }
+  }
+
+  .hut-filter-list {
+    text-shadow: 1px 1px 1px @white;
+    list-style-type: none; 
+    &:hover {
+      .pointer;
+    }
+
+    .not-selected {
+      color: darken(@grayLight, 10%);
+    }
+
+    .selected {
+      color: @grayDark;
+    }
+
+    .tooltip {
+      text-shadow: none;
+    }
+  }
 }
 
 .map {
@@ -56,12 +99,12 @@
     text-align: center;
   }
 
-  .hut-info-detail-table {
+  .hut-detail-table {
     width: 100%;
     font-size: @fontSizeSmall;
     text-align: left;
 
-    .hut-info-img {
+    .hut-detail-img {
       .center;
       width: @hutInfoImgWidth;
       height: @hutInfoImgHeight;
@@ -77,17 +120,21 @@
 
     table {
       .center;
+    }
 
-      .hut-info-detail-title {
-        color: darkgreen;
-        padding-right: 20px;
-      }
+    .hut-detail-title {
+      color: @sidebarLabelColor;
+      padding-right: 20px;
+    }
 
-      .hut-info-detail {
-        max-width: 120px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    .hut-detail {
+      max-width: 120px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      i {
+        font-size: 20px;
       }
     }
   }

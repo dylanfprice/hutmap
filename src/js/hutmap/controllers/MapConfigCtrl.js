@@ -13,31 +13,37 @@
 
     var gmapPromise = angulargmContainer.getMapPromise(hutmapMapId);
     var prevSelectedMarker;
+    var prevIcon;
 
     $scope.hutmapMapId = hutmapMapId;
     $scope.mapOptions = mapOptions;
     $scope.markerOptions = markerOptions;
 
     $scope.getMarkerOptions = function(hut) {
-      return angular.extend(
-        {
-          title: hut.name
-        },
-        $scope.markerOptions.huts
-      );
+      var opts = {title: hut.name};
+      if ($scope.filteredHuts && hut.id in $scope.filteredHuts) {
+        return angular.extend(opts, $scope.markerOptions.filteredHuts);
+      } else {
+        return angular.extend(opts, $scope.markerOptions.huts);
+      }
     };
 
     $scope.selectHut = function(marker, hut) {
       if (prevSelectedMarker) {
-        prevSelectedMarker.setOptions(markerOptions.huts);
+        var opts = angular.extend({}, markerOptions.huts, {icon: prevIcon});
+        prevSelectedMarker.setOptions(opts);
       }
       prevSelectedMarker = marker;
+      prevIcon = marker.getIcon();
       marker.setOptions(markerOptions.selected);
+      $scope.setSelectedHut(hut);
+      /*
       if (hut) {
         $http.get(hut.resource_uri).success(function(hut) {
           $scope.setSelectedHut(hut);
         });
       }
+      */
     };
 
     /**

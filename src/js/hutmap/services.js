@@ -15,6 +15,38 @@
     return Huts;
   }]).
 
+  factory('HutDB', ['$http', '$filter', function($http, $filter) {
+    var HutDB = {};
+    var filter = $filter('filter');
+
+    var hutData;
+    $http.get('/static/data/huts.json').success(function(resp) {
+      hutData = resp;  
+    });
+
+    HutDB.query = function(params) {
+      var bounds = params.bounds;
+
+      var huts = filter(hutData.objects, function(hut) {
+        if (bounds) {
+          var latLng = new google.maps.LatLng(hut.location.coordinates[1], hut.location.coordinates[0]);
+          return bounds.contains(latLng);
+        } else {
+          return true;
+        }
+      });
+
+      return {
+        meta: {
+          total_count: huts.length
+        },
+        objects: huts
+      };
+    };
+
+    return HutDB;
+  }]).
+
   factory('Places', ['$q', function($q) {
     var elt = angular.element('<div id="google-attributions"></div>');
     var placesService = new google.maps.places.PlacesService(elt[0]);

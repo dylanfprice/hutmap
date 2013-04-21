@@ -14,7 +14,7 @@
     $scope.center;
     $scope.zoom;
     $scope.bounds;
-    $scope.hutMarkerEvent;
+    $scope.hutMarkerEvents;
 
     var updateLocation = function() {
       if ($scope.center) {
@@ -34,10 +34,10 @@
         $scope.setSelectedHut(null);
         var selected = $location.search().m_selected;
         if (selected != null) {
-          $scope.hutMarkerEvent = {
+          $scope.hutMarkerEvents = [{
             event: 'click',
-            location: utils.latLngFromUrlValue(selected)
-          };
+            locations: [utils.latLngFromUrlValue(selected)]
+          }];
         }
       });
     };
@@ -82,13 +82,26 @@
     $scope.$watch('bounds', function(bounds) {
       if (bounds) {
         $scope.setQuery({
+          bounds: bounds
+        });
+        /*
+        $scope.setQuery({
           bbox: bounds.toUrlValue(),
           limit: 0
         });
+        */
       }
     });
+    /*
     $scope.$watch('huts', function(huts) {
       if (huts) { clickSelected(); }
+    });
+    */
+
+    $scope.$on('gmMarkersUpdated', function(event, objects) {
+      if (objects === 'huts') {
+        clickSelected();
+      }
     });
 
     updateScope();

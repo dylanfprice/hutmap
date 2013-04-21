@@ -2,8 +2,8 @@
 <div ng-controller="HutInfoCtrl">
 <h4 class="hut-info-title muted" ng-show="selectedHut == null">Select a hut.</h4>
 <h4 class="hut-info-title">{{selectedHut.name}}</h4>
-<span class="hut-info-detail-table" ng-hide="selectedHut == null">
-  <div class="hut-info-img">
+<span class="hut-detail-table" ng-hide="selectedHut == null">
+  <div class="hut-detail-img">
     <img class="img-rounded" 
          ng-show="selectedHut.photo_url" 
          src="{{selectedHut.photo_url}}" 
@@ -19,27 +19,38 @@
   </div>
   <table>
     <tr>
-      <td class="hut-info-detail-title">Region:</td>
-      <td class="hut-info-detail"><span tooltip="{{selectedHut.region.region}}" tooltip-placement="left">{{selectedHut.region.region}}</span></td>
+      <td class="hut-detail-title">Region:</td>
+      <td class="hut-detail"><span tooltip="{{selectedHut.region.region}}" tooltip-placement="left">{{selectedHut.region.region}}</span></td>
     </tr>
     <tr>
-      <td class="hut-info-detail-title">Location:</td>
-      <td class="hut-info-detail">{{selectedHut.location.coordinates[1]|number:2}}, {{selectedHut.location.coordinates[0]|number:2}}</td>
+      <td class="hut-detail-title">Location:</td>
+      <td class="hut-detail">{{selectedHut.location.coordinates[1]|number:2}}, {{selectedHut.location.coordinates[0]|number:2}}</td>
     </tr>
     <tr>
-      <td class="hut-info-detail-title">Accuracy:</td>
-      <td class="hut-info-detail"><span class="rating-5star up1" ng-class="'rating-' + (selectedHut.accuracy * 10)" tooltip="{{accuracy_tooltip[selectedHut.accuracy]}}" tooltip-placement="left"></span></td>
+      <td class="hut-detail-title">Accuracy:</td>
+      <td class="hut-detail"><span class="rating-5star up1" ng-class="'rating-' + (selectedHut.accuracy * 10)" tooltip="{{accuracy_tooltip[selectedHut.accuracy]}}" tooltip-placement="left"></span></td>
     </tr>
     <tr>
-      <td class="hut-info-detail-title">Agency:</td>
-      <td class="hut-info-detail">
+      <td class="hut-detail-title">Agency:</td>
+      <td class="hut-detail">
         <a ng-href="{{selectedHut.agency.url}}" tooltip="{{selectedHut.agency.name}}" tooltip-placement="left">{{selectedHut.agency.name}}</a>
       </td>
     </tr>
     <tr>
-      <td class="hut-info-detail-title">Hut Url:</td>
-      <td class="hut-info-detail">
+      <td class="hut-detail-title">Hut Url:</td>
+      <td class="hut-detail">
         <a ng-href="{{selectedHut.hut_url}}">{{selectedHut.hut_url}}</a>
+      </td>
+    </tr>
+    <tr>
+      <td class="hut-detail-title">Types:</td>
+      <td class="hut-detail" tooltip={{selectedHut.types}}" tooltip-placement="left">{{selectedHut.types}}</td>
+    </tr>
+    <tr>
+      <td class="hut-detail-title">Seasons:</td>
+      <td class="hut-detail">
+        <i class="icon-sun" tooltip="Summer" tooltip-placement="left" ng-show="selectedHut.open_summer"></i>
+        <i class="icon-snowflake" tooltip="Winter" tooltip-placement="left" ng-show="selectedHut.open_winter"></i>
       </td>
     </tr>
   </table>

@@ -40,9 +40,17 @@
       },
       zIndex: 0
     },
+    filteredHuts: {
+      icon: '/static/img/marker_red_small.png',
+      shape: {
+        coord: [6, 0, 2, 2, 0, 6, 6, 13, 12, 6, 10, 2, 6, 0],
+        type: 'poly'
+      },
+      zIndex: 1
+    },
     selected: {
       icon: '/static/img/marker_yellow_small.png',
-      zIndex: 1
+      zIndex: 2
     }
   });
 

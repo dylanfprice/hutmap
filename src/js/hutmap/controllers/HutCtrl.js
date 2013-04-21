@@ -4,13 +4,14 @@
   angular.module('hutmap').
 
   controller('HutCtrl', 
-    ['$scope', '$location', '$timeout', 'Huts', 
-    function($scope, $location, $timeout, Huts) {
+    ['$scope', '$location', '$timeout', 'Huts', 'HutDB',
+    function($scope, $location, $timeout, Huts, HutDB) {
 
     var curQuery = 0;
 
     $scope.loading = 0;
     $scope.huts;
+    $scope.filteredHuts;
     $scope.hutsMeta;
     $scope.query;
     $scope.selectedHut;
@@ -29,9 +30,18 @@
       $scope.selectedHut = hut;
     };
 
+    $scope.setFilteredHuts = function(filteredHuts) {
+      $scope.filteredHuts = filteredHuts;
+    };
+
     var doQuery = function(id, query) {
       if (query) {
         $scope.incLoading();
+        var resp = HutDB.query(query);
+        $scope.huts = resp.objects;
+        $scope.hutsMeta = resp.meta;
+        $scope.decLoading();
+        /*
         Huts.query(query, 
           function(resp) {
             $scope.decLoading();
@@ -46,6 +56,7 @@
             // TODO: notify of error
           }
         );
+        */
       }
     };
 
