@@ -27,7 +27,8 @@ class HutResource(ModelResource):
 
   class Meta:
     queryset = Hut.objects.all()
-    list_allowed_methods = []
+    max_limit = 0
+    list_allowed_methods = ['get']
     detail_allowed_methods = ['get']
     excludes = ['created', 'updated']
 
