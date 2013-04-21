@@ -1,6 +1,7 @@
 AddType text/css .min.css
 AddType application/x-javascript .min.js
 AddType application/javascript .min.js
+AddType application/json .json
 
 ExpiresActive on
 ExpiresDefault "access plus 1 hour"
@@ -14,7 +15,7 @@ ExpiresByType text/css "access plus 10 years"
 ExpiresByType text/plain "access plus 10 years"
 
 SetOutputFilter DEFLATE
-AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/x-javascript application/x-httpd-php
+AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/x-javascript application/x-httpd-php application/json
 BrowserMatch ^Mozilla/4 gzip-only-text/html
 BrowserMatch ^Mozilla/4\.0[678] no-gzip
 BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
