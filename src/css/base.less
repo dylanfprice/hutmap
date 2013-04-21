@@ -52,13 +52,15 @@ body {
       right: @searchBarShift;
       color: @placeholderColor;
       background-color: darken(@grayLighter, 15%);
-      .transition(all .2s linear);
+      .transition(background-color .2s ease-out);
+      .transition(width .2s ease-out .05s);
       z-index: 5;
 
       &:focus {
         padding-top: @searchPadding;
         padding-bottom: @searchPadding;
         background-color: darken(@white, 5%);
+        width: @searchInputWidth + 100px;
         box-shadow: none;
       }
 
