@@ -57,7 +57,7 @@
     angular.forEach($scope.slides, function(slide, index) {
       imgsLoaded.push($http.get(slide.image));
     });
-    $q.all(imgsLoaded).then(function() { $scope.carouselInterval = 10000; });
+    $q.all(imgsLoaded).then(function() { $scope.carouselInterval = 8000; });
   }]).
 
   controller('AlertCtrl', ['$scope', function($scope) {
