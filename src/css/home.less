@@ -29,10 +29,12 @@
     }
 
     > .active {
+      z-index: 5;
       .opacity(100);
     }
 
     > .inactive {
+      z-index: 0;
       .opacity(0);
     }
 
@@ -112,6 +114,7 @@
     text-align: center;
     background: @grayDarker;
     border: 3px solid @white;
+    z-index: 10;
     .border-radius(23px);
     .opacity(70);
 
@@ -152,6 +155,7 @@
 
   .carousel-indicators {
     top: @navbarHeight + 10px;
+    z-index: 10;
 
     li {
       width: 20px;
