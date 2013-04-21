@@ -75,7 +75,7 @@
     function matchSeason(hut) {
       var season = $scope.season;
       if (!season.winter && !season.summer) {
-        return true;
+        return (!hut.open_winter && !hut.open_summer);
       } else {
         return (season.winter && hut.open_winter) ||
                (season.summer && hut.open_summer);
