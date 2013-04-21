@@ -25,7 +25,7 @@
       },
       'huts & yurts': {
         include: true,
-        keywords: ['Hut', 'Yurt', 'Chickee', 'Lean-to', 'Wall Tent']
+        keywords: ['Hut', 'Yurt', 'Chickee', 'Lean-to', 'Wall Tent', 'Shelter']
       },
       'compounds': {
         include: true,
