@@ -34,8 +34,23 @@
   width: 32px;
 }
 
+#filter-sidebar {
+  width: @filterBarWidth;
+  float: left;
+}
+
+.map {
+  position: absolute;
+  right: @hutBarWidth;
+  left: @filterBarWidth;
+  top: @navbarHeight;
+  bottom: 0px;
+  z-index: 100;
+}
+
 #hut-sidebar {
   width: @hutBarWidth;
+  float: right;
 
   .hut-info-title {
     text-align: center;
@@ -77,23 +92,4 @@
     }
   }
 }
-
-.map {
-  position: absolute;
-  right: 0px;
-  left: @hutBarWidth;
-  top: @navbarHeight;
-  bottom: 0px;
-  z-index: 100;
-}
-
-#filter-sidebar {
-  position: absolute;
-  right: 0px;
-  top: @navbarHeight;
-  bottom: 0px;
-  width: @hutBarWidth;
-  z-index: 100;
-}
-
 

@@ -7,7 +7,7 @@
     <div id="loading-indicator" ng-show="loading">
       <i class="img-loading"></i> 
     </div>
-    <div id="hut-sidebar">
+    <div id="filter-sidebar">
       {% endverbatim %}{% include "partials/components/hut_info.html" %}{% verbatim %}
     </div>
     <div ng-controller="MapConfigCtrl">
@@ -21,6 +21,9 @@
           </gm-markers>
         </gm-map>
       </div>
+    </div>
+    <div id="hut-sidebar">
+      {% endverbatim %}{% include "partials/components/hut_info.html" %}{% verbatim %}
     </div>
   </div>
 </div>
