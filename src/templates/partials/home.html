@@ -2,7 +2,7 @@
   {% verbatim %}
   <div ng-controller="CarouselCtrl">
     <carousel interval="carouselInterval">
-      <div class="carousel-loading muted">Loading images...</div>
+      <div class="carousel-loading muted" ng-show="carouselInterval < 0">Loading images...</div>
       <slide ng-repeat="slide in slides" active="slide.active">
         <div class="hut-carousel-img" ng-style="imgStyle(slide.image)"></div>
         <div class="hut-carousel-caption">
