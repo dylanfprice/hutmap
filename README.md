@@ -62,6 +62,7 @@ code. In the directory containing this README.md, perform the following:
   ```
 
 Go to <http://localhost:8080> in your browser and verify you see the homepage.
+Note that the css is not available yet so it will look funny.
 
 ## Development and Testing ##
 
@@ -77,7 +78,8 @@ run:
 Then go to <http://localhost:3000/help> in your browser to see a list of all
 available commands.
 
-You may want to initialize the database and load in some test data:
+You may want to build the css file, initialize the database, and load in some test data:
++ <http://localhost:3000/build.css>
 + <http://localhost:3000/django.manage?validate>
 + <http://localhost:3000/django.manage?syncdb&--noinput>
 + <http://localhost:3000/django.manage?loaddata&test_data>
