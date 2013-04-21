@@ -15,57 +15,32 @@
 
     > .item {
       height: 100%;
-      .opacity(0);
-      .transition(all 1s ease-in-out);
+      .transition(opacity 1s ease-in-out);
     }
 
     > .active {
       .opacity(100);
+    }
+
+    > .inactive {
+      .opacity(0);
     }
 
     > .active,
     > .next,
-    > .prev { display: block; }
-
-    > .active {
-      left: 0;
-    }
-
-    > .next,
-    > .prev {
+    > .prev { 
+      display: block; 
       position: absolute;
       top: 0;
-      width: 100%;
-    }
-
-    > .next {
-      //left: 100%;
       left: 0;
-    }
-    > .prev {
-      //left: -100%;
-      left: 0;
-    }
-    > .next.left,
-    > .prev.right {
-      left: 0;
-      .opacity(100);
-    }
-
-    > .active.left {
-      //left: -100%;
-      left: 0;
-      .opacity(0);
-    }
-    > .active.right {
-      //left: 100%;
-      left: 0;
-      .opacity(0);
+      right: 0;
     }
   }
 
   .hut-carousel-img {
     height: 100%;
+    background: transparent no-repeat center center fixed;
+    background-size: cover;
   }
 
   .hut-carousel-caption {
@@ -96,13 +71,18 @@
 
         h4, p {
          color: #FFFFFF;
-         line-height: 21px;
         }
 
         h4 {
           margin: 0 0 5px;
           font-weight: 600;
           font-size: 30px;
+          line-height: 30px;
+          display: inline;
+        }
+
+        p {
+         line-height: 21px;
         }
       }
     }

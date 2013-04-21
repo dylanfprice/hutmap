@@ -1,7 +1,4 @@
 <div ng-class="{
-    'active': leaving || (active && !entering),
-    'prev': (next || active) && direction=='prev',
-    'next': (next || active) && direction=='next',
-    'right': direction=='prev',
-    'left': direction=='next'
-  }" class="item" ng-transclude></div>
+    'active': active,
+    'inactive': !active
+  }" class="item next" ng-transclude></div>

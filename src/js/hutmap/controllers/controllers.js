@@ -49,8 +49,7 @@
     ];
     $scope.imgStyle = function(imgUrl) {
       return {
-        'background': 'transparent url(\'' + imgUrl + '\') no-repeat center center fixed',
-        'background-size': 'cover'
+        'background-image': 'url(\'' + imgUrl + '\')'
       }
     };
   }]).
