@@ -37,10 +37,21 @@
     var doQuery = function(id, query) {
       if (query) {
         $scope.incLoading();
-        var resp = HutDB.query(query);
-        $scope.huts = resp.objects;
-        $scope.hutsMeta = resp.meta;
-        $scope.decLoading();
+        HutDB.query(query, 
+          function(resp) {
+            $scope.decLoading();
+            if (id === curQuery) {
+              $scope.resetLoading();
+              $scope.huts = resp.objects;
+              $scope.hutsMeta = resp.meta;
+            }
+          },
+          function(error) {
+            $scope.decLoading();
+            // TODO: notify of error
+          }
+        );
+
         /*
         Huts.query(query, 
           function(resp) {

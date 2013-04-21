@@ -15,33 +15,37 @@
     return Huts;
   }]).
 
-  factory('HutDB', ['$http', '$filter', function($http, $filter) {
+  factory('HutDB', ['$http', '$filter', '$q', function($http, $filter, $q) {
     var HutDB = {};
     var filter = $filter('filter');
+    var dbLoaded = $q.defer();
 
     var hutData;
     $http.get('/static/data/huts.json').success(function(resp) {
       hutData = resp;  
+      dbLoaded.resolve();
     });
 
-    HutDB.query = function(params) {
-      var bounds = params.bounds;
+    HutDB.query = function(params, success, error) {
+      return dbLoaded.promise.then(function() {
+        var bounds = params.bounds;
 
-      var huts = filter(hutData.objects, function(hut) {
-        if (bounds) {
-          var latLng = new google.maps.LatLng(hut.location.coordinates[1], hut.location.coordinates[0]);
-          return bounds.contains(latLng);
-        } else {
-          return true;
-        }
+        var huts = filter(hutData.objects, function(hut) {
+          if (bounds) {
+            var latLng = new google.maps.LatLng(hut.location.coordinates[1], hut.location.coordinates[0]);
+            return bounds.contains(latLng);
+          } else {
+            return true;
+          }
+        });
+
+        success({
+          meta: {
+            total_count: huts.length
+          },
+          objects: huts
+        });
       });
-
-      return {
-        meta: {
-          total_count: huts.length
-        },
-        objects: huts
-      };
     };
 
     return HutDB;
