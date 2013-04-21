@@ -49,8 +49,8 @@ class Hut(models.Model):
     #[name (url)] Name of author, along with link of origin
     #(flickr page, wikicommons, library of congress, etc).
   #location_references = models.??
-  #open_summer = models.BooleanField()
-  #open_winter = models.BooleanField()
+  open_summer = models.NullBooleanField()
+  open_winter = models.NullBooleanField()
   #activities = models.CharField(max_length=500)
   #access_no_snow = models.??
     #[string, multiple entry] Access method(s) when no snow
@@ -85,7 +85,7 @@ class Hut(models.Model):
   # details
   name = models.CharField(max_length=100)
   #backcountry = models.IntegerField(choices=BACKCOUNTRY_CHOICES)
-  #type = models.ForeignKey('HutType')
+  types = models.CharField(max_length=100)
   #num_structures = models.IntegerField('number of structures')
   # capacity
   #capacity_max = models.IntegerField('total capacity')

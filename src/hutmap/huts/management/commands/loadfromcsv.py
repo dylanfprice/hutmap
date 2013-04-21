@@ -52,8 +52,6 @@ def save_hut(values):
       url=values['Agency_URL']
     )
 
-    #type, created = HutType.objects.get_or_create(name=values['Type'])
-
     hut, created = Hut.objects.get_or_create(
       #id=values['Hut_ID'],
       created=get_datetime(values['Date_Added']),
@@ -61,11 +59,13 @@ def save_hut(values):
       region=region,
       location='POINT({0} {1})'.format(values['Longitude'], values['Latitude']),
       accuracy=get_accuracy(values['Accuracy']),
+      open_summer=values['Open_Summer'] or None,
+      open_winter=values['Open_Winter'] or None,
       #altitude=values['Altitude'] or None,
       # TODO: handle multiple names
       name=values['Names'],
       #access=values['Backcountry'],
-      #type=type,
+      types=values['Type'],
       #num_structures=values['Structures'] or None,
       #capacity_max=values['Capacity_max'] or None,
       #capacity_hut_min=values['Capacity_hutmin'] or None,
