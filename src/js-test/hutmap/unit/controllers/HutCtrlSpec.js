@@ -1,34 +1,65 @@
 describe('HutCtrl', function() {
-  var hutmapScope, hutScope;
-  var $httpBackend;
+  var $rootScope, hutmapScope, hutScope;
+  var Huts;
   var $timeout;
 
   beforeEach(function() {
     module('hutmap');
   });
 
-  beforeEach(inject(function(_$httpBackend_, _$timeout_, $rootScope, $controller) {
-    $httpBackend = _$httpBackend_;
+  beforeEach(function() {
+    Huts = {};
+    Huts.totalHutCount = jasmine.createSpy();
+    Huts.query = jasmine.createSpy();
+    Huts.agency = jasmine.createSpy();
+    Huts.region = jasmine.createSpy();
+
+    module(function($provide) {
+      $provide.value('Huts', Huts);
+    });
+    
+    inject(function($q) {
+      Huts.totalHutCount.andCallFake(function() {
+        var deferred = $q.defer();
+        return deferred.promise; 
+      });
+      Huts.query.andCallFake(function(params) {
+        var deferred = $q.defer();
+        var huts = [];
+        huts.push({id:1,agency:1,region:1});
+        if (params.limit === 0 || params.limit === 2) {
+          huts.push({id:2,agency:2,region:2});
+        }
+        deferred.resolve(huts);
+        return deferred.promise; 
+      });
+      Huts.agency.andCallFake(function() {
+        var deferred = $q.defer();
+        deferred.resolve({id: 1, name: 'agency'});
+        return deferred.promise; 
+      });
+      Huts.region.andCallFake(function() {
+        var deferred = $q.defer();
+        deferred.resolve({id: 1, name: 'region'});
+        return deferred.promise; 
+      });
+    });
+
+    inject(function($httpBackend) {
+      $httpBackend.whenGET(/.*/).respond('');
+    });
+  });
+
+  beforeEach(inject(function(_$timeout_, _$rootScope_, $controller) {
     $timeout = _$timeout_;
-    $httpBackend.whenGET(/.*/).respond('');
+    $rootScope = _$rootScope_;
 
     hutmapScope = $rootScope.$new();
     var hutmapCtrl = $controller('HutmapCtrl', {$scope: hutmapScope});
     hutScope = hutmapScope.$new();
     var hutCtrl = $controller('HutCtrl', {$scope: hutScope});
-  }));
 
-  var expectGET = function(num) {
-    $httpBackend.expectGET('/huts/api/v1/hutsearch/?limit=' + num).
-      respond({
-        "meta": {
-          "limit": num,
-        },
-        "objects": [
-          { "id": num, },
-        ]
-      });
-  };
+  }));
 
   var setQuery = function(num) {
     hutScope.setQuery({
@@ -39,26 +70,14 @@ describe('HutCtrl', function() {
   describe('single query', function() {
 
     beforeEach(function() {
-      expectGET(1);
       setQuery(1);
     });
 
     it('works', function() {
       hutScope.$digest();
       $timeout.flush();
-      $httpBackend.flush();
 
       expect(hutScope.huts[0].id).toEqual(1);
-      expect(hutScope.hutsMeta.limit).toEqual(1);
-    });
-
-    it('sets loading', function() {
-      expect(hutScope.loading).toBeFalsy();
-      hutScope.$digest();
-      $timeout.flush();
-      expect(hutScope.loading).toBeTruthy();
-      $httpBackend.flush();
-      expect(hutScope.loading).toBeFalsy();
     });
 
   });
@@ -66,7 +85,6 @@ describe('HutCtrl', function() {
   describe('multiple queries', function() {
 
     it('only runs latest query', function() {
-      expectGET(2);
       setQuery(1);
 
       hutScope.$digest();
@@ -75,12 +93,28 @@ describe('HutCtrl', function() {
       hutScope.$digest();
       $timeout.flush();
 
-      expect(hutScope.loading).toEqual(1);
-
-      $httpBackend.flush();
-      expect(hutScope.huts[0].id).toEqual(2);
+      expect(hutScope.huts.length).toEqual(2);
+      expect(Huts.query.calls.length).toEqual(1);
     });
 
+  });
+
+  describe('setSelectedHut', function() {
+    beforeEach(function() {
+      setQuery(1);
+      hutScope.$digest();
+      $timeout.flush();
+      hutScope.setSelectedHut(hutScope.huts[0]);
+      $rootScope.$apply();
+    });
+
+    it('retrieves the agency', function() {
+      expect(hutScope.selectedHutAgency.name).toEqual('agency'); 
+    });
+
+    it('retrieves the region', function() {
+      expect(hutScope.selectedHutRegion.name).toEqual('region'); 
+    });
   });
 
 });

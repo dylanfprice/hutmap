@@ -4,15 +4,15 @@
   angular.module('hutmap').
 
   controller('HutCtrl', 
-    ['$scope', '$location', '$timeout', 'Huts', 'HutDB',
-    function($scope, $location, $timeout, Huts, HutDB) {
+    ['$scope', '$location', '$timeout', 'Huts',
+    function($scope, $location, $timeout, Huts) {
 
     var curQuery = 0;
 
     $scope.loading = 0;
     $scope.huts;
     $scope.filteredHuts;
-    $scope.hutsMeta;
+    $scope.totalHutCount;
     $scope.query;
     $scope.selectedHut;
     $scope.selectedHutRegion;
@@ -26,24 +26,31 @@
       $scope.query = query;
     };
 
-    $scope.setSelectedHut = function(hut) {
-      $scope.selectedHut = hut;
-    };
-
     $scope.setFilteredHuts = function(filteredHuts) {
       $scope.filteredHuts = filteredHuts;
+    };
+
+    $scope.setSelectedHut = function(hut) {
+      $scope.selectedHut = hut;
+      if (hut) {
+        Huts.agency(hut.agency).then(function(agency) {
+          $scope.selectedHutAgency = agency;
+        });
+        Huts.region(hut.region).then(function(region) {
+          $scope.selectedHutRegion = region;
+        });
+      }
     };
 
     var doQuery = function(id, query) {
       if (query) {
         $scope.incLoading();
-        HutDB.query(query, 
+        Huts.query(query).then(
           function(resp) {
             $scope.decLoading();
             if (id === curQuery) {
               $scope.resetLoading();
-              $scope.huts = resp.objects;
-              $scope.hutsMeta = resp.meta;
+              $scope.huts = resp;
             }
           },
           function(error) {
@@ -51,47 +58,6 @@
             // TODO: notify of error
           }
         );
-
-        /*
-        Huts.query(query, 
-          function(resp) {
-            $scope.decLoading();
-            if (id === curQuery) {
-              $scope.resetLoading();
-              $scope.huts = resp.objects;
-              $scope.hutsMeta = resp.meta;
-            }
-          },
-          function(error) {
-            $scope.decLoading();
-            // TODO: notify of error
-          }
-        );
-        */
-      }
-    };
-
-    var updateLocation = function(query) {
-      if (query) {
-        angular.forEach(query, function(value, key) {
-          $location.search('h_' + key, value);
-        });
-      }
-    };
-
-    var updateScope = function() {
-      var search = $location.search();
-      var newQuery = {};
-      var shouldUpdate = false;
-      angular.forEach(search, function(value, key) {
-        if (key.lastIndexOf('h_', 0) === 0) {
-          key = key.substring(2);
-          newQuery[key] = value;
-          shouldUpdate = true;
-        }
-      });
-      if (shouldUpdate) {
-        $scope.query = newQuery;
       }
     };
 
@@ -104,17 +70,12 @@
             doQuery(id, newQuery);
           }
         }, 1000);
-        //updateLocation(newQuery);
       }
     });
 
-    $scope.$watch('hutsMeta.total_count', function(newValue) {
-      if (newValue) {
-        console.log(newValue);
-      }
+    Huts.totalHutCount().then(function(totalHutCount) {
+      $scope.totalHutCount = totalHutCount;
     });
-
-    //updateScope();
 
   }]);
 })();

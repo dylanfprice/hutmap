@@ -3,7 +3,7 @@
 (function() {
   angular.module('hutmap').
 
-  config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+  config(['$routeProvider', '$locationProvider', 'PlacesProvider', function($routeProvider, $locationProvider, PlacesProvider) {
     $routeProvider.
       when('/', {
         templateUrl: '/partials/home.html',
@@ -20,6 +20,10 @@
       });
 
     $locationProvider.html5Mode(true);
+
+    PlacesProvider.bounds(new google.maps.LatLngBounds(
+        new google.maps.LatLng(30, -130),
+        new google.maps.LatLng(65, -80)));
   }]).
 
   constant('hutmapMapId', 'map_canvas').

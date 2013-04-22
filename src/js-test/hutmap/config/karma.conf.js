@@ -3,7 +3,7 @@ basePath = '../../../';
 files = [
   JASMINE,
   JASMINE_ADAPTER,
-  'https://maps.googleapis.com/maps/api/js?sensor=false',
+  'https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places',
   'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
   'http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js',
   'http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js',

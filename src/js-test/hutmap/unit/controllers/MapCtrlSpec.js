@@ -47,16 +47,16 @@ describe('MapCtrl', function() {
   });
 
   it('updates selectedHut from $location', function() {
-    hutScope.huts = [{id:1}];
+    hutScope.huts = [{id:1,agency:1,region:1}];
 
     $rootScope.$apply();
 
     expect(mapScope.center).toBeUndefined();
     expect(mapScope.zoom).toBeUndefined();
-    expect(mapScope.hutMarkerEvent).toEqual({
+    expect(mapScope.hutMarkerEvents).toEqual([{
       event: 'click',
-      location: new google.maps.LatLng(4,5),
-    });
+      locations: [new google.maps.LatLng(4,5)],
+    }]);
   });
   
   describe('updates $location', function() {
@@ -64,7 +64,7 @@ describe('MapCtrl', function() {
     beforeEach(function() {
       mapScope.center = new google.maps.LatLng(6,7);
       mapScope.zoom = 8;
-      hutScope.huts = [{id:1}];
+      hutScope.huts = [{id:1,agency:1,region:1}];
       $rootScope.$apply();
     });
 
@@ -81,7 +81,7 @@ describe('MapCtrl', function() {
     });
 
     it('from selectedHut', function() {
-      mapScope.setSelectedHut({id:2,location:{type: 'Point', coordinates: [13, 12]}});
+      mapScope.setSelectedHut({id:2,location:{type: 'Point', coordinates: [13, 12]},agency:2,region:2});
       mapScope.$digest();
       expect($location.search().m_selected).toEqual('12,13');
     });
