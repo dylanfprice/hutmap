@@ -121,7 +121,7 @@ class Region(models.Model):
   objects = models.GeoManager()
 
   def __unicode__(self):
-    return '{0}, {1}, {2}'.format(self.region, self.state, self.country)
+    return u'{0}, {1}, {2}'.format(self.region, self.state, self.country)
 
 class Agency(models.Model):
   name = models.CharField(max_length=100)
