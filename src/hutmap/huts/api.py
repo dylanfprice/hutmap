@@ -1,4 +1,4 @@
-from django.contrib.gis.geos import Polygon, Point, MultiPolygon, GEOSGeometry
+from django.contrib.gis.geos import Polygon, Point, MultiPolygon
 from django.utils.datastructures import SortedDict
 from huts.models import Hut, Region, Agency
 from tastypie import fields
@@ -15,19 +15,12 @@ class AgencyResource(ModelResource):
     queryset = Agency.objects.all()
     allowed_methods = ['get']
 
-#class HutTypeResource(ModelResource):
-#  class Meta:
-#    queryset = HutType.objects.all()
-#    allowed_methods = ['get']
-
 class HutResource(ModelResource):
-  region = fields.ForeignKey(RegionResource, 'region', full=True)
-  agency = fields.ForeignKey(AgencyResource, 'agency', full=True)
-  #type = fields.ForeignKey(HutTypeResource, 'type', full=True)
+  region = fields.ForeignKey(RegionResource, 'region', full=False)
+  agency = fields.ForeignKey(AgencyResource, 'agency', full=False)
 
   class Meta:
     queryset = Hut.objects.all()
-    max_limit = 0
     list_allowed_methods = ['get']
     detail_allowed_methods = ['get']
     excludes = ['created', 'updated']
