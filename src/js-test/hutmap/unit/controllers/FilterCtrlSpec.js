@@ -73,7 +73,7 @@ describe('FilterCtrl', function() {
   describe('filters by shelter type', function() {
 
     it('works for a single shelter type', function() {
-      setSeason(true, true);
+      setSeason(false, false);
       setShelterType(false, false, true, false);
       filter();
       expect(hutScope.filteredHuts[1]).toBeDefined();
@@ -81,7 +81,7 @@ describe('FilterCtrl', function() {
     });
 
     it('is fine with multiple matches on same hut', function() {
-      setSeason(true, true);
+      setSeason(false, false);
       setShelterType(true, false, true, false);
       filter();
       expect(hutScope.filteredHuts[1]).toBeDefined();
