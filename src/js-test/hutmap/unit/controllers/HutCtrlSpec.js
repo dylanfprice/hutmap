@@ -21,6 +21,7 @@ describe('HutCtrl', function() {
     inject(function($q) {
       Huts.totalHutCount.andCallFake(function() {
         var deferred = $q.defer();
+        deferred.resolve(2);
         return deferred.promise; 
       });
       Huts.query.andCallFake(function(params) {
@@ -114,6 +115,13 @@ describe('HutCtrl', function() {
 
     it('retrieves the region', function() {
       expect(hutScope.selectedHutRegion.name).toEqual('region'); 
+    });
+  });
+
+  describe('totalHutCount', function() {
+    it('gets set', function() {
+      $rootScope.$apply();
+      expect(hutScope.totalHutCount).toEqual(2);
     });
   });
 

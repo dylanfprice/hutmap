@@ -84,19 +84,8 @@
         $scope.setQuery({
           bounds: bounds
         });
-        /*
-        $scope.setQuery({
-          bbox: bounds.toUrlValue(),
-          limit: 0
-        });
-        */
       }
     });
-    /*
-    $scope.$watch('huts', function(huts) {
-      if (huts) { clickSelected(); }
-    });
-    */
 
     $scope.$on('gmMarkersUpdated', function(event, objects) {
       if (objects === 'huts') {

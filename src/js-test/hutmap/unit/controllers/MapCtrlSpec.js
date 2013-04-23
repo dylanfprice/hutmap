@@ -23,7 +23,9 @@ describe('MapCtrl', function() {
     var hutmapCtrl = $controller('HutmapCtrl', {$scope: hutmapScope});
     hutScope = hutmapScope.$new();
     var hutCtrl = $controller('HutCtrl', {$scope: hutScope});
-    mapScope = hutScope.$new();
+    var filterScope = hutScope.$new();
+    var filterCtrl = $controller('FilterCtrl', {$scope: filterScope});
+    mapScope = filterScope.$new();
     var mapCtrl = $controller('MapCtrl', {$scope: mapScope});
   }));
 
@@ -46,7 +48,7 @@ describe('MapCtrl', function() {
     expect(mapScope.hutMarkerEvent).toBeUndefined();
   });
 
-  it('updates selectedHut from $location', function() {
+  it('clicks selectedHut from $location', function() {
     hutScope.huts = [{id:1,agency:1,region:1}];
 
     $rootScope.$apply();
@@ -59,6 +61,18 @@ describe('MapCtrl', function() {
     }]);
   });
   
+  it('clicks selectedHut when huts change', function() {
+    var called = 0;
+    mapScope.$watch('hutMarkerEvents', function(hutMarkerEvents) {
+      called++;
+    });
+
+    hutScope.huts = [{id:2,location:{type: 'Point', coordinates: [13, 12]},agency:2,region:2}];
+    $rootScope.$apply();
+
+    expect(called).toEqual(2);
+  });
+
   describe('updates $location', function() {
 
     beforeEach(function() {
@@ -87,4 +101,5 @@ describe('MapCtrl', function() {
     });
 
   });
+
 });

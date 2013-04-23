@@ -4,8 +4,8 @@
   angular.module('hutmap').
 
   controller('FilterCtrl', 
-    ['$scope',
-    function($scope) {
+    ['$scope', '$timeout',
+    function($scope, $timeout) {
 
     // filter data binding
 
@@ -29,7 +29,7 @@
       },
       'compounds': {
         include: true,
-        keywords: ['Compound', 'Hostel', 'Tea House', 'Lodge', 'Chalet', 'Ranch']
+        keywords: ['Compound', 'Hostel', 'Tea House', 'Lodge', 'Chalet', 'Ranch', 'Farm']
       }
     };
 
@@ -37,6 +37,12 @@
 
     $scope.filter = function() {
       $scope.incLoading();
+      $timeout(_filter).then(function() {
+        $scope.decLoading();
+      });
+    };
+
+    function _filter() {
       var filteredHuts = {};
       var typeKeywords = getTypeKeywords();
       angular.forEach($scope.huts, function(hut) {
@@ -49,7 +55,6 @@
       });
       $scope.setFilteredHuts(filteredHuts);
       $scope.$broadcast('gmMarkersRedraw', 'huts');
-      $scope.decLoading();
     };
 
     $scope.$watch('huts', function() {

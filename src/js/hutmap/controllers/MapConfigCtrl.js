@@ -37,13 +37,6 @@
       prevIcon = marker.getIcon();
       marker.setOptions(markerOptions.selected);
       $scope.setSelectedHut(hut);
-      /*
-      if (hut) {
-        $http.get(hut.resource_uri).success(function(hut) {
-          $scope.setSelectedHut(hut);
-        });
-      }
-      */
     };
 
     /**
