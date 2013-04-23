@@ -112,7 +112,7 @@
         if (status == google.maps.places.PlacesServiceStatus.OK) {
           success(result);
         } else {
-          error(result);
+          error(status);
         }
       }
 

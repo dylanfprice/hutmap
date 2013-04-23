@@ -31,22 +31,20 @@
     <div id="navbar" class="navbar navbar-inverse navbar-static-top">
       <div class="navbar-inner">
         <a class="brand" href="/"><i class="img-logo up1"></i>Hutmap</a>
-        <form id="navbar-search" class="navbar-search" ng-controller="SearchCtrl" ng-submit="submit()">
+        <form id="navbar-search" class="navbar-search" ng-controller="SearchCtrl">
           <div class="img-triangle"></div>
           <input type="text" 
                  class="search-query" 
                  placeholder="Find backcountry huts" 
                  autocomplete="off"
                  ng-model="selected" 
-                 typeahead="place as place.description for place in getPlaces($viewValue)"/>
+                 typeahead="place as place.description for place in getPlaces($viewValue)"
+                 blur="clickBody()"/>
           <span class="search-icon">
             <span ng-class="{% templatetag openbrace %} 
               'icon-search': !submitting && !autocompleting,
               'img-spinner': submitting || autocompleting
            {% templatetag closebrace %}"></span>
-            <button class="transparent" type="submit">
-              <span class="visuallyhidden">Search</span>
-            </button>
           </span>
         </form>
         <ul class="nav">

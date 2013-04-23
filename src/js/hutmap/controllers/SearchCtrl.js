@@ -4,37 +4,41 @@
   angular.module('hutmap').
 
   controller('SearchCtrl', 
-    ['$scope', '$location', '$route', '$log', 'Places', 
-    function($scope, $location, $route, $log, Places) {
+    ['$scope', '$location', '$route', '$log', '$q', '$document', 'Places', 
+    function($scope, $location, $route, $log, $q, $document, Places) {
 
     $scope.submitting = false;
     $scope.autocompleting = 0;
     $scope.lastQuery;
     $scope.selected;
 
+    $scope.clickBody = function() {
+      $document.find('body').triggerHandler('click');
+    };
+
+    $scope.blurInput = function() {
+      $document.find('input').trigger('blur');
+    };
+
     $scope.getPlaces = function(query) {
       $scope.lastQuery = query;
-      if (query && !$scope.submitting) {
-        $scope.autocompleting++;
-        return Places.getPlacePredictions(query).then(
-          function(predictions) {
-            if ($scope.autocompleting > 0)
-              $scope.autocompleting--;
-            if (!$scope.submitting) {
-              return predictions;
-            } else {
-              return [];
-            }
-          },
-          function(status) { 
-            if ($scope.autocompleting > 0)
-              $scope.autocompleting--;
-            return []; 
-          }
-        );
-      } else {
-        return [];
-      }
+      var deferred = $q.defer();
+      $scope.autocompleting++;
+      Places.getPlacePredictions(query, 
+        function(predictions) {
+          $scope.$apply(function() {
+            $scope.autocompleting--;
+            deferred.resolve(predictions);
+          });
+        },
+        function(status) {
+          $scope.$apply(function() {
+            $scope.autocompleting--;
+            deferred.resolve([]);
+          });
+        }
+      );
+      return deferred.promise;
     };
 
     var onError = function(status) {
@@ -61,42 +65,28 @@
     };
 
     $scope.$watch('selected', function(selected) {
-      if (selected) {
-        $scope.submit();
+      if (selected && selected.constructor === Object) {
+        $scope.submit(selected);
       }
     });
 
-    $scope.submit = function() {
-      if ($scope.selected) {
+    $scope.submit = function(selected) {
+      if (selected) {
         $scope.submitting = true;
         $scope.autocompleting = 0;
-        var selected = $scope.selected;
         if (selected.reference) {
-          Places.getDetails(selected.reference).then(
+          Places.getDetails(selected.reference,
             function(place) {
-              selectPlace(place);
+              $scope.$apply(function() {
+                selectPlace(place);
+              });
+              $scope.blurInput();
             },
             onError
           );
         }
-      } else {
-        var lastQuery = $scope.lastQuery;
-        if (lastQuery) {
-          $scope.submitting = true;
-          $scope.autocompleting = 0;
-          Places.getPlacePredictions(lastQuery).then(
-            function(predictions) {
-              Places.getDetails(predictions[0].reference).then(
-                function(place) {
-                  selectPlace(place);
-                },
-                onError
-              );
-            },
-            onError
-          );
-        }
-      }
+      }    
     };
+
   }]);
 })();

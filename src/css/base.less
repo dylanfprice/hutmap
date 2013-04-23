@@ -47,7 +47,7 @@ body {
       margin: unit(((@navbarHeight - @searchInputHeight - (2*@searchBorder) - (2*@searchPadding))/2), px) 0;
       font-size: @searchFontSize;
       height: @searchInputHeight;
-      width: @searchInputWidth;
+      width: @searchInputStartingWidth;
       position: relative;
       right: @searchBarShift;
       color: @placeholderColor;
@@ -60,7 +60,7 @@ body {
         padding-top: @searchPadding;
         padding-bottom: @searchPadding;
         background-color: darken(@white, 5%);
-        width: @searchInputWidth + 100px;
+        width: @searchInputExpandedWidth;
         box-shadow: none;
       }
 
@@ -79,13 +79,16 @@ body {
     }
 
     .dropdown-menu {
-      overflow: hidden;
-      width: @searchInputWidth + 45px;
+      width: @searchInputExpandedWidth + 55px;
       font-size: @searchFontSize;
+      li a {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
 
     .search-icon {
-      cursor: pointer;
+      //cursor: pointer;
       display: block;
       height: 100%;
       width: @searchPaddingRight;
