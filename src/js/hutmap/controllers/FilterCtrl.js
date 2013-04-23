@@ -14,6 +14,7 @@
       summer: false,
     };
 
+    $scope.anyShelterType = true;
     $scope.shelterType = {
       'emergency shelters': {
         include: false,
@@ -28,7 +29,7 @@
         keywords: ['Hut', 'Yurt', 'Chickee', 'Lean-to', 'Wall Tent', 'Shelter']
       },
       'compounds': {
-        include: true,
+        include: false,
         keywords: ['Compound', 'Hostel', 'Tea House', 'Lodge', 'Chalet', 'Ranch', 'Farm']
       }
     };
