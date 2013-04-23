@@ -36,7 +36,7 @@
         var limit = params.limit || 0;
         var huts = [];
 
-        angular.forEach(data.huts.objects, function(hut, id) {
+        angular.forEach(data.huts.object_index, function(hut, id) {
           if ((limit === 0 || huts.length < limit) &&
               (hutInBounds(bounds, hut))) {
 
@@ -54,21 +54,35 @@
       });
     };
 
-    Huts.hut = function(id) {
+    function getId(id) {
+      if (id == null) {
+        throw "id should not be null";
+      }
+      if (id.constructor === String && id.indexOf('/') > -1) {
+        id = id.slice(0, -1);
+        id = id.slice(id.lastIndexOf('/') + 1)
+      } 
+      return Number(id);
+    }
+
+    Huts.hut = function(id_or_resource_uri) {
       return dbLoaded.promise.then(function() {
-        return data.huts.objects[id];
+        var id = getId(id_or_resource_uri);
+        return data.huts.object_index[id];
       });
     };
 
-    Huts.agency = function(id) {
+    Huts.agency = function(id_or_resource_uri) {
       return dbLoaded.promise.then(function() {
-        return data.agencies.objects[id];
+        var id = getId(id_or_resource_uri);
+        return data.agencies.object_index[id];
       });
     };
 
-    Huts.region = function(id) {
+    Huts.region = function(id_or_resource_uri) {
       return dbLoaded.promise.then(function() {
-        return data.regions.objects[id];
+        var id = getId(id_or_resource_uri);
+        return data.regions.object_index[id];
       });
     };
 

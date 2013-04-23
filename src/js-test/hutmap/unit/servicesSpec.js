@@ -11,6 +11,7 @@ describe('services', function() {
         type: 'Point',
         coordinates: [id + 2, id + 1]
       }, 
+      resource_uri: '/huts/api/v1/hut/' + id + '/',
       agency: id,
       region: id,
     };
@@ -21,14 +22,14 @@ describe('services', function() {
       respond({
         huts: {
           meta: { total_count: 2 },
-          objects: {
+          object_index: {
             1: createHut(1),
             2: createHut(2)
           }
         },
         agencies: {
           meta: {total_count: 2},
-          objects: {
+          object_index: {
             1: {
               id: 1,
               name: '1'
@@ -41,7 +42,7 @@ describe('services', function() {
         },
         regions: {
           meta: {total_count: 2},
-          objects: {
+          object_index: {
             1: {
               id: 1,
               name: '1'
@@ -143,6 +144,33 @@ describe('services', function() {
         $rootScope.$apply();
         expect(region.id).toEqual(1);
       });
+      it('looks up hut by resource_uri', function() {
+        var hut;
+        Huts.hut(1).then(function(_hut_) {
+          Huts.hut(_hut_.resource_uri).then(function(_hut_) {
+            hut = _hut_;
+          });
+        });
+        $rootScope.$apply();
+        expect(hut.id).toEqual(1);
+      });
+      it('looks up agency by resource_uri', function() {
+        var agency;
+        Huts.agency('/huts/api/v1/agency/1/').then(function(_agency_) {
+          agency = _agency_;
+        });
+        $rootScope.$apply();
+        expect(agency.id).toEqual(1);
+      });
+      it('looks up region by resource_uri', function() {
+        var region;
+        Huts.region('/huts/api/v1/region/1/').then(function(_region_) {
+          region = _region_;
+        });
+        $rootScope.$apply();
+        expect(region.id).toEqual(1);
+      });
+
     });
 
   });
