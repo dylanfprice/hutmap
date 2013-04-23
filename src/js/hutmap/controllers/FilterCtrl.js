@@ -10,8 +10,8 @@
     // filter data binding
 
     $scope.season = {
-      winter: true,
-      summer: true,
+      winter: false,
+      summer: false,
     };
 
     $scope.shelterType = {
@@ -20,11 +20,11 @@
         keywords: ['Emergency Shelter', 'Refuge']
       },
       'fire lookouts': {
-        include: true,
+        include: false,
         keywords: ['Fire Lookout']
       },
       'huts & yurts': {
-        include: true,
+        include: false,
         keywords: ['Hut', 'Yurt', 'Chickee', 'Lean-to', 'Wall Tent', 'Shelter']
       },
       'compounds': {
@@ -33,6 +33,19 @@
       }
     };
 
+    $scope.setAnyShelterType = function(anyShelterType) {
+      $scope.anyShelterType = anyShelterType;
+    };
+
+    $scope.$watch('anyShelterType', function(newValue, oldValue) {
+      if (newValue) {
+        angular.forEach($scope.shelterType, function(data, type) {
+          data.include = false;
+        });
+      }
+    });
+
+    
     // filter function
 
     $scope.filter = function() {
@@ -89,12 +102,16 @@
 
     function matchShelterType(hut, keywords) {
       var matchShelterType = false;
-      angular.forEach(keywords, function(keyword) {
-        if (~hut.types.indexOf(keyword)) {
-          matchShelterType = true;
-          return;
-        }
-      });
+      if ($scope.anyShelterType) {
+        matchShelterType = true;
+      } else {
+        angular.forEach(keywords, function(keyword) {
+          if (~hut.types.indexOf(keyword)) {
+            matchShelterType = true;
+            return;
+          }
+        });
+      }
       return matchShelterType;
     };
 

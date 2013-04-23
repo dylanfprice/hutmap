@@ -7,14 +7,21 @@
   </div>
   <div class="hut-filter-title">Shelter type:</div>
   <ul class="hut-filter-list">
+    <li ng-class="{
+          'selected': anyShelterType,
+          'not-selected': !anyShelterType
+        }"
+        ng-click="setAnyShelterType(!anyShelterType); filter();">
+      any
+    </li>
     <li ng-repeat="(type, data) in shelterType" 
         tooltip="{{data.keywords.join(', ')}}"
         tooltip-placement="right"
         ng-class="{
-          'not-selected': !data.include, 
-          'selected': data.include
+          'selected': data.include,
+          'not-selected': !data.include
         }"
-        ng-click="shelterType[type].include = !shelterType[type].include; filter();">
+        ng-click="data.include = !data.include; setAnyShelterType(false); filter();">
       {{type}}
     </li>
   </ul>

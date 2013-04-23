@@ -30,6 +30,7 @@ describe('FilterCtrl', function() {
   }
 
   function setShelterType(emergencyShelter, fireLookouts, hutsAndYurts, compounds) {
+    filterScope.setAnyShelterType(false);
     filterScope.shelterType['emergency shelters'].include = emergencyShelter;
     filterScope.shelterType['fire lookouts'].include = fireLookouts;
     filterScope.shelterType['huts & yurts'].include = hutsAndYurts;
@@ -72,6 +73,16 @@ describe('FilterCtrl', function() {
 
   describe('filters by shelter type', function() {
 
+    it('works with any shelter type', function() {
+      setSeason(false, false);
+      setShelterType(true, true, false, true);
+      filterScope.setAnyShelterType(true);
+      filterScope.$digest();
+      filter();
+      expect(hutScope.filteredHuts[1]).toBeDefined();
+      expect(hutScope.filteredHuts[2]).toBeDefined();
+    });
+
     it('works for a single shelter type', function() {
       setSeason(false, false);
       setShelterType(false, false, true, false);
@@ -87,6 +98,16 @@ describe('FilterCtrl', function() {
       expect(hutScope.filteredHuts[1]).toBeDefined();
       expect(hutScope.filteredHuts[2]).toBeUndefined();
     });
+
+    it('selecting any disables all shelter types', function() {
+      setShelterType(true, true, true, true);
+      filterScope.setAnyShelterType(true);
+      filterScope.$digest();
+      angular.forEach(filterScope.shelterType, function(data, type) {
+        expect(data.include).toBeFalsy();
+      });
+    });
+
   });
 
 });
