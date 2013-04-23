@@ -14,6 +14,22 @@
       summer: false,
     };
 
+    $scope.seasonTooltip = function() {
+      var winter = $scope.season.winter;
+      var summer = $scope.season.summer;
+      var tooltip = "Showing huts that are open in "
+      if (winter && summer) {
+        tooltip += 'both winter and summer';
+      } else if (winter && !summer) {
+        tooltip += 'winter';
+      } else if (!winter && summer) {
+        tooltip += 'summer';
+      } else {
+        tooltip = 'Not filtering by season';
+      }
+      return tooltip;
+    };
+
     $scope.anyShelterType = true;
     $scope.shelterType = {
       'emergency shelters': {

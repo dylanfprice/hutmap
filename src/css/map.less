@@ -43,33 +43,20 @@
   }
 
   .hut-filter-title {
-    padding-top: 1em;
     color: @sidebarLabelColor;
   }
 
-  .hut-filter-btns-title {
-    padding-top: 1em;
-    font-size: @baseFontSize;
-  }
-
-  .hut-filter-btns {
-    text-align: center;
-    width: 100%;
-
-    button {
-      font-size: 25px;
-    }
+  .hut-filter-icons {
+    font-size: @fontSizeLarge + 5px;
   }
 
   .hut-filter-list {
     text-shadow: 1px 1px 1px @white;
     list-style-type: none; 
+    color: darken(@grayLight, 10%);
+
     &:hover {
       .pointer;
-    }
-
-    .not-selected {
-      color: darken(@grayLight, 10%);
     }
 
     .selected {
