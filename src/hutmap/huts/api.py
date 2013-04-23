@@ -58,10 +58,10 @@ class HutSearchResource(ModelResource):
     exclude_params =  dict([(x[1:], filters[x]) for x in filters if x.startswith('!')])
     applicable_filters['exclude'] = super(HutSearchResource, self).build_filters(exclude_params)
 
-    # Custom bbox filter
-    if 'bbox' in filters:
-      bbox = filters['bbox']
-      lat_lo, lng_lo, lat_hi, lng_hi = [float(x) for x in bbox.split(',')]
+    # Custom bounds filter
+    if 'bounds' in filters:
+      bounds = filters['bounds']
+      lat_lo, lng_lo, lat_hi, lng_hi = [float(x) for x in bounds.split(',')]
       # latitude first from request, longitude first for database!
       if lng_lo > 0 and lng_hi < 0:
         p1 = Polygon.from_bbox((lng_lo, lat_lo, 180, lat_hi))

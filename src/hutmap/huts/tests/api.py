@@ -12,13 +12,13 @@ class HutSearchResourceTestCase(ResourceTestCase):
   def setUpClass(cls):
     add_distance_fn()
 
-  def test_query_bbox(self):
-    response = self.client.get(self.url, data={'bbox':  '47.05814,-122.79683,49.05814,-120.79683'})
+  def test_query_bounds(self):
+    response = self.client.get(self.url, data={'bounds':  '47.05814,-122.79683,49.05814,-120.79683'})
     results = self.deserialize(response)
     self.assertEqual(10, results['meta']['total_count'])
 
-  def test_query_bbox_across_180th_meridian(self):
-    response = self.client.get(self.url, data={'bbox': '44.302615,145.859282,74.411905,-103.398531'})
+  def test_query_bounds_across_180th_meridian(self):
+    response = self.client.get(self.url, data={'bounds': '44.302615,145.859282,74.411905,-103.398531'})
     results = self.deserialize(response)
     self.assertEqual(29, results['meta']['total_count'])
 
@@ -53,7 +53,7 @@ class HutSearchResourceTestCase(ResourceTestCase):
 
   def test_combined_query(self):
     response = self.client.get(self.url, data={
-      'bbox': '47.05814,-122.79683,49.05814,-120.79683',
+      'bounds': '47.05814,-122.79683,49.05814,-120.79683',
       '!id__in': '34,36,37'
     })
     results = self.deserialize(response)
