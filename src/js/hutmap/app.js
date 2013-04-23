@@ -1,10 +1,13 @@
 'use strict';
 
 (function() {
-  angular.module('hutmap', ['hutmapServices', 'hutmapFilters', 'AngularGM',
-    'ngResource', 'ui.bootstrap']).
+  angular.module('hutmap', ['hutmapServices', 'hutmapFilters',
+    'hutmapDirectives', 'AngularGM', 'ngResource', 'ui.bootstrap']).
 
-  config(['$routeProvider', '$locationProvider', 'PlacesProvider', function($routeProvider, $locationProvider, PlacesProvider) {
+  config(
+    ['$routeProvider', '$locationProvider', 'PlacesProvider', 
+    function($routeProvider, $locationProvider, PlacesProvider) {
+
     $routeProvider.
       when('/', {
         templateUrl: '/partials/home.html',
