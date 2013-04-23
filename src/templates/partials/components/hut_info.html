@@ -51,6 +51,7 @@
       <td class="hut-detail">
         <i class="icon-sun" tooltip="Summer" tooltip-placement="left" ng-show="selectedHut.open_summer"></i>
         <i class="icon-snowflake" tooltip="Winter" tooltip-placement="left" ng-show="selectedHut.open_winter"></i>
+        <span ng-show="selectedHut.open_summer == null && selectedHut.open_winter == null">Unknown</span>
       </td>
     </tr>
   </table>
