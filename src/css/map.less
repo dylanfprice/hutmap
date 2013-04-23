@@ -76,6 +76,14 @@
   top: @navbarHeight;
   bottom: 0px;
   z-index: 100;
+
+  /* 
+  Fixes Bootstrap issues with Google Maps
+  see http://stackoverflow.com/a/9170756 
+  */
+  img { 
+      max-width: none;
+  }
 }
 
 #hut-sidebar {
