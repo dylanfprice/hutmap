@@ -26,7 +26,7 @@
 
 <body>
 
-  <div ng-app="hutmap" ng-controller="HutmapCtrl">
+  <div ng-app="hutmap" ng-controller="HutmapCtrl" ng-init="STATIC_URL = '{{ STATIC_URL }}'; GOOGLE_API_KEY = '{{ GOOGLE_API_KEY }}';">
 
     <div id="navbar" class="navbar navbar-inverse navbar-static-top">
       <div class="navbar-inner">

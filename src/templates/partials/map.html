@@ -1,5 +1,6 @@
 {% verbatim %}
 <div ng-controller="HutCtrl">
+  <div ng-controller="HutImgCtrl">
   <div ng-controller="AlertCtrl">
     <div id="alert-topbar" ng-show="alerts.length">
       <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
@@ -30,8 +31,10 @@
     <div id="hut-sidebar">
       {% endverbatim %}
         {% include "partials/components/hut_info.html" %}
+        <!--{% include "partials/components/hut_list.html" %}-->
       {% verbatim %}
     </div>
+  </div>
   </div>
 </div>
 {% endverbatim %}

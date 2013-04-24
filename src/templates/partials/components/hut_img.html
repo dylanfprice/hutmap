@@ -1,12 +1,3 @@
 <img class="img-rounded" 
-     ng-show="{{ hut_object_name }}.photo_url" 
-     src="{% templatetag openbrace %}{% templatetag openbrace %}{{ hut_object_name }}.photo_url{% templatetag closebrace %}{% templatetag closebrace %}" 
-     alt="Broken photo link!"></img>
-<img class="img-rounded" 
-     ng-show="!{{ hut_object_name }}.photo_url && {{ hut_object_name. }}accuracy < 3" 
-     src="{{ STATIC_URL }}img/no-image-available.gif" 
-     alt="No image available"></img>
-<img class="img-rounded" 
-     ng-show="!{{ hut_object_name }}.photo_url && {{ hut_object_name }}.accuracy >= 3" 
-     src="http://maps.googleapis.com/maps/api/staticmap?center={% templatetag openbrace %}{% templatetag openbrace %}{{ hut_object_name }}.location.coordinates[1]{% templatetag closebrace %}{% templatetag closebrace %}%2C{% templatetag openbrace %}{% templatetag openbrace %}{{ hut_object_name }}.location.coordinates[0]{% templatetag closebrace %}{% templatetag closebrace %}&zoom=19&size={{ size }}&maptype=satellite&sensor=false&key={{ GOOGLE_API_KEY }}"
-     alt="No image available"></img>
+     ng-src="{% templatetag openbrace %}{% templatetag openbrace %}getImgUrl({{ hut_object_name }}, {{ width }}, {{ height }}){% templatetag closebrace %}{% templatetag closebrace %}" 
+     alt="Hut image">
