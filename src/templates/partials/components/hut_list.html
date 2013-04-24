@@ -1,0 +1,12 @@
+{% verbatim %}
+<div class="hut-list">
+  <ul>
+    <li ng-repeat="hut in filteredHuts | limitTo:10">
+      {% endverbatim %}
+        {% include "partials/components/hut_img.html" with hut_object_name="hut" width="40" height="40" %}
+      {% verbatim %}
+      {{hut.name}}
+    </li>
+  </ul>
+</div>
+{% endverbatim %}
