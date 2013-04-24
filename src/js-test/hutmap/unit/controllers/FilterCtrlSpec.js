@@ -49,24 +49,24 @@ describe('FilterCtrl', function() {
       setSeason(true, false);
       setShelterType(true, true, true, true);
       filter();
-      expect(hutScope.filteredHuts[1]).toBeDefined();
-      expect(hutScope.filteredHuts[2]).toBeUndefined();
+      expect(hutScope.filteredHutIds[1]).toBeDefined();
+      expect(hutScope.filteredHutIds[2]).toBeUndefined();
     });
 
     it('summer OR summer and winter', function() {
       setSeason(false, true);
       setShelterType(true, true, true, true);
       filter();
-      expect(hutScope.filteredHuts[1]).toBeDefined();
-      expect(hutScope.filteredHuts[2]).toBeDefined();
+      expect(hutScope.filteredHutIds[1]).toBeDefined();
+      expect(hutScope.filteredHutIds[2]).toBeDefined();
     });
 
     it('winter OR summer OR winter AND summer', function() {
       setSeason(true, true);
       setShelterType(true, true, true, true);
       filter();
-      expect(hutScope.filteredHuts[1]).toBeDefined();
-      expect(hutScope.filteredHuts[2]).toBeDefined();
+      expect(hutScope.filteredHutIds[1]).toBeDefined();
+      expect(hutScope.filteredHutIds[2]).toBeDefined();
     });
 
   });
@@ -79,24 +79,24 @@ describe('FilterCtrl', function() {
       filterScope.setAnyShelterType(true);
       filterScope.$digest();
       filter();
-      expect(hutScope.filteredHuts[1]).toBeDefined();
-      expect(hutScope.filteredHuts[2]).toBeDefined();
+      expect(hutScope.filteredHutIds[1]).toBeDefined();
+      expect(hutScope.filteredHutIds[2]).toBeDefined();
     });
 
     it('works for a single shelter type', function() {
       setSeason(false, false);
       setShelterType(false, false, true, false);
       filter();
-      expect(hutScope.filteredHuts[1]).toBeDefined();
-      expect(hutScope.filteredHuts[2]).toBeUndefined();
+      expect(hutScope.filteredHutIds[1]).toBeDefined();
+      expect(hutScope.filteredHutIds[2]).toBeUndefined();
     });
 
     it('is fine with multiple matches on same hut', function() {
       setSeason(false, false);
       setShelterType(true, false, true, false);
       filter();
-      expect(hutScope.filteredHuts[1]).toBeDefined();
-      expect(hutScope.filteredHuts[2]).toBeUndefined();
+      expect(hutScope.filteredHutIds[1]).toBeDefined();
+      expect(hutScope.filteredHutIds[2]).toBeUndefined();
     });
 
     it('selecting any disables all shelter types', function() {

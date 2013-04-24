@@ -21,7 +21,7 @@
 
     $scope.getMarkerOptions = function(hut) {
       var opts = {title: hut.name};
-      if ($scope.filteredHuts && hut.id in $scope.filteredHuts) {
+      if ($scope.filteredHuts && hut.id in $scope.filteredHutIds) {
         return angular.extend(opts, $scope.markerOptions.filteredHuts);
       } else {
         return angular.extend(opts, $scope.markerOptions.huts);

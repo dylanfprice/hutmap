@@ -12,6 +12,7 @@
     $scope.loading = 0;
     $scope.huts;
     $scope.filteredHuts;
+    $scope.filteredHutIds;
     $scope.totalHutCount;
     $scope.query;
     $scope.selectedHut;
@@ -26,11 +27,9 @@
       $scope.query = query;
     };
 
-    $scope.setFilteredHuts = function(filteredHuts) {
+    $scope.setFilteredHuts = function(filteredHuts, filteredHutIds) {
       $scope.filteredHuts = filteredHuts;
-      if ($scope.filteredHuts) {
-        $scope.filteredHutCount = Object.keys($scope.filteredHuts).length;
-      }
+      $scope.filteredHutIds = filteredHutIds;
     };
 
     $scope.setSelectedHut = function(hut) {

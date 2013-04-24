@@ -78,17 +78,19 @@
     };
 
     function _filter() {
-      var filteredHuts = {};
+      var filteredHuts = [];
+      var filteredHutIds = [];
       var typeKeywords = getTypeKeywords();
       angular.forEach($scope.huts, function(hut) {
         if (
           matchSeason(hut) &&
           matchShelterType(hut, typeKeywords)
         ) {
-          filteredHuts[hut.id] = hut;
+          filteredHuts.push(hut);
+          filteredHutIds[hut.id] = hut.id;
         }
       });
-      $scope.setFilteredHuts(filteredHuts);
+      $scope.setFilteredHuts(filteredHuts, filteredHutIds);
       $scope.$broadcast('gmMarkersRedraw', 'huts');
     };
 
