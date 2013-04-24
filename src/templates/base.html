@@ -38,7 +38,7 @@
                  placeholder="Find backcountry huts" 
                  autocomplete="off"
                  ng-model="selected" 
-                 typeahead="place as place.description for place in getPlaces($viewValue)"
+                 typeahead="place.description for place in getPlaces($viewValue)"
                  blur="clickBody()"/>
           <span class="search-icon">
             <span ng-class="{% templatetag openbrace %} 
