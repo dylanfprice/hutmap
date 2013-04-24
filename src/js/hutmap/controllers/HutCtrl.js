@@ -28,6 +28,9 @@
 
     $scope.setFilteredHuts = function(filteredHuts) {
       $scope.filteredHuts = filteredHuts;
+      if ($scope.filteredHuts) {
+        $scope.filteredHutCount = Object.keys($scope.filteredHuts).length;
+      }
     };
 
     $scope.setSelectedHut = function(hut) {

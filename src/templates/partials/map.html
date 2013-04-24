@@ -9,7 +9,10 @@
     </div>
     <div ng-controller="FilterCtrl">
       <div id="filter-sidebar">
-        {% endverbatim %}{% include "partials/components/filters.html" %}{% verbatim %}
+        {% endverbatim %}
+          {% include "partials/components/summary_info.html" %}
+          {% include "partials/components/filters.html" %}
+        {% verbatim %}
       </div>
       <div ng-controller="MapConfigCtrl">
         <div ng-controller="MapCtrl">
@@ -25,7 +28,9 @@
       </div>
     </div>
     <div id="hut-sidebar">
-      {% endverbatim %}{% include "partials/components/hut_info.html" %}{% verbatim %}
+      {% endverbatim %}
+        {% include "partials/components/hut_info.html" %}
+      {% verbatim %}
     </div>
   </div>
 </div>

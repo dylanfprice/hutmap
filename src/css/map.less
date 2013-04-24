@@ -37,34 +37,57 @@
 #filter-sidebar {
   width: @filterBarWidth;
   float: left;
+  font-size: @fontSizeSmall;
 
-  .hut-filter-table {
-    font-size: @fontSizeSmall;
+  .summary-info, .hut-filter-table {
+    padding: 1em;
   }
 
-  .hut-filter-title {
-    color: @sidebarLabelColor;
-  }
+  .summary-info {
+    background-color: fade(@searchBackgroundColor, 40%);
+    border-right: fade(@grayLight, 40%) solid 2px;
+    border-bottom: fade(@grayLight, 40%) solid 2px;
 
-  .hut-filter-icons {
-    font-size: @fontSizeLarge + 5px;
-  }
-
-  .hut-filter-list {
-    text-shadow: 1px 1px 1px @white;
-    list-style-type: none; 
-    color: darken(@grayLight, 10%);
-
-    &:hover {
+    i {
       .pointer;
+      text-shadow: 1px 1px 1px @grayLighter;
     }
 
-    .selected {
+    .summary-filtered-hut-count {
+      color: @red;
+    }
+
+    .summary-total-hut-count {
       color: @grayDark;
     }
+  }
 
-    .tooltip {
-      text-shadow: none;
+  .hut-filter-table {
+
+    .hut-filter-title {
+      color: @sidebarLabelColor;
+    }
+
+    .hut-filter-icons {
+      font-size: @fontSizeLarge + 5px;
+    }
+
+    .hut-filter-list {
+      text-shadow: 1px 1px 1px @white;
+      list-style-type: none; 
+      color: darken(@grayLight, 10%);
+
+      &:hover {
+        .pointer;
+      }
+
+      .selected {
+        color: @grayDark;
+      }
+
+      .tooltip {
+        text-shadow: none;
+      }
     }
   }
 }

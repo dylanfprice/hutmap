@@ -9,45 +9,50 @@
 
     // filter data binding
 
-    $scope.season = {
-      winter: false,
-      summer: false,
-    };
+    $scope.resetFilters = function() {
 
-    $scope.seasonTooltip = function() {
-      var winter = $scope.season.winter;
-      var summer = $scope.season.summer;
-      var tooltip = "Showing huts that are open in "
-      if (winter && summer) {
-        tooltip += 'both winter and summer';
-      } else if (winter && !summer) {
-        tooltip += 'winter';
-      } else if (!winter && summer) {
-        tooltip += 'summer';
-      } else {
-        tooltip = 'Not filtering by season';
-      }
-      return tooltip;
-    };
+      $scope.season = {
+        winter: false,
+        summer: false,
+      };
 
-    $scope.anyShelterType = true;
-    $scope.shelterType = {
-      'emergency shelters': {
-        include: false,
-        keywords: ['Emergency Shelter', 'Refuge']
-      },
-      'fire lookouts': {
-        include: false,
-        keywords: ['Fire Lookout']
-      },
-      'huts & yurts': {
-        include: false,
-        keywords: ['Hut', 'Yurt', 'Chickee', 'Lean-to', 'Wall Tent', 'Shelter']
-      },
-      'compounds': {
-        include: false,
-        keywords: ['Compound', 'Hostel', 'Tea House', 'Lodge', 'Chalet', 'Ranch', 'Farm']
-      }
+      $scope.seasonTooltip = function() {
+        var winter = $scope.season.winter;
+        var summer = $scope.season.summer;
+        var tooltip = "Showing huts that are open in "
+        if (winter && summer) {
+          tooltip += 'both winter and summer';
+        } else if (winter && !summer) {
+          tooltip += 'winter';
+        } else if (!winter && summer) {
+          tooltip += 'summer';
+        } else {
+          tooltip = 'Not filtering by season';
+        }
+        return tooltip;
+      };
+
+      $scope.anyShelterType = true;
+      $scope.shelterType = {
+        'emergency shelters': {
+          include: false,
+          keywords: ['Emergency Shelter', 'Refuge']
+        },
+        'fire lookouts': {
+          include: false,
+          keywords: ['Fire Lookout']
+        },
+        'huts & yurts': {
+          include: false,
+          keywords: ['Hut', 'Yurt', 'Chickee', 'Lean-to', 'Wall Tent', 'Shelter']
+        },
+        'compounds': {
+          include: false,
+          keywords: ['Compound', 'Hostel', 'Tea House', 'Lodge', 'Chalet', 'Ranch', 'Farm']
+        }
+      };
+
+      $scope.filter();
     };
 
     $scope.setAnyShelterType = function(anyShelterType) {
@@ -62,7 +67,7 @@
       }
     });
 
-    
+   
     // filter function
 
     $scope.filter = function() {
@@ -132,5 +137,6 @@
       return matchShelterType;
     };
 
+    $scope.resetFilters();
   }]);
 })();
