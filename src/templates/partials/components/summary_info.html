@@ -1,9 +1,9 @@
 {% verbatim %}
 <div class="summary-info">
-  <span ng-hide="filteredHutCount && huts.length">
+  <span ng-hide="filteredHuts.length && huts.length">
     No huts in view
   </span>
-  <span ng-show="filteredHutCount && huts.length">
+  <span ng-show="filteredHuts.length && huts.length">
     Selected 
     <span class="summary-filtered-hut-count">{{filteredHutCount}}</span> of 
     <span class="summary-total-hut-count">{{huts.length}}</span>
