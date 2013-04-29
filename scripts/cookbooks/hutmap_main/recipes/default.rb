@@ -166,12 +166,13 @@ package "libfontconfig1" do
 end
 
 bash "install node" do
-  nodejs = "node-v0.10.0-linux-x86"
+  nodejs = "node-v0.10.5-linux-x86"
   code <<-EOH
   cd #{node[:install_dir]}
-  wget http://nodejs.org/dist/v0.10.0/#{nodejs}.tar.gz && \
+  wget http://nodejs.org/dist/v0.10.5/#{nodejs}.tar.gz && \
   tar -xzf #{nodejs}.tar.gz && \
   rm #{nodejs}.tar.gz && \
+  rm -f node && \
   ln -s #{nodejs} node && \
   chmod -R 755 node
   EOH
@@ -179,12 +180,14 @@ bash "install node" do
 end
 
 execute "install less" do
-  command "#{node[:install_dir]}/node/bin/npm install -g less"
+  npm = "#{node[:install_dir]}/node/bin/npm"
+  command "#{npm} cache clear && #{npm} install -g less"
   not_if { File.exists?("#{node[:install_dir]}/node/bin/lessc") }
 end
 
 execute "install karma" do
-  command "#{node[:install_dir]}/node/bin/npm install -g karma"
+  npm = "#{node[:install_dir]}/node/bin/npm"
+  command "#{npm} cache clear && #{npm} install -g karma"
   not_if { File.exists?("#{node[:install_dir]}/node/bin/karma") }
 end
 
