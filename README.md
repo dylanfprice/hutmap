@@ -12,6 +12,16 @@ setting everything up.
 
 You can try this on Mac or Windows but I've only ever used Linux so no guarantees.
 
+## Clone the Repo ##
+
+  Get the code, and repos the project depends on:
+
+  ```bash
+  git clone https://github.com/dylanfprice/hutmap.git
+  git submodule init
+  git submodule update
+  ```
+
 ## Install Dependencies ##
 
 First, make sure you have [Python](http://www.python.org) installed. Any 2.x
@@ -36,7 +46,7 @@ the vm when it builds it). Warning: Don't change the values after you call
 'vagrant destroy', then 'vagrant up' again.
 
   ```bash
-  export HUTMAP_VERSION='0.1'
+  export HUTMAP_VERSION='development'
   export HUTMAP_DB_NAME='hutmap' 
   export HUTMAP_DB_USER='hutmap'
   export HUTMAP_DB_PASSWORD='hutmap'
@@ -77,7 +87,9 @@ run:
 Then go to <http://localhost:3000/help> in your browser to see a list of all
 available commands.
 
-You may want to initialize the database and load in some test data:
+You may want to build the css, initialize the database, and load in some test
+data:
++ <http://localhost:3000/build.css>
 + <http://localhost:3000/django.manage?validate>
 + <http://localhost:3000/django.manage?syncdb&--noinput>
 + <http://localhost:3000/django.manage?loaddata&test_data>
