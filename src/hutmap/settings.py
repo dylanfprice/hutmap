@@ -227,6 +227,11 @@ LOGGING = {
       'interval': 1,
       'backupCount': 5,
     },
+    'stream':{
+      'level': 'DEBUG',
+      'formatter': 'simple',
+      'class': 'logging.StreamHandler',
+    },
     'mail_admins': {
       'level': 'ERROR',
       'filters': ['require_debug_false'],
@@ -236,7 +241,7 @@ LOGGING = {
   },
   'loggers': {
     'django': {
-      'handlers': ['file'],
+      'handlers': ['file', 'stream'],
       'propagate': True,
       'level': 'DEBUG' if DEBUG else 'WARNING',
     },
