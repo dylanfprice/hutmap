@@ -17,9 +17,9 @@ You can try this on Mac or Windows but I've only ever used Linux so no guarantee
   Get the code, and repos the project depends on:
 
   ```bash
-  git clone https://github.com/dylanfprice/hutmap.git
-  git submodule init
-  git submodule update
+  $ git clone https://github.com/dylanfprice/hutmap.git
+  $ git submodule init
+  $ git submodule update
   ```
 
 ## Install Dependencies ##
