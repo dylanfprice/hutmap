@@ -218,10 +218,14 @@ LOGGING = {
       'level': 'DEBUG',
       'class': 'logging.NullHandler',
     },
-    'stream':{
+    'file':{
       'level': 'DEBUG',
       'formatter': 'simple',
-      'class': 'logging.StreamHandler',
+      'class': 'logging.handlers.TimedRotatingFileHandler',
+      'filename':  join(LOCAL_PATH, '..', '..', 'logs', 'django.log'),
+      'when': 'midnight',
+      'interval': 1,
+      'backupCount': 5,
     },
     'mail_admins': {
       'level': 'ERROR',
@@ -232,7 +236,7 @@ LOGGING = {
   },
   'loggers': {
     'django': {
-      'handlers': ['stream'],
+      'handlers': ['file'],
       'propagate': True,
       'level': 'DEBUG' if DEBUG else 'WARNING',
     },
