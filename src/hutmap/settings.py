@@ -221,7 +221,7 @@ LOGGING = {
     'stream':{
       'level': 'DEBUG',
       'formatter': 'simple',
-      'class': 'logging.handlers.StreamHandler',
+      'class': 'logging.StreamHandler',
     },
     'mail_admins': {
       'level': 'ERROR',
