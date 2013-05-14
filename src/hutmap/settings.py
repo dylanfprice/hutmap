@@ -219,15 +219,6 @@ LOGGING = {
       'level': 'DEBUG',
       'class': 'logging.NullHandler',
     },
-    'file':{
-      'level': 'DEBUG',
-      'formatter': 'simple',
-      'class': 'logging.handlers.TimedRotatingFileHandler',
-      'filename':  join(LOCAL_PATH, '..', '..', 'logs', 'django.log'),
-      'when': 'midnight',
-      'interval': 1,
-      'backupCount': 5,
-    },
     'stream':{
       'level': 'DEBUG',
       'formatter': 'simple',
