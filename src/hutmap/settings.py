@@ -197,53 +197,58 @@ else:
     }
   }
 
-#LOGGING = {
-#  'version': 1,
-#  'disable_existing_loggers': True,
-#  'formatters': {
-#    'verbose': {
-#      'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-#    },
-#    'simple': {
-#      'format': '%(levelname)s %(message)s'
-#    },
-#  },
-#  'filters': {
-#    'require_debug_false': {
-#      '()': 'django.utils.log.RequireDebugFalse',
-#     }
-#  },
-#  'handlers': {
-#    'null': {
-#      'level': 'DEBUG',
-#      'class': 'logging.NullHandler',
-#    },
-#    'file':{
-#      'level': 'DEBUG',
-#      'formatter': 'simple',
-#      'class': 'logging.handlers.TimedRotatingFileHandler',
-#      'filename':  join(LOCAL_PATH, '..', '..', 'logs', 'django.log'),
-#      'when': 'midnight',
-#      'interval': 1,
-#      'backupCount': 5,
-#    },
-#    'mail_admins': {
-#      'level': 'ERROR',
-#      'filters': ['require_debug_false'],
-#      'class': 'django.utils.log.AdminEmailHandler',
-#      'include_html': True,
-#    }
-#  },
-#  'loggers': {
-#    'django': {
-#      'handlers': ['file'],
-#      'propagate': True,
-#      'level': 'DEBUG' if DEBUG else 'WARNING',
-#    },
-#    'django.request': {
-#      'handlers': ['mail_admins'],
-#      'level': 'ERROR',
-#      'propagate': True,
-#    },
-#  }
-#}
+LOGGING = {
+  'version': 1,
+  'disable_existing_loggers': True,
+  'formatters': {
+    'verbose': {
+      'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+    },
+    'simple': {
+      'format': '%(levelname)s %(message)s'
+    },
+  },
+  'filters': {
+    'require_debug_false': {
+      '()': 'django.utils.log.RequireDebugFalse',
+     }
+  },
+  'handlers': {
+    'null': {
+      'level': 'DEBUG',
+      'class': 'logging.NullHandler',
+    },
+    'file':{
+      'level': 'DEBUG',
+      'formatter': 'simple',
+      'class': 'logging.handlers.TimedRotatingFileHandler',
+      'filename':  join(LOCAL_PATH, '..', '..', 'logs', 'django.log'),
+      'when': 'midnight',
+      'interval': 1,
+      'backupCount': 5,
+    },
+    'stream':{
+      'level': 'DEBUG',
+      'formatter': 'simple',
+      'class': 'logging.handlers.StreamHandler',
+    },
+    'mail_admins': {
+      'level': 'ERROR',
+      'filters': ['require_debug_false'],
+      'class': 'django.utils.log.AdminEmailHandler',
+      'include_html': True,
+    }
+  },
+  'loggers': {
+    'django': {
+      'handlers': ['stream'],
+      'propagate': True,
+      'level': 'DEBUG' if DEBUG else 'WARNING',
+    },
+    'django.request': {
+      'handlers': ['mail_admins'],
+      'level': 'ERROR',
+      'propagate': True,
+    },
+  }
+}
