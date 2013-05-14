@@ -241,7 +241,7 @@ LOGGING = {
   },
   'loggers': {
     'django': {
-      'handlers': ['file', 'stream'],
+      'handlers': ['stream'],
       'propagate': True,
       'level': 'DEBUG' if DEBUG else 'WARNING',
     },
