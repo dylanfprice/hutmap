@@ -1,6 +1,8 @@
 import os
 import sys 
 
+cwd = os.getcwd()
+
 # add hutmap dir to the python path
 try:
   src_dir = os.path.join(cwd, 'src')
