@@ -1,2 +1,1 @@
-
-web: gunicorn passenger_wsgi.py
+web: gunicorn heroku.wsgi
