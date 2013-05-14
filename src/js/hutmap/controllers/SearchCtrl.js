@@ -70,21 +70,40 @@
       }
     });
 
+    $scope.search = function(query) {
+
+      var noResults = function() {
+        // TODO
+      };
+
+      if (query && query.constructor === Object) {
+        $scope.submit(query);
+      } else if (query) {
+        $scope.getPlaces(query).then(function(results) {
+          if (results.length > 0) {
+            $scope.submit(results[0]);
+          } else {
+            noResults();
+          }
+        });
+      } else {
+        noResults();
+      }
+    };
+
     $scope.submit = function(selected) {
-      if (selected) {
+      if (selected && selected.reference) {
         $scope.submitting = true;
         $scope.autocompleting = 0;
-        if (selected.reference) {
-          Places.getDetails(selected.reference,
-            function(place) {
-              $scope.$apply(function() {
-                selectPlace(place);
-              });
-              $scope.blurInput();
-            },
-            onError
-          );
-        }
+        Places.getDetails(selected.reference,
+          function(place) {
+            $scope.$apply(function() {
+              selectPlace(place);
+            });
+            $scope.blurInput();
+          },
+          onError
+        );
       }    
     };
 
