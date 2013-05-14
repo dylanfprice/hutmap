@@ -3,6 +3,10 @@ from platform import node
 import os
 import subprocess
 
+### Special settings for heroku ###
+GEOS_LIBRARY_PATH = '/app/.geodjango/geos/lib/libgeos_c.so'
+GDAL_LIBRARY_PATH = '/app/.geodjango/gdal/lib/libgdal.so'
+
 ### Special settings for dreamhost account ###
 if node() == 'fulton':
   GEOS_LIBRARY_PATH = '/home/hutmap/hutmap.com/deps/geos-3.3.0/lib/libgeos_c.so'
