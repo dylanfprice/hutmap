@@ -3,4 +3,3 @@ coverage/
 *.vagrant
 *.swp
 *.pyc
-public/static/img/carousel/
