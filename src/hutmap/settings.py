@@ -115,7 +115,7 @@ ADMIN_MEDIA_PREFIX = '/admin_static/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = '/app/static/'
+STATIC_ROOT = join(LOCAL_PATH, '..', '..', 'public')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -126,7 +126,6 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    join(LOCAL_PATH, '..', '..', 'public', 'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -181,7 +180,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.gis',
-    'django.contrib.staticfiles',
     'huts',
 )
 

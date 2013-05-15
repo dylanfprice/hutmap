@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, url, include
 from django.views.generic.base import TemplateView
+from django.conf import settings
 
 from django.contrib.gis import admin
 admin.autodiscover()
@@ -15,3 +16,6 @@ urlpatterns = patterns('',
   #url(r'^admin/doc/',  include('django.contrib.admindocs.urls')),
 )
 
+urlpatterns += patterns('',
+  (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+)
