@@ -116,7 +116,6 @@ ADMIN_MEDIA_PREFIX = '/admin_static/'
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
 STATIC_ROOT = '/app/static/'
-STATICFILES_DIRS = [join(LOCAL_PATH, 'public', 'static')]
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -127,6 +126,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    join(LOCAL_PATH, 'public', 'static')
 )
 
 # List of finder classes that know how to find static files in
