@@ -1,5 +1,7 @@
 logs/
 coverage/
+public/static/css/
+public/static/js/
 *.vagrant
 *.swp
 *.pyc
