@@ -94,6 +94,16 @@ data:
 + <http://localhost:3000/django.manage?syncdb&--noinput>
 + <http://localhost:3000/django.manage?loaddata&test_data>
 
+You can also run shovel commands directly on the vm like so:
+
+  ```bash
+  $ cd scripts/
+  $ vagrant ssh
+  $ cd /vagrant/scripts/
+  $ pythonbrew venv use hutmap
+  $ shovel help
+  ```
+
 ### Developing Python (Django) ###
 
 The django project is found in src/hutmap/ and the templates are in
