@@ -1,22 +1,6 @@
 from os.path import join, dirname, normpath
 from platform import node
 import os
-import subprocess
-
-### Special settings for dreamhost account ###
-if node() == 'fulton':
-  GEOS_LIBRARY_PATH = '/home/hutmap/hutmap.com/deps/geos-3.3.0/lib/libgeos_c.so'
-  GDAL_LIBRARY_PATH = '/home/hutmap/hutmap.com/deps/gdal-1.8.0/lib/libgdal.so'
-
-  command = ['bash', '-c', 'source /home/hutmap/.profile && env']
-
-  proc = subprocess.Popen(command, stdout = subprocess.PIPE)
-  stdoutdata, stderrdata = proc.communicate()
-
-  for line in stdoutdata.splitlines():
-    (key, _, value) = line.partition("=")
-    if key.startswith('HUTMAP'):
-      os.environ[key] = value.rstrip()
 
 
 ### Version ###
