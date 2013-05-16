@@ -10,7 +10,7 @@ config = imp.load_source('config', config_file)
 common = imp.load_source('common', common_file)
 
 @task
-def js():#(nomin=False): #TODO: add minification
+def js(version=config.HUTMAP_VERSION):#(nomin=False): #TODO: add minification
   """Minifies javascript using closure, into public/static/js/hutmap-{version}.min.js"""
   try:
     shutil.rmtree(config.JS_DEST, ignore_errors=True)
@@ -49,7 +49,7 @@ def js():#(nomin=False): #TODO: add minification
   cmd.extend(['--warning_level', 'VERBOSE'])
   cmd.extend(['--jscomp_off', 'checkVars'])
   cmd.extend(['--language_in', 'ECMASCRIPT5_STRICT'])
-  cmd.extend(['--js_output_file', '{0}/hutmap-{1}.min.js'.format(config.JS_DEST, config.HUTMAP_VERSION)])
+  cmd.extend(['--js_output_file', '{0}/hutmap-{1}.min.js'.format(config.JS_DEST, version)])
 
   common.check_command_with_output(cmd, print_stdout=True)
 
@@ -59,7 +59,7 @@ def js():#(nomin=False): #TODO: add minification
 
 
 @task
-def css(nomin=False):
+def css(version=config.HUTMAP_VERSION, nomin=False):
   """Compiles less files into public/static/css/hutmap-{version}.min.css"""
   try:
     shutil.rmtree(config.CSS_DEST, ignore_errors=True)
@@ -72,7 +72,7 @@ def css(nomin=False):
   cmd.append(join(config.CSS_PATH, 'hutmap.less'))
   stdoutdata,stderrdata = common.check_command_with_output(cmd)
 
-  with open(join(config.CSS_DEST, 'hutmap-{0}.min.css'.format(config.HUTMAP_VERSION)), 'w+') as file:
+  with open(join(config.CSS_DEST, 'hutmap-{0}.min.css'.format(version)), 'w+') as file:
     file.writelines(stdoutdata)
 
   set_permissions(config.CSS_DEST)
