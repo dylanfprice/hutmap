@@ -8,9 +8,9 @@ import time
 import urllib2
 import uuid
 
-def shell(cmd):
+def shell(cmd, **kwargs):
   args = shlex.split(cmd) 
-  subprocess.check_call(args)
+  subprocess.check_call(args, **kwargs)
 
 
 base_path = normpath(join(dirname(__file__), '..', '..'))
@@ -32,6 +32,6 @@ try:
   shell('git add public/static/css/ public/static/js/')
   shell('git commit -m"Version {0}"'.format(vers))
   shell('git push origin dreamhost')
-  shell('ssh hutmap@hutmap.com "bash -s {0}" < scripts/utils/deploy-dreamhost-remote.sh'.format(vers))
+  shell('ssh hutmap@hutmap.com "bash -s {0}" < scripts/utils/deploy-dreamhost-remote.sh'.format(vers), shell=True)
 finally:
   shell('git checkout master')
