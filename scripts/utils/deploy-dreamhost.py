@@ -7,6 +7,7 @@ import subprocess
 import time
 import urllib2
 import uuid
+import shutil
 
 def shell(cmd, **kwargs):
   args = shlex.split(cmd) 
@@ -20,7 +21,8 @@ vers = uuid.uuid1()
 
 successful = False
 try:
-  shell('rm public/static/css/* public/static/js/*', shell=True)
+  shutil.rmtree('public/static/css', ignore_errors=True)
+  shutil.rmtree('public/static/js', ignore_errors=True)
   shell('git pull origin dreamhost')
   shell('git checkout dreamhost')
   shell('git merge -s resolve master')
