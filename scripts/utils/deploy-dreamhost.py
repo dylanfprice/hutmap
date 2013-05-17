@@ -20,7 +20,7 @@ vers = uuid.uuid1()
 
 successful = False
 try:
-  shell('rm public/static/css/* public/static/js/*')
+  shell('rm public/static/css/* public/static/js/*', shell=True)
   shell('git pull origin dreamhost')
   shell('git checkout dreamhost')
   shell('git merge -s resolve master')
