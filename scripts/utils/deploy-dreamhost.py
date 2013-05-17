@@ -19,7 +19,9 @@ os.chdir(base_path)
 vers = uuid.uuid1()
 print(vers)
 
+successful = False
 try:
+  shell('git pull origin dreamhost')
   shell('git checkout dreamhost')
   shell('git merge -s resolve master')
   shell('git rm -r public/static/css/ public/static/js/')
@@ -32,10 +34,14 @@ try:
   shell('git add public/static/css/ public/static/js/')
   shell('git commit -m"Version {0}"'.format(vers))
   shell('git push origin dreamhost')
+  successful = True
 finally:
   shell('git checkout master')
 
-  print('\nTo complete, log on to hutmap.com and run the following:')
-  print('  hutmap.com/scripts/utils/deploy-dreamhost-remote.sh {0}\n'.format(vers))
-  print('Or all in one go:')
-  print('  ssh hutmap@hutmap.com "bash -s {0}" < scripts/utils/deploy-dreamhost-remote.sh\n'.format(vers))
+  if successful:
+    print('\nTo complete, log on to hutmap.com and run the following:')
+    print('  hutmap.com/scripts/utils/deploy-dreamhost-remote.sh {0}\n'.format(vers))
+    print('Or all in one go:')
+    print('  ssh hutmap@hutmap.com "bash -s {0}" < scripts/utils/deploy-dreamhost-remote.sh\n'.format(vers))
+  else:
+    print('\n Deploy failed. Look at the stack trace printed above for more details.\n')
