@@ -17,7 +17,6 @@ base_path = normpath(join(dirname(__file__), '..', '..'))
 os.chdir(base_path)
 
 vers = uuid.uuid1()
-print(vers)
 
 successful = False
 try:
