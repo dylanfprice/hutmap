@@ -7,6 +7,7 @@ import subprocess
 import time
 import urllib2
 import uuid
+import shutil
 
 def shell(cmd, **kwargs):
   args = shlex.split(cmd) 
@@ -17,10 +18,18 @@ base_path = normpath(join(dirname(__file__), '..', '..'))
 os.chdir(base_path)
 
 vers = uuid.uuid1()
-print(vers)
 
 successful = False
 try:
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  shell('rm public/static/css/* public/static/js/*', shell=True)
+>>>>>>> 107f4d3... shell=True
+=======
+  shutil.rmtree('public/static/css', ignore_errors=True)
+  shutil.rmtree('public/static/js', ignore_errors=True)
+>>>>>>> 2f3e6d0... rmtree
   shell('git pull origin dreamhost')
   shell('git checkout dreamhost')
   shell('git merge -s resolve master')
@@ -44,4 +53,4 @@ finally:
     print('Or all in one go:')
     print('  ssh hutmap@hutmap.com "bash -s {0}" < scripts/utils/deploy-dreamhost-remote.sh\n'.format(vers))
   else:
-    print('\n Deploy failed. Look at the stack trace printed above for more details.\n')
+    print('\n Deploy failed. Look at the stack trace printed below for more details.\n')
