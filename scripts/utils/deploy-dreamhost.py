@@ -35,7 +35,7 @@ try:
 finally:
   shell('git checkout master')
 
-  print('\nTo compltete, log on to hutmap.com and run the following:')
+  print('\nTo complete, log on to hutmap.com and run the following:')
   print('  hutmap.com/scripts/utils/deploy-dreamhost-remote.sh {0}\n'.format(vers))
   print('Or all in one go:')
   print('  ssh hutmap@hutmap.com "bash -s {0}" < scripts/utils/deploy-dreamhost-remote.sh\n'.format(vers))
