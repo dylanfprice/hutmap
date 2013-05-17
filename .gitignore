@@ -1,5 +1,3 @@
-public/static/css/
-public/static/js/
 logs/
 coverage/
 *.vagrant
