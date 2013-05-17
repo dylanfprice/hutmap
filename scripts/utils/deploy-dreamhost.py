@@ -32,6 +32,10 @@ try:
   shell('git add public/static/css/ public/static/js/')
   shell('git commit -m"Version {0}"'.format(vers))
   shell('git push origin dreamhost')
-  shell('ssh hutmap@hutmap.com "bash -s {0}" < scripts/utils/deploy-dreamhost-remote.sh'.format(vers), shell=True)
+  print('To compltete, log on to hutmap.com and run the following:')
+  print('  $ hutmap.com/scripts/utils/deploy-dreamhost-remote.sh {0}'.format(vers))
+  print('')
+  print('Or all in one go:')
+  print(' $ ssh hutmap@hutmap.com "bash -s {0}" < scripts/utils/deploy-dreamhost-remote.sh'.format(vers))
 finally:
   shell('git checkout master')
