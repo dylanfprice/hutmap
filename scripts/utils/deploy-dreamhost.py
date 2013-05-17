@@ -23,6 +23,7 @@ successful = False
 try:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   shell('rm public/static/css/* public/static/js/*', shell=True)
 >>>>>>> 107f4d3... shell=True
@@ -30,6 +31,9 @@ try:
   shutil.rmtree('public/static/css', ignore_errors=True)
   shutil.rmtree('public/static/js', ignore_errors=True)
 >>>>>>> 2f3e6d0... rmtree
+=======
+  shell('rm public/static/css/* public/static/js/*')
+>>>>>>> b51b284... Remove css and js.
   shell('git pull origin dreamhost')
   shell('git checkout dreamhost')
   shell('git merge -s resolve master')
