@@ -44,4 +44,4 @@ finally:
     print('Or all in one go:')
     print('  ssh hutmap@hutmap.com "bash -s {0}" < scripts/utils/deploy-dreamhost-remote.sh\n'.format(vers))
   else:
-    print('\n Deploy failed. Look at the stack trace printed above for more details.\n')
+    print('\n Deploy failed. Look at the stack trace printed below for more details.\n')
