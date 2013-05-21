@@ -19,6 +19,11 @@
     $scope.selectedHutRegion;
     $scope.selectedHutAgency;
 
+    $scope.gridOptions = { 
+      data: 'filteredHuts',
+      columnDefs: [{field:'name', displayName:'Name'}, {field:'types', displayName:'Types'}]
+    };
+
     $scope.resetLoading = function() { $scope.loading = 0; };
     $scope.incLoading = function() { $scope.loading++; };
     $scope.decLoading = function() { if ($scope.loading > 0) { $scope.loading--; } };

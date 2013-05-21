@@ -1,12 +1,29 @@
 {% verbatim %}
-<div class="hut-list">
-  <ul>
-    <li ng-repeat="hut in filteredHuts | limitTo:10">
-      {% endverbatim %}
-        {% include "partials/components/hut_img.html" with hut_object_name="hut" width="40" height="40" %}
-      {% verbatim %}
-      {{hut.name}}
-    </li>
-  </ul>
+<div class="hut-grid" ng-grid="gridOptions"></div>
+<!--
+<div class="hut-list-headers">
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Types</th>
+      <th>Seasons</th>
+    </tr>
+  </table>
 </div>
+<div class="hut-list" ng-show="filteredHuts.length">
+  <table>
+    <tbody>
+      <tr ng-repeat="hut in filteredHuts | limitTo:10" ng-class-even="'alt'">
+        <td>{{hut.name}}</td>
+        <td>{{hut.types}}</td>
+        <td>
+          <i class="icon-sun" tooltip="Summer" tooltip-placement="left" ng-show="hut.open_summer"></i>
+          <i class="icon-snowflake" tooltip="Winter" tooltip-placement="left" ng-show="hut.open_winter"></i>
+          <span ng-show="hut.open_summer == null && hut.open_winter == null">Unknown</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+-->
 {% endverbatim %}

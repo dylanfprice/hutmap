@@ -35,19 +35,20 @@
 }
 
 #filter-sidebar {
-  width: @filterBarWidth;
   float: left;
-  font-size: @fontSizeSmall;
   margin-top: @navbarHeight;
+  width: @filterBarWidth;
+  height: 100%;
+  font-size: @fontSizeSmall;
+  border-right: @borderColor solid @filterBarBorderWidth;
 
   .summary-info, .hut-filter-table {
     padding: 1em;
   }
 
   .summary-info {
-    background-color: fade(@searchBackgroundColor, 40%);
-    border-right: fade(@grayLight, 40%) solid 2px;
-    border-bottom: fade(@grayLight, 40%) solid 2px;
+    background-color: @altBgColor;
+    border-bottom: @borderColor solid @filterBarBorderWidth;
 
     i {
       .pointer;
@@ -95,10 +96,10 @@
 
 .map {
   position: absolute;
-  right: @hutBarWidth;
-  left: @filterBarWidth;
+  right: 0px;
+  left: @filterBarWidth + @filterBarBorderWidth;
   top: @navbarHeight;
-  bottom: 0px;
+  bottom: @hutBarHeight;
   z-index: 100;
 
   /* 
@@ -110,51 +111,65 @@
   }
 }
 
-#hut-sidebar {
-  width: @hutBarWidth;
-  float: right;
-  margin-top: @navbarHeight;
+#hut-bottombar {
+  position: absolute;
+  left: @filterBarWidth + @filterBarBorderWidth;
+  right: 0;
+  bottom: 0;
+  height: @hutBarHeight;
+  font-size: @fontSizeSmall;
+  border-left: @borderColor solid @filterBarBorderWidth;
 
-  .hut-info-title {
-    text-align: center;
-  }
-
-  .hut-detail-table {
+  .hut-grid {
+    height: @hutBarHeight;
     width: 100%;
     font-size: @fontSizeSmall;
-    text-align: left;
+    background: transparent;
+  }
 
-    .hut-detail-img {
-      .center;
-      width: @hutInfoImgWidth;
-      height: @hutInfoImgHeight;
-      margin-bottom: 10px;
+  .ngGrid {
+    background: transparent;
+  }
 
-      img {
-        min-width: @hutInfoImgWidth;
-        max-width: @hutInfoImgWidth;
-        min-height: @hutInfoImgHeight;
-        max-height: @hutInfoImgHeight;
-      }
-    }
+  .ngRow.even {
+    background-color: none;
+  }
+
+  .ngRow.odd {
+    background-color: fadeout(@altBgColor, 10%);
+  }
+
+  .ngRow.selected {
+      background-color: rgb(201, 221, 225);
+  }
+
+  .hut-list-headers {
+    height: 25px;
+  }
+  .hut-list {
+    height: @hutBarHeight - 25px;
+    overflow-y: scroll;
 
     table {
-      .center;
-    }
+      border-collapse: collapse;
+      width: 100%;
 
-    .hut-detail-title {
-      color: @sidebarLabelColor;
-      padding-right: 20px;
-    }
+      th, td {
+        padding-left: 1em;
+      }
 
-    .hut-detail {
-      max-width: 120px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      th {
+        text-align: left;
+        background-color: darken(@altBgColor, 20%);
+      }
 
-      i {
-        font-size: 20px;
+      td {
+        padding-top: 5px;
+        border-top: @borderColor solid 1px;
+      }
+
+      .alt {
+        background-color: fadeout(@altBgColor, 10%);
       }
     }
   }
