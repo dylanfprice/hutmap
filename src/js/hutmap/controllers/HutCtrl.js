@@ -21,7 +21,10 @@
 
     $scope.gridOptions = { 
       data: 'filteredHuts',
-      columnDefs: [{field:'name', displayName:'Name'}, {field:'types', displayName:'Types'}]
+      showFilter: false,
+      columnDefs: [
+        {field:'name', displayName:'Name'}
+      ]
     };
 
     $scope.resetLoading = function() { $scope.loading = 0; };

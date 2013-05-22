@@ -99,7 +99,7 @@
   right: 0px;
   left: @filterBarWidth + @filterBarBorderWidth;
   top: @navbarHeight;
-  bottom: @hutBarHeight;
+  bottom: @hutBarHeight + @filterBarBorderWidth;
   z-index: 100;
 
   /* 
@@ -119,57 +119,75 @@
   height: @hutBarHeight;
   font-size: @fontSizeSmall;
   border-left: @borderColor solid @filterBarBorderWidth;
+  border-top: @borderColor solid @filterBarBorderWidth;
+
+  .ngGrid {
+    background-color: transparent;
+  }
 
   .hut-grid {
     height: @hutBarHeight;
-    width: 100%;
+    width: 25%;
+    float: left;
     font-size: @fontSizeSmall;
-    background: transparent;
+    background-color: transparent;
+    border-color: @borderColor;
+    color: @grayDark;
+    .clearfix;
+
+    .ngTopPanel {
+      background-color: darken(@altBgColor, 20%);
+    }
+
+    .ngHeaderCell {
+      border-color: @borderColor;
+    }
+
+    .ngRow {
+      border-color: @borderColor;
+    }
+
+    .ngRow.even {
+      background-color: transparent;
+    }
+
+    .ngRow.odd {
+      background-color: fadeout(@altBgColor, 10%);
+    }
+
+    .ngRow.selected {
+        background-color: fade(#f2f261, 40%);
+    }
   }
 
-  .ngGrid {
-    background: transparent;
-  }
+  .hut-info {
+    height: @hutBarHeight;
+    width: 75%;
+    float: right;
 
-  .ngRow.even {
-    background-color: none;
-  }
+    .hut-info-title {
+      text-align: center;
+    }
 
-  .ngRow.odd {
-    background-color: fadeout(@altBgColor, 10%);
-  }
+    .hut-detail-img {
+      width: 180px;
+      height: 130px;
+      .center;
+    }
 
-  .ngRow.selected {
-      background-color: rgb(201, 221, 225);
-  }
+    .hut-detail-title {
+      color: @sidebarLabelColor;
+      padding-right: 20px;
+    }
 
-  .hut-list-headers {
-    height: 25px;
-  }
-  .hut-list {
-    height: @hutBarHeight - 25px;
-    overflow-y: scroll;
+    .hut-detail {
+      max-width: 120px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
-    table {
-      border-collapse: collapse;
-      width: 100%;
-
-      th, td {
-        padding-left: 1em;
-      }
-
-      th {
-        text-align: left;
-        background-color: darken(@altBgColor, 20%);
-      }
-
-      td {
-        padding-top: 5px;
-        border-top: @borderColor solid 1px;
-      }
-
-      .alt {
-        background-color: fadeout(@altBgColor, 10%);
+      i {
+        font-size: 20px;
       }
     }
   }
