@@ -20,13 +20,15 @@ describe('FilterCtrl', function() {
 
     hutScope.huts = [
       {id: 1, open_summer: true, open_winter: true, types: ['Yurt', 'Emergency Shelter']},
-      {id: 2, open_summer: true, open_winter: false, types: ['Hostel']}
+      {id: 2, open_summer: true, open_winter: false, types: ['Hostel']},
+      {id: 3, open_summer: null, open_winter: null, types: ['Hut']}
     ];
   }));
 
-  function setSeason(winter, summer) {
+  function setSeason(winter, summer, unknown) {
     filterScope.season.winter = winter;
     filterScope.season.summer = summer;
+    filterScope.season.unknown = unknown;
   }
 
   function setShelterType(emergencyShelter, fireLookouts, hutsAndYurts, compounds) {
@@ -45,28 +47,40 @@ describe('FilterCtrl', function() {
 
   describe('filter by season', function() {
 
-    it('winter OR winter and summer', function() {
-      setSeason(true, false);
+    it('winter', function() {
+      setSeason(true, false, false);
       setShelterType(true, true, true, true);
       filter();
       expect(hutScope.filteredHutIds[1]).toBeDefined();
       expect(hutScope.filteredHutIds[2]).toBeUndefined();
+      expect(hutScope.filteredHutIds[3]).toBeUndefined();
     });
 
-    it('summer OR summer and winter', function() {
-      setSeason(false, true);
+    it('summer', function() {
+      setSeason(false, true, false);
       setShelterType(true, true, true, true);
       filter();
       expect(hutScope.filteredHutIds[1]).toBeDefined();
       expect(hutScope.filteredHutIds[2]).toBeDefined();
+      expect(hutScope.filteredHutIds[3]).toBeUndefined();
     });
 
-    it('winter OR summer OR winter AND summer', function() {
-      setSeason(true, true);
+    it('winter or summer', function() {
+      setSeason(true, true, false);
       setShelterType(true, true, true, true);
       filter();
       expect(hutScope.filteredHutIds[1]).toBeDefined();
       expect(hutScope.filteredHutIds[2]).toBeDefined();
+      expect(hutScope.filteredHutIds[3]).toBeUndefined();
+    });
+
+    it('winter or unknown', function() {
+      setSeason(true, false, true);
+      setShelterType(true, true, true, true);
+      filter();
+      expect(hutScope.filteredHutIds[1]).toBeDefined();
+      expect(hutScope.filteredHutIds[2]).toBeUndefined();
+      expect(hutScope.filteredHutIds[3]).toBeDefined();
     });
 
   });
@@ -74,29 +88,32 @@ describe('FilterCtrl', function() {
   describe('filters by shelter type', function() {
 
     it('works with any shelter type', function() {
-      setSeason(false, false);
+      setSeason(true, true, true);
       setShelterType(true, true, false, true);
       filterScope.setAnyShelterType(true);
       filterScope.$digest();
       filter();
       expect(hutScope.filteredHutIds[1]).toBeDefined();
       expect(hutScope.filteredHutIds[2]).toBeDefined();
+      expect(hutScope.filteredHutIds[3]).toBeDefined();
     });
 
     it('works for a single shelter type', function() {
-      setSeason(false, false);
+      setSeason(true, true, true);
       setShelterType(false, false, true, false);
       filter();
       expect(hutScope.filteredHutIds[1]).toBeDefined();
       expect(hutScope.filteredHutIds[2]).toBeUndefined();
+      expect(hutScope.filteredHutIds[3]).toBeDefined();
     });
 
     it('is fine with multiple matches on same hut', function() {
-      setSeason(false, false);
+      setSeason(true, true, true);
       setShelterType(true, false, true, false);
       filter();
       expect(hutScope.filteredHutIds[1]).toBeDefined();
       expect(hutScope.filteredHutIds[2]).toBeUndefined();
+      expect(hutScope.filteredHutIds[3]).toBeDefined();
     });
 
     it('selecting any disables all shelter types', function() {

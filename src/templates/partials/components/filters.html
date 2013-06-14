@@ -2,12 +2,15 @@
 <div class="hut-filter-table">
   <div class="hut-filter-title">Season:</div>
   <ul class="hut-filter-list hut-filter-icons">
-    <li tooltip="{{seasonTooltip()}}" tooltip-placement="right">
-      <span class="hut-filter-item">
-        <i class="icon-sun"       ng-class="{'selected': season.summer}" ng-click="season.summer = !season.summer; filter();"></i>
+    <li>
+      <span class="hut-filter-item" tooltip="Select huts that are open in summer" tooltip-placement="right">
+        <i class="icon-sun"       ng-class="{'selected': season.summer}"  ng-click="season.summer = !season.summer; filter();"></i>
       </span>
-      <span class="hut-filter-item">
-        <i class="icon-snowflake" ng-class="{'selected': season.winter}" ng-click="season.winter = !season.winter; filter();"></i>
+      <span class="hut-filter-item" tooltip="Select huts that are open in winter" tooltip-placement="right">
+        <i class="icon-snowflake" ng-class="{'selected': season.winter}"  ng-click="season.winter = !season.winter; filter();"></i>
+      </span>
+      <span class="hut-filter-item" tooltip="Select huts that have no known season information" tooltip-placement="right">
+        <i class="icon-question"  ng-class="{'selected': season.unknown}" ng-click="season.unknown = !season.unknown; filter();"></i>
       </span>
     </li>
   </ul>
