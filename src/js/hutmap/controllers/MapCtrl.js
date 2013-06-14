@@ -10,6 +10,7 @@
 
     var scopeInitialized = $q.defer();
     var hutsInitialized = $q.defer();
+    var markerTooltips = {};
 
     $scope.center;
     $scope.zoom;
@@ -92,6 +93,31 @@
         clickSelected();
       }
     });
+
+    $scope.setHutMarkerEvents = function(hutMarkerEvents) {
+      $scope.hutMarkerEvents = hutMarkerEvents;
+    };
+
+    $scope.showOverlay = function(marker, object) {
+      console.log('here2');
+      var tooltip = markerTooltips[marker.getPosition().toUrlValue()];
+      if (tooltip) {
+        tooltip.show();
+      } else {
+        var tooltip = new Tooltip({
+          marker: marker,
+          content: object.name,
+          cssClass: 'marker-tooltip'
+        });
+        markerTooltips[marker.getPosition().toUrlValue()] = tooltip;
+      }
+    };
+
+    $scope.hideOverlay = function(marker, object) {
+      angular.forEach(markerTooltips, function(tooltip) {
+        tooltip.hide();
+      });
+    };
 
     updateScope();
 

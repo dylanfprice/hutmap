@@ -109,6 +109,14 @@
   img { 
       max-width: none;
   }
+
+  .marker-tooltip {
+    font-size: @fontSizeSmall;
+    border:thin 1px #eee;
+    background-color:#FFFBF0;
+    padding:5px;
+    width: 200px;
+  }
 }
 
 #hut-bottombar {
@@ -121,49 +129,38 @@
   border-left: @borderColor solid @filterBarBorderWidth;
   border-top: @borderColor solid @filterBarBorderWidth;
 
-  .ngGrid {
-    background-color: transparent;
+  i {
+    font-size: 20px;
   }
 
-  .hut-grid {
+  .hut-list {
+    display: inline-block;
+    overflow-y: scroll; 
     height: @hutBarHeight;
-    width: 25%;
+    width: 45%;
     float: left;
-    font-size: @fontSizeSmall;
-    background-color: transparent;
-    border-color: @borderColor;
-    color: @grayDark;
-    .clearfix;
 
-    .ngTopPanel {
-      background-color: darken(@altBgColor, 20%);
-    }
+    table {
+      width: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
 
-    .ngHeaderCell {
-      border-color: @borderColor;
-    }
+      tr {
+        border-bottom: @borderColor solid @filterBarBorderWidth;
+      }
 
-    .ngRow {
-      border-color: @borderColor;
-    }
-
-    .ngRow.even {
-      background-color: transparent;
-    }
-
-    .ngRow.odd {
-      background-color: fadeout(@altBgColor, 10%);
-    }
-
-    .ngRow.selected {
-        background-color: fade(#f2f261, 40%);
+      td {
+        text-align: left;
+      }
     }
   }
 
   .hut-info {
     height: @hutBarHeight;
-    width: 75%;
-    float: right;
+    width: 50%;
+    position: absolute;
+    right: 0;
+    bottom: 0;
 
     .hut-info-title {
       text-align: center;
@@ -186,9 +183,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
 
-      i {
-        font-size: 20px;
-      }
     }
   }
 }

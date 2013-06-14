@@ -1,5 +1,5 @@
 {% verbatim %}
-<div class="hut-info" ng-controller="HutInfoCtrl">
+<div class="hut-info">
   <div class="row-fluid">
     <div class="span4">
       <h4 class="hut-info-title muted" ng-show="selectedHut == null">Select a hut.</h4>
@@ -22,7 +22,7 @@
         </tr>
         <tr>
           <td class="hut-detail-title">Accuracy:</td>
-          <td class="hut-detail"><span class="rating-5star up1" ng-class="'rating-' + (selectedHut.accuracy * 10)" tooltip="{{accuracy_tooltip[selectedHut.accuracy]}}" tooltip-placement="left"></span></td>
+          <td class="hut-detail"><span class="rating-5star up1" ng-class="'rating-' + (selectedHut.location_accuracy * 10)" tooltip="{{accuracy_tooltip[selectedHut.location_accuracy]}}" tooltip-placement="left"></span></td>
         </tr>
         <tr>
           <td class="hut-detail-title">Agency:</td>

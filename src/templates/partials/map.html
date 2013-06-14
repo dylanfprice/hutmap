@@ -22,17 +22,19 @@
                         gm-get-lat-lng="{lat:object.location.coordinates[1], lng:object.location.coordinates[0]}" 
                         gm-get-marker-options="getMarkerOptions(object)"
                         gm-events="hutMarkerEvents"
-                        gm-on-click="selectHut(marker, object)">
+                        gm-on-click="selectHut(marker, object)"
+                        gm-on-mouseover="showOverlay(marker, object)"
+                        gm-on-mouseout="hideOverlay(marker, object)">
             </gm-markers>
           </gm-map>
+          <div id="hut-bottombar" ng-controller="HutInfoCtrl">
+            {% endverbatim %}
+              {% include "partials/components/hut_list.html" %}
+              {% include "partials/components/hut_info.html" %}
+            {% verbatim %}
+          </div>
         </div>
       </div>
-    </div>
-    <div id="hut-bottombar">
-      {% endverbatim %}
-        {% include "partials/components/hut_list.html" %}
-        {% include "partials/components/hut_info.html" %}
-      {% verbatim %}
     </div>
   </div>
   </div>

@@ -2,7 +2,7 @@
 
 (function() {
   angular.module('hutmap', ['hutmapServices', 'hutmapFilters',
-    'hutmapDirectives', 'AngularGM', 'ngResource', 'ui.bootstrap', 'ngGrid']).
+    'hutmapDirectives', 'AngularGM', 'ngResource', 'ui.bootstrap']).
 
   config(
     ['$routeProvider', '$locationProvider', 'PlacesProvider', 
