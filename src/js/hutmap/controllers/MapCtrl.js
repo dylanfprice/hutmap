@@ -106,7 +106,6 @@
         var tooltip = new MarkerTooltip({
           marker: marker,
           content: object.name,
-          cssClass: 'marker-tooltip'
         });
         markerTooltips[marker.getPosition().toUrlValue()] = tooltip;
       }

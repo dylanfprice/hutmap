@@ -14,7 +14,6 @@
     ];
 
     $scope.mouseoverHut = function(hut) {
-      console.log('here');
       $scope.setHutMarkerEvents([{
         event: 'mouseover',
         locations: [new google.maps.LatLng(hut.location.coordinates[1], hut.location.coordinates[0])]

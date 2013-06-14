@@ -6,7 +6,7 @@
   factory('MarkerTooltip', [function() {
     /*
     Constructor for the tooltip
-    @ param options an object containing: marker(required), content(required) and cssClass(a css class, optional)
+    @ param options an object containing: marker(required), content(required)
     @ see google.maps.OverlayView()
     */
     function MarkerTooltip(options) {
@@ -15,7 +15,6 @@
       this.marker_ = options.marker;
       this.content_ = options.content;
       this.map_ = options.marker.get('map');
-      this.cssClass_ = options.cssClass||null;
 
       // We define a property to hold the content's
       // div. We'll actually create this div
@@ -36,24 +35,26 @@
     MarkerTooltip.prototype.onAdd = function() {
 
       // Create the DIV and set some basic attributes.
-      var div = document.createElement('DIV');
-      div.style.position = "absolute";
+      var outerDiv = document.createElement('DIV');
+      var innerDiv = document.createElement('DIV');
+      outerDiv.appendChild(innerDiv);
+      outerDiv.style.position = "absolute";
 
-      if(this.cssClass_)
-        div.className += " "+this.cssClass_;
+      outerDiv.className += " tooltip fade in";
+      innerDiv.className += " tooltip-inner";
 
-        //Attach content to the DIV.
-        div.innerHTML = this.content_;
+      //Attach content to the DIV.
+      innerDiv.innerHTML = this.content_;
 
-        // Set the overlay's div_ property to this DIV
-        this.div_ = div;
+      // Set the overlay's div_ property to this DIV
+      this.div_ = outerDiv;
 
-        // We add an overlay to a map via one of the map's panes.
-        // We'll add this overlay to the floatPane pane.
-        var panes = this.getPanes();
-        panes.floatPane.appendChild(this.div_);
-      
-      }
+      // We add an overlay to a map via one of the map's panes.
+      // We'll add this overlay to the floatPane pane.
+      var panes = this.getPanes();
+      panes.floatPane.appendChild(this.div_);
+    
+    }
 
     // Here we implement draw
     MarkerTooltip.prototype.draw = function() {
