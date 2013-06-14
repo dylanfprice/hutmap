@@ -51,8 +51,11 @@
     border-bottom: @borderColor solid @filterBarBorderWidth;
 
     i {
-      .pointer;
       text-shadow: 1px 1px 1px @grayLighter;
+
+      &::before {
+        .pointer;
+      }
     }
 
     .summary-filtered-hut-count {
@@ -79,16 +82,19 @@
       list-style-type: none; 
       color: darken(@grayLight, 10%);
 
-      &:hover {
-        .pointer;
-      }
-
       .selected {
         color: @grayDark;
       }
 
       .tooltip {
         text-shadow: none;
+      }
+    }
+
+    .hut-filter-item:hover {
+      .pointer;
+      i::before {
+        .pointer;
       }
     }
   }
@@ -110,12 +116,8 @@
       max-width: none;
   }
 
-  .marker-tooltip {
-    font-size: @fontSizeSmall;
-    border:thin 1px #eee;
-    background-color:#FFFBF0;
-    padding:5px;
-    width: 200px;
+  .tooltip {
+    min-width: 100px;
   }
 }
 
