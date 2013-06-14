@@ -1,12 +1,12 @@
 'use strict';
 
 (function () {
-  angular.module('hutmap').
+  angular.module('hutmap.controllers').
 
   controller('MapCtrl',
-    ['$scope', '$location', '$timeout', '$q', 'utils',
+    ['$scope', '$location', '$timeout', '$q', 'utils', 'MarkerTooltip',
 
-    function ($scope, $location, $timeout, $q, utils) {
+    function ($scope, $location, $timeout, $q, utils, MarkerTooltip) {
 
     var scopeInitialized = $q.defer();
     var hutsInitialized = $q.defer();
@@ -98,13 +98,12 @@
       $scope.hutMarkerEvents = hutMarkerEvents;
     };
 
-    $scope.showOverlay = function(marker, object) {
-      console.log('here2');
+    $scope.showMarkerTooltip = function(marker, object) {
       var tooltip = markerTooltips[marker.getPosition().toUrlValue()];
       if (tooltip) {
         tooltip.show();
       } else {
-        var tooltip = new Tooltip({
+        var tooltip = new MarkerTooltip({
           marker: marker,
           content: object.name,
           cssClass: 'marker-tooltip'
@@ -113,7 +112,7 @@
       }
     };
 
-    $scope.hideOverlay = function(marker, object) {
+    $scope.hideMarkerTooltip = function(marker, object) {
       angular.forEach(markerTooltips, function(tooltip) {
         tooltip.hide();
       });

@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  angular.module('hutmap').
+  angular.module('hutmap.controllers').
 
   controller('HutCtrl', 
     ['$scope', '$location', '$timeout', 'Huts',

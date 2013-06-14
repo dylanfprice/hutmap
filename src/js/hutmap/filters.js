@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  angular.module('hutmapFilters', []).
+  angular.module('hutmap.filters', []).
 
   /**
   * Truncate Filter

@@ -23,8 +23,8 @@
                         gm-get-marker-options="getMarkerOptions(object)"
                         gm-events="hutMarkerEvents"
                         gm-on-click="selectHut(marker, object)"
-                        gm-on-mouseover="showOverlay(marker, object)"
-                        gm-on-mouseout="hideOverlay(marker, object)">
+                        gm-on-mouseover="showMarkerTooltip(marker, object)"
+                        gm-on-mouseout="hideMarkerTooltip(marker, object)">
             </gm-markers>
           </gm-map>
           <div id="hut-bottombar" ng-controller="HutInfoCtrl">

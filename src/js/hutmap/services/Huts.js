@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  angular.module('hutmapServices', []).
+  angular.module('hutmap.services').
 
   factory('Huts', ['$http', '$q', 'utils', function($http, $q, utils) {
     var Huts = {};
@@ -87,78 +87,6 @@
     };
 
     return Huts;
-  }]).
-
-  provider('Places', [function() {
-    var PlacesProvider = {}
-
-    var bounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(-90, 180),
-      new google.maps.LatLng(90, -180)
-    );
-
-    PlacesProvider.bounds = function(latLngBounds) {
-      bounds = latLngBounds;
-    };
-
-    PlacesProvider.$get = function() {
-      var Places = {};
-
-      var elt = angular.element('<div id="google-attributions"></div>');
-      var placesService = new google.maps.places.PlacesService(elt[0]);
-      var autocompleteService = new google.maps.places.AutocompleteService();
-
-      function callback(success, error, result, status) {
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
-          success(result);
-        } else {
-          error(status);
-        }
-      }
-
-      Places.getPlacePredictions = function(input, success, error) {
-        autocompleteService.getPlacePredictions({input: input, bounds: bounds}, 
-            angular.bind(this, callback, success, error));
-      }
-
-      Places.getDetails = function(reference, success, error) {
-        placesService.getDetails({reference: reference}, 
-          angular.bind(this, callback, success, error));
-      };
-
-      Places.textSearch = function(request, success, error) {
-        placesService.textSearch(request, 
-            angular.bind(this, callback, success, error));
-      }
-
-      return Places;
-    };
-
-    return PlacesProvider;
-  }]).
-
-  factory('utils', [function() {
-    var utils = {};
-
-    utils.latLngFromUrlValue = function(urlValue) {
-      var array = urlValue.split(',');
-      return new google.maps.LatLng(array[0], array[1]);
-    }
-
-    utils.latLngFromHut = function(hut) {
-      return new google.maps.LatLng(hut.location.coordinates[1],
-        hut.location.coordinates[0]);
-    };
-    
-    utils.boundsFromUrlValue = function(urlValue) {
-      var array = urlValue.split(',');
-      return new google.maps.LatLngBounds(
-        new google.maps.LatLng(array[0], array[1]),
-        new google.maps.LatLng(array[2], array[3])
-      );
-    }
-
-    return utils;
   }]);
 
 })();
