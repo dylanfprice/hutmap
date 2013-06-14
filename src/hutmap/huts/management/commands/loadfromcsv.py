@@ -53,7 +53,7 @@ def get_bool(values, key):
   value = get(values, key)
   if value == None:
     return None
-  elif value == '0':
+  elif value == '1':
     return True
   else:
     return False
