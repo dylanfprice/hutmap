@@ -9,9 +9,9 @@
         ng-class="{
           'selected': hut.id == selectedHut.id
         }">
-      <td>{{hut.name}}</span>
-      <td><i class="icon-bullseye" ng-repeat="count in range(0, hut.location_accuracy)"></i></td>
-      <td><i class="icon-user"> {{hut.capacity_max}}<span ng-show="!hut.capacity_max">?</span></i></td>
+      <td class="name">{{hut.name}}</td>
+      <td class="accuracy"><i class="icon-bullseye" ng-repeat="count in range(0, hut.location_accuracy)"></i></td>
+      <td class="capacity"><i class="icon-user"></i> {{hut.capacity_max}}<span ng-show="!hut.capacity_max">?</span></td>
     </tr>
   </table>
 </div>

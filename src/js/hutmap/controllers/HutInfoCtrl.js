@@ -4,13 +4,13 @@
   angular.module('hutmap.controllers').
 
   controller('HutInfoCtrl', ['$scope', function($scope) {
-    $scope.accuracy_tooltip = [
-      'Coordinates provided, but unverifiable.',
-      'Wild ass guess.',
-      'Slightly better than a wild ass guess.',
-      'Found structure on satellite or topo map.',
-      'Surveyed with GPS by the Hutmap team.',
-      'Found on a map and surveyed by the Hutmap team.'  
+    $scope.accuracy_text = [
+      'Unverified',
+      'Wild guess',
+      'Guess',
+      'Found on satellite or topo',
+      'Surveyed by GPS',
+      'Surveyed by GPS and found on satellite or topo'  
     ];
 
     $scope.mouseoverHut = function(hut) {
