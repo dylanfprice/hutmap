@@ -18,6 +18,7 @@
     $scope.selectedHut;
     $scope.selectedHutRegion;
     $scope.selectedHutAgency;
+    $scope.loadNewHuts = true;
 
     $scope.gridOptions = { 
       data: 'filteredHuts',

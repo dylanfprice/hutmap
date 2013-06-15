@@ -81,7 +81,7 @@
     $scope.$watch('zoom', valueChange);
     $scope.$watch('selectedHut', valueChange);
     $scope.$watch('bounds', function(bounds) {
-      if (bounds) {
+      if (bounds && $scope.loadNewHuts) {
         $scope.setQuery({
           bounds: bounds
         });

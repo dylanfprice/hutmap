@@ -9,7 +9,15 @@
     <span class="summary-total-hut-count">{{huts.length}}</span>
   </span>
   <br/>
-  <i class="icon-refresh" ng-click="resetFilters()"></i> reset all filters
+  <i class="icon-refresh" 
+    ng-click="resetFilters()"></i>
+    reset all filters<br/>
+  <i ng-click="loadNewHuts = !loadNewHuts" 
+     ng-class="{
+       'icon-check': !loadNewHuts,
+       'icon-check-empty': loadNewHuts
+     }"
+     ></i> freeze huts
 </div>
 {% endverbatim %}
 
