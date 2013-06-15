@@ -160,7 +160,7 @@
         border-bottom: @borderColor solid @filterBarBorderWidth;
 
         &.selected {
-          background-color: fade(yellow, 50%);
+          background-color: fade(@yellow, 50%);
         }
       }
 
@@ -172,6 +172,15 @@
         }
         &.accuracy {
           width: 25%;
+          .red {
+            color: darken(@red, 20%);
+          }
+          .yellow {
+            color: darken(@yellow, 20%);
+          }
+          .green {
+            color: darken(@green, 20%);
+          }
         }
         &.capacity {
           width: 25%;
@@ -196,20 +205,30 @@
       }
 
       .hut-detail-img {
+        .center;
         width: 180px;
         height: 130px;
-        .center;
+
+        img {
+          width: 180px;
+          height: 130px;
+        }
       }
     }
 
 
     .hut-info-right {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      height: 50%;
       width: 60%;
-      float: right;
+      margin: -10% 0 0 0;
 
       .hut-detail-title {
         color: @sidebarLabelColor;
         padding-right: 20px;
+        vertical-align: top;
       }
 
       .hut-detail {

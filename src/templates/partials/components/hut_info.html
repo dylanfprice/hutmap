@@ -12,34 +12,6 @@
   <div class="hut-info-right">
     <table ng-hide="selectedHut == null">
       <tr>
-        <td class="hut-detail-title">Region:</td>
-        <td class="hut-detail"><span>{{selectedHutRegion.region}}</span></td>
-      </tr>
-      <tr>
-        <td class="hut-detail-title">Location:</td>
-        <td class="hut-detail">{{selectedHut.location.coordinates[1]|number:2}}, {{selectedHut.location.coordinates[0]|number:2}}</td>
-      </tr>
-      <tr>
-        <td class="hut-detail-title">Location Accuracy:</td>
-        <td>
-          {{accuracy_text[selectedHut.location_accuracy]}}
-          <span ng-show="selectedHut.location_accuracy < 3 && selectedHut.location_references.length > 0">
-            , references: 
-            <ul>
-              <li class="hut-detail" ng-repeat="ref in selectedHut.location_references">
-              <a ng-href="{{ref}}" target="_blank">{{ref}}</a>
-              </li>
-            </ul>
-          </span>
-        </td>
-      </tr>
-      <tr>
-        <td class="hut-detail-title">Agency:</td>
-        <td class="hut-detail">
-          <a ng-href="{{selectedHutAgency.url}}" target="_blank">{{selectedHutAgency.name}}</a>
-        </td>
-      </tr>
-      <tr>
         <td class="hut-detail-title">Hut Url:</td>
         <td class="hut-detail">
           <a ng-href="{{selectedHut.hut_url}}" target="_blank">{{selectedHut.hut_url}}</a>
@@ -57,6 +29,25 @@
           <span ng-show="selectedHut.open_summer == null && selectedHut.open_winter == null">Unknown</span>
         </td>
       </tr>
+      <tr>
+        <td class="hut-detail-title">Location:</td>
+        <td class="hut-detail">{{selectedHut.location.coordinates[1]|number:2}}, {{selectedHut.location.coordinates[0]|number:2}}</td>
+      </tr>
+      <tr>
+        <td class="hut-detail-title">Accuracy:</td>
+        <td>
+          {{accuracy_text[selectedHut.location_accuracy]}}
+          <span ng-show="selectedHut.location_accuracy < 3 && selectedHut.location_references.length > 0">
+            &mdash; references: 
+            <ul>
+              <li class="hut-detail" ng-repeat="ref in selectedHut.location_references">
+              <a ng-href="{{ref}}" target="_blank">{{ref}}</a>
+              </li>
+            </ul>
+          </span>
+        </td>
+      </tr>
+
     </table>
   </div>
 </div>
