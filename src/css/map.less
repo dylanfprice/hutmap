@@ -35,23 +35,28 @@
 }
 
 #filter-sidebar {
-  width: @filterBarWidth;
   float: left;
-  font-size: @fontSizeSmall;
   margin-top: @navbarHeight;
+  width: @filterBarWidth;
+  height: 100%;
+  font-size: @fontSizeSmall;
+  border-right: @borderColor solid @filterBarBorderWidth;
 
   .summary-info, .hut-filter-table {
     padding: 1em;
   }
 
   .summary-info {
-    background-color: fade(@searchBackgroundColor, 40%);
-    border-right: fade(@grayLight, 40%) solid 2px;
-    border-bottom: fade(@grayLight, 40%) solid 2px;
+    background-color: @altBgColor;
+    border-bottom: @borderColor solid @filterBarBorderWidth;
 
     i {
-      .pointer;
       text-shadow: 1px 1px 1px @grayLighter;
+      margin-right: 2px;
+
+      &::before {
+        .pointer;
+      }
     }
 
     .summary-filtered-hut-count {
@@ -78,10 +83,6 @@
       list-style-type: none; 
       color: darken(@grayLight, 10%);
 
-      &:hover {
-        .pointer;
-      }
-
       .selected {
         color: @grayDark;
       }
@@ -90,15 +91,30 @@
         text-shadow: none;
       }
     }
+
+    .hut-filter-item:hover {
+      .pointer;
+      i::before {
+        .pointer;
+      }
+    }
+
+    // special case since this is a different font from snow and sun icons
+    .icon-question {
+      position: relative;
+      top: -3px;
+      right: -3px;
+      font-size: @fontSizeLarge + 2px;
+    }
   }
 }
 
 .map {
   position: absolute;
-  right: @hutBarWidth;
-  left: @filterBarWidth;
+  right: 0px;
+  left: @filterBarWidth + @filterBarBorderWidth;
   top: @navbarHeight;
-  bottom: 0px;
+  bottom: @hutBarHeight + @filterBarBorderWidth;
   z-index: 100;
 
   /* 
@@ -108,53 +124,118 @@
   img { 
       max-width: none;
   }
+
+  .tooltip {
+    min-width: 100px;
+  }
 }
 
-#hut-sidebar {
-  width: @hutBarWidth;
-  float: right;
-  margin-top: @navbarHeight;
+#hut-bottombar {
+  position: absolute;
+  left: @filterBarWidth + @filterBarBorderWidth;
+  right: 0;
+  bottom: 0;
+  height: @hutBarHeight;
+  font-size: @fontSizeSmall;
+  border-left: @borderColor solid @filterBarBorderWidth;
+  border-top: @borderColor solid @filterBarBorderWidth;
 
-  .hut-info-title {
-    text-align: center;
+  i {
+    font-size: 20px;
   }
 
-  .hut-detail-table {
-    width: 100%;
-    font-size: @fontSizeSmall;
-    text-align: left;
+  .hut-list {
+    display: inline-block;
+    overflow-y: scroll; 
+    height: @hutBarHeight;
+    width: 45%;
+    float: left;
 
-    .hut-detail-img {
-      .center;
-      width: @hutInfoImgWidth;
-      height: @hutInfoImgHeight;
-      margin-bottom: 10px;
+    table {
+      width: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
 
-      img {
-        min-width: @hutInfoImgWidth;
-        max-width: @hutInfoImgWidth;
-        min-height: @hutInfoImgHeight;
-        max-height: @hutInfoImgHeight;
+      tr {
+        border-bottom: @borderColor solid @filterBarBorderWidth;
+
+        &.selected {
+          background-color: fade(@yellow, 50%);
+        }
+      }
+
+      td {
+        text-align: left;
+
+        &.name {
+          width: 50%;
+        }
+        &.accuracy {
+          width: 25%;
+          .red {
+            color: darken(@red, 20%);
+          }
+          .yellow {
+            color: darken(@yellow, 20%);
+          }
+          .green {
+            color: darken(@green, 20%);
+          }
+        }
+        &.capacity {
+          width: 25%;
+        }
+      }
+    }
+  }
+
+  .hut-info {
+    height: @hutBarHeight;
+    width: 55%;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    .hut-info-left {
+      width: 40%;
+      float: left;
+
+      .hut-info-title {
+        text-align: center;
+      }
+
+      .hut-detail-img {
+        .center;
+        width: 180px;
+        height: 130px;
+
+        img {
+          width: 180px;
+          height: 130px;
+        }
       }
     }
 
-    table {
-      .center;
-    }
 
-    .hut-detail-title {
-      color: @sidebarLabelColor;
-      padding-right: 20px;
-    }
+    .hut-info-right {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      height: 50%;
+      width: 60%;
+      margin: -10% 0 0 0;
 
-    .hut-detail {
-      max-width: 120px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      .hut-detail-title {
+        color: @sidebarLabelColor;
+        padding-right: 20px;
+        vertical-align: top;
+      }
 
-      i {
-        font-size: 20px;
+      .hut-detail {
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }

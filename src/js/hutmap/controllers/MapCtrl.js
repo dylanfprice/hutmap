@@ -1,15 +1,16 @@
 'use strict';
 
 (function () {
-  angular.module('hutmap').
+  angular.module('hutmap.controllers').
 
   controller('MapCtrl',
-    ['$scope', '$location', '$timeout', '$q', 'utils',
+    ['$scope', '$location', '$timeout', '$q', 'utils', 'MarkerTooltip',
 
-    function ($scope, $location, $timeout, $q, utils) {
+    function ($scope, $location, $timeout, $q, utils, MarkerTooltip) {
 
     var scopeInitialized = $q.defer();
     var hutsInitialized = $q.defer();
+    var markerTooltips = {};
 
     $scope.center;
     $scope.zoom;
@@ -80,7 +81,7 @@
     $scope.$watch('zoom', valueChange);
     $scope.$watch('selectedHut', valueChange);
     $scope.$watch('bounds', function(bounds) {
-      if (bounds) {
+      if (bounds && $scope.loadNewHuts) {
         $scope.setQuery({
           bounds: bounds
         });
@@ -92,6 +93,29 @@
         clickSelected();
       }
     });
+
+    $scope.setHutMarkerEvents = function(hutMarkerEvents) {
+      $scope.hutMarkerEvents = hutMarkerEvents;
+    };
+
+    $scope.showMarkerTooltip = function(marker, object) {
+      var tooltip = markerTooltips[marker.getPosition().toUrlValue()];
+      if (tooltip) {
+        tooltip.show();
+      } else {
+        var tooltip = new MarkerTooltip({
+          marker: marker,
+          content: object.name,
+        });
+        markerTooltips[marker.getPosition().toUrlValue()] = tooltip;
+      }
+    };
+
+    $scope.hideMarkerTooltip = function(marker, object) {
+      angular.forEach(markerTooltips, function(tooltip) {
+        tooltip.hide();
+      });
+    };
 
     updateScope();
 

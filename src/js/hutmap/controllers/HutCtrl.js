@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  angular.module('hutmap').
+  angular.module('hutmap.controllers').
 
   controller('HutCtrl', 
     ['$scope', '$location', '$timeout', 'Huts',
@@ -18,6 +18,15 @@
     $scope.selectedHut;
     $scope.selectedHutRegion;
     $scope.selectedHutAgency;
+    $scope.loadNewHuts = true;
+
+    $scope.gridOptions = { 
+      data: 'filteredHuts',
+      showFilter: false,
+      columnDefs: [
+        {field:'name', displayName:'Name'}
+      ]
+    };
 
     $scope.resetLoading = function() { $scope.loading = 0; };
     $scope.incLoading = function() { $scope.loading++; };

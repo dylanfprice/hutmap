@@ -1,15 +1,23 @@
 {% verbatim %}
 <div class="summary-info">
-  <span ng-hide="filteredHuts.length && huts.length">
+  <span ng-hide="huts.length">
     No huts in view
   </span>
-  <span ng-show="filteredHuts.length && huts.length">
+  <span ng-show="huts.length">
     Selected 
     <span class="summary-filtered-hut-count">{{filteredHuts.length}}</span> of 
     <span class="summary-total-hut-count">{{huts.length}}</span>
   </span>
   <br/>
-  <i class="icon-refresh" ng-click="resetFilters()"></i> reset all filters
+  <i class="icon-refresh" 
+    ng-click="resetFilters()"></i>
+    reset all filters<br/>
+  <i ng-click="loadNewHuts = !loadNewHuts" 
+     ng-class="{
+       'icon-check': !loadNewHuts,
+       'icon-check-empty': loadNewHuts
+     }"
+     ></i> freeze huts
 </div>
 {% endverbatim %}
 

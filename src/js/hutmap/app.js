@@ -1,8 +1,9 @@
 'use strict';
 
 (function() {
-  angular.module('hutmap', ['hutmapServices', 'hutmapFilters',
-    'hutmapDirectives', 'AngularGM', 'ngResource', 'ui.bootstrap']).
+  angular.module('hutmap', ['hutmap.services', 'hutmap.directives',
+    'hutmap.filters', 'hutmap.controllers', 'AngularGM', 'ngResource',
+    'ui.bootstrap']).
 
   config(
     ['$routeProvider', '$locationProvider', 'PlacesProvider', 

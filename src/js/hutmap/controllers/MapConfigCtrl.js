@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  angular.module('hutmap').
+  angular.module('hutmap.controllers').
 
   controller('MapConfigCtrl', 
     
@@ -20,7 +20,7 @@
     $scope.markerOptions = markerOptions;
 
     $scope.getMarkerOptions = function(hut) {
-      var opts = {title: hut.name};
+      var opts = {};
       if ($scope.filteredHuts && hut.id in $scope.filteredHutIds) {
         return angular.extend(opts, $scope.markerOptions.filteredHuts);
       } else {

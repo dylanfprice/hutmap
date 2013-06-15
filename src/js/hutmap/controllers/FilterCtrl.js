@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  angular.module('hutmap').
+  angular.module('hutmap.controllers').
 
   controller('FilterCtrl', 
     ['$scope', '$timeout',
@@ -12,24 +12,9 @@
     $scope.resetFilters = function() {
 
       $scope.season = {
-        winter: false,
-        summer: false,
-      };
-
-      $scope.seasonTooltip = function() {
-        var winter = $scope.season.winter;
-        var summer = $scope.season.summer;
-        var tooltip = "Showing huts that are open in "
-        if (winter && summer) {
-          tooltip += 'both winter and summer';
-        } else if (winter && !summer) {
-          tooltip += 'winter';
-        } else if (!winter && summer) {
-          tooltip += 'summer';
-        } else {
-          tooltip = 'Not filtering by season';
-        }
-        return tooltip;
+        winter: true,
+        summer: true,
+        unknown: true,
       };
 
       $scope.anyShelterType = true;
@@ -116,12 +101,9 @@
    
     function matchSeason(hut) {
       var season = $scope.season;
-      if (!season.winter && !season.summer) {
-        return true;
-      } else {
-        return (season.winter && hut.open_winter) ||
-               (season.summer && hut.open_summer);
-      }
+      return (season.summer && hut.open_summer) || 
+             (season.winter && hut.open_winter) || 
+             (season.unknown && (!hut.open_summer && !hut.open_winter));
     };
 
     function matchShelterType(hut, keywords) {

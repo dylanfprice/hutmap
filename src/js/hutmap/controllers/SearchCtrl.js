@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  angular.module('hutmap').
+  angular.module('hutmap.controllers').
 
   controller('SearchCtrl', 
     ['$scope', '$location', '$route', '$log', '$q', '$document', 'Places', 

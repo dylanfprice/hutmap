@@ -1,6 +1,7 @@
 from django.contrib.gis.geos import Polygon, Point, MultiPolygon
 from django.utils.datastructures import SortedDict
 from huts.models import Hut, Region, Agency
+from huts.utils.csv_serializer import CSVSerializer
 from tastypie import fields
 from tastypie.cache import SimpleCache
 from tastypie.contrib.gis.resources import ModelResource
@@ -9,21 +10,60 @@ class RegionResource(ModelResource):
   class Meta:
     queryset = Region.objects.all()
     allowed_methods = ['get']
+    serializer = CSVSerializer(formats=['json', 'csv'])
 
 class AgencyResource(ModelResource):
+  parent = fields.ForeignKey('AgencyResource', 'agency', full=False, null=True)
+
   class Meta:
+    max_limit = 0
     queryset = Agency.objects.all()
     allowed_methods = ['get']
+    serializer = CSVSerializer(formats=['json', 'csv'])
 
 class HutResource(ModelResource):
-  region = fields.ForeignKey(RegionResource, 'region', full=False)
-  agency = fields.ForeignKey(AgencyResource, 'agency', full=False)
+  region = fields.ForeignKey(RegionResource, 'region', full=False, null=True)
+  agency = fields.ForeignKey(AgencyResource, 'agency', full=False, null=True)
+  # list fields
+  location_references = fields.ListField(attribute='location_references', null=True)
+  designations = fields.ListField(attribute='designations', null=True)
+  systems = fields.ListField(attribute='systems', null=True)
+  alternate_names = fields.ListField(attribute='alternate_names', null=True)
+  access_no_snow = fields.ListField(attribute='access_no_snow', null=True)
+  types = fields.ListField(attribute='types', null=True)
+  services_included = fields.ListField(attribute='services_included', null=True)
 
   class Meta:
+    max_limit = 0
     queryset = Hut.objects.all()
     list_allowed_methods = ['get']
     detail_allowed_methods = ['get']
-    excludes = ['created', 'updated']
+    #excludes = ['created', 'updated']
+    serializer = CSVSerializer(formats=['json', 'csv'])
+    filtering = {
+      'name': ['startswith'],
+    }
+
+  def dehydrate(self, bundle):
+    format = self.determine_format(bundle.request)
+    if format == 'text/csv':
+      # separate location into lat and lon
+      location = bundle.data['location']
+      del bundle.data['location']
+      bundle.data['latitude'] = location['coordinates'][1]
+      bundle.data['longitude'] = location['coordinates'][0]
+
+      for key,value in bundle.data.iteritems():
+        if isinstance(value, bool):
+          bundle.data[key] = 1 if value else 0
+        elif value == None:
+          bundle.data[key] = ''
+        elif value == -1 or value == '-1' or value == ['-1']:
+          bundle.data[key] = 'NA'
+        elif isinstance(value, list):
+          bundle.data[key] = ','.join(value)
+
+    return bundle
 
 
 class HutSearchResource(ModelResource):
