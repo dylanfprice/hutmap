@@ -37,7 +37,7 @@ class HutSearchResourceTestCase(ResourceTestCase):
   def test_query_id_not_in(self):
     response = self.client.get(self.url, data={'!id__in': '3,4'})
     results = self.deserialize(response)
-    self.assertEqual(47, results['meta']['total_count'])
+    self.assertEqual(48, results['meta']['total_count'])
 
   def test_dehydrate_location(self):
     response = self.client.get(self.url, data={'id': '2'})
