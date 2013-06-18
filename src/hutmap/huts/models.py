@@ -1,5 +1,5 @@
 from django.contrib.gis.db import models
-from huts.utils.fields import CountryField, ListField
+from huts.model_fields import CountryField, ListField
 
 class Hut(models.Model):
   LOCATION_ACCURACY_CHOICES = (
