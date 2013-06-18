@@ -37,7 +37,14 @@
     zoom : 8,
     center : new google.maps.LatLng(46.87916, -120),
     mapTypeId : google.maps.MapTypeId.TERRAIN,
-    streetViewControl: false
+    streetViewControl: false,
+    panControlOptions: {
+      position: google.maps.ControlPosition.LEFT_CENTER
+    },
+    zoomControlOptions: {
+      position: google.maps.ControlPosition.LEFT_CENTER
+    },
+
   }).
 
   value('markerOptions', {

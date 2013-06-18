@@ -8,8 +8,12 @@
     <div id="loading-indicator" ng-show="loading">
       <i class="img-loading"></i> 
     </div>
+    <div id="show-filter-sidebar" ng-show="filterSidebarHidden">
+      <i class="icon-chevron-right" 
+        ng-click="setFilterSidebarHidden(false)" ></i>
+    </div>
     <div ng-controller="FilterCtrl">
-      <div id="filter-sidebar">
+      <div id="filter-sidebar" ng-class="{'filter-sidebar-hidden': filterSidebarHidden}">
         {% endverbatim %}
           {% include "partials/components/summary_info.html" %}
           {% include "partials/components/filters.html" %}
@@ -17,17 +21,20 @@
       </div>
       <div ng-controller="MapConfigCtrl">
         <div ng-controller="MapCtrl">
-          <gm-map class="map" gm-map-id="hutmapMapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">
-            <gm-markers gm-objects="huts" 
-                        gm-get-lat-lng="{lat:object.location.coordinates[1], lng:object.location.coordinates[0]}" 
-                        gm-get-marker-options="getMarkerOptions(object)"
-                        gm-events="hutMarkerEvents"
-                        gm-on-click="selectHut(marker, object)"
-                        gm-on-mouseover="showMarkerTooltip(marker, object)"
-                        gm-on-mouseout="hideMarkerTooltip(marker, object)">
-            </gm-markers>
-          </gm-map>
-          <div id="hut-bottombar" ng-controller="HutInfoCtrl">
+          <div id="map" ng-class="{'filter-sidebar-hidden': filterSidebarHidden}">
+            <gm-map class="map" 
+                    gm-map-id="hutmapMapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">
+              <gm-markers gm-objects="huts" 
+                          gm-get-lat-lng="{lat:object.location.coordinates[1], lng:object.location.coordinates[0]}" 
+                          gm-get-marker-options="getMarkerOptions(object)"
+                          gm-events="hutMarkerEvents"
+                          gm-on-click="selectHut(marker, object)"
+                          gm-on-mouseover="showMarkerTooltip(marker, object)"
+                          gm-on-mouseout="hideMarkerTooltip(marker, object)">
+              </gm-markers>
+            </gm-map>
+          </div>
+          <div id="hut-bottombar" ng-controller="HutInfoCtrl" ng-class="{'filter-sidebar-hidden': filterSidebarHidden}">
             {% endverbatim %}
               {% include "partials/components/hut_list.html" %}
               {% include "partials/components/hut_info.html" %}

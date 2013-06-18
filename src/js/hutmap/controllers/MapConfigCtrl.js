@@ -39,6 +39,12 @@
       $scope.setSelectedHut(hut);
     };
 
+    $scope.$on('gmapResized', function() {
+      gmapPromise.then(function(gmap) {
+        google.maps.event.trigger(gmap, 'resize');
+      });
+    });
+
     /**
      * Add new map types to our Google Map.
      * Add drag zoom control.
@@ -139,7 +145,8 @@
 
       gmap.enableKeyDragZoom({
         key: 'alt',
-        visualEnabled: true
+        visualEnabled: true,
+        visualPosition: google.maps.ControlPosition.LEFT_CENTER
       });
     });
   }]);

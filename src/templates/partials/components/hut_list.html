@@ -2,7 +2,7 @@
 <div class="hut-list clearfix">
   <table>
     <tr class="hut-list-item" 
-        ng-repeat="hut in filteredHuts" 
+        ng-repeat="hut in filteredHuts | orderBy:'+name'" 
         ng-mouseenter="mouseoverHut(hut)"
         ng-mouseleave="mouseoutHut(hut)"
         ng-click="clickHut(hut)"
@@ -10,14 +10,6 @@
           'selected': hut.id == selectedHut.id
         }">
       <td class="name">{{hut.name}}</td>
-      <td class="accuracy">
-        <i class="icon-bullseye"
-           ng-class="{
-             'red': hut.location_accuracy < 2,
-             'yellow': hut.location_accuracy < 3, 
-             'green': hut.location_accuracy >=3
-           }"></i></td>
-      <td class="capacity"><i class="icon-user"></i> {{hut.capacity_max}}<span ng-show="!hut.capacity_max">?</span></td>
     </tr>
   </table>
 </div>
