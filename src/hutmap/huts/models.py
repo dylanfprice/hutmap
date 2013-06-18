@@ -132,7 +132,9 @@ class Hut(models.Model):
     return u'{0}'.format(self.name)
 
 class Region(models.Model):
-  region = models.CharField(max_length=50)
+  region = models.CharField(max_length=50, unique=True)
+  created = models.DateField(auto_now_add=True)
+  updated = models.DateField(auto_now=True)
   #parent = models.ForeignKey('Region')
   #area = models.PolygonField(null=True, spatial_index=False)
   objects = models.GeoManager()
@@ -141,12 +143,16 @@ class Region(models.Model):
     return u'{0}'.format(self.region)
 
 class Agency(models.Model):
-  # Parent agency for this agency. null if unknown or not relevant (e.g. this
-  # agency is a parent to other agencies)
-  parent = models.ForeignKey('Agency', null=True)
   # Name of primary agency that manages and/or handles reservations for the
   # hut.
   name = models.CharField(max_length=100, unique=True, null=True)
+
+  created = models.DateField(auto_now_add=True)
+  updated = models.DateField(auto_now=True)
+
+  # Parent agency for this agency. null if unknown or not relevant (e.g. this
+  # agency is a parent to other agencies)
+  parent = models.ForeignKey('Agency', null=True)
   # contact info
   url = models.URLField(max_length=250, null=True)
   phone = models.PositiveSmallIntegerField(null=True)
