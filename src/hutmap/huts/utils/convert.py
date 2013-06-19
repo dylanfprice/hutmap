@@ -3,6 +3,7 @@ from csv_unicode import UnicodeDictReader, UnicodeDictWriter
 import codecs
 import re
 import validate
+import null_na
 
 OLD_TO_NEW = {
   'Hut_ID': None,
@@ -97,7 +98,7 @@ def handle_special_fields(value, new_field, new_row):
       new_row['fee_person_occupancy_min'] = m.group(3)
       return m.group(1)
     else:
-      new_row['fee_person_occupancy_min'] = validate.NA
+      new_row['fee_person_occupancy_min'] = null_na.CSV_NA
       return value
 
   if new_field.startswith('fee_hut'):
@@ -106,20 +107,20 @@ def handle_special_fields(value, new_field, new_row):
       new_row['fee_hut_occupancy_max'] = m.group(3)
       return m.group(1)
     else:
-      new_row['fee_hut_occupancy_max'] = validate.NA
+      new_row['fee_hut_occupancy_max'] = null_na.CSV_NA
       return value
 
   #if new_field == 'agency_parent':
-  #  return validate.NULL
+  #  return null_na.CSV_NULL
 
   if new_field == 'locked' and value == 'Manned':
-    return validate.NULL
+    return null_na.CSV_NULL
 
   if new_field.startswith('capacity') and value == 'various':
-    return validate.NULL
+    return null_na.CSV_NULL
 
   if new_field == 'services_included' and value == '0':
-    return validate.NA
+    return null_na.CSV_NA
 
   return value
 
@@ -129,9 +130,9 @@ def convert_value(value):
   commas into just numbers, etc. Returns the value that passed in value should
   have."""
   if value == '':
-    return validate.NULL
+    return null_na.CSV_NULL
   elif value == 'NA':
-    return validate.NA
+    return null_na.CSV_NA
   elif re.match(r'\d\d*,\d+', value):
     return value.replace(',', '')
   elif re.match('- \d+(.\d+)?', value):

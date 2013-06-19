@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext as _
+from huts.fields import ListFormField
 import ast
 
 class ListField(models.TextField):
@@ -27,6 +28,11 @@ class ListField(models.TextField):
   def value_to_string(self, obj):
     value = self._get_val_from_obj(obj)
     return self.get_db_prep_value(value, None)
+
+  def formfield(self, **kwargs):
+    defaults = {'form_class': ListFormField}
+    defaults.update(kwargs)
+    return super(ListField, self).formfield(**defaults)
 
 
 COUNTRIES_DICT = {

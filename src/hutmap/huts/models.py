@@ -22,12 +22,6 @@ class Hut(models.Model):
   created = models.DateField(auto_now_add=True)
   updated = models.DateField(auto_now=True)
 
-  # a tag for sites that are potentially sensitive to being publicized. We can
-  # choose to honor this or not when the time comes. I mostly only foresee this
-  # as an issue for certain BC/Alberta huts that I learned about through
-  # bivouac.com
-  discretion = models.NullBooleanField()
-
   ## location ##
   location = models.PointField()
   # null if unknown, otherwise elevation in meters, datum unspecified
@@ -121,6 +115,12 @@ class Hut(models.Model):
   # private. Somewhat deprecated and ambiguous in many cases, unlikely to be
   # used as a search parameter.
   private = models.NullBooleanField()
+
+  # a tag for sites that are potentially sensitive to being publicized. We can
+  # choose to honor this or not when the time comes. I mostly only foresee this
+  # as an issue for certain BC/Alberta huts that I learned about through
+  # bivouac.com
+  discretion = models.NullBooleanField()
 
   # true if we should display this hut on the site
   published = models.BooleanField()

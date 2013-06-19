@@ -1,6 +1,4 @@
-
-NA = 'NA'
-NULL = ''
+from null_na import CSV_NA, CSV_NULL
 
 def assert_that(expression):
   if not expression: raise AssertionError
@@ -21,14 +19,14 @@ def assert_bool(value):
   assert_that(val == 1 or val == 0)
 
 def assert_x_or_null(value, fn):
-  if value != NULL:
+  if value != CSV_NULL:
     fn(value)
 
 def assert_integer_ge_zero_or_null(value):
   assert_x_or_null(value, assert_integer_ge_zero)
 
 def assert_integer_ge_zero_or_null_or_na(value):
-  if value != NA:
+  if value != CSV_NA:
     assert_integer_ge_zero_or_null(value)
 
 def assert_float_or_null(value):
@@ -38,17 +36,17 @@ def assert_float_ge_zero_or_null(value):
   assert_x_or_null(value, assert_float_ge_zero)
 
 def assert_float_ge_zero_or_null_or_na(value):
-  if value != NA:
+  if value != CSV_NA:
     assert_float_ge_zero_or_null(value)
 
 def assert_bool_or_null(value):
   assert_x_or_null(value, assert_bool)
 
 def assert_not_na(value):
-  assert_that(value != NA)
+  assert_that(value != CSV_NA)
 
 def assert_not_null(value):
-  assert_that(value != NULL)
+  assert_that(value != CSV_NULL)
 
 def assert_not_null_or_na(value):
   assert_not_na(value)
@@ -75,7 +73,7 @@ def validate_altitude_meters(value):
   assert_integer_ge_zero_or_null(value)
 
 def validate_backcountry(value):
-  assert_that(value == NULL or int(value) in [0,1,2,3])
+  assert_that(value == CSV_NULL or int(value) in [0,1,2,3])
 
 def validate_capacity_hut_max(value):
   assert_integer_ge_zero_or_null_or_na(value)
@@ -111,13 +109,13 @@ def validate_fee_person_min(value):
   assert_float_ge_zero_or_null_or_na(value)
 
 def validate_hut_url(value):
-  assert_that(value == NULL or value.startswith('http'))
+  assert_that(value == CSV_NULL or value.startswith('http'))
 
 def validate_latitude(value):
   assert_float_or_null(value)
 
 def validate_location_accuracy(value):
-  assert_that(value == NULL or int(value) in [1,2,3,4,5])
+  assert_that(value == CSV_NULL or int(value) in [1,2,3,4,5])
 
 def validate_location_references(value):
   assert_not_na(value)
@@ -150,10 +148,10 @@ def validate_photo_credit_name(value):
   pass
 
 def validate_photo_credit_url(value):
-  assert_that(value == NULL or value.startswith('http'))
+  assert_that(value == CSV_NULL or value.startswith('http'))
 
 def validate_photo_url(value):
-  assert_that(value == NULL or value.startswith('http'))
+  assert_that(value == CSV_NULL or value.startswith('http'))
 
 def validate_private(value):
   assert_bool_or_null(value)

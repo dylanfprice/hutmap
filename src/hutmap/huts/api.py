@@ -2,9 +2,10 @@ from django.contrib.gis.geos import Polygon, Point, MultiPolygon
 from django.utils.datastructures import SortedDict
 from huts.models import Hut, Region, Agency
 from huts.utils.csv_serializer import CSVSerializer
-from tastypie import fields
+from huts.utils import null_na
 from tastypie.cache import SimpleCache
 from tastypie.contrib.gis.resources import ModelResource
+from tastypie import fields
 
 class RegionResource(ModelResource):
   class Meta:
@@ -56,12 +57,9 @@ class HutResource(ModelResource):
       for key,value in bundle.data.iteritems():
         if isinstance(value, bool):
           bundle.data[key] = 1 if value else 0
-        elif value == None:
-          bundle.data[key] = ''
-        elif value == -1 or value == '-1' or value == ['-1']:
-          bundle.data[key] = 'NA'
-        elif isinstance(value, list):
-          bundle.data[key] = ','.join(value)
+        else:
+          bundle.data[key] = null_na.to_csv(value, null_na.DB_NA_VALUES, 
+              lambda value: ','.join(value) if isinstance(value, list) else value)
 
     return bundle
 
