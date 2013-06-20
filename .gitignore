@@ -3,3 +3,4 @@ coverage/
 *.vagrant
 *.swp
 *.pyc
+public/static/data/
