@@ -440,7 +440,8 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
       if (self.currentSlide && angular.isString(direction) && !$scope.noTransition && nextSlide.$element) { 
         //We shouldn't do class manip in here, but it's the same weird thing bootstrap does. need to fix sometime
         nextSlide.$element.addClass(direction);
-        nextSlide.$element[0].offsetWidth = nextSlide.$element[0].offsetWidth; //force reflow
+        nextSlide.$element.attr('offsetWidth', nextSlide.$element[0].offsetWidth); //force reflow
+
 
         //Set all other slides to stop doing their stuff for the new transition
         angular.forEach(slides, function(slide) {
