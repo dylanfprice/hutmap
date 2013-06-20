@@ -1,3 +1,4 @@
+from django.contrib.gis.geos import GEOSGeometry
 from django.forms import widgets
 from huts.utils.null_na import to_csv, from_csv, DB_NA_LIST, DB_NA_STRING, DB_NA_POS_NUM, CSV_NA
 
@@ -15,7 +16,7 @@ class PointWidget(widgets.TextInput):
     value = data[name]
     if ',' in value:
       coords = value.split(',')
-      value = 'POINT({}, {})'.format(coords[1], coords[0])
+      value = GEOSGeometry('POINT({} {})'.format(coords[1], coords[0]))
     else:
       value = None
 
@@ -28,7 +29,7 @@ class ListWidget(widgets.TextInput):
   
   def render(self, name, value, attrs=None):
     value = to_csv(value, (DB_NA_LIST,),
-        lambda value: ','.join(value) if isinstance(value, (list, tuple)) else value)
+        lambda value: ', '.join(value) if isinstance(value, (list, tuple)) else value)
 
     return super(ListWidget, self).render(name, value, attrs)
 
@@ -36,7 +37,7 @@ class ListWidget(widgets.TextInput):
   def value_from_datadict(self, data, files, name):
     value = data[name]
     value = from_csv(value, DB_NA_LIST, 
-      lambda value: [x.trim() for x in value.split(',')])
+      lambda value: [x.strip() for x in value.split(',')])
 
     return value
 

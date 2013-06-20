@@ -25,8 +25,8 @@ class Hut(models.Model):
   ## location ##
   location = models.PointField()
   # null if unknown, otherwise elevation in meters, datum unspecified
-  altitude_meters = models.IntegerField('altitude (m)', null=True)
-  location_accuracy = models.IntegerField(choices=LOCATION_ACCURACY_CHOICES, null=True)
+  altitude_meters = models.IntegerField('altitude (m)', null=True, blank=True)
+  location_accuracy = models.IntegerField(choices=LOCATION_ACCURACY_CHOICES, null=True, blank=True)
   # whether to show the satellite image (null if not checked, switched to true
   # if hut was visible on Google Maps).
   show_satellite = models.NullBooleanField()
@@ -40,7 +40,7 @@ class Hut(models.Model):
   country = CountryField()
   # State or province or governorate (etc) of hut location.
   state = models.CharField(max_length=50)
-  region = models.ForeignKey('Region', null=True)
+  region = models.ForeignKey('Region', null=True, blank=True)
   # National forest, wilderness area, national park, state park, etc that
   # surround or border hut location.
   designations = ListField(null=True, blank=True)
@@ -48,16 +48,16 @@ class Hut(models.Model):
   # the Appalachian Trail shelters.
   systems = ListField(null=True, blank=True)
 
-  agency = models.ForeignKey('Agency', null=True)
+  agency = models.ForeignKey('Agency', null=True, blank=True)
 
   ## hut details ##
   name = models.CharField(max_length=100, null=True, blank=True)
-  alternate_names = ListField(null=True)
-  hut_url = models.URLField(max_length=250, null=True)
-  photo_url = models.URLField(max_length=300, null=True)
-  photo_credit_name = models.CharField(max_length=150, null=True)
-  photo_credit_url = models.URLField(max_length=250, null=True)
-  backcountry = models.IntegerField(choices=BACKCOUNTRY_CHOICES, null=True)
+  alternate_names = ListField(null=True, blank=True)
+  hut_url = models.URLField(max_length=250, null=True, blank=True)
+  photo_url = models.URLField(max_length=300, null=True, blank=True)
+  photo_credit_name = models.CharField(max_length=150, null=True, blank=True)
+  photo_credit_url = models.URLField(max_length=250, null=True, blank=True)
+  backcountry = models.IntegerField(choices=BACKCOUNTRY_CHOICES, null=True, blank=True)
   open_summer = models.NullBooleanField()
   open_winter = models.NullBooleanField()
 
@@ -66,33 +66,33 @@ class Hut(models.Model):
   # Backcountry options include Gated/Private (Paved/2WD/4WD/Unpaved) Road,
   # Boat, Helicopter, (Ski/Float) Plane, Trail.  If technical terrain, the
   # hardest terrain is listed (Off Trail, Scramble, Glacier Travel, etc).
-  access_no_snow = ListField(null=True)
+  access_no_snow = ListField(null=True, blank=True)
 
   # Minimum non-motorized kilometers when no snow is present.
-  no_snow_min_km = models.FloatField(null=True)
+  no_snow_min_km = models.FloatField(null=True, blank=True)
   # Non-motorized kilometers to nearest trailhead on plowed road (if applicable
   # and known).
-  snow_min_km = models.FloatField(null=True)
+  snow_min_km = models.FloatField(null=True, blank=True)
 
   types = ListField()
-  structures = models.IntegerField('number of structures', null=True)
+  structures = models.IntegerField('number of structures', null=True, blank=True)
 
   ## capacity ##
-  capacity_max = models.IntegerField('total capacity', null=True)
-  capacity_hut_min = models.IntegerField('minimum hut capacity', null=True)
-  capacity_hut_max = models.IntegerField('maximum hut capacity', null=True)
+  capacity_max = models.IntegerField('total capacity', null=True, blank=True)
+  capacity_hut_min = models.IntegerField('minimum hut capacity', null=True, blank=True)
+  capacity_hut_max = models.IntegerField('maximum hut capacity', null=True, blank=True)
 
   ## fees ##
-  fee_person_min = models.FloatField('minimum fee per person per night', null=True)
-  fee_person_max = models.FloatField('maximum fee per person per night', null=True)
-  fee_person_occupancy_min = models.IntegerField('minimum occupancy when paying per person', null=True)
-  fee_hut_min = models.FloatField('minimum fee per hut per night', null=True)
-  fee_hut_max = models.FloatField('maximum fee per hut per night', null=True)
-  fee_hut_occupancy_max = models.IntegerField('maximum occupancy when paying per hut', null=True)
+  fee_person_min = models.FloatField('minimum fee per person per night', null=True, blank=True)
+  fee_person_max = models.FloatField('maximum fee per person per night', null=True, blank=True)
+  fee_person_occupancy_min = models.IntegerField('minimum occupancy when paying per person', null=True, blank=True)
+  fee_hut_min = models.FloatField('minimum fee per hut per night', null=True, blank=True)
+  fee_hut_max = models.FloatField('maximum fee per hut per night', null=True, blank=True)
+  fee_hut_occupancy_max = models.IntegerField('maximum occupancy when paying per hut', null=True, blank=True)
 
   # null if unknown, NA if none, otherwise Transportation, Full Board, Half
   # Board, Guided, etc.
-  services_included = ListField()
+  services_included = ListField(null=True, blank=True)
 
   # null if unknown, true if extra services are available at further cost,
   # false if extra services are not available
@@ -145,18 +145,18 @@ class Region(models.Model):
 class Agency(models.Model):
   # Name of primary agency that manages and/or handles reservations for the
   # hut.
-  name = models.CharField(max_length=100, unique=True, null=True)
+  name = models.CharField(max_length=100, unique=True)
 
   created = models.DateField(auto_now_add=True)
   updated = models.DateField(auto_now=True)
 
   # Parent agency for this agency. null if unknown or not relevant (e.g. this
   # agency is a parent to other agencies)
-  parent = models.ForeignKey('Agency', null=True)
+  parent = models.ForeignKey('Agency', null=True, blank=True)
   # contact info
-  url = models.URLField(max_length=250, null=True)
-  phone = models.PositiveSmallIntegerField(null=True)
-  email = models.CharField(max_length=100, null=True)
+  url = models.URLField(max_length=250, null=True, blank=True)
+  phone = models.PositiveSmallIntegerField(null=True, blank=True)
+  email = models.CharField(max_length=100, null=True, blank=True)
 
   objects = models.GeoManager()
 
