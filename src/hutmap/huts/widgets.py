@@ -7,8 +7,9 @@ class PointWidget(widgets.TextInput):
   help_text = "Format: 'latitude, longitude'"
 
   def render(self, name, value, attrs=None):
-    value = "{}, {}".format(value.coords[1],
-                              value.coords[0])
+    if isinstance(value, GEOSGeometry):
+      value = "{}, {}".format(value.coords[1],
+                                value.coords[0])
     
     return super(PointWidget, self).render(name, value, attrs)
 
