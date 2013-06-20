@@ -165,6 +165,10 @@ package "libfontconfig1" do
   action :install
 end
 
+package "libjpeg-progs" do
+  action :install
+end
+
 bash "install node" do
   nodejs = "node-v0.10.5-linux-x86"
   code <<-EOH

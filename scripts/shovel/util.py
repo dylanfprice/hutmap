@@ -1,7 +1,9 @@
 from shovel import task
 import base64
-import urllib2
 import mimetypes
+import os
+import subprocess
+import urllib2
 
 @task
 def data_uri(path, css=None):
@@ -32,3 +34,20 @@ def data_uri(path, css=None):
     print('}')
   else:
     print(data_uri)
+
+@task
+def compress_jpeg(path):
+  """
+  Turns jpeg at given path into a compressed, progressive jpeg. WARNING:
+  overwrites original image
+
+  path: file path
+  """
+  original_size = os.path.getsize(path)
+  temp_file = '/tmp/decompressed.jpg'
+  subprocess.check_call(['djpeg', path], stdout=open(temp_file, 'w'))
+  subprocess.check_call(['cjpeg', '-optimize', '-progressive', temp_file], stdout=open(path, 'w'))
+  compressed_size = os.path.getsize(path)
+  print('Successfully compressed {}.'.format(path))
+  print('original size: {} \t compressed size: {}'.format(original_size, compressed_size))
+
