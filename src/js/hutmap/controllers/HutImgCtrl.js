@@ -4,6 +4,7 @@
   angular.module('hutmap.controllers').
 
   controller('HutImgCtrl', ['$scope', function($scope) {
+    // Retrieve proper url to hut image
     $scope.getImgUrl = function(hut, width, height) {
       var url = '';
       if (hut) {

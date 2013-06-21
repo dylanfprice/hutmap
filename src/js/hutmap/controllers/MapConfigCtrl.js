@@ -3,6 +3,11 @@
 (function () {
   angular.module('hutmap.controllers').
 
+  /*
+   * This controller does configuration of the google map, as well as provides
+   * functions which aren't really 'clean' enough to be in MapCtrl, i.e.
+   * involve dom manipulation or calling into google.maps.
+   */
   controller('MapConfigCtrl', 
     
     ['$scope', '$http', 'hutmapMapId', 'angulargmContainer', 'mapOptions',
@@ -19,6 +24,7 @@
     $scope.mapOptions = mapOptions;
     $scope.markerOptions = markerOptions;
 
+    // return proper google.maps.MapOptions for the given hut
     $scope.getMarkerOptions = function(hut) {
       var opts = {};
       if ($scope.filteredHuts && hut.id in $scope.filteredHutIds) {
@@ -28,6 +34,7 @@
       }
     };
 
+    // called when marker is clicked or hut is otherwise selected
     $scope.selectHut = function(marker, hut) {
       if (prevSelectedMarker) {
         var opts = angular.extend({}, markerOptions.huts, {icon: prevIcon});

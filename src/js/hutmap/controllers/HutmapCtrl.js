@@ -7,6 +7,7 @@
     ['$scope', '$route', function($scope, $route) {
 
     $scope.$route = $route;
+
     $scope.filterSidebarHidden = false;
     $scope.setFilterSidebarHidden = function(filterSidebarHidden) {
       $scope.filterSidebarHidden = filterSidebarHidden;

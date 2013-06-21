@@ -3,6 +3,7 @@
 (function () {
   angular.module('hutmap.services').
 
+  // access the google.maps.places service
   provider('Places', [function() {
     var PlacesProvider = {}
 
@@ -30,17 +31,41 @@
         }
       }
 
+      /**
+       * See https://developers.google.com/maps/documentation/javascript/places
+       * getPlacePredictions
+       *
+       * @param {string} input - the query
+       * @param {function} success
+       * @param {function} error
+       */
       Places.getPlacePredictions = function(input, success, error) {
         autocompleteService.getPlacePredictions({input: input, bounds: bounds}, 
             angular.bind(this, callback, success, error));
       }
 
+      /**
+       * See https://developers.google.com/maps/documentation/javascript/places
+       * getDetails
+       *
+       * @param {string} reference - the place reference
+       * @param {function} success
+       * @param {function} error
+       */
       Places.getDetails = function(reference, success, error) {
         placesService.getDetails({reference: reference}, 
           angular.bind(this, callback, success, error));
       };
 
-      Places.textSearch = function(request, success, error) {
+     /**
+     * See https://developers.google.com/maps/documentation/javascript/places
+     * getDetails
+     *
+     * @param {string} request - the query
+     * @param {function} success
+     * @param {function} error
+     */
+     Places.textSearch = function(request, success, error) {
         placesService.textSearch(request, 
             angular.bind(this, callback, success, error));
       }

@@ -3,7 +3,7 @@
 (function () {
   angular.module('hutmap.controllers').
 
-  controller('HutInfoCtrl', ['$scope', function($scope) {
+  controller('BottomBarCtrl', ['$scope', function($scope) {
     $scope.accuracy_text = [
       'Unverified',
       'Wild guess',

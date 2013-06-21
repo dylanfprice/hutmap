@@ -8,7 +8,6 @@
       var blurFn = $parse(attrs.blur);
       elem.bind('blur', function () {
         blurFn(scope);
-        //scope.$apply(angular.bind(this, blurFn, scope));
       });
     };
   }]);
