@@ -61,7 +61,7 @@ if success1:
     print(e)
 
   if success1 and success2:
-    print('Deploy successful!')
+    print('\nDeploy successful!\n')
   elif success1 and not success2:
     print('\n\nThere were errors but you can still complete the deployment.\n')
     print('To complete, ssh in and run the following:')
