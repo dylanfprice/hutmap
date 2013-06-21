@@ -41,6 +41,7 @@ describe('FilterCtrl', function() {
       $controller('FilterCtrl', {$scope: filterScope});
 
       expect(filterScope.f.season.winter).toBeFalsy();
+      expect(filterScope.f.shelterType['emergency shelters'].$keywords).toBeDefined();
     }));
 
     it('is updated from $scope', inject(function($timeout) {
