@@ -15,11 +15,12 @@
     };
 
     // update scope from browser url
-    var updateScope = function() {
+    var initializeScope = function() {
+      $scope.resetFilters();
       var f = $location.search().f;
       $location.search('f', null);
       if (f != null) {
-        $scope.f = angular.fromJson(decodeURIComponent(f));
+        $.extend(true, $scope.f, angular.fromJson(decodeURIComponent(f)));
       }
       $scope.filter();
     };
@@ -56,8 +57,6 @@
           $keywords: ['Compound', 'Hostel', 'Tea House', 'Lodge', 'Chalet', 'Ranch', 'Farm']
         }
       };
-
-      $scope.filter();
     };
 
     $scope.setAnyShelterType = function(anyShelterType) {
@@ -142,10 +141,8 @@
       return matchShelterType;
     };
 
-    // initialize filters
-    $scope.resetFilters();
     // we update scope from browser url once, at beginning
-    updateScope();
+    initializeScope();
 
   }]);
 })();
