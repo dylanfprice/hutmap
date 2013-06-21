@@ -17,9 +17,10 @@ def shell(cmd, **kwargs):
 base_path = normpath(join(dirname(__file__), '..', '..'))
 os.chdir(base_path)
 
+hutmap_ssh = 'hutmap@ssh.hutmap.com'
 vers = uuid.uuid1()
 
-successful = False
+success1 = False
 try:
   shutil.rmtree('public/static/css', ignore_errors=True)
   shutil.rmtree('public/static/js', ignore_errors=True)
@@ -36,14 +37,26 @@ try:
   shell('git add public/static/css/ public/static/js/')
   shell('git commit -m"Version {0}"'.format(vers))
   shell('git push origin dreamhost')
-  successful = True
+  success1 = True
 finally:
   shell('git checkout master')
 
-  if successful:
-    print('\nTo complete, log on to hutmap.com and run the following:')
-    print('  hutmap.com/scripts/utils/deploy-dreamhost-remote.sh {0}\n'.format(vers))
+if success1:
+  success2 = False
+  try:
+    deploy_remote = open(os.path.join(base_path, 'scripts', 'utils', 'deploy-dreamhost-remote.sh', 'r'))
+    subprocess.check_call(['ssWUT', hutmap_ssh, 'bash -s {}'.format(vers)], stdin=deploy_remote)
+    success2 = True
+  except:
+    pass
+
+  if success1 and success2:
+    print('Deploy successful!')
+  elif success1 and not success2:
+    print('\nThere were errors but you can still complete the deployment\n')
+    print('To complete, ssh in and run the following:')
+    print('  hutmap.com/scripts/utils/deploy-dreamhost-remote.sh {}\n'.format(vers))
     print('Or all in one go:')
-    print('  ssh hutmap@ssh.hutmap.com "bash -s {0}" < scripts/utils/deploy-dreamhost-remote.sh\n'.format(vers))
+    print('  ssh {} "bash -s {}" < scripts/utils/deploy-dreamhost-remote.sh\n'.format(hutmap_ssh, vers))
   else:
     print('\n Deploy failed. Look at the stack trace printed below for more details.\n')
