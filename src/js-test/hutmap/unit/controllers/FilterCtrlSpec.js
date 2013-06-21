@@ -6,10 +6,11 @@ describe('FilterCtrl', function() {
     module('hutmap');
   });
 
-  beforeEach(inject(function($controller, $httpBackend, _$rootScope_, _$timeout_) {
+  beforeEach(inject(function($controller, $httpBackend, _$rootScope_, _$timeout_, _$location_) {
     $httpBackend.whenGET(/.*/).respond('');
     $rootScope = _$rootScope_;
     $timeout = _$timeout_;
+    $location = _$location_;
 
     hutmapScope = $rootScope.$new();
     var hutmapCtrl = $controller('HutmapCtrl', {$scope: hutmapScope});
@@ -18,25 +19,54 @@ describe('FilterCtrl', function() {
     filterScope = hutScope.$new();
     var filterCtrl = $controller('FilterCtrl', {$scope: filterScope});
 
-    hutScope.huts = [
-      {id: 1, open_summer: true, open_winter: true, types: ['Yurt', 'Emergency Shelter']},
-      {id: 2, open_summer: true, open_winter: false, types: ['Hostel']},
-      {id: 3, open_summer: null, open_winter: null, types: ['Hut']}
-    ];
+    hutScope.huts = []
+    var huts = hutmap.fixtures.hutdata().huts.object_index;
+    angular.forEach(['1', '2', '3'], function(id) {
+      hutScope.huts.push(huts[id]);
+    });
   }));
 
+  describe('$location', function() {
+
+    it('updates $scope', inject(function($controller, $timeout) {
+      $timeout.flush();
+      var f = $location.search().f;
+      expect(f).toMatch(/winter%22%3Atrue/);
+      f = f.replace('winter%22%3Atrue', 'winter%22%3Afalse');
+
+      $location.search('f', f);
+
+      filterScope = hutScope.$new();
+      filterScope.f = {};
+      $controller('FilterCtrl', {$scope: filterScope});
+
+      expect(filterScope.f.season.winter).toBeFalsy();
+    }));
+
+    it('is updated from $scope', inject(function($timeout) {
+      $location.search('f', null);
+      filterScope.f.value = 'myexpectedstring';
+
+      filterScope.filter();
+      $timeout.flush();
+
+      expect($location.search().f).toMatch(/.*myexpectedstring.*/);
+    }));
+
+  });
+
   function setSeason(winter, summer, unknown) {
-    filterScope.season.winter = winter;
-    filterScope.season.summer = summer;
-    filterScope.season.unknown = unknown;
+    filterScope.f.season.winter = winter;
+    filterScope.f.season.summer = summer;
+    filterScope.f.season.unknown = unknown;
   }
 
   function setShelterType(emergencyShelter, fireLookouts, hutsAndYurts, compounds) {
     filterScope.setAnyShelterType(false);
-    filterScope.shelterType['emergency shelters'].include = emergencyShelter;
-    filterScope.shelterType['fire lookouts'].include = fireLookouts;
-    filterScope.shelterType['huts & yurts'].include = hutsAndYurts;
-    filterScope.shelterType['compounds'].include = compounds;
+    filterScope.f.shelterType['emergency shelters'].include = emergencyShelter;
+    filterScope.f.shelterType['fire lookouts'].include = fireLookouts;
+    filterScope.f.shelterType['huts & yurts'].include = hutsAndYurts;
+    filterScope.f.shelterType['compounds'].include = compounds;
   }
 
   function filter() {
@@ -120,7 +150,7 @@ describe('FilterCtrl', function() {
       setShelterType(true, true, true, true);
       filterScope.setAnyShelterType(true);
       filterScope.$digest();
-      angular.forEach(filterScope.shelterType, function(data, type) {
+      angular.forEach(filterScope.f.shelterType, function(data, type) {
         expect(data.include).toBeFalsy();
       });
     });

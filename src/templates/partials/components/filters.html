@@ -4,13 +4,13 @@
   <ul class="hut-filter-list hut-filter-icons">
     <li>
       <span class="hut-filter-item" tooltip="Select huts that are open in summer" tooltip-placement="right">
-        <i class="icon-sun"       ng-class="{'selected': season.summer}"  ng-click="season.summer = !season.summer; filter();"></i>
+        <i class="icon-sun"       ng-class="{'selected': f.season.summer}"  ng-click="f.season.summer = !f.season.summer; filter();"></i>
       </span>
       <span class="hut-filter-item" tooltip="Select huts that are open in winter" tooltip-placement="right">
-        <i class="icon-snowflake" ng-class="{'selected': season.winter}"  ng-click="season.winter = !season.winter; filter();"></i>
+        <i class="icon-snowflake" ng-class="{'selected': f.season.winter}"  ng-click="f.season.winter = !f.season.winter; filter();"></i>
       </span>
       <span class="hut-filter-item" tooltip="Select huts that have no known season information" tooltip-placement="right">
-        <i class="icon-question"  ng-class="{'selected': season.unknown}" ng-click="season.unknown = !season.unknown; filter();"></i>
+        <i class="icon-question"  ng-class="{'selected': f.season.unknown}" ng-click="f.season.unknown = !f.season.unknown; filter();"></i>
       </span>
     </li>
   </ul>
@@ -18,12 +18,12 @@
   <ul class="hut-filter-list">
     <li tooltip="Includes all shelter types"
         tooltip-placement="right"
-        ng-class="{'selected': anyShelterType}"
-        ng-click="setAnyShelterType(!anyShelterType); filter();">
+        ng-class="{'selected': f.anyShelterType}"
+        ng-click="setAnyShelterType(!f.anyShelterType); filter();">
         <span class="hut-filter-item">any</span>
     </li>
-    <li ng-repeat="(type, data) in shelterType" 
-        tooltip="Includes {{data.keywords.join(', ')}}"
+    <li ng-repeat="(type, data) in f.shelterType" 
+        tooltip="Includes {{data.$keywords.join(', ')}}"
         tooltip-placement="right"
         ng-class="{'selected': data.include}"
         ng-click="data.include = !data.include; setAnyShelterType(false); filter();">

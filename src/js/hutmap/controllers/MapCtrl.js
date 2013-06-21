@@ -8,15 +8,16 @@
 
     function ($scope, $location, $timeout, $q, utils, MarkerTooltip) {
 
-    var scopeInitialized = $q.defer();
-    var hutsInitialized = $q.defer();
-    var markerTooltips = {};
+    var scopeInitialized = $q.defer(); // for proper ordering of events
+    var hutsInitialized = $q.defer();  // for proper ordering of events
+    var markerTooltips = {}; // map from lat lon to MarkerTooltip instance, lazy loaded
 
-    $scope.center;
-    $scope.zoom;
-    $scope.bounds;
-    $scope.hutMarkerEvents;
+    $scope.center; // google.maps.LatLng
+    $scope.zoom;   // integer
+    $scope.bounds; // google.maps.LatLngBounds
+    $scope.hutMarkerEvents; // see http://dylanfprice.github.io/angular-gm/docs/module-gmMarkers.html
 
+    // update browser url from scope
     var updateLocation = function() {
       if ($scope.center) {
         $location.search('m_center', $scope.center.toUrlValue());
@@ -30,6 +31,7 @@
       }
     };
 
+    // simulate a click on the location in m_selected
     var clickSelected = function() {
       hutsInitialized.promise.then(function() {
         $scope.setSelectedHut(null);
@@ -43,6 +45,7 @@
       });
     };
 
+    // update scope from browser url
     var updateScope = function() {
       // get values
       var center = $location.search().m_center;
@@ -94,29 +97,31 @@
       }
     });
 
+    // for child scopes
     $scope.setHutMarkerEvents = function(hutMarkerEvents) {
       $scope.hutMarkerEvents = hutMarkerEvents;
     };
 
-    $scope.showMarkerTooltip = function(marker, object) {
+    $scope.showMarkerTooltip = function(marker, hut) {
       var tooltip = markerTooltips[marker.getPosition().toUrlValue()];
       if (tooltip) {
         tooltip.show();
       } else {
         var tooltip = new MarkerTooltip({
           marker: marker,
-          content: object.name,
+          content: hut.name,
         });
         markerTooltips[marker.getPosition().toUrlValue()] = tooltip;
       }
     };
 
-    $scope.hideMarkerTooltip = function(marker, object) {
+    $scope.hideMarkerTooltip = function(marker, hut) {
       angular.forEach(markerTooltips, function(tooltip) {
         tooltip.hide();
       });
     };
 
+    // we update scope from browser url once, at beginning
     updateScope();
 
   }]);

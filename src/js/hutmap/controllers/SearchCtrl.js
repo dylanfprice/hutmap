@@ -10,8 +10,9 @@
     $scope.submitting = false;
     $scope.autocompleting = 0;
     $scope.lastQuery;
-    $scope.selected;
+    $scope.selected; // updated as user types, or when user selects an item in autocomplete
 
+    // next two are used to lose focus on search bar properly
     $scope.clickBody = function() {
       $document.find('body').triggerHandler('click');
     };
@@ -20,6 +21,8 @@
       $document.find('input').trigger('blur');
     };
 
+    // given user input, return a promise that resolves to list of autocomplete
+    // suggestions
     $scope.getPlaces = function(query) {
       $scope.lastQuery = query;
       var deferred = $q.defer();
@@ -47,6 +50,8 @@
       $scope.addAlert('error', 'There was an error retrieving search results. TODO: better messages');
     };
 
+    // given PlaceResult (https://developers.google.com/maps/documentation/javascript/places#place_details_responses)
+    // send us to that place 
     var selectPlace = function(place) {
       $scope.submitting = false;
       $route.reload();
@@ -64,12 +69,15 @@
       }
     };
 
+    // when user selects an autocomplete suggestion, this gets triggered
+    // also when user is typing, hence the need to test for Object
     $scope.$watch('selected', function(selected) {
       if (selected && selected.constructor === Object) {
         $scope.submit(selected);
       }
     });
 
+    // called when user hits enter in search bar, or clicks search icon
     $scope.search = function(query) {
 
       var noResults = function() {
@@ -91,6 +99,8 @@
       }
     };
 
+    // submits a search
+    // given an autocomplete result, take us to the place
     $scope.submit = function(selected) {
       if (selected && selected.reference) {
         $scope.submitting = true;

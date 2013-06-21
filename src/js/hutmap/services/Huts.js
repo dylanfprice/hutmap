@@ -3,6 +3,7 @@
 (function () {
   angular.module('hutmap.services').
 
+  // Provides an api for accessing hut data
   factory('Huts', ['$http', '$q', 'utils', function($http, $q, utils) {
     var Huts = {};
     var data;
@@ -29,6 +30,13 @@
       }
     }
 
+    /**
+     * @param {object} params - parameters (all optional):
+     *        {google.maps.LatLngBounds} bounds - return huts within these bounds
+     *        {number} limit - max number of huts to return, 0 for no limit
+     *
+     * @return {$q.promise} resolves to an array of hut objects
+     */
     Huts.query = function(_params_) {
       return dbLoaded.promise.then(function() {
         var params = _params_ || {};
@@ -48,6 +56,10 @@
       });
     };
 
+    /**
+     * @return {$q.promise} resolves to the total number of huts in the Huts
+     * service
+     */
     Huts.totalHutCount = function() {
       return dbLoaded.promise.then(function() {
         return data.huts.meta.total_count;
@@ -65,6 +77,10 @@
       return Number(id);
     }
 
+    /**
+     * @param {number|string} id_or_resource_uri - the number id of the hut or
+     * the string resource uri path (typically from hut.resource_uri)
+     */
     Huts.hut = function(id_or_resource_uri) {
       return dbLoaded.promise.then(function() {
         var id = getId(id_or_resource_uri);
@@ -72,6 +88,10 @@
       });
     };
 
+    /**
+     * @param {number|string} id_or_resource_uri - the number id of the agency or
+     * the string resource uri path (typically from agency.resource_uri)
+     */
     Huts.agency = function(id_or_resource_uri) {
       return dbLoaded.promise.then(function() {
         var id = getId(id_or_resource_uri);
@@ -79,6 +99,10 @@
       });
     };
 
+    /**
+     * @param {number|string} id_or_resource_uri - the number id of the region or
+     * the string resource uri path (typically from region.resource_uri)
+     */
     Huts.region = function(id_or_resource_uri) {
       return dbLoaded.promise.then(function() {
         var id = getId(id_or_resource_uri);

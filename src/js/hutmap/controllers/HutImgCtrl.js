@@ -4,12 +4,13 @@
   angular.module('hutmap.controllers').
 
   controller('HutImgCtrl', ['$scope', function($scope) {
+    // Retrieve proper url to hut image
     $scope.getImgUrl = function(hut, width, height) {
       var url = '';
       if (hut) {
         if (hut.photo_url) {
           url = hut.photo_url;
-        } else if (!hut.photo_url && hut.accuracy === 3 || hut.accuracy === 5) {
+        } else if (!hut.photo_url && hut.location_accuracy === 3 || hut.location_accuracy === 5) {
           url = 'http://maps.googleapis.com/maps/api/staticmap' + 
                 '?center=' + hut.location.coordinates[1] + '%2C' + hut.location.coordinates[0] +
                 '&zoom=19' +
