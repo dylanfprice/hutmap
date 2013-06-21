@@ -135,7 +135,7 @@ end
 
 cron "generate huts.json" do
   minute "0"
-  hour "24"
+  hour "0"
   user "#{user}"
   data_dir = "/vagrant/public/static/data"
   command ". #{profile} && #{python} /vagrant/src/hutmap/manage.py dumphutsjson > #{data_dir}/huts.new.json 2>&1 && mv #{data_dir}/huts.new.json #{data_dir}/huts.json\n"
