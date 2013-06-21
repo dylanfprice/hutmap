@@ -54,7 +54,7 @@ finally:
 if success1:
   success2 = False
   try:
-    deploy_remote = open(os.path.join(base_path, 'scripts', 'utils', 'deploy-dreamhost-remote.sh', 'r'))
+    deploy_remote = open(os.path.join(base_path, 'scripts', 'utils', 'deploy-dreamhost-remote.sh'))
     subprocess.check_call(['ssh', hutmap_ssh, 'bash -s {}'.format(vers)], stdin=deploy_remote)
     success2 = True
   except Exception as e:
