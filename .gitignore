@@ -4,5 +4,3 @@ coverage/
 *.swp
 *.pyc
 public/static/data/
-public/static/css/
-public/static/js/
