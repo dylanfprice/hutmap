@@ -1,4 +1,14 @@
 #!/usr/bin/python
+# Deploys the master branch to the hutmap.com dreamhost account
+#
+# Specifically, merges master into dreamhost, builds css and js files with new
+# uuid suffixes, pulls this all into dreamhost, and restarts the server.
+# 
+# Assumptions:
+# - git on the PATH (i.e. you can use git from a terminal)
+# - the vagrant vm is up and running
+# - ssh on the PATH (manual steps printed if ssh fails)
+
 
 from os.path import join, dirname, normpath
 import os
@@ -45,7 +55,7 @@ if success1:
   success2 = False
   try:
     deploy_remote = open(os.path.join(base_path, 'scripts', 'utils', 'deploy-dreamhost-remote.sh', 'r'))
-    subprocess.check_call(['ssWUT', hutmap_ssh, 'bash -s {}'.format(vers)], stdin=deploy_remote)
+    subprocess.check_call(['ssh', hutmap_ssh, 'bash -s {}'.format(vers)], stdin=deploy_remote)
     success2 = True
   except:
     pass
@@ -53,7 +63,7 @@ if success1:
   if success1 and success2:
     print('Deploy successful!')
   elif success1 and not success2:
-    print('\nThere were errors but you can still complete the deployment\n')
+    print('\n\nThere were errors but you can still complete the deployment.\n')
     print('To complete, ssh in and run the following:')
     print('  hutmap.com/scripts/utils/deploy-dreamhost-remote.sh {}\n'.format(vers))
     print('Or all in one go:')
