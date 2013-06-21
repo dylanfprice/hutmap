@@ -23,8 +23,8 @@ successful = False
 try:
   shutil.rmtree('public/static/css', ignore_errors=True)
   shutil.rmtree('public/static/js', ignore_errors=True)
-  shell('git pull origin dreamhost')
   shell('git checkout dreamhost')
+  shell('git pull origin dreamhost')
   shell('git merge -s resolve master -m"Merge master into branch dreamhost"')
   shell('git rm -r public/static/css/ public/static/js/')
   shell('python scripts/utils/shovel-server.py start')
