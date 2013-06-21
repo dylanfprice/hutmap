@@ -4,36 +4,56 @@
   angular.module('hutmap.controllers').
 
   controller('FilterCtrl', 
-    ['$scope', '$timeout',
-    function($scope, $timeout) {
+    ['$scope', '$timeout', '$location',
+    function($scope, $timeout, $location) {
+ 
+    // update browser url from scope
+    var updateLocation = function() {
+      if ($scope.f) {
+        $location.search('f', encodeURIComponent(angular.toJson($scope.f)));
+      }
+    };
+
+    // update scope from browser url
+    var updateScope = function() {
+      var f = $location.search().f;
+      $location.search('f', null);
+      if (f != null) {
+        $scope.f = angular.fromJson(decodeURIComponent(f));
+      }
+      $scope.filter();
+    };
+
 
     // filter data binding
 
     $scope.resetFilters = function() {
 
-      $scope.season = {
+      $scope.f = {};
+
+      $scope.f.season = {
         winter: true,
         summer: true,
         unknown: true,
       };
 
-      $scope.anyShelterType = true;
-      $scope.shelterType = {
+      $scope.f.anyShelterType = true;
+      $scope.f.shelterType = {
         'emergency shelters': {
           include: false,
-          keywords: ['Emergency Shelter', 'Refuge']
+          $keywords: ['Emergency Shelter', 'Refuge']
         },
         'fire lookouts': {
           include: false,
-          keywords: ['Fire Lookout']
+          $keywords: ['Fire Lookout']
         },
         'huts & yurts': {
           include: false,
-          keywords: ['Hut', 'Yurt', 'Chickee', 'Lean-to', 'Wall Tent', 'Shelter']
+          $keywords: ['Hut', 'Yurt', 'Chickee', 'Lean-to', 'Wall Tent', 'Shelter']
         },
         'compounds': {
           include: false,
-          keywords: ['Compound', 'Hostel', 'Tea House', 'Lodge', 'Chalet', 'Ranch', 'Farm']
+          $keywords: ['Compound', 'Hostel', 'Tea House', 'Lodge', 'Chalet', 'Ranch', 'Farm']
         }
       };
 
@@ -41,12 +61,12 @@
     };
 
     $scope.setAnyShelterType = function(anyShelterType) {
-      $scope.anyShelterType = anyShelterType;
+      $scope.f.anyShelterType = anyShelterType;
     };
 
-    $scope.$watch('anyShelterType', function(newValue, oldValue) {
+    $scope.$watch('f.anyShelterType', function(newValue, oldValue) {
       if (newValue) {
-        angular.forEach($scope.shelterType, function(data, type) {
+        angular.forEach($scope.f.shelterType, function(data, type) {
           data.include = false;
         });
       }
@@ -77,6 +97,7 @@
       });
       $scope.setFilteredHuts(filteredHuts, filteredHutIds);
       $scope.$broadcast('gmMarkersRedraw', 'huts');
+      updateLocation();
     };
 
     $scope.$watch('huts', function() {
@@ -88,9 +109,9 @@
     
     function getTypeKeywords() {
       var keywords = [];
-      angular.forEach($scope.shelterType, function(data, type) {
+      angular.forEach($scope.f.shelterType, function(data, type) {
         if (data.include) {
-          keywords = keywords.concat(data.keywords);
+          keywords = keywords.concat(data.$keywords);
         }
       });
       return keywords;
@@ -100,7 +121,7 @@
     // matchers
    
     function matchSeason(hut) {
-      var season = $scope.season;
+      var season = $scope.f.season;
       return (season.summer && hut.open_summer) || 
              (season.winter && hut.open_winter) || 
              (season.unknown && (!hut.open_summer && !hut.open_winter));
@@ -108,7 +129,7 @@
 
     function matchShelterType(hut, keywords) {
       var matchShelterType = false;
-      if ($scope.anyShelterType) {
+      if ($scope.f.anyShelterType) {
         matchShelterType = true;
       } else {
         angular.forEach(keywords, function(keyword) {
@@ -121,6 +142,10 @@
       return matchShelterType;
     };
 
+    // initialize filters
     $scope.resetFilters();
+    // we update scope from browser url once, at beginning
+    updateScope();
+
   }]);
 })();

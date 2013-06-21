@@ -118,11 +118,4 @@ describe('HutCtrl', function() {
     });
   });
 
-  describe('totalHutCount', function() {
-    it('gets set', function() {
-      $rootScope.$apply();
-      expect(hutScope.totalHutCount).toEqual(2);
-    });
-  });
-
 });
