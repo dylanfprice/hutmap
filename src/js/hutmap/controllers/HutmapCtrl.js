@@ -13,7 +13,6 @@
     };
 
     $scope.$watch('filterSidebarHidden', function() {
-      console.log('here');
       $scope.$broadcast('gmapResized');
     });
 
