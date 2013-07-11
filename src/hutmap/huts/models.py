@@ -1,5 +1,9 @@
 from django.contrib.gis.db import models
+from django.core.files.base import ContentFile
 from huts.model_fields import CountryField, ListField
+from huts.utils.image import retrieve_and_resize
+from os import path
+from urllib2 import HTTPError, URLError
 
 class Hut(models.Model):
   LOCATION_ACCURACY_CHOICES = (
@@ -37,9 +41,9 @@ class Hut(models.Model):
   location_references = ListField(null=True, blank=True)
 
   ## geopolitical ##
-  country = CountryField()
+  country = CountryField(null=False)
   # State or province or governorate (etc) of hut location.
-  state = models.CharField(max_length=50)
+  state = models.CharField(max_length=50, null=False)
   region = models.ForeignKey('Region', null=True, blank=True)
   # National forest, wilderness area, national park, state park, etc that
   # surround or border hut location.
@@ -54,7 +58,12 @@ class Hut(models.Model):
   name = models.CharField(max_length=100, null=True, blank=True)
   alternate_names = ListField(null=True, blank=True)
   hut_url = models.URLField(max_length=250, null=True, blank=True)
-  photo_url = models.URLField(max_length=300, null=True, blank=True)
+
+  def get_path(hut, filename):
+    return path.join('huts', hut.country, hut.state, hut.name, filename)
+
+  photo = models.ImageField(upload_to=get_path, null=True, blank=True)
+  photo_url = models.URLField(max_length=250, null=True, blank=True)
   photo_credit_name = models.CharField(max_length=150, null=True, blank=True)
   photo_credit_url = models.URLField(max_length=250, null=True, blank=True)
   backcountry = models.IntegerField(choices=BACKCOUNTRY_CHOICES, null=True, blank=True)
@@ -131,6 +140,27 @@ class Hut(models.Model):
   def __unicode__(self):
     return u'{0}'.format(self.name)
 
+  def cache_photo(self):
+    """Store image locally if we have a URL"""
+    if self.photo_url and not self.photo:
+      try:
+        image = retrieve_and_resize(self.photo_url)
+        self.photo.save(
+          'bottombar.jpeg',
+          ContentFile(image.read()),
+          save=True
+        )
+      except HTTPError:
+        self.photo_url = None
+        self.save()
+      except:
+        pass
+
+  def save(self, *args, **kwargs):
+    super(Hut, self).save(*args, **kwargs) # Call the "real" save() method.
+    self.cache_photo()
+
+
 class Region(models.Model):
   region = models.CharField(max_length=50, unique=True)
   created = models.DateField(auto_now_add=True)
@@ -141,6 +171,7 @@ class Region(models.Model):
 
   def __unicode__(self):
     return u'{0}'.format(self.region)
+
 
 class Agency(models.Model):
   # Name of primary agency that manages and/or handles reservations for the
