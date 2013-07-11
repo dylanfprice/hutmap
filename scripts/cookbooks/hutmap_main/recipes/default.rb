@@ -89,6 +89,14 @@ package "curl" do
   action :install
 end
 
+package "libjpeg62-dev" do
+  action :install
+end
+
+execute "set locale to utf-8" do
+  command "update-locale LANG=en_US.utf8"
+end
+
 bash "install pythonbrew" do
   user "#{user}"
   environment ({"HOME" => "/home/#{user}"})
@@ -120,7 +128,8 @@ bash "set up hutmap virtualenv" do
   #{pythonbrew} venv create hutmap -p #{python_version} && \
   #{pip} install "http://pypi.python.org/packages/source/M/MySQL-python/MySQL-python-1.2.4b4.tar.gz#md5=0958cb9c23d5a656caac031c4886b1cf" && \
   #{pip} install django==1.5 && \
-  #{pip} install django-tastypie==0.9.14
+  #{pip} install django-tastypie==0.9.14 && \
+  #{pip} install pil==1.1.7
   EOH
   not_if { File.exists?("/home/#{user}/.pythonbrew/venvs/Python-#{python_version}/hutmap") }
   #action :nothing
