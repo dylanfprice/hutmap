@@ -37,7 +37,7 @@ try:
   shell('git checkout dreamhost')
   shell('git pull origin dreamhost')
   shell('git merge -s resolve master -m"Merge master into branch dreamhost"')
-  shell('git rm -r public/static/css/ public/static/js/')
+  shell('git rm -r --ignore-unmatch public/static/css/ public/static/js/')
   shell('python scripts/utils/shovel-server.py start')
 
   time.sleep(1)
