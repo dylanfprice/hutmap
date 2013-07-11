@@ -4,7 +4,8 @@
   angular.module('hutmap.controllers').
 
   controller('HutmapCtrl', 
-    ['$scope', '$route', function($scope, $route) {
+    ['$scope', '$route', '$timeout', 
+    function($scope, $route, $timeout) {
 
     $scope.$route = $route;
 
@@ -14,7 +15,11 @@
     };
 
     $scope.$watch('filterSidebarHidden', function() {
-      $scope.$broadcast('gmapResized');
+      // make sure the timeout is greater than the css transition time, see
+      // map.less
+      $timeout(function() {
+        $scope.$broadcast('gmapResized');
+      }, 600);
     });
 
   }]);

@@ -2,8 +2,8 @@ from csv import DictReader
 from datetime import datetime
 from django.core.management.base import BaseCommand
 from huts.models import Hut, Region, Agency
-from huts.utils.null_na import from_csv, DB_NA_POS_NUM, DB_NA_STRING, DB_NA_LIST, CSV_NA, CSV_NULL
 from huts.utils.countries import lookup_country_code
+from huts.utils.null_na import from_csv, DB_NA_POS_NUM, DB_NA_STRING, DB_NA_LIST
 
 
 class Command(BaseCommand):
