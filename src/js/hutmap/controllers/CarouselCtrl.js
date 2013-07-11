@@ -14,7 +14,7 @@
           url:  ''
         },
         thumbnail: '/static/img/no-image-available.gif',
-        image: '/static/img/carousel/Plummer Hut.JPG'
+        image: '/static/img/carousel/plummer-hut-hires.jpg'
       },
       {
         title: 'Joe River Chickee', 
@@ -25,7 +25,7 @@
           url:  ''
         },
         thumbnail: '/static/img/no-image-available.gif',
-        image: '/static/img/carousel/Joe River Chickee.JPG'
+        image: '/static/img/carousel/joe-river-chickee-hires.jpg'
       },
       {
         title: 'John Muir Shelter', 
@@ -36,7 +36,7 @@
           url:  ''
         },
         thumbnail: '/static/img/no-image-available.gif',
-        image: '/static/img/carousel/John Muir Shelter.JPG'
+        image: '/static/img/carousel/john-muir-shelter-hires.jpg'
       }
     ];
     $scope.imgStyle = function(imgUrl) {
