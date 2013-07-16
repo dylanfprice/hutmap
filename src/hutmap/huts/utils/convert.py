@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-from csv_unicode import UnicodeDictReader, UnicodeDictWriter
+from csv import DictWriter, DictReader
 import codecs
 import re
 import validate
-import null_na
+from csv_consts import CSV_NULL, CSV_NA, CSV_TRUE, CSV_FALSE
 
 OLD_TO_NEW = {
   'Hut_ID': None,
@@ -52,90 +51,144 @@ OLD_TO_NEW = {
   'Fee_hutmax': 'fee_hut_max',
   'Reservations': 'reservations',
   'Locked': 'locked',
-  'Services_Included': 'services_included',
-  'Optional_Services_Available': 'optional_services_available',
+  'Services_Included': 'services',
+  'Optional_Services_Available': 'has_optional_services',
   'Restrictions': 'restriction',
   'Private': 'private',
 }
 
+NEW = {
+  'show_satellite': CSV_NULL,
+  'is_snow_min_km': CSV_NULL,
+  'is_fee_person': CSV_NULL,
+  'is_fee_person_occupancy_min': CSV_NULL,
+  'fee_person_occupancy_min': CSV_NULL, 
+  'is_fee_hut': CSV_NULL,
+  'is_fee_hut_occupancy_max': CSV_NULL,
+  'fee_hut_occupancy_max': CSV_NULL,
+  'has_services': CSV_NULL,
+  'is_restricted': CSV_NULL,
+  'published': CSV_TRUE,
+}
+
 
 def convert(csvfile):
-  reader = UnicodeDictReader(csvfile)
+  reader = DictReader(csvfile)
   new_rows = []
   for values in reader:
     new_row = {}
-    for field in OLD_TO_NEW.keys():
+
+    for field in OLD_TO_NEW:
       if OLD_TO_NEW[field]:
         new_field = OLD_TO_NEW[field]
         value = values[field]
-        value = handle_special_fields(value, new_field, new_row)
-        value = convert_value(value)
-        try:
-          getattr(validate, 'validate_' + new_field)(value)
-          new_row[new_field] = value
-        except:
-          print('field: {0}  new_field: {1}  value: {2}'.format(field, new_field, value))
-          raise
+        value = handle_special_fields(new_row, new_field, value)
+        new_row[new_field] = value
 
-    new_row['published'] = '0'
-    new_row['show_satellite'] = '0'
-    new_row['overnight'] = '0'
+    for col,default in NEW.iteritems():
+      if col not in new_row:
+        new_row[col] = default
+
+    for field, value in new_row.items():
+      value = convert_value(value)
+      try:
+        getattr(validate, 'validate_' + field)(value)
+        new_row[field] = value
+      except:
+        print('field: {0}  field: {1}  value: {2}'.format(field, field, value))
+        raise
+
     new_rows.append(new_row)
   return new_rows
 
 
-def handle_special_fields(value, new_field, new_row):
+def is_value(value):
+  """
+  Extracts 'is_value' information from value. If value is NA, is_value is
+  false; if value is null, is_value is null; otherwise is_value is true.
+  """
+  if value == CSV_NA:
+    return CSV_FALSE
+  elif value == CSV_NULL:
+    return CSV_NULL
+  else:
+    return CSV_TRUE
+
+
+def handle_special_fields(row, field, value):
   """
   For special fields, e.g ones that we are splitting into two fields
 
-  Returns the value that the passed in value should have.
-  May modify new_row by adding a new key and value.
+  Returns the csv value that the given field should have.
+  May modify row by adding new keys and values.
   """
 
-  if new_field.startswith('fee_person'):
+  if field == 'snow_min_km':
+    row['is_snow_min_km'] = is_value(value)
+    return value
+
+  if field == 'fee_person_min' or field == 'fee_person_max':
+    row['is_fee_person'] = is_value(value)
+
     m = re.match(r'(\d+(.\d+)?) \((\d+)\)', value)
     if m:
-      new_row['fee_person_occupancy_min'] = m.group(3)
+      row['is_fee_person_occupancy_min'] = CSV_TRUE
+      row['fee_person_occupancy_min'] = m.group(3)
       return m.group(1)
     else:
-      new_row['fee_person_occupancy_min'] = null_na.CSV_NA
+      row['is_fee_person_occupancy_min'] = CSV_FALSE
+      row['fee_person_occupancy_min'] = CSV_NULL
       return value
 
-  if new_field.startswith('fee_hut'):
+  if field == 'fee_hut_min' or field == 'fee_hut_max':
+    row['is_fee_hut'] = is_value(value)
+
     m = re.match(r'(\d+(.\d+)?) \((\d+)\)', value)
     if m:
-      new_row['fee_hut_occupancy_max'] = m.group(3)
+      row['is_fee_hut_occupancy_max'] = CSV_TRUE
+      row['fee_hut_occupancy_max'] = m.group(3)
       return m.group(1)
     else:
-      new_row['fee_hut_occupancy_max'] = null_na.CSV_NA
+      row['is_fee_hut_occupancy_max'] = CSV_FALSE
+      row['fee_hut_occupancy_max'] = CSV_NULL
       return value
 
-  #if new_field == 'agency_parent':
-  #  return null_na.CSV_NULL
+  #if field == 'agency_parent':
+  #  return CSV_NULL
 
-  if new_field == 'locked' and value == 'Manned':
-    return null_na.CSV_NULL
+  if field == 'locked' and value == 'Manned':
+    return CSV_NULL
 
-  if new_field.startswith('capacity') and value == 'various':
-    return null_na.CSV_NULL
+  if field.startswith('capacity') and value == 'various':
+    return CSV_NULL
 
-  if new_field == 'services_included' and value == '0':
-    return null_na.CSV_NA
+  if field == 'services':
+    row['has_services'] = is_value(value)
+    if value == '0': # special NA value for services
+      row['has_services'] = CSV_FALSE
+
+  if field == 'restriction':
+    row['is_restricted'] = is_value(value)
+    if value == '0': # special NA value for restriction
+      row['is_restricted'] = CSV_FALSE
+    elif value == '1':
+      row['is_restricted'] = CSV_TRUE
+      return CSV_NULL
 
   return value
 
 
 def convert_value(value):
-  """Convert current representations of null and NA into new, turn numbers with
+  """
+  Convert csv representation of NA into null, turn numbers with
   commas into just numbers, etc. Returns the value that passed in value should
-  have."""
-  if value == '':
-    return null_na.CSV_NULL
-  elif value == 'NA':
-    return null_na.CSV_NA
-  elif re.match(r'\d\d*,\d+', value):
+  have.
+  """
+  if value == CSV_NA:
+    return CSV_NULL
+  elif re.match(r'\d\d*,\d+', value): # 1,023 -> 1023
     return value.replace(',', '')
-  elif re.match('- \d+(.\d+)?', value):
+  elif re.match('- \d+(.\d+)?', value): # - 1.5 -> -1.5
     return value.replace(' ', '')
   elif value == '64 (Shuttle)':
     return '64'
@@ -150,13 +203,13 @@ if __name__ == '__main__':
   for field in OLD_TO_NEW.values():
     if field:
       fields.append(field)
-  fields.extend(['fee_person_occupancy_min', 'fee_hut_occupancy_max', 'published', 'show_satellite', 'overnight'])
+  fields.extend(NEW)
   fields.sort()
   filename = sys.argv[1]
   csvfile = open(filename, mode='r')
   outfile = sys.stdout
   new_rows = convert(csvfile)
-  new_csvfile = UnicodeDictWriter(outfile, fields)
+  new_csvfile = DictWriter(outfile, fields)
   outfile.write(codecs.BOM_UTF8)
   new_csvfile.writeheader()
   new_csvfile.writerows(new_rows)
