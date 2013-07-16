@@ -39,7 +39,7 @@ class HutAdmin(admin.ModelAdmin):
       'fields': (('has_services', 'services', 'has_optional_services')) 
     }),
     ('Availability', {
-      'fields': (('is_restricted', 'restriction', 'reservations'), 'locked', 'overnight', 'private', 'discretion', 'published')
+      'fields': (('is_restricted', 'restriction', 'reservations'), 'locked', 'private', 'discretion', 'published')
     })
   )
   formfield_overrides = {
