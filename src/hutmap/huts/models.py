@@ -71,8 +71,8 @@ class Hut(models.Model):
   # hardest terrain is listed (Off Trail, Scramble, Glacier Travel, etc).
   access_no_snow = ListField(null=True, blank=True)
 
-  no_snow_min_km = models.FloatField('minimum non-motorized kilometers when no snow is presetn', null=True, blank=True)
-  is_snow_min_km = models.NullBooleanField('snow on access roads')
+  no_snow_min_km = models.FloatField('minimum non-motorized kilometers when no snow is present', null=True, blank=True)
+  is_snow_min_km = models.NullBooleanField('is there ever snow on access roads?')
   snow_min_km = models.FloatField('non-motorized kilometers to nearest trailhead on plowed road', null=True, blank=True)
 
   types = ListField()
@@ -84,27 +84,26 @@ class Hut(models.Model):
   capacity_hut_max = models.IntegerField('maximum hut capacity', null=True, blank=True)
 
   ## fees ##
-  is_fee_person = models.NullBooleanField('payment per person')
+  is_fee_person = models.NullBooleanField('can you pay per person?')
   fee_person_min = models.FloatField('minimum fee per person per night', null=True, blank=True)
   fee_person_max = models.FloatField('maximum fee per person per night', null=True, blank=True)
-  is_fee_person_occupancy_min = models.NullBooleanField('is there a minimum occupancy when paying per person')
+  is_fee_person_occupancy_min = models.NullBooleanField('is there a minimum occupancy when paying per person?')
   fee_person_occupancy_min = models.IntegerField('minimum occupancy when paying per person', null=True, blank=True)
-  is_fee_hut = models.NullBooleanField('payment per structure')
+  is_fee_hut = models.NullBooleanField('can you pay per structure?')
   fee_hut_min = models.FloatField('minimum fee per structure per night', null=True, blank=True)
   fee_hut_max = models.FloatField('maximum fee per structure per night', null=True, blank=True)
-  is_fee_hut_occupancy_max = models.NullBooleanField('is there a maximum occupancy when paying per structure')
+  is_fee_hut_occupancy_max = models.NullBooleanField('is there a maximum occupancy when paying per structure?')
   fee_hut_occupancy_max = models.IntegerField('maximum occupancy when paying per structure', null=True, blank=True)
 
-  has_services = models.NullBooleanField('services are included')
+  has_services = models.NullBooleanField('are services included?')
   has_optional_services = models.NullBooleanField('optional services are available at further cost')
   services = ListField(null=True, blank=True)
 
-  is_restricted = models.NullBooleanField()
+  is_restricted = models.NullBooleanField('is access restricted?')
   restriction = models.CharField(max_length=100, null=True, blank=True)
 
   reservations = models.NullBooleanField('reservations accepted')
   locked = models.NullBooleanField()
-  overnight = models.NullBooleanField()
   private = models.NullBooleanField()
   discretion = models.NullBooleanField()
 
