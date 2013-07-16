@@ -3,7 +3,7 @@ from datetime import datetime
 from django.core.management.base import BaseCommand
 from huts.models import Hut, Region, Agency
 from huts.utils.countries import lookup_country_code
-from huts.utils.null_na import from_csv, DB_NA_POS_NUM, DB_NA_STRING, DB_NA_LIST
+from huts.utils.csv_consts import CSV_NULL, CSV_TRUE
 
 
 class Command(BaseCommand):
@@ -24,31 +24,34 @@ class Command(BaseCommand):
           save_hut(values)
 
 
-def get(values, key, val_na, val_eval):
+def get(values, key, val_eval):
   value = values[key]
-  return from_csv(value, val_na, val_eval)
+  if value == CSV_NULL:
+    return None
+  else:
+    return val_eval(value)
 
 def get_string(values, key):
-  return get(values, key, DB_NA_STRING, lambda x: x)
+  return get(values, key, lambda x: x)
 
 def get_datetime(values, key):
-  return get(values, key, None, 
+  return get(values, key,
       lambda x: datetime.strptime(x, '%Y-%m-%d'))
 
 def get_list(values, key):
-  return get(values, key, DB_NA_LIST, lambda x: x.split(','))
+  return get(values, key, lambda x: x.split(','))
 
 def get_bool(values, key):
-  return get(values, key, None, lambda x: x == '1')
+  return get(values, key, lambda x: x == CSV_TRUE)
 
 def get_pos_int(values, key):
-  return get(values, key, DB_NA_POS_NUM, lambda x: int(x))
+  return get(values, key, lambda x: int(x))
 
 def get_pos_float(values, key):
-  return get(values, key, DB_NA_POS_NUM, lambda x: float(x))
+  return get(values, key, lambda x: float(x))
 
 def get_float(values, key):
-  return get(values, key, None, lambda x: float(x))
+  return get(values, key, lambda x: float(x))
 
 def save_agency(values):
   agency_parent = get_string(values, 'agency_parent')
@@ -120,6 +123,7 @@ def save_hut(values):
 
       access_no_snow = get_list(values, 'access_no_snow'),
       no_snow_min_km = get_pos_float(values, 'no_snow_min_km'),
+      is_snow_min_km = get_bool(values, 'is_snow_min_km'),
       snow_min_km = get_pos_float(values, 'snow_min_km'),
 
       types = get_list(values, 'types'),
@@ -129,19 +133,24 @@ def save_hut(values):
       capacity_hut_min = get_pos_int(values, 'capacity_hut_min'),
       capacity_hut_max = get_pos_int(values, 'capacity_hut_max'),
 
+      is_fee_person = get_bool(values, 'is_fee_person'),
       fee_person_min = get_pos_float(values, 'fee_person_min'),
       fee_person_max = get_pos_float(values, 'fee_person_max'),
+      is_fee_person_occupancy_min = get_bool(values, 'is_fee_person_occupancy_min'),
       fee_person_occupancy_min  =  get_pos_int(values, 'fee_person_occupancy_min'),
+      is_fee_hut = get_bool(values, 'is_fee_hut'),
       fee_hut_min = get_pos_float(values, 'fee_hut_min'),
       fee_hut_max = get_pos_float(values, 'fee_hut_max'),
+      is_fee_hut_occupancy_max = get_bool(values, 'is_fee_hut_occupancy_max'),
       fee_hut_occupancy_max = get_pos_int(values, 'fee_hut_occupancy_max'),
 
-      services_included = get_list(values, 'services_included'),
-      optional_services_available = get_bool(values, 'optional_services_available'),
+      has_services = get_bool(values, 'has_services'),
+      has_optional_services = get_bool(values, 'has_optional_services'),
+      services = get_list(values, 'services'),
+      is_restricted = get_bool(values, 'is_restricted'),
       restriction = get_string(values, 'restriction'),
       reservations = get_bool(values, 'reservations'),
       locked = get_bool(values, 'locked'),
-      overnight = get_bool(values, 'overnight'),
       private = get_bool(values, 'private'),
       published = get_bool(values, 'published'),
     )

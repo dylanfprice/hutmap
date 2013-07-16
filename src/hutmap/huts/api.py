@@ -2,7 +2,7 @@ from django.contrib.gis.geos import Polygon, Point, MultiPolygon
 from django.utils.datastructures import SortedDict
 from huts.models import Hut, Region, Agency
 from huts.utils.csv_serializer import CSVSerializer
-from huts.utils import null_na
+from huts.utils.csv_consts import CSV_NULL, CSV_TRUE, CSV_FALSE
 from tastypie.cache import SimpleCache
 from tastypie.contrib.gis.resources import ModelResource
 from tastypie import fields
@@ -32,11 +32,11 @@ class HutResource(ModelResource):
   alternate_names = fields.ListField(attribute='alternate_names', null=True)
   access_no_snow = fields.ListField(attribute='access_no_snow', null=True)
   types = fields.ListField(attribute='types', null=True)
-  services_included = fields.ListField(attribute='services_included', null=True)
+  services = fields.ListField(attribute='services_included', null=True)
 
   class Meta:
     max_limit = 0
-    queryset = Hut.objects.all()
+    queryset = Hut.objects.published()
     list_allowed_methods = ['get']
     detail_allowed_methods = ['get']
     #excludes = ['created', 'updated']
@@ -56,10 +56,11 @@ class HutResource(ModelResource):
 
       for key,value in bundle.data.iteritems():
         if isinstance(value, bool):
-          bundle.data[key] = 1 if value else 0
-        else:
-          bundle.data[key] = null_na.to_csv(value, null_na.DB_NA_VALUES, 
-              lambda value: ','.join(value) if isinstance(value, list) else value)
+          bundle.data[key] = CSV_TRUE if value else CSV_FALSE
+        elif isinstance(value, list):
+          bundle.data[key] = ','.join(value)
+        elif value == None:
+          bundle.data[key] = CSV_NULL
 
     return bundle
 
@@ -67,7 +68,7 @@ class HutResource(ModelResource):
 class HutSearchResource(ModelResource):
 
   class Meta:
-    queryset = Hut.objects.all()
+    queryset = Hut.objects.published()
     max_limit = 0
     list_allowed_methods = ['get']
     detail_allowed_methods = []
