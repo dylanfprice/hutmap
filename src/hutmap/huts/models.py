@@ -3,7 +3,11 @@ from django.core.files.base import ContentFile
 from huts.model_fields import CountryField, ListField
 from huts.utils.image import retrieve_and_resize
 from os import path
-from urllib2 import HTTPError, URLError
+from urllib2 import HTTPError
+
+class HutManager(models.GeoManager):
+  def published(self):
+    return super(HutManager, self).get_query_set().filter(published=True)
 
 class Hut(models.Model):
   LOCATION_ACCURACY_CHOICES = (
@@ -28,28 +32,17 @@ class Hut(models.Model):
 
   ## location ##
   location = models.PointField()
-  # null if unknown, otherwise elevation in meters, datum unspecified
   altitude_meters = models.IntegerField('altitude (m)', null=True, blank=True)
   location_accuracy = models.IntegerField(choices=LOCATION_ACCURACY_CHOICES, null=True, blank=True)
-  # whether to show the satellite image (null if not checked, switched to true
-  # if hut was visible on Google Maps).
   show_satellite = models.NullBooleanField()
 
-  # URLs used to determine location, meaningful only if location accuracy is < 3.
-  # I wonder if it would be best to archive snapshots of these pages, lest the
-  # links expire.
   location_references = ListField(null=True, blank=True)
 
   ## geopolitical ##
   country = CountryField(null=False)
-  # State or province or governorate (etc) of hut location.
   state = models.CharField(max_length=50, null=False)
   region = models.ForeignKey('Region', null=True, blank=True)
-  # National forest, wilderness area, national park, state park, etc that
-  # surround or border hut location.
   designations = ListField(null=True, blank=True)
-  # Used both for systems internal to a hut agency, or for larger systems like
-  # the Appalachian Trail shelters.
   systems = ListField(null=True, blank=True)
 
   agency = models.ForeignKey('Agency', null=True, blank=True)
@@ -59,10 +52,11 @@ class Hut(models.Model):
   alternate_names = ListField(null=True, blank=True)
   hut_url = models.URLField(max_length=250, null=True, blank=True)
 
-  def get_path(hut, filename):
+  # returns path to save photo, relative to MEDIA_ROOT
+  def image_path(self, hut, filename):
     return path.join('huts', hut.country, hut.state, hut.name, filename)
 
-  photo = models.ImageField(upload_to=get_path, null=True, blank=True)
+  photo = models.ImageField(upload_to=image_path, null=True, blank=True)
   photo_url = models.URLField(max_length=250, null=True, blank=True)
   photo_credit_name = models.CharField(max_length=150, null=True, blank=True)
   photo_credit_url = models.URLField(max_length=250, null=True, blank=True)
@@ -77,11 +71,9 @@ class Hut(models.Model):
   # hardest terrain is listed (Off Trail, Scramble, Glacier Travel, etc).
   access_no_snow = ListField(null=True, blank=True)
 
-  # Minimum non-motorized kilometers when no snow is present.
-  no_snow_min_km = models.FloatField(null=True, blank=True)
-  # Non-motorized kilometers to nearest trailhead on plowed road (if applicable
-  # and known).
-  snow_min_km = models.FloatField(null=True, blank=True)
+  no_snow_min_km = models.FloatField('minimum non-motorized kilometers when no snow is presetn', null=True, blank=True)
+  is_snow_min_km = models.NullBooleanField('snow on access roads')
+  snow_min_km = models.FloatField('non-motorized kilometers to nearest trailhead on plowed road', null=True, blank=True)
 
   types = ListField()
   structures = models.IntegerField('number of structures', null=True, blank=True)
@@ -92,50 +84,35 @@ class Hut(models.Model):
   capacity_hut_max = models.IntegerField('maximum hut capacity', null=True, blank=True)
 
   ## fees ##
+  is_fee_person = models.NullBooleanField('payment per person')
   fee_person_min = models.FloatField('minimum fee per person per night', null=True, blank=True)
   fee_person_max = models.FloatField('maximum fee per person per night', null=True, blank=True)
+  is_fee_person_occupancy_min = models.NullBooleanField('is there a minimum occupancy when paying per person')
   fee_person_occupancy_min = models.IntegerField('minimum occupancy when paying per person', null=True, blank=True)
-  fee_hut_min = models.FloatField('minimum fee per hut per night', null=True, blank=True)
-  fee_hut_max = models.FloatField('maximum fee per hut per night', null=True, blank=True)
-  fee_hut_occupancy_max = models.IntegerField('maximum occupancy when paying per hut', null=True, blank=True)
+  is_fee_hut = models.NullBooleanField('payment per structure')
+  fee_hut_min = models.FloatField('minimum fee per structure per night', null=True, blank=True)
+  fee_hut_max = models.FloatField('maximum fee per structure per night', null=True, blank=True)
+  is_fee_hut_occupancy_max = models.NullBooleanField('is there a maximum occupancy when paying per structure')
+  fee_hut_occupancy_max = models.IntegerField('maximum occupancy when paying per structure', null=True, blank=True)
 
-  # null if unknown, NA if none, otherwise Transportation, Full Board, Half
-  # Board, Guided, etc.
-  services_included = ListField(null=True, blank=True)
+  has_services = models.NullBooleanField('services are included')
+  has_optional_services = models.NullBooleanField('optional services are available at further cost')
+  services = ListField(null=True, blank=True)
 
-  # null if unknown, true if extra services are available at further cost,
-  # false if extra services are not available
-  optional_services_available = models.NullBooleanField()
-
-  # null if unknown, NA if none, else Club Membership, Qualified User, etc.
+  is_restricted = models.NullBooleanField()
   restriction = models.CharField(max_length=100, null=True, blank=True)
 
   reservations = models.NullBooleanField('reservations accepted')
-
-  # false if not locked, true if building is kept locked. This is not known for
-  # many sites, and better to not mention except for sites that specifically
-  # mention they are unlocked.
   locked = models.NullBooleanField()
-
-  # whether the hut is currently available for overnight stays.
   overnight = models.NullBooleanField()
-
-  # false if not-for-profit, government, or managed by association, true if
-  # private. Somewhat deprecated and ambiguous in many cases, unlikely to be
-  # used as a search parameter.
   private = models.NullBooleanField()
-
-  # a tag for sites that are potentially sensitive to being publicized. We can
-  # choose to honor this or not when the time comes. I mostly only foresee this
-  # as an issue for certain BC/Alberta huts that I learned about through
-  # bivouac.com
   discretion = models.NullBooleanField()
 
   # true if we should display this hut on the site
   published = models.BooleanField()
 
   # for geodjango
-  objects = models.GeoManager()
+  objects = HutManager()
 
   def __unicode__(self):
     return u'{0}'.format(self.name)

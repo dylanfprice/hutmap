@@ -1,7 +1,6 @@
-from huts.utils.csv_unicode import UnicodeDictWriter
-import StringIO
+from csv import DictWriter
 from tastypie.serializers import Serializer
-
+import StringIO
 
 class CSVSerializer(Serializer):
   formats = ['json', 'jsonp', 'xml', 'yaml', 'html', 'plist', 'csv']
@@ -22,7 +21,7 @@ class CSVSerializer(Serializer):
     if 'objects' in data:
       objects = data['objects']
       if len(objects) >= 1:
-        writer = UnicodeDictWriter(raw_data, objects[0].keys())
+        writer = DictWriter(raw_data, objects[0].keys())
         writer.writeheader()
         for item in objects:
           writer.writerow(dict((k, v if isinstance(v, basestring) else str(v)) for k, v in item.iteritems()))

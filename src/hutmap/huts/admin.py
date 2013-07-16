@@ -2,7 +2,7 @@ from django.contrib.gis.db import models
 from django.contrib.gis import admin
 from huts.model_fields import ListField
 from huts.models import Hut, Region, Agency
-from huts.widgets import PointWidget, ListWidget, TextNAWidget, PosNumNAWidget
+from huts.widgets import PointWidget, ListWidget
 
 class HutAdmin(admin.ModelAdmin):
   list_display = ('name', 'published', 'updated')
@@ -23,7 +23,7 @@ class HutAdmin(admin.ModelAdmin):
     }),
     ('Access', {
       'classes': ('wide',), 
-      'fields': ('backcountry', ('open_summer', 'open_winter'), 'access_no_snow', ('no_snow_min_km', 'snow_min_km'))
+      'fields': ('backcountry', ('open_summer', 'open_winter'), 'access_no_snow', ('no_snow_min_km', 'is_snow_min_km', 'snow_min_km'))
     }),
     ('Capacity', {
       'classes': ('wide',), 
@@ -31,15 +31,15 @@ class HutAdmin(admin.ModelAdmin):
     }),
     ('Fees', {
       'classes': ('wide',), 
-      'fields': (('fee_person_min', 'fee_person_max', 'fee_person_occupancy_min'), 
-        ('fee_hut_min', 'fee_hut_max', 'fee_hut_occupancy_max'))
+      'fields': (('is_fee_person', 'fee_person_min', 'fee_person_max', 'is_fee_person_occupancy_min', 'fee_person_occupancy_min'), 
+                 ('is_fee_hut', 'fee_hut_min', 'fee_hut_max', 'is_fee_hut_occupancy_max', 'fee_hut_occupancy_max'))
     }),
     ('Services', {
       'classes': ('wide',), 
-      'fields': (('services_included', 'optional_services_available')) 
+      'fields': (('has_services', 'services', 'has_optional_services')) 
     }),
     ('Availability', {
-      'fields': (('restriction', 'reservations'), 'locked', 'overnight', 'private', 'discretion', 'published')
+      'fields': (('is_restricted', 'restriction', 'reservations'), 'locked', 'overnight', 'private', 'discretion', 'published')
     })
   )
   formfield_overrides = {
@@ -50,18 +50,6 @@ class HutAdmin(admin.ModelAdmin):
       ListField: {
         'widget': ListWidget, 
         'help_text': ListWidget.help_text
-      },
-      models.CharField: {
-        'widget': TextNAWidget,
-        'help_text': TextNAWidget.help_text
-      },
-      models.IntegerField: {
-        'widget': PosNumNAWidget,
-        'help_text': PosNumNAWidget.help_text
-      },
-      models.FloatField: {
-        'widget': PosNumNAWidget,
-        'help_text': PosNumNAWidget.help_text
       },
   }
 
