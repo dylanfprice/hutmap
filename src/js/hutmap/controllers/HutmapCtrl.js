@@ -9,12 +9,11 @@
 
     $scope.$route = $route;
 
-    $scope.filterSidebarHidden = false;
-    $scope.setFilterSidebarHidden = function(filterSidebarHidden) {
-      $scope.filterSidebarHidden = filterSidebarHidden;
+    $scope.ui = {
+      showFilterSidebar: true
     };
 
-    $scope.$watch('filterSidebarHidden', function() {
+    $scope.$watch('ui.showFilterSidebar', function() {
       // make sure the timeout is greater than the css transition time, see
       // map.less
       $timeout(function() {

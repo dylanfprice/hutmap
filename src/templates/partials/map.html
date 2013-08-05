@@ -8,12 +8,12 @@
     <div id="loading-indicator" ng-show="loading">
       <i class="img-loading"></i> 
     </div>
-    <div id="show-filter-sidebar" ng-show="filterSidebarHidden">
+    <div id="show-filter-sidebar" ng-show="!ui.showFilterSidebar">
       <i class="icon-chevron-right" 
-        ng-click="setFilterSidebarHidden(false)" ></i>
+        ng-click="ui.showFilterSidebar = true" ></i>
     </div>
     <div ng-controller="FilterCtrl">
-      <div id="filter-sidebar" ng-class="{'filter-sidebar-hidden': filterSidebarHidden}">
+      <div id="filter-sidebar" ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
         {% endverbatim %}
           {% include "partials/components/summary_info.html" %}
           {% include "partials/components/filters.html" %}
@@ -21,7 +21,7 @@
       </div>
       <div ng-controller="MapConfigCtrl">
         <div ng-controller="MapCtrl">
-          <div id="map" ng-class="{'filter-sidebar-hidden': filterSidebarHidden}">
+          <div id="map" ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
             <gm-map class="map" 
                     gm-map-id="hutmapMapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">
               <gm-markers gm-objects="huts" 
@@ -34,7 +34,7 @@
               </gm-markers>
             </gm-map>
           </div>
-          <div id="hut-bottombar" ng-controller="BottomBarCtrl" ng-class="{'filter-sidebar-hidden': filterSidebarHidden}">
+          <div id="hut-bottombar" ng-controller="BottomBarCtrl" ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
             {% endverbatim %}
               {% include "partials/components/hut_list.html" %}
               {% include "partials/components/hut_info.html" %}

@@ -19,14 +19,14 @@
     <li tooltip="Includes all shelter types"
         tooltip-placement="right"
         ng-class="{'selected': f.anyShelterType}"
-        ng-click="setAnyShelterType(!f.anyShelterType); filter();">
+        ng-click="f.anyShelterType = !f.anyShelterType; filter();">
         <span class="hut-filter-item">any</span>
     </li>
     <li ng-repeat="(type, data) in f.shelterType" 
         tooltip="Includes {{data.$keywords.join(', ')}}"
         tooltip-placement="right"
         ng-class="{'selected': data.include}"
-        ng-click="data.include = !data.include; setAnyShelterType(false); filter();">
+        ng-click="data.include = !data.include; f.anyShelterType = false; filter();">
         <span class="hut-filter-item">{{type}}</span>
     </li>
   </ul>
