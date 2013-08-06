@@ -8,9 +8,15 @@
     <div id="loading-indicator" ng-show="loading">
       <i class="img-loading"></i> 
     </div>
-    <div id="show-filter-sidebar" ng-show="!ui.showFilterSidebar">
-      <i class="icon-chevron-right" 
-        ng-click="ui.showFilterSidebar = true" ></i>
+    <div id="show-hide-filter-sidebar"
+         ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
+      <div class="shade-background">
+        <i ng-class="{
+            'icon-chevron-right': !ui.showFilterSidebar,
+            'icon-chevron-left':  ui.showFilterSidebar
+           }"
+           ng-click="ui.showFilterSidebar = !ui.showFilterSidebar" ></i>
+      </div>
     </div>
     <div ng-controller="FilterCtrl">
       <div id="filter-sidebar" ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
