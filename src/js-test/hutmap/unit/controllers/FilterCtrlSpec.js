@@ -63,7 +63,7 @@ describe('FilterCtrl', function() {
   }
 
   function setShelterType(emergencyShelter, fireLookouts, hutsAndYurts, compounds) {
-    filterScope.setAnyShelterType(false);
+    filterScope.f.anyShelterType = false;
     filterScope.f.shelterType['emergency shelters'].include = emergencyShelter;
     filterScope.f.shelterType['fire lookouts'].include = fireLookouts;
     filterScope.f.shelterType['huts & yurts'].include = hutsAndYurts;
@@ -121,7 +121,7 @@ describe('FilterCtrl', function() {
     it('works with any shelter type', function() {
       setSeason(true, true, true);
       setShelterType(true, true, false, true);
-      filterScope.setAnyShelterType(true);
+      filterScope.f.anyShelterType = true;
       filterScope.$digest();
       filter();
       expect(hutScope.filteredHutIds[1]).toBeDefined();
@@ -149,7 +149,7 @@ describe('FilterCtrl', function() {
 
     it('selecting any disables all shelter types', function() {
       setShelterType(true, true, true, true);
-      filterScope.setAnyShelterType(true);
+      filterScope.f.anyShelterType = true;
       filterScope.$digest();
       angular.forEach(filterScope.f.shelterType, function(data, type) {
         expect(data.include).toBeFalsy();

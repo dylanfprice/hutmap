@@ -2,13 +2,76 @@
  * Styles for base.html
  */
 
-html {
-  .grid;
+html, body {
+	background-color: rgb(250,250,250);
+  font-family: "Myriad Pro", Verdana, "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1em;
+	color: #333;
 }
 
-body {
-  background-color: transparent;
+p {
+  line-height: 120%;
+  margin: 1em 0; /* anti bootstrap */
+  word-spacing: +0.1em; /* anti bootstrap */
 }
+
+a {
+	text-decoration: none;
+	color: blue;
+}
+
+h1, h2 {
+	font-weight: 500; /* semibold */
+	line-height: inherit;
+}
+
+h1 {
+	font-size: 145%;
+	margin-top: 0;
+}
+
+h2 {
+	font-size: 130%;
+	margin-top: 1em;
+}
+
+hr {
+	border: none;
+	border-bottom: 1px dotted #ccc;
+  height: 1px;
+  width: 70%;
+  margin: 2em 0 1.5em 15%;
+}
+
+.logo {
+	font-family: "Cooper Medium";
+	line-height: 1.1em;
+	font-size: 0.9em;
+}
+
+.larger {
+	font-size: 105%;
+}
+
+.smaller {
+	font-size: 95%;
+}
+
+
+/** OVERRIDE BOOTSTRAP **/
+
+blockquote {
+	border: none;
+}
+
+label, input, button, select, textarea {
+	font-size: inherit;
+	font-family: inherit;
+	padding: .1em .2em 0 .2em;
+}
+
+
+/** Dylan **/
 
 #navbar {
 

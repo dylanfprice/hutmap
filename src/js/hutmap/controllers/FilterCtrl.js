@@ -59,10 +59,6 @@
       };
     };
 
-    $scope.setAnyShelterType = function(anyShelterType) {
-      $scope.f.anyShelterType = anyShelterType;
-    };
-
     $scope.$watch('f.anyShelterType', function(newValue, oldValue) {
       if (newValue) {
         angular.forEach($scope.f.shelterType, function(data, type) {

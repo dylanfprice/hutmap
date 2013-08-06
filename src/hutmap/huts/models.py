@@ -9,6 +9,7 @@ class HutManager(models.GeoManager):
   def published(self):
     return super(HutManager, self).get_query_set().filter(published=True)
 
+
 class Hut(models.Model):
   LOCATION_ACCURACY_CHOICES = (
     (None, 'coordinates provided but unverified'),
@@ -150,8 +151,6 @@ class Region(models.Model):
 
 
 class Agency(models.Model):
-  # Name of primary agency that manages and/or handles reservations for the
-  # hut.
   name = models.CharField(max_length=100, unique=True)
 
   created = models.DateField(auto_now_add=True)

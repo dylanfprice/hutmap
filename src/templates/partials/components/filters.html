@@ -1,6 +1,6 @@
 {% verbatim %}
 <div class="hut-filter-table">
-  <div class="hut-filter-title">Season:</div>
+  <div class="hut-filter-title">Season</div>
   <ul class="hut-filter-list hut-filter-icons">
     <li>
       <span class="hut-filter-item" tooltip="Select huts that are open in summer" tooltip-placement="right">
@@ -14,19 +14,19 @@
       </span>
     </li>
   </ul>
-  <div class="hut-filter-title">Shelter Type:</div>
+  <div class="hut-filter-title">Shelter Type</div>
   <ul class="hut-filter-list">
     <li tooltip="Includes all shelter types"
         tooltip-placement="right"
         ng-class="{'selected': f.anyShelterType}"
-        ng-click="setAnyShelterType(!f.anyShelterType); filter();">
+        ng-click="f.anyShelterType = !f.anyShelterType; filter();">
         <span class="hut-filter-item">any</span>
     </li>
     <li ng-repeat="(type, data) in f.shelterType" 
         tooltip="Includes {{data.$keywords.join(', ')}}"
         tooltip-placement="right"
         ng-class="{'selected': data.include}"
-        ng-click="data.include = !data.include; setAnyShelterType(false); filter();">
+        ng-click="data.include = !data.include; f.anyShelterType = false; filter();">
         <span class="hut-filter-item">{{type}}</span>
     </li>
   </ul>

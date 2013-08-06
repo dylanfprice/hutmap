@@ -1,6 +1,6 @@
 /**
  * AngularGM - Google Maps Directives for AngularJS
- * @version v0.1.0 - 2013-07-09
+ * @version v0.1.1 - 2013-08-05
  * @link http://dylanfprice.github.com/angular-gm
  * @author Dylan Price <the.dylan.price@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -38,14 +38,17 @@
    * To provide your own default config, use the following
    * ```
    * angular.module('myModule').config(function($provide) {
-   *   $provide.decorator('angulargmDefaults', function() {
-   *     return {
+   *   $provide.decorator('angulargmDefaults', function($delegate) {
+   *     return angular.extend($delegate, {
+   *       // Note: markerConstructor must implement getPosition() and setMap()
+   *       // like google.maps.Marker
+   *       'markerConstructor': myCustomMarkerConstructor,
    *       'mapOptions': {
    *         center: new google.maps.LatLng(55, 111),
    *         mapTypeId: google.maps.MapTypeId.SATELLITE,
    *         ...
    *       }
-   *     };
+   *     });
    *   });
    * });
    * ```
@@ -53,6 +56,7 @@
    * @module angulargmDefaults
    */
   value('angulargmDefaults', {
+    'markerConstructor': google.maps.Marker,
     'mapOptions': {
       zoom : 8,
       center : new google.maps.LatLng(46, -120),
@@ -202,6 +206,17 @@
  * If you need to get a handle on the google.maps.Map object, see
  * [angulargmContainer]{@link module:angulargmContainer}
  *
+ * Events:
+ *
+ *   + `gmMapResize`: google.maps.event.trigger(map, 'resize') To use:
+ *   `$scope.$broadcast('gmMapResize', 'myMapId')`
+ *
+ *   Parameters:
+ *
+ *       + `mapId`: required. The id of your map.  This is what you set
+ *       `gm-map-id` to.  It is necessary because there may be multiple
+ *       instances of the `gmMap` directive.
+ *
  * @module gmMap
  */
 (function () {
@@ -269,6 +284,7 @@
       controller.addMapListener('zoom_changed', updateScope);
       controller.addMapListener('center_changed', updateScope);
       controller.addMapListener('bounds_changed', updateScope);
+      controller.addMapListener('resize', updateScope);
       
       if (hasCenter) {
         scope.$watch('gmCenter', function (newValue, oldValue) {
@@ -300,6 +316,12 @@
           }
         });
       }
+
+      scope.$on('gmMapResize', function(event, gmMapId) {
+        if (scope.gmMapId() === gmMapId) {
+          controller.mapTrigger('resize');
+        }
+      });
     }
 
 
@@ -412,10 +434,11 @@
  *
  *   Parameters:
  *
- *       + `objects`: required. The name of the scope variable which holds the
- *       objects to redraw markers for. This is what you set `gm-objects` to.
- *       It is necessary because there may be multiple instances of the
- *       `gmMarkers` directive.
+ *       + `objects`: Not required. The name of the scope variable which holds
+ *       the objects to redraw markers for, i.e. what you set `gm-objects` to.
+ *       It is useful because there may be multiple instances of the
+ *       `gmMarkers` directive. If not specified, all instances of gmMarkers
+ *       which are child scopes will redraw their markers.
  *
  *   + `gmMarkersUpdated`: emitted when markers are updated. To use: 
  *   ```
@@ -546,7 +569,7 @@
       });
 
       scope.$on('gmMarkersRedraw', function(event, objectsName) {
-        if (objectsName === attrs.gmObjects) {
+        if (objectsName == null || objectsName === attrs.gmObjects) {
           updateMarkers(scope);
           updateMarkers(scope, scope.gmObjects());
         }
@@ -582,13 +605,15 @@
  * method so you can guarantee the map will be initialized. For example,
  *
  * ```
- * function MyCtrl(angulargmContainer) {
+ * angular.module('myModule').
+ *
+ * run(function(angulargmContainer) {
  *   var gmapPromise = angulargmContainer.getMapPromise('myMapid');
  *
  *   gmapPromise.then(function(gmap) {
  *     // google map configuration here
  *   });
- * }
+ * });
  * ```
  *
  * @module angulargmContainer
@@ -648,7 +673,9 @@
     /**
      * Removes map with given mapId from this container, and deletes the map.
      * In order for this to work you must ensure there are no references to the
-     * map object.
+     * map object. Note: this will likely cause a memory leak, see
+     * http://stackoverflow.com/questions/10485582/what-is-the-proper-way-to-destroy-a-map-instance
+     *
      * @param {string} mapId the unique id of the map to remove
      * @method
      */
@@ -684,6 +711,8 @@
 
 /**
  * Common utility functions.
+ *
+ * @namespace angulargmUtils
  */
 (function () {
   angular.module('AngularGM').
@@ -693,6 +722,8 @@
     /**
      * Check if two floating point numbers are equal. 
      * @return true if f1 and f2 are 'very close'
+     * @function 
+     * @memberof angulargmUtils
      */
     function floatEqual (f1, f2) {
       return (Math.abs(f1 - f2) < 0.000001);
@@ -703,6 +734,8 @@
      * @param {google.maps.LatLng} l2
      * @return {boolean} true if l1 and l2 are 'very close'. If either are null
      * or not google.maps.LatLng objects returns false.
+     * @function 
+     * @memberof angulargmUtils
      */
     function latLngEqual(l1, l2) {
       if (!(l1 instanceof google.maps.LatLng && 
@@ -717,6 +750,8 @@
      * @param {google.maps.LatLngBounds} b2
      * @return {boolean} true if b1 and b2 are 'very close'. If either are null
      * or not google.maps.LatLngBounds objects returns false.
+     * @function 
+     * @memberof angulargmUtils
      */
     function boundsEqual(b1, b2) {
       if (!(b1 instanceof google.maps.LatLngBounds &&
@@ -735,6 +770,8 @@
      * @param {google.maps.LatLng} latLng
      * @return {Object} object literal with 'lat' and 'lng' properties.
      * @throw if latLng not instanceof google.maps.LatLng
+     * @function 
+     * @memberof angulargmUtils
      */
     function latLngToObj(latLng) {
       if (!(latLng instanceof google.maps.LatLng)) 
@@ -750,6 +787,8 @@
      * @param {Object} obj of the form { lat: 40, lng: -120 } 
      * @return {google.maps.LatLng} returns null if problems with obj (null,
      * NaN, etc.)
+     * @function 
+     * @memberof angulargmUtils
      */
     function objToLatLng(obj) {
       if (obj != null) {
@@ -767,6 +806,8 @@
     /**
      * @param {google.maps.LatLng} latLng
      * @return true if either lat or lng of latLng is null or isNaN
+     * @function 
+     * @memberof angulargmUtils
      */
     function hasNaN(latLng) {
       if (!(latLng instanceof google.maps.LatLng))
@@ -781,6 +822,9 @@
     /**
      * @param {Object} attrs directive attributes
      * @return {Object} mapping from event names to handler fns
+     * @function 
+     * @private
+     * @memberof angulargmUtils
      */
     function getEventHandlers(attrs) {
       var handlers = {};
@@ -812,7 +856,7 @@
 
 /**
  * Directive controller which is owned by the [gmMap]{@link module:gmMap}
- * directive and shared among all other angulargm directives.
+ * directive and shared with [gmMarkers]{@link module:gmMarkers}.
  */
 (function () {
   angular.module('AngularGM').
@@ -848,14 +892,15 @@
       var mapId = $scope.gmMapId();
       if (!mapId) { throw 'angulargm must have non-empty gmMapId attribute'; }
 
-      var mapDiv = $element.find('[id]');
+      var mapDiv = angular.element($element[0].firstChild);
       mapDiv.attr('id', mapId);
 
       var config = this._getConfig($scope, gMDefaults);
-
+      
       // 'private' properties
-      this._map = this._createMap(mapId, mapDiv, config, gMContainer);
+      this._map = this._createMap(mapId, mapDiv, config, gMContainer, $scope);
       this._markers = {};
+      this._listeners = [];
 
       // 'public' properties
       this.dragging = false;
@@ -876,8 +921,6 @@
               throw 'center contains null or NaN';
             var changed = !latLngEqual(this.center, center);
             if (changed) {
-              // TODO: change to panTo
-              //this._map.setCenter(center);
               this._map.panTo(center);
             }
           } 
@@ -918,7 +961,7 @@
       });
 
       this._initDragListeners();
-      $scope.$on('$destroy', angular.bind(this, this._destroy, mapId));
+      $scope.$on('$destroy', angular.bind(this, this._destroy));
     };
 
 
@@ -939,8 +982,11 @@
         map = new google.maps.Map(element[0], config);
         gMContainer.addMap(id, map);
       } else {
-        throw 'A map with id ' + id + ' already exists. You must use' +
-          ' different ids for each instance of the angulargm directive.';
+        var div = map.getDiv();
+        element.replaceWith(div);
+        this._map = map;
+        this.mapTrigger('resize');
+        map.setOptions(config);
       }
       return map;
     };
@@ -963,8 +1009,18 @@
     };
 
 
-    this._destroy = function(mapId) {
-      gMContainer.removeMap(mapId);
+    this._destroy = function() {
+      angular.forEach(this._listeners, function(listener) {
+        google.maps.event.removeListener(listener);
+      });
+
+      var scopeIds = Object.keys(this._markers);
+      var self = this;
+      angular.forEach(scopeIds, function(scopeId) {
+        self.forEachMarkerInScope(scopeId, function(marker, hash) {
+          self.removeMarkerByHash(scopeId, hash);  
+        });
+      });
     };
 
     
@@ -975,8 +1031,8 @@
      * @ignore
      */
     this.addMapListener = function(event, handler) {
-      google.maps.event.addListener(this._map, 
-          event, handler);
+      var listener = google.maps.event.addListener(this._map, event, handler);
+      this._listeners.push(listener);
     };
 
 
@@ -1047,7 +1103,7 @@
         throw 'markerOptions did not contain a position';
       }
 
-      var marker = new google.maps.Marker(opts);
+      var marker = new angulargmDefaults.markerConstructor(opts);
       var position = marker.getPosition();
       if (this.hasMarker(scopeId, position.lat(), position.lng())) {
         return false;
