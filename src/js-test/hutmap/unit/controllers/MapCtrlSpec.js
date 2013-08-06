@@ -16,7 +16,6 @@ describe('MapCtrl', function() {
     $location.search({
       m_center: '1,2',
       m_zoom: 3,
-      m_selected: '4,5',
     });
 
     hutmapScope = $rootScope.$new();
@@ -34,7 +33,7 @@ describe('MapCtrl', function() {
 
     expect(mapScope.center).toBeUndefined();
     expect(mapScope.zoom).toBeUndefined();
-    expect(mapScope.hutMarkerEvent).toBeUndefined();
+    expect(mapScope.hutMarkerEvents).toBeUndefined();
   });
 
   it('updates center and zoom from $location', function() {
@@ -45,32 +44,43 @@ describe('MapCtrl', function() {
 
     expect(mapScope.center).toEqual(new google.maps.LatLng(1,2));
     expect(mapScope.zoom).toEqual(3);
-    expect(mapScope.hutMarkerEvent).toBeUndefined();
+    expect(mapScope.hutMarkerEvents).toBeUndefined();
   });
 
-  it('clicks selectedHut from $location', function() {
-    hutScope.huts = [{id:1,agency:1,region:1}];
+  it('clicks selectedHut on clickSelected', function() {
+    mapScope.center = new google.maps.LatLng(6,7);
+    mapScope.zoom = 8;
+
+    hutScope.huts = [{id:1}];
+    hutScope.setSelectedHut({
+      id:1,
+      location: {
+        coordinates: [5, 4]
+      },
+      agency:1,
+      region:1
+    });
+    hutScope.$broadcast('clickSelected');
 
     $rootScope.$apply();
 
-    expect(mapScope.center).toBeUndefined();
-    expect(mapScope.zoom).toBeUndefined();
     expect(mapScope.hutMarkerEvents).toEqual([{
       event: 'click',
       locations: [new google.maps.LatLng(4,5)],
     }]);
   });
   
-  it('clicks selectedHut when huts change', function() {
+  it('clicks selectedHut when markers change', function() {
     var called = 0;
     mapScope.$watch('hutMarkerEvents', function(hutMarkerEvents) {
       called++;
     });
 
-    hutScope.huts = [{id:2,location:{type: 'Point', coordinates: [13, 12]},agency:2,region:2}];
+    var child = mapScope.$new();
+    child.$emit('gmMarkersUpdated', 'huts');
     $rootScope.$apply();
 
-    expect(called).toEqual(2);
+    expect(called).toEqual(1);
   });
 
   describe('updates $location', function() {
@@ -92,12 +102,6 @@ describe('MapCtrl', function() {
       mapScope.zoom = 11;
       mapScope.$digest();
       expect($location.search().m_zoom).toEqual(11);
-    });
-
-    it('from selectedHut', function() {
-      mapScope.setSelectedHut({id:2,location:{type: 'Point', coordinates: [13, 12]},agency:2,region:2});
-      mapScope.$digest();
-      expect($location.search().m_selected).toEqual('12,13');
     });
 
   });

@@ -2,7 +2,7 @@
  * Styles for map.html
  */
 
-#filter-sidebar, #map, #hut-bottombar {
+#show-hide-filter-sidebar, #filter-sidebar, #map, #hut-bottombar {
   .transition(left 500ms cubic-bezier(0.445, 0.05, 0.55, 0.95) 20ms);
 }
 
@@ -38,15 +38,25 @@
   width: 32px;
 }
 
-#show-filter-sidebar {
+#show-hide-filter-sidebar {
   position: absolute;
-  top: @navbarHeight;
-  left: 0px;
+  top: @navbarHeight + 10px;
+  left: @filterBarWidth;
   z-index: 101;
-  background-color: white;
   width: @fontSizeSmall;
   text-align: center;
-  .border-bottom-right-radius( 2px );
+  .grid;
+  .border-bottom-right-radius( 4px );
+  .border-top-right-radius( 4px );
+  border-right: @borderColor solid @filterBarBorderWidth;
+
+  &.filter-sidebar-hidden {
+    left: 0px;
+  }
+
+  .shade-background {
+    background-color: @altBgColor;
+  }
 
   i {
     .clickable-icon;
@@ -94,6 +104,7 @@
     .summary-total-hut-count {
       color: @grayDark;
     }
+
   }
 
   .hut-filter-table {
