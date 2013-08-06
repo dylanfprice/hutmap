@@ -25,21 +25,15 @@
       if ($scope.zoom) {
         $location.search('m_zoom', $scope.zoom);
       }
-      if ($scope.selectedHut) {
-        var loc = $scope.selectedHut.location;
-        $location.search('m_selected', loc.coordinates[1] + ',' + loc.coordinates[0]);
-      }
     };
 
-    // simulate a click on the location in m_selected
+    // simulate a click on the selected hut
     var clickSelected = function() {
-      hutsInitialized.promise.then(function() {
-        $scope.setSelectedHut(null);
-        var selected = $location.search().m_selected;
-        if (selected != null) {
+      $q.all([scopeInitialized.promise, hutsInitialized.promise]).then(function() {
+        if ($scope.selectedHut) {
           $scope.hutMarkerEvents = [{
             event: 'click',
-            locations: [utils.latLngFromUrlValue(selected)]
+            locations: [utils.latLngFromHut($scope.selectedHut)]
           }];
         }
       });
@@ -69,8 +63,6 @@
           $scope.bounds = utils.boundsFromUrlValue(bounds);
         }
       });
-
-      clickSelected();
     };
 
     var valueChange = function(newValue, oldValue) {
@@ -82,7 +74,6 @@
     $scope.$watch('huts != null', function(v) { if (v) hutsInitialized.resolve(); });
     $scope.$watch('center', valueChange);
     $scope.$watch('zoom', valueChange);
-    $scope.$watch('selectedHut', valueChange);
     $scope.$watch('bounds', function(bounds) {
       if (bounds && $scope.loadNewHuts) {
         $scope.setQuery({
@@ -95,6 +86,10 @@
       if (objects === 'huts') {
         clickSelected();
       }
+    });
+
+    $scope.$on('clickSelected', function() {
+      clickSelected();
     });
 
     // for child scopes
