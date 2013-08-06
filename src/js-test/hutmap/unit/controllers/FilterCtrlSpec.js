@@ -41,7 +41,7 @@ describe('FilterCtrl', function() {
       $controller('FilterCtrl', {$scope: filterScope});
 
       expect(filterScope.f.season.winter).toBeFalsy();
-      expect(filterScope.f.shelterType['emergency shelters'].$keywords).toBeDefined();
+      expect(filterScope.f.shelterType[0].$keywords).toBeDefined();
     }));
 
     it('is updated from $scope', inject(function($timeout) {
@@ -62,12 +62,22 @@ describe('FilterCtrl', function() {
     filterScope.f.season.unknown = unknown;
   }
 
+  function findShelterType(typeName) {
+    var found;
+    angular.forEach(filterScope.f.shelterType, function(type) {
+      if (type.name === typeName) {
+        found = type;
+      }
+    });
+    return found;
+  }
+
   function setShelterType(emergencyShelter, fireLookouts, hutsAndYurts, compounds) {
     filterScope.f.anyShelterType = false;
-    filterScope.f.shelterType['emergency shelters'].include = emergencyShelter;
-    filterScope.f.shelterType['fire lookouts'].include = fireLookouts;
-    filterScope.f.shelterType['huts & yurts'].include = hutsAndYurts;
-    filterScope.f.shelterType['compounds'].include = compounds;
+    findShelterType('emergency shelters').include = emergencyShelter;
+    findShelterType('fire lookouts').include = fireLookouts;
+    findShelterType('huts & yurts').include = hutsAndYurts;
+    findShelterType('compounds').include = compounds;
   }
 
   function filter() {
