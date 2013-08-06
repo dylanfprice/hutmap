@@ -32,7 +32,7 @@ class HutResource(ModelResource):
   alternate_names = fields.ListField(attribute='alternate_names', null=True)
   access_no_snow = fields.ListField(attribute='access_no_snow', null=True)
   types = fields.ListField(attribute='types', null=True)
-  services = fields.ListField(attribute='services_included', null=True)
+  services = fields.ListField(attribute='services', null=True)
 
   class Meta:
     max_limit = 0
