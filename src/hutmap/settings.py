@@ -111,7 +111,10 @@ STATIC_ROOT = join(LOCAL_PATH, '..', '..', 'public', 'static')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+if DEBUG:
+  STATIC_URL = '/static/'
+else:
+  STATIC_URL = 'http://www.hutmap.com/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
