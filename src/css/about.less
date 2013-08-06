@@ -2,12 +2,30 @@
  * Styles for about.html
  */
 
-.container {
-  padding-top: 40px;
+div.container {
+  padding: 60px 1.5em 10px 1.5em;
+  text-align: justify;
+  max-width: 1080px;
+  margin: 0 auto;  /* Page is centered on wider screen */
 }
 
-.about-profile {
-  margin-top: 20px;
-  margin-bottom: 20px;
+div.profile {
+  margin-top: 1.75em;
 }
 
+div.profile:after {  /* Clears float instead of a div inside html */
+  content: ".";
+  display: block;
+  height: 0;
+  clear: left;
+  visibility: hidden;
+}
+
+img.avatar {
+		float: left;
+		width: 160px;
+}
+
+div.bio {
+		margin-left: 180px;  /* width of avatar plus desired width of gap */
+}

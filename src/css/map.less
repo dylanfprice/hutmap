@@ -81,7 +81,7 @@
 
   .summary-info {
     background-color: @altBgColor;
-    border-bottom: @borderColor solid @filterBarBorderWidth;
+    border-bottom: 1px dotted @borderColor;
 
     i {
       .clickable-icon;
@@ -99,7 +99,8 @@
   .hut-filter-table {
 
     .hut-filter-title {
-      color: @sidebarLabelColor;
+      color: #333;
+			font-size: 105%;      
     }
 
     .hut-filter-icons {
@@ -107,12 +108,24 @@
     }
 
     .hut-filter-list {
-      text-shadow: 1px 1px 1px @white;
       list-style-type: none; 
       color: darken(@grayLight, 10%);
+      margin-left: 10px;
 
+			li.ng-scope {
+				line-height: 80%;
+				display: inline-block;
+				padding: 3px;
+				border: 1px solid #ddd;	
+			}
+			
+      li.selected {
+        background-color: #eee;
+      }
+      
       .selected {
-        color: @grayDark;
+				 color: @grayDark;
+				 text-shadow: 1px 1px 1px @white;
       }
 
       .tooltip {

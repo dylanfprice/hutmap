@@ -1,66 +1,64 @@
 <div class="container">
-  <h1>About Hutmap</h1>
+  <h1>About Us</h1>
 
   <p>
-  Hutmap was built by two ragtag mountain enthusiasts as a service to the independent-minded outdoor community. Cabins, yurts, lean-tos, lookouts, and lodges! Platforms on stilts, camperized railroad cars, natural caves! If it provides covered shelter in the backcountry, it belongs on Hutmap. Keeping with the spirit of the map, only superbly-located, community-supported frontcountry accommodations are included. Expensive, guide-only operations are (grudgingly) included.
+  Hutmap was built by two ragtag mountain climbers as a service to the independent-minded outdoor community. Cabins, yurts, lean-tos, lookouts, and lodges! Platforms on stilts, camperized railroad cars, natural caves! If it provides covered shelter in the backcountry, it belongs on Hutmap.
   </p>
 
+	<p>
+  For the time being, Hutmap is firmly focused on the USA and Canada. If you would like to help us expand into new territories - say by providing local knowledge or language translation - please <a href="mailto:info@hutmap.com">write to us</a>. You can suggest new huts, or edit existing huts, by using our <a href="">hut submission form</a>. Locations are determined from available word descriptions, GPS waypoints, maps, and satellite photos; where specified, hut locations are approximate and should not be relied upon for navigation.
+  </p>
+  
   <p>
-  For the time being, Hutmap covers only the USA and Canada. If you know of huts we overlooked, or would like to help us expand into new territories - say by providing local knowledge or language translation - contact us!
+	Write to us at <a href="mailto:info@hutmap.com">info@hutmap.com</a>. We would love to hear from you!
   </p>
 
-  <p>
-  Write us at <a href="mailto:info@hutmap.com">info@hutmap.com</a>. We would love to hear from you!
-  </p>
-
-  <div class="row about-profile">
-    <div class="span2">
-      <img src="{{ STATIC_URL }}img/about-ethan-profile.jpg"></img>
-    </div>
-    <div class="span10">
-      <a href="mailto:ethan@hutmap.com"><b>Ethan Welty</b></a> / Chief Hut Wrangler
-
-      <p>
-      A late night at the computer mapping backcountry shelters in Ethan's home ranges of Washington and Colorado quickly turned into a much larger journey across the landscapes of North America - combing satellite images, topographic maps, and the web in a quest to satiate his ravenous appetite for huts. He currently lives in Boulder, Colorado where he geeks out on glaciers, photography, and maps for his PhD at the <a href="http://instaar.colorado.edu/people/ethan-welty/">University of Colorado</a>.
+	<!-- Ethan -->
+	<div class="profile">
+		<img class="avatar" src="{{ STATIC_URL }}img/ethan.jpg">
+ 		<div class="bio">
+ 			<span class="larger"><a href="mailto:ethan@hutmap.com"><b>Ethan Welty</b></a> / Hut Wrangler</span><br/>
+  		<p>
+      A late night at the computer mapping backcountry shelters in Ethan's home ranges of Washington and Colorado quickly turned into a much larger journey across the landscapes of North America - combing satellite images, topographic maps, and the web in a quest to satiate his ravenous appetite for huts. He currently lives in Boulder, Colorado where he geeks out on glaciers, <a href="http://www.weltyphotography.com/">photography</a>, and maps for his PhD at the <a href="http://instaar.colorado.edu/people/ethan-welty/">University of Colorado</a>.
       </p>
-    </div>
-  </div>
-
-  <div class="row about-profile">
-    <div class="span2">
-      <img src="{{ STATIC_URL }}img/about-dylan-profile.jpg"></img>
-    </div>
-    <div class="span10">
-      <a href="mailto:dylan@hutmap.com"><b>Dylan Price</b></a> / Web Guru
-
-      <p>
-      Dylan and Ethan met through the <a href="http://students.washington.edu/climb/">Climbing Club</a> at the University of Washington, where Dylan schooled in the art of web development. Once graduated, Dylan jumped on board to help share Ethan's hut database with the world. He currently lives out of his car as a climbing bum somewhere in the wilds of the western US, and generously reports back from coffee shops to work on the website.
+		</div>
+	</div>
+	
+	<!-- Dylan -->
+	<div class="profile">
+		<img class="avatar" src="{{ STATIC_URL }}img/dylan.jpg">
+ 		<div class="bio">
+ 			<span class="larger"><a href="mailto:dylan@hutmap.com"><b>Dylan Price</b></a> / Web Guru</span><br/>
+  		<p>
+       Dylan and Ethan met through the <a href="http://students.washington.edu/climb/">Climbing Club</a> at the University of Washington, where Dylan schooled in the art of web development. Once graduated, Dylan jumped on board to help share Ethan's hut database with the world. He currently lives out of his car as a climbing bum somewhere in the wilds of the western US, and generously reports back from coffee shops to work on the website.
       </p>
-    </div>
-  </div>
-
+		</div>
+	</div>
+	
   <hr>
 
   <h2>Donations</h2>
 
   <p>
-  Hutmap is our gift to the outdoor community. However, the site does cost us money (and time) to maintain, so we will be forever grateful if you choose to make a contribution.
+  Hutmap is our gift to the outdoor community. However, the site does cost us time and money to maintain, so we will be forever grateful if you choose to make a contribution.
   </p>
-
-  $ 0.00     <a class="btn" href="">Donate via Paypal</a>
+  
+	<blockquote style="margin-bottom:2em;">
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="POST">
+			<input type="hidden" name="cmd" value="_donations">
+			<input type="hidden" name="business" value="franceisback@comcast.net">
+			<input type="hidden" name="return" value="http://www.hutmap.com/about/">
+			<input type="hidden" name="item_name" value="Donation to Hutmap">
+			<input type="hidden" name="no_shipping" value="1">
+			$<input name="amount" style="text-align: right;margin-left:0.15em;width:3em;	" value="0.00" size="4">
+			<input style="background-color: #eee;border: 1px solid #ccc;margin-left:0.25em;" type="submit" value="Donate via PayPal">
+		</form>
+	</blockquote>
 
   <h2>Closing Remarks</h2>
 
   <p>
-  Backcountry travel is a gift and a responsibility - please be safe, considerate of others (and their property), and cherish the natural environment. Where specified, hut locations are approximate and should not be relied upon for navigation. Images copied from hut agency websites are used without permission on hut profiles besides links to the page of origin, on the assumption that this classifies as <a href="http://www.copyright.gov/title17/92chap1.html#107">Fair Use</a>. We are sensitive to the rights of photographers, so please <a href="mailto:info@hutmap.com">contact us</a> if you disagree.
-  </p>
-
-  <p>
-  Our site makes use of the Google Maps API. By using this site, you are bound by both the <a href="https://www.google.com/intl/en/policies/terms">Google Terms of Service</a> and the <a href="https://www.google.com/policies/privacy">Google Privacy Policy</a>. 
-  </p>
-
-  <p>
-  Now go out and find some huts!
-  </p>
+  Backcountry travel is a gift and a responsibility - please be safe, considerate of others, and cherish the natural environment. Where specified, hut locations are approximate and should not be relied upon for navigation. Images copied from hut agency websites are used without permission on hut profiles, besides links to the page of origin, on the assumption that this classifies as <a href="http://www.copyright.gov/title17/92chap1.html#107">Fair Use</a>. We are sensitive to the rights of photographers, so please <a href="mailto:info@hutmap.com">contact us</a> if you disapprove.
+	</p>
 
 </div>
