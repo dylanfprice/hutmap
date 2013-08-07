@@ -26,7 +26,9 @@
 
     // for child scopes
     $scope.setQuery = function(query) {
-      $scope.query = query;
+      if ($scope.ui.loadNewHuts) {
+        $scope.query = query;
+      }
     };
 
     // for child scopes

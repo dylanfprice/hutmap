@@ -10,7 +10,8 @@
     $scope.$route = $route;
 
     $scope.ui = {
-      showFilterSidebar: true
+      showFilterSidebar: true,
+      loadNewHuts: true
     };
 
     $scope.$watch('ui.showFilterSidebar', function() {

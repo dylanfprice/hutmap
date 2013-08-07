@@ -32,7 +32,7 @@
     $scope.$watch('center != null && zoom != null', function(v) { if (v) scopeInitialized.resolve(); });
     $scope.$watch('huts != null', function(v) { if (v) hutsInitialized.resolve(); });
     $scope.$watch('bounds', function(bounds) {
-      if (bounds && $scope.loadNewHuts) {
+      if (bounds) {
         $scope.setQuery({
           bounds: bounds
         });
