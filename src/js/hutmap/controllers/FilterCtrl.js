@@ -317,8 +317,8 @@
       if ($scope.f.anySeason.include) {
       	return true;
       } else {
-				return (season.summer && hut.open_summer) || 
-							 (season.winter && hut.open_winter);
+				return ($scope.f.season.summer && hut.open_summer) || 
+							 ($scope.f.season.winter && hut.open_winter);
 			}							 
     };
 
