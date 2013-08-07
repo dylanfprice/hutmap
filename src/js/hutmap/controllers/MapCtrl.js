@@ -15,6 +15,7 @@
     $scope.center; // google.maps.LatLng
     $scope.zoom;   // integer
     $scope.bounds; // google.maps.LatLngBounds
+    $scope.mapTypeId // google.maps.MapTypeId
     $scope.hutMarkerEvents; // see http://dylanfprice.github.io/angular-gm/docs/module-gmMarkers.html
 
     // simulate a click on the selected hut
@@ -81,6 +82,9 @@
       if ($scope.zoom) {
         $location.search('m_zoom', $scope.zoom);
       }
+      if ($scope.mapTypeId) {
+        $location.search('m_maptypeid', $scope.mapTypeId);
+      }
     });
 
     // update scope from browser url
@@ -89,11 +93,13 @@
       var center = $location.search().m_center;
       var zoom = $location.search().m_zoom;
       var bounds = $location.search().m_bounds;
+      var mapTypeId = $location.search().m_maptypeid;
       
       // clear values
       $location.search('m_center', null);
       $location.search('m_zoom', null);
       $location.search('m_bounds', null);
+      $location.search('m_maptypeid', null);
 
       scopeInitialized.promise.then(function() {
         var hasBounds = bounds != null;
@@ -105,6 +111,10 @@
         }
         if (hasBounds) {
           $scope.bounds = utils.boundsFromUrlValue(bounds);
+        }
+        var hasMapTypeId = mapTypeId != null;
+        if (hasMapTypeId) {
+          $scope.mapTypeId = mapTypeId;
         }
       });
     };
