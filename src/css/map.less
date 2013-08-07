@@ -40,7 +40,7 @@
 
 #show-hide-filter-sidebar {
   position: absolute;
-  top: @navbarHeight + 10px;
+  top: @navbarHeight + @hideFilterBarOffset;
   left: @filterBarWidth;
   z-index: 101;
   width: @fontSizeSmall;
@@ -94,7 +94,13 @@
     border-bottom: 1px dotted @borderColor;
 
     i {
+      text-align: center;
       .clickable-icon;
+      text-shadow-color: darken(@grayLighter, 10%);
+
+      &.unselected {
+        color: darken(@grayLight, 10%);
+      }
     }
 
     .summary-filtered-hut-count {
