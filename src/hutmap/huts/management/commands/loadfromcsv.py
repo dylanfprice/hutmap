@@ -2,7 +2,7 @@ from csv import DictReader
 from datetime import datetime
 from django.core.management.base import BaseCommand
 from huts.models import Hut, Region, Agency
-from huts.utils.countries import lookup_country_code
+from huts.model_fields import lookup_country_code
 from huts.utils.csv_consts import CSV_NULL, CSV_TRUE
 
 
