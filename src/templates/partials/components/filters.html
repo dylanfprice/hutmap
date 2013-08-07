@@ -3,20 +3,20 @@
   <div class="hut-filter-title">Season</div>
   <ul class="hut-filter-list hut-filter-icons">
     <li>
-      <span class="hut-filter-item" tooltip="Select huts that are open in summer" tooltip-placement="right">
-        <i class="icon-sun"       ng-class="{'selected': f.season.summer}"  ng-click="f.season.summer = !f.season.summer; filter();"></i>
+      <span class="hut-filter-item" tooltip="Open in summer" tooltip-placement="right">
+        <i class="icon-sun" ng-class="{'selected': f.season.summer}"  ng-click="f.season.summer = !f.season.summer; filter();"></i>
       </span>
-      <span class="hut-filter-item" tooltip="Select huts that are open in winter" tooltip-placement="right">
+      <span class="hut-filter-item" tooltip="Open in winter" tooltip-placement="right">
         <i class="icon-snowflake" ng-class="{'selected': f.season.winter}"  ng-click="f.season.winter = !f.season.winter; filter();"></i>
       </span>
-      <span class="hut-filter-item" tooltip="Select huts that have no known season information" tooltip-placement="right">
-        <i class="icon-question"  ng-class="{'selected': f.season.unknown}" ng-click="f.season.unknown = !f.season.unknown; filter();"></i>
+      <span class="hut-filter-item" tooltip="Unknown" tooltip-placement="right">
+        <i class="icon-question" ng-class="{'selected': f.season.unknown}" ng-click="f.season.unknown = !f.season.unknown; filter();"></i>
       </span>
     </li>
   </ul>
   {% endverbatim %}{% include "partials/components/filter_with_any.html" with filter="shelterType" %}{% verbatim %}
   {% endverbatim %}{% include "partials/components/filter_with_any.html" with filter="backcountryAccess" %}{% verbatim %}
-  <div class="hut-filter-title">Services:</div>
+  <div class="hut-filter-title">Services</div>
   <ul class="hut-filter-list">
     <li tooltip="{{f.noServices.$tooltip}}"
         tooltip-placement="right"
@@ -33,11 +33,11 @@
     </li>
   </ul>
   {% endverbatim %}{% include "partials/components/filter_with_any.html" with filter="reservations" %}{% verbatim %}
-  <div class="hut-filter-title">Capacity:</div>
+  <div class="hut-filter-title">Capacity</div>
   <input type="number" ng-model="f.capacity.min" ng-change="filter()"></input>
   &mdash;
   <input type="number" ng-model="f.capacity.max" ng-change="filter()"></input>
-  <div class="hut-filter-title">Altitude:</div>
+  <div class="hut-filter-title">Altitude</div>
   <input type="number" ng-model="f.altitude.min" ng-change="filter()"></input>
   &mdash;
   <input type="number" ng-model="f.altitude.max" ng-change="filter()"></input>

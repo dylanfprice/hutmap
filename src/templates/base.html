@@ -18,6 +18,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://www.hutmap.com/" />
   <meta property="og:description" content="Your guide to North America's backcountry huts." />
+  <meta property="og:image" content="{{ STATIC_URL }}img/og/logo-icon-dark.png" />
   <meta property="og:image" content="{{ STATIC_URL }}img/og/logo-square-dark.png" />
   <meta property="og:image" content="{{ STATIC_URL }}img/og/110318_0354.jpg" />
 	
@@ -48,7 +49,7 @@
   <div ng-app="hutmap" ng-controller="HutmapCtrl" ng-init="STATIC_URL = '{{ STATIC_URL }}'; GOOGLE_API_KEY = '{{ GOOGLE_API_KEY }}';">
 
     <div id="navbar" class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner" style="background-color: #555;">
+      <div class="navbar-inner"">
         
         <a class="brand" href="/"><i class="img-logo up1"></i><span class="logo">Hutmap</span>
         </a>
@@ -91,7 +92,17 @@
             </a>
           </li>
         </ul>
+        
       </div>
+      
+      <!-- AddThis Buttons -->
+			<div id="share_controls" class="addthis_toolbox addthis_default_style" >
+				<a class="addthis_button_facebook_like" fb:like:layout="button_count" addthis:url="http://www.facebook.com/Hutmap"></a> 	
+				<a class="addthis_counter addthis_pill_style" addthis:url="http://www.hutmap.com"></a>
+			</div>
+			<!-- URL tracking <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>-->
+			<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51390d312330c4fe"></script>
+
     </div>
 
     <div ng-cloak>
