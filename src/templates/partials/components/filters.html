@@ -1,47 +1,73 @@
 {% verbatim %}
 <div class="hut-filter-table">
+	
+  <!-- Services -->
   <div class="hut-filter-title">Season</div>
-  <ul class="hut-filter-list hut-filter-icons">
-    <li>
-      <span class="hut-filter-item" tooltip="Open in summer" tooltip-placement="right">
-        <i class="icon-sun" ng-class="{'selected': f.season.summer}"  ng-click="f.season.summer = !f.season.summer; filter();"></i>
-      </span>
-      <span class="hut-filter-item" tooltip="Open in winter" tooltip-placement="right">
-        <i class="icon-snowflake" ng-class="{'selected': f.season.winter}"  ng-click="f.season.winter = !f.season.winter; filter();"></i>
-      </span>
-      <span class="hut-filter-item" tooltip="Unknown" tooltip-placement="right">
-        <i class="icon-question" ng-class="{'selected': f.season.unknown}" ng-click="f.season.unknown = !f.season.unknown; filter();"></i>
-      </span>
+  <ul class="hut-filter-list">
+    <li tooltip=""
+        tooltip-placement="right"
+        ng-class="{'selected': f.anySeason.include}"
+        ng-click="f.anySeason.include = !f.anySeason.include; filter();">
+        <span class="hut-filter-item">any</span>
+    </li><li tooltip=""
+        tooltip-placement="right"
+        ng-class="{'selected': f.season.summer}"
+        ng-click="f.season.summer = !f.season.summer; f.anySeason = false; filter();">
+        <span class="hut-filter-item">summer</span>
+    </li><li tooltip=""
+        tooltip-placement="right"
+        ng-class="{'selected': f.season.winter}"
+        ng-click="f.season.winter = !f.season.winter; f.anySeason = false; filter();">
+        <span class="hut-filter-item">winter</span>
     </li>
   </ul>
+  
+  <!-- Shelter Type -->
   {% endverbatim %}{% include "partials/components/filter_with_any.html" with filter="shelterType" %}{% verbatim %}
+  
+  <!-- Access Type -->
   {% endverbatim %}{% include "partials/components/filter_with_any.html" with filter="backcountryAccess" %}{% verbatim %}
+
+  <!-- Reservations -->
+  <div class="hut-filter-title">Reservations</div>
+  <ul class="hut-filter-list">
+    <li ng-repeat="i in sorted(f.reservations)" 
+        tooltip="{{f.reservations[i].$tooltip}}"
+        tooltip-placement="right"
+        ng-class="{'selected': f.reservations[i].include}"
+        ng-click="f.reservations[i].include = !f.reservations[i].include; filter();">
+        <span class="hut-filter-item">{{f.reservations[i].name}}</span>
+    </li>
+  </ul>
+  
+  <!-- Services -->
   <div class="hut-filter-title">Services</div>
   <ul class="hut-filter-list">
-    <li tooltip="{{f.noServices.$tooltip}}"
-        tooltip-placement="right"
-        ng-class="{'selected': f.noServices.include}"
-        ng-click="f.noServices.include = !f.noServices.include; filter();">
-        <span class="hut-filter-item">none</span>
-    </li>
     <li ng-repeat="i in sorted(f.services)" 
-        tooltip="Includes {{f.services[i].$keywords.join(', ')}}"
+        tooltip="{{f.services[i].$tooltip}}"
         tooltip-placement="right"
         ng-class="{'selected': f.services[i].include}"
         ng-click="f.services[i].include = !f.services[i].include; filter();">
         <span class="hut-filter-item">{{f.services[i].name}}</span>
     </li>
   </ul>
-  {% endverbatim %}{% include "partials/components/filter_with_any.html" with filter="reservations" %}{% verbatim %}
+  
+  <!-- Capacity -->
   <div class="hut-filter-title">Capacity</div>
-  <input type="number" ng-model="f.capacity.min" ng-change="filter()"></input>
-  &mdash;
-  <input type="number" ng-model="f.capacity.max" ng-change="filter()"></input>
+  <div class="hut-filter-minmax">
+  	<input type="number" ng-model="f.capacity.min" ng-change="filter()"></input>
+  	<sup>&mdash;</sup>
+  	<input type="number" ng-model="f.capacity.max" ng-change="filter()"></input>
+  </div>
+  
+  <!-- Altitude -->
   <div class="hut-filter-title">Altitude</div>
-  <input type="number" ng-model="f.altitude.min" ng-change="filter()"></input>
-  &mdash;
-  <input type="number" ng-model="f.altitude.max" ng-change="filter()"></input>
-  <ul class="hut-filter-list">
+	<div class="hut-filter-minmax" style="display:inline-block;">
+		<input type="number" ng-model="f.altitude.min" ng-change="filter()"></input>
+		<sup>&mdash;</sup>
+		<input type="number" ng-model="f.altitude.max" ng-change="filter()"></input>
+	</div>
+  <ul class="hut-filter-list hut-filter-units">
     <li ng-class="{'selected': f.altitude.meters}"
         ng-click="f.altitude.meters = true; filter()">
         <span class="hut-filter-item">m</span>

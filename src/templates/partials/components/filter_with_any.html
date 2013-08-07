@@ -1,5 +1,5 @@
 {% load titleize %}
-<div class="hut-filter-title">{{ filter | titleize }}:</div>
+<div class="hut-filter-title">{{ filter | titleize }}</div>
 <ul class="hut-filter-list">
   <li tooltip="{% templatetag openbrace %}{% templatetag openbrace %}
         f.any{{ filter | capfirst }}.$tooltip
@@ -10,8 +10,7 @@
       {% templatetag closebrace %}"
       ng-click="f.any{{ filter | capfirst }}.include = !f.any{{ filter | capfirst }}.include; filter();">
       <span class="hut-filter-item">any</span>
-  </li>
-  <li ng-repeat="i in sorted(f.{{ filter }})" 
+  </li><li ng-repeat="i in sorted(f.{{ filter }})" 
       tooltip="{% templatetag openbrace %}{% templatetag openbrace %}
         f.{{ filter }}[i].$tooltip
       {% templatetag closebrace %}{% templatetag closebrace %}"
