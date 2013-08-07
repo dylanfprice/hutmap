@@ -7,25 +7,6 @@
     ['$scope', '$timeout', '$location',
     function($scope, $timeout, $location) {
  
-    // update browser url from scope
-    var updateLocation = function() {
-      if ($scope.f) {
-        $location.search('f', encodeURIComponent(angular.toJson($scope.f)));
-      }
-    };
-
-    // update scope from browser url
-    var initializeScope = function() {
-      $scope.resetFilters();
-      var f = $location.search().f;
-      $location.search('f', null);
-      if (f != null) {
-        $.extend(true, $scope.f, angular.fromJson(decodeURIComponent(f)));
-      }
-      $scope.filter();
-    };
-
-
     // filter data binding
     // object keys that start with '$' are excluded from serialization via angular.toJson
 
@@ -275,7 +256,6 @@
       });
       $scope.setFilteredHuts(filteredHuts, filteredHutIds);
       $scope.$broadcast('gmMarkersRedraw', 'huts');
-      updateLocation();
     };
 
     $scope.$watch('huts', function() {
@@ -399,9 +379,26 @@
         hut.altitude_meters <= max;
     };
 
+    // update browser url from scope
+    $scope.$on('updateLocation', function() {
+      if ($scope.f) {
+        $location.search('f', angular.toJson($scope.f));
+      }
+    });
+
+    // update scope from browser url
+    var updateScope = function() {
+      $scope.resetFilters();
+      var f = $location.search().f;
+      $location.search('f', null);
+      if (f != null) {
+        $.extend(true, $scope.f, angular.fromJson(f));
+      }
+      $scope.filter();
+    };
 
     // we update scope from browser url once, at beginning
-    initializeScope();
+    updateScope();
 
   }]);
 })();

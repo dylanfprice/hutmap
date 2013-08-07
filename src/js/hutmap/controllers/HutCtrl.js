@@ -24,29 +24,6 @@
     $scope.incLoading = function() { $scope.loading++; };
     $scope.decLoading = function() { if ($scope.loading > 0) { $scope.loading--; } };
 
-    // update browser url from scope
-    var updateLocation = function() {
-      if ($scope.selectedHut) {
-        $location.search('h_selected', $scope.selectedHut.id);
-      }
-    };
-
-    // update scope from browser url
-    var updateScope = function() {
-      var id = $location.search().h_selected;
-      if (id) {
-        Huts.hut(id).then(function(hut) {
-          $scope.setSelectedHut(hut);
-          $scope.$broadcast('clickSelected');
-        });
-      }
-    };
-
-    $scope.$watch('selectedHut', function(newValue, oldValue) {
-      if (newValue !== oldValue)
-        updateLocation();
-    });;
-
     // for child scopes
     $scope.setQuery = function(query) {
       $scope.query = query;
@@ -102,9 +79,27 @@
           if (id === curQuery) {
             doQuery(id, newQuery);
           }
-        }, 1000); // delay query 1 sec in case user is moving map around a lot
+        });
       }
     });
+ 
+    // update browser url from scope
+    $scope.$on('updateLocation', function() {
+      if ($scope.selectedHut) {
+        $location.search('h_selected', $scope.selectedHut.id);
+      }
+    });
+   
+    // update scope from browser url
+    var updateScope = function() {
+      var id = $location.search().h_selected;
+      if (id) {
+        Huts.hut(id).then(function(hut) {
+          $scope.setSelectedHut(hut);
+          $scope.$broadcast('clickSelected');
+        });
+      }
+    };
 
     // we update scope from browser url once, at beginning
     updateScope();
