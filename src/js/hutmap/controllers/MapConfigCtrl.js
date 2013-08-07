@@ -10,13 +10,12 @@
    */
   controller('MapConfigCtrl', 
     
-    ['$scope', '$http', 'hutmapMapId', 'angulargmContainer', 'mapOptions',
+    ['$scope', '$http', 'hutmapMapId', 'mapOptions',
     'markerOptions',
 
-    function ($scope, $http, hutmapMapId, angulargmContainer, mapOptions,
+    function ($scope, $http, hutmapMapId, mapOptions,
       markerOptions) {
 
-    var gmapPromise = angulargmContainer.getMapPromise(hutmapMapId);
     var prevSelectedMarker;
     var prevIcon;
 
@@ -45,12 +44,5 @@
       marker.setOptions(markerOptions.selected);
       $scope.setSelectedHut(hut);
     };
-
-    $scope.$on('gmapResized', function() {
-      gmapPromise.then(function(gmap) {
-        google.maps.event.trigger(gmap, 'resize');
-      });
-    });
-
   }]);
 })();
