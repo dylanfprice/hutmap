@@ -10,14 +10,13 @@
     var curQuery = 0; // incremented every time there's a new hut query
 
     $scope.loading = 0; // truthy if huts are being queried/loaded
-    $scope.huts; // array of hut objects
+    $scope.huts; // array of hut objects in current viewport
     $scope.filteredHuts; // array of hut objects corresp. to those matching the filters
     $scope.filteredHutIds; // sparse array of hut ids, each id is in filteredHutIds[id]
     $scope.query; // current query for the Huts service
     $scope.selectedHut; 
     $scope.selectedHutRegion;
     $scope.selectedHutAgency;
-    $scope.loadNewHuts = true; // if false, query doesn't change on map pan/zoom
 
     // fns for dealing with loading variable
     $scope.resetLoading = function() { $scope.loading = 0; };
