@@ -118,6 +118,9 @@
     <script type="text/ng-template" id="template/tooltip/tooltip-popup.html">
       {% include "partials/components/tooltip-popup.html" %}
     </script>
+    <script type="text/ng-template" id="template/popover/popover.html">
+      {% include "partials/components/popover.html" %}
+    </script>
 
   </div>
 
@@ -125,6 +128,7 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js"></script>
+  <script src="https://apis.google.com/js/client.js"></script>
   {% if not DEBUG %}
   <script src="{{ STATIC_URL }}js/hutmap-{{ HUTMAP_VERSION }}.min.js"></script>
   {% else %}
@@ -150,6 +154,7 @@
   <script src="/dev/js/hutmap/controllers/MapConfigCtrl.js"></script>
   <script src="/dev/js/hutmap/controllers/SearchCtrl.js"></script>
   <script src="/dev/js/hutmap/controllers/FilterCtrl.js"></script>
+  <script src="/dev/js/hutmap/controllers/LinkCtrl.js"></script>
   {% endif %}
 
 </body>
