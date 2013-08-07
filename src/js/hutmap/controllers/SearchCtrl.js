@@ -62,7 +62,6 @@
 
       if (place.geometry.location) {
         $location.search('m_center', place.geometry.location.toUrlValue());
-        $location.search('m_selected', place.geometry.location.toUrlValue());
       }
       if (place.geometry.viewport) {
         $location.search('m_bounds', place.geometry.viewport.toUrlValue());

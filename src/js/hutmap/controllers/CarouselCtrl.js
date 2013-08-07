@@ -8,7 +8,7 @@
       {
         title: 'Plummer Hut', 
         location: 'Waddington Range, British Columbia, Canada',
-        hutLink: '/map/?m_selected=51.37361,-125.16458&m_center=51.388403,-125.062053&m_zoom=9',
+        hutLink: '/map/?h_selected=357&m_center=51.388403,-125.062053&m_zoom=9',
         agency: {
           name: 'BC Mountaineering Club',
           url:  ''
