@@ -213,45 +213,11 @@
     font-size: 20px;
   }
 
-  .hut-list {
-    display: inline-block;
-    overflow-y: scroll; 
-    height: @hutBarHeight;
-    width: 25%;
-    float: left;
-
-    table {
-      width: 100%;
-      padding-left: 10px;
-      padding-right: 10px;
-
-      tr {
-        border-bottom: @borderColor solid @filterBarBorderWidth;
-
-        &.selected {
-          background-color: fade(@yellow, 50%);
-        }
-      }
-
-      td {
-        text-align: left;
-
-        &.name {
-          max-width: 200px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          padding-left: @fontSizeSmall;
-        }
-      }
-    }
-  }
-
   .hut-info {
     height: @hutBarHeight;
-    width: 75%;
+    width: 100%;
     position: absolute;
-    right: 0;
+    left: 0;
     bottom: 0;
 
     .hut-info-left {
