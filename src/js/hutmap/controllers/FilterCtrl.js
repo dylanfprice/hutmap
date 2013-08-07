@@ -14,48 +14,52 @@
 
       $scope.f = {};
 
-      $scope.f.season = {
-        winter: true,
-        summer: true,
-        unknown: true,
+			$scope.f.anySeason = {
+        include: true,
       };
-
+      $scope.f.season = {
+        summer: false,
+        winter: false,
+      };
+      
       $scope.f.anyShelterType = {
         include: true,
-        $tooltip: 'Includes all shelter types',
+        $tooltip: '',
       };
       $scope.f.shelterType = {
         0: {
           name: 'caves',
           include: false,
-          $keywords: ['Cave']
+          $keywords: ['Cave'],
         },
         1: {
           name: 'huts & yurts',
           include: false,
-          $keywords: ['Hut', 'Yurt', 'Chickee', 'Lean-to', 'Wall Tent', 'Shelter']
+          $keywords: ['Hut', 'Yurt', 'Chickee', 'Lean-to', 'Wall Tent', 'Shelter'],
+          $tooltip: 'Hut, Yurt, Lean-to, Wall tent, etc',
         },
         2: {
           name: 'fire lookouts',
           include: false,
-          $keywords: ['Fire Lookout']
+          $keywords: ['Fire Lookout'],
         },
         3: {
           name: 'compounds',
           include: false,
-          $keywords: ['Compound', 'Hostel', 'Tea House', 'Lodge', 'Chalet', 'Ranch', 'Farm']
+          $keywords: ['Compound', 'Hostel', 'Tea House', 'Lodge', 'Chalet', 'Ranch', 'Farm'],
+          $tooltip: 'Lodge, Hostel, Ranch, Farm, etc',
         }
       };
 
       $scope.f.anyBackcountryAccess = {
         include: true,
-        $tooltip: 'Includes all access methods'
+        $tooltip: ''
       };
       $scope.f.backcountryAccess = {
         0: {
           name: 'road',
           include: false,
-          $tooltip: 'Huts that can be driven to',
+          $tooltip: 'Accessible by car',
           $match: function(hut) {
             return hut.backcountry === 0 ||
               (hut.backcountry === 1 && $scope.f.season.summer);
@@ -76,7 +80,7 @@
         2: {
           name: 'off-trail',
           include: false,
-          $tooltip: 'Scramble, Bushwack, Glacier Travel, etc.',
+          $tooltip: 'Bushwack, Scramble, Glacier travel, etc',
           $match: function(hut) {
             var match = false;
             if (hut.backcountry >= 2) {
@@ -89,7 +93,7 @@
         3: {
           name: 'snow',
           include: false,
-          $tooltip: 'Snowmobile, Ski, etc.',
+          $tooltip: 'Ski, Snowmobile, etc',
           $match: function(hut) {
             var match = false;
             if (hut.backcountry === 1 && $scope.f.season.winter) {
@@ -104,7 +108,7 @@
         4: {
           name: 'boat',
           include: false,
-          $tooltip: 'Motor Boat, Canoe, etc.',
+          $tooltip: 'Motor Boat, Canoe, etc',
           $match: function(hut) {
             var match = false;
             if (hut.backcountry >= 2) {
@@ -117,7 +121,7 @@
         5: {
           name: 'aircraft',
           include: false,
-          $tooltip: 'Helicopter, Skiplane, etc.',
+          $tooltip: 'Helicopter, Plane, etc',
           $match: function(hut) {
             var match = false;
             if (hut.backcountry >= 2) {
@@ -129,37 +133,36 @@
         },
       };
 
-      $scope.f.noServices = {
-        include: true,
-        $tooltip: 'No services available'
-      };
       $scope.f.services = {
         0: {
-          name: 'transportation',
+					name: 'none',
           include: true,
-          $keywords: ['Transportation (Helicopter)', 'Transportation (Snowcat)']
+          $tooltip: 'Self-service only'
         },
         1: {
-          name: 'food',
+          name: 'transportation',
           include: true,
-          $keywords: ['Half Board', 'Full Board', 'Stocked Food', 'Breakfast']
+          $keywords: ['Transportation (Helicopter)', 'Transportation (Snowcat)'],
+          $tooltip: 'Helicopter, Snowcat, etc'
         },
         2: {
+          name: 'food',
+          include: true,
+          $keywords: ['Half Board', 'Full Board', 'Stocked Food', 'Breakfast'],
+          $tooltip: 'Cooked meals, Stocked food, etc'
+        },
+        3: {
           name: 'guide',
           include: true,
           $keywords: ['Guide']
         }
       };
 
-      $scope.f.anyReservations = {
-        include: true,
-        $tooltip: 'Both reserveable and non-reserveable huts'
-      };
       $scope.f.reservations = {
         0: {
-          name: '1st come 1st served',
-          include: false,
-          $tooltip: 'The hut can not be reserved',
+          name: 'none',
+          include: true,
+          $tooltip: '',
           $match: function(hut) {
             return hut.is_fee_person && hut.fee_person_min === 0 &&
               hut.fee_person_max === 0 && !hut.is_fee_hut && !hut.reservations
@@ -167,16 +170,16 @@
         },
         1: {
           name: 'shared',
-          include: false,
-          $tooltip: 'A spot or room in the hut can be reserved',
+          include: true,
+          $tooltip: 'A spot in the hut can be reserved',
           $match: function(hut) {
             return hut.is_fee_person && hut.reservations;
           }
         },
         2: {
           name: 'private',
-          include: false,
-          $tooltip: 'The whole hut can be reserved for a private party',
+          include: true,
+          $tooltip: 'The whole hut can be reserved',
           $match: function(hut) {
             return hut.is_fee_hut && hut.reservations;
           }
@@ -201,6 +204,13 @@
       });
     }
 
+		$scope.$watch('f.anySeason.include', function(newValue, oldValue) {
+      if (newValue) {
+        $scope.f.season.summer = false;
+        $scope.f.season.winter = false;
+      }
+    });
+    
     $scope.$watch('f.anyShelterType.include', function(newValue, oldValue) {
       if (newValue) {
         setIncludes($scope.f.shelterType, false);
@@ -304,10 +314,12 @@
     // matchers
    
     function matchSeason(hut) {
-      var season = $scope.f.season;
-      return (season.summer && hut.open_summer) || 
-             (season.winter && hut.open_winter) || 
-             (season.unknown && (!hut.open_summer && !hut.open_winter));
+      if ($scope.f.anySeason.include) {
+      	return true;
+      } else {
+				return (season.summer && hut.open_summer) || 
+							 (season.winter && hut.open_winter);
+			}							 
     };
 
     function matchShelterType(hut, keywords) {
