@@ -65,8 +65,8 @@ if success1:
   elif success1 and not success2:
     print('\n\nThere were errors but you can still complete the deployment.\n')
     print('To complete, ssh in and run the following:')
-    print('  hutmap.com/scripts/utils/deploy-dreamhost-remote.sh {}\n'.format(vers))
+    print('  hutmap.com/scripts/utils/deploy-dreamhost-remote.sh {0}\n'.format(vers))
     print('Or all in one go:')
-    print('  ssh {} "bash -s {}" < scripts/utils/deploy-dreamhost-remote.sh\n'.format(hutmap_ssh, vers))
+    print('  ssh {0} "bash -s {1}" < scripts/utils/deploy-dreamhost-remote.sh\n'.format(hutmap_ssh, vers))
   else:
     print('\n Deploy failed. Look at the stack trace printed below for more details.\n')
