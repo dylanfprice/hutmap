@@ -37,7 +37,7 @@
   value('mapOptions', {
     zoom : 3,
     center : new google.maps.LatLng(46.87916, -120),
-    mapTypeId : google.maps.MapTypeId.TERRAIN,
+    mapTypeId : google.maps.MapTypeId.TERRAIN, // overriden in the run block below
     streetViewControl: false,
     panControlOptions: {
       position: google.maps.ControlPosition.LEFT_CENTER
@@ -171,6 +171,8 @@
                        mapTypes.ARC_GIS_WORLD.name]
         }
       });
+
+      gmap.setMapTypeId(mapTypes.ARC_GIS_WORLD.name);
 
       gmap.enableKeyDragZoom({
         key: 'alt',
