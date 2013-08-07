@@ -81,7 +81,7 @@ def convert(csvfile):
     for field in OLD_TO_NEW:
       if OLD_TO_NEW[field]:
         new_field = OLD_TO_NEW[field]
-        value = values[field]
+        value = values[field].strip()
         value = handle_special_fields(new_row, new_field, value)
         new_row[new_field] = value
 
@@ -210,7 +210,7 @@ if __name__ == '__main__':
   outfile = sys.stdout
   new_rows = convert(csvfile)
   new_csvfile = DictWriter(outfile, fields)
-  outfile.write(codecs.BOM_UTF8)
+  #outfile.write(codecs.BOM_UTF8)
   new_csvfile.writeheader()
   new_csvfile.writerows(new_rows)
 
