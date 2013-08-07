@@ -81,7 +81,7 @@ def convert(csvfile):
     for field in OLD_TO_NEW:
       if OLD_TO_NEW[field]:
         new_field = OLD_TO_NEW[field]
-        value = values[field]
+        value = values[field].strip()
         value = handle_special_fields(new_row, new_field, value)
         new_row[new_field] = value
 
