@@ -1,6 +1,6 @@
 /**
  * AngularGM - Google Maps Directives for AngularJS
- * @version v0.1.1 - 2013-08-05
+ * @version v0.1.1 - 2013-08-06
  * @link http://dylanfprice.github.com/angular-gm
  * @author Dylan Price <the.dylan.price@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -172,6 +172,7 @@
  *         gm-center="myCenter" 
  *         gm-zoom="myZoom" 
  *         gm-bounds="myBounds" 
+ *         gm-map-type-id="myMapTypeId"
  *         gm-map-options="myMapOptions">
  * </gm-map>
  * ```
@@ -190,18 +191,21 @@
  *   + `gm-bounds`: name for a bounds variable in the current scope.  Value will
  *   be a google.maps.LatLngBounds object.
  *
+ *   + `gm-map-type-id`: name for a mapTypeId variable in the current scope.
+ *   Value will be a string.
+ *
  *   + `gm-map-options`: object in the current scope that is a
  *   google.maps.MapOptions object. If unspecified, will use the values in
  *   angulargmDefaults.mapOptions. [angulargmDefaults]{@link module:angulargmDefaults}
  *   is a service, so it is both injectable and overrideable (using
  *   $provide.decorator).
  *
- * All attributes except `gm-map-options` are required. The `gm-center`, `gm-zoom`,
- * and `gm-bounds` variables do not have to exist in the current scope--they will
- * be created if necessary. All three have bi-directional association, i.e.
- * drag or zoom the map and they will update, update them and the map will
- * change.  However, any initial state of these three variables will be
- * ignored.
+ * All attributes except `gm-map-options` are required. The `gm-center`,
+ * `gm-zoom`, `gm-bounds`, and `gm-map-type-id` variables do not have to exist in
+ * the current scope--they will be created if necessary. All three have
+ * bi-directional association, i.e.  drag or zoom the map and they will update,
+ * update them and the map will change.  However, any initial state of these
+ * three variables will be ignored.
  *
  * If you need to get a handle on the google.maps.Map object, see
  * [angulargmContainer]{@link module:angulargmContainer}
@@ -248,6 +252,7 @@
       var hasCenter = false;
       var hasZoom = false;
       var hasBounds = false;
+      var hasMapTypeId = false;
 
       if (attrs.hasOwnProperty('gmCenter')) {
         hasCenter = true;
@@ -258,10 +263,13 @@
       if (attrs.hasOwnProperty('gmBounds')) {
         hasBounds = true;
       }
+      if (attrs.hasOwnProperty('gmMapTypeId')) {
+        hasMapTypeId = true;
+      }
 
       var updateScope = function() {
         $timeout(function () {
-          if (hasCenter || hasZoom || hasBounds) {
+          if (hasCenter || hasZoom || hasBounds || hasMapTypeId) {
             scope.$apply(function (s) {
               if (hasCenter) {
                 scope.gmCenter = controller.center;
@@ -275,6 +283,9 @@
                   scope.gmBounds = b;
                 }
               }
+              if (hasMapTypeId) {
+                scope.gmMapTypeId = controller.mapTypeId;
+              }
             });
           }
         });
@@ -284,6 +295,7 @@
       controller.addMapListener('zoom_changed', updateScope);
       controller.addMapListener('center_changed', updateScope);
       controller.addMapListener('bounds_changed', updateScope);
+      controller.addMapListener('maptypeid_changed', updateScope);
       controller.addMapListener('resize', updateScope);
       
       if (hasCenter) {
@@ -317,6 +329,15 @@
         });
       }
 
+      if (hasMapTypeId) {
+        scope.$watch('gmMapTypeId', function(newValue, oldValue) {
+          var changed = (newValue !== oldValue);
+          if (changed && newValue) {
+            controller.mapTypeId = newValue;
+          }
+        });
+      }
+
       scope.$on('gmMapResize', function(event, gmMapId) {
         if (scope.gmMapId() === gmMapId) {
           controller.mapTrigger('resize');
@@ -338,6 +359,7 @@
         gmCenter: '=',
         gmZoom: '=',
         gmBounds: '=',
+        gmMapTypeId: '=',
         gmMapOptions: '&',
         gmMapId: '&'
       },
@@ -711,8 +733,6 @@
 
 /**
  * Common utility functions.
- *
- * @namespace angulargmUtils
  */
 (function () {
   angular.module('AngularGM').
@@ -722,8 +742,6 @@
     /**
      * Check if two floating point numbers are equal. 
      * @return true if f1 and f2 are 'very close'
-     * @function 
-     * @memberof angulargmUtils
      */
     function floatEqual (f1, f2) {
       return (Math.abs(f1 - f2) < 0.000001);
@@ -734,8 +752,6 @@
      * @param {google.maps.LatLng} l2
      * @return {boolean} true if l1 and l2 are 'very close'. If either are null
      * or not google.maps.LatLng objects returns false.
-     * @function 
-     * @memberof angulargmUtils
      */
     function latLngEqual(l1, l2) {
       if (!(l1 instanceof google.maps.LatLng && 
@@ -750,8 +766,6 @@
      * @param {google.maps.LatLngBounds} b2
      * @return {boolean} true if b1 and b2 are 'very close'. If either are null
      * or not google.maps.LatLngBounds objects returns false.
-     * @function 
-     * @memberof angulargmUtils
      */
     function boundsEqual(b1, b2) {
       if (!(b1 instanceof google.maps.LatLngBounds &&
@@ -770,8 +784,6 @@
      * @param {google.maps.LatLng} latLng
      * @return {Object} object literal with 'lat' and 'lng' properties.
      * @throw if latLng not instanceof google.maps.LatLng
-     * @function 
-     * @memberof angulargmUtils
      */
     function latLngToObj(latLng) {
       if (!(latLng instanceof google.maps.LatLng)) 
@@ -787,8 +799,6 @@
      * @param {Object} obj of the form { lat: 40, lng: -120 } 
      * @return {google.maps.LatLng} returns null if problems with obj (null,
      * NaN, etc.)
-     * @function 
-     * @memberof angulargmUtils
      */
     function objToLatLng(obj) {
       if (obj != null) {
@@ -806,8 +816,6 @@
     /**
      * @param {google.maps.LatLng} latLng
      * @return true if either lat or lng of latLng is null or isNaN
-     * @function 
-     * @memberof angulargmUtils
      */
     function hasNaN(latLng) {
       if (!(latLng instanceof google.maps.LatLng))
@@ -822,9 +830,6 @@
     /**
      * @param {Object} attrs directive attributes
      * @return {Object} mapping from event names to handler fns
-     * @function 
-     * @private
-     * @memberof angulargmUtils
      */
     function getEventHandlers(attrs) {
       var handlers = {};
@@ -856,7 +861,7 @@
 
 /**
  * Directive controller which is owned by the [gmMap]{@link module:gmMap}
- * directive and shared with [gmMarkers]{@link module:gmMarkers}.
+ * directive and shared among all other angulargm directives.
  */
 (function () {
   angular.module('AngularGM').
@@ -955,6 +960,21 @@
             var changed = !(boundsEqual(this.bounds, bounds));
             if (changed) {
               this._map.fitBounds(bounds);
+            }
+          }
+        },
+
+        'mapTypeId': {
+          configurable: true, // for testing so we can mock
+          get: function() {
+            return this._map.getMapTypeId();
+          },
+          set: function(mapTypeId) {
+            if (mapTypeId == null)
+              throw 'mapTypeId was null or unknown';
+            var changed = this.mapTypeId !== mapTypeId;
+            if (changed) {
+              this._map.setMapTypeId(mapTypeId);
             }
           }
         }
