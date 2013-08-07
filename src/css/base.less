@@ -15,7 +15,7 @@ p {
   word-spacing: +0.1em; /* anti bootstrap */
 }
 
-a {
+a, a:hover {
 	text-decoration: none;
 	color: blue;
 }
@@ -46,7 +46,7 @@ hr {
 .logo {
 	font-family: "Cooper Medium";
 	line-height: 1.1em;
-	font-size: 0.9em;
+	font-size: 0.95em;
 }
 
 .larger {
@@ -100,6 +100,10 @@ label, input, button, select, textarea {
     }
   }
 
+	.nav li a {
+		padding: 5.5px 15px 3.5px 15px;
+	}
+	
   #navbar-search {
     @searchPaddingLeft: 30px;
     @searchPaddingRight: 30px;
@@ -107,10 +111,11 @@ label, input, button, select, textarea {
     @searchPadding: 4px;
     @searchBarShift: 10px;
     @placeholderColor: @gray;
-
     margin-right: 10px;
 
     .search-query {
+    	padding-top: 4px; /* anti bootstrap */
+    	padding-bottom: 1px; /* anti bootstrap */
       padding-left: @searchPaddingLeft;
       padding-right: @searchPaddingRight;
       border: @searchBorder solid darken(@gray, 5%);
@@ -119,6 +124,7 @@ label, input, button, select, textarea {
       height: @searchInputHeight;
       width: @searchInputStartingWidth;
       position: relative;
+			top: 1px;
       right: @searchBarShift;
       color: @placeholderColor;
       background-color: @searchBackgroundColor;
@@ -127,11 +133,12 @@ label, input, button, select, textarea {
       z-index: 5;
 
       &:focus {
-        padding-top: @searchPadding;
-        padding-bottom: @searchPadding;
         background-color: darken(@white, 5%);
         width: @searchInputExpandedWidth;
         box-shadow: none;
+        text-shadow: none; /* anti bootstrap */
+        padding-top: 4px; /* anti bootstrap */
+        padding-bottom: 1px; /* anti bootstrap */
       }
 
       &::-webkit-input-placeholder { /* WebKit browsers */
@@ -163,7 +170,7 @@ label, input, button, select, textarea {
       height: 100%;
       width: @searchPaddingRight;
       position: absolute;
-      top: 0px;
+      top: 1px;
       right: @searchBarShift;
       z-index: 10;
 
