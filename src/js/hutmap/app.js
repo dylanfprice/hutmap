@@ -176,6 +176,7 @@
 
       gmap.enableKeyDragZoom({
         key: 'alt',
+        veilStyle: {backgroundColor: "gray", opacity: 0, cursor: "crosshair"},
         visualEnabled: true,
         visualPosition: google.maps.ControlPosition.LEFT_CENTER
       });
