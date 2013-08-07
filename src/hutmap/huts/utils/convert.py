@@ -210,7 +210,7 @@ if __name__ == '__main__':
   outfile = sys.stdout
   new_rows = convert(csvfile)
   new_csvfile = DictWriter(outfile, fields)
-  outfile.write(codecs.BOM_UTF8)
+  #outfile.write(codecs.BOM_UTF8)
   new_csvfile.writeheader()
   new_csvfile.writerows(new_rows)
 

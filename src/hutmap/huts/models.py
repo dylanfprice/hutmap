@@ -54,7 +54,7 @@ class Hut(models.Model):
   hut_url = models.URLField(max_length=250, null=True, blank=True)
 
   # returns path to save photo, relative to MEDIA_ROOT
-  def image_path(self, hut, filename):
+  def image_path(hut, filename):
     return path.join('huts', hut.country, hut.state, hut.name, filename)
 
   photo = models.ImageField(upload_to=image_path, null=True, blank=True)
@@ -121,9 +121,9 @@ class Hut(models.Model):
     """Store image locally if we have a URL"""
     if self.photo_url and not self.photo:
       try:
-        image = retrieve_and_resize(self.photo_url)
+        image = retrieve_and_resize(self.photo_url, 200, 200)
         self.photo.save(
-          'bottombar.jpeg',
+          'photo_200x200.jpeg',
           ContentFile(image.read()),
           save=True
         )
@@ -132,6 +132,7 @@ class Hut(models.Model):
         self.save()
       except:
         pass
+        
 
   def save(self, *args, **kwargs):
     super(Hut, self).save(*args, **kwargs) # Call the "real" save() method.
