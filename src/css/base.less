@@ -43,18 +43,26 @@ hr {
   margin: 2em 0 1.5em 15%;
 }
 
-.logo {
-	font-family: "Cooper Medium";
-	line-height: 1.1em;
-	font-size: 0.95em;
-}
-
 .larger {
 	font-size: 105%;
 }
 
 .smaller {
 	font-size: 95%;
+}
+
+/** Header **/
+
+.logo {
+	font-family: "Cooper Medium";
+	line-height: 1.1em;
+	font-size: 0.95em;
+}
+
+#share_controls {
+	position: absolute;
+	right: 25px;
+	top: 4px;
 }
 
 
@@ -79,9 +87,9 @@ label, input, button, select, textarea {
     color: @gray;
     border-width: 0px;
     background-image: none;
-    background-color: fade(@gray, 80%);
     padding-left: 20px;
     padding-right: 20px;
+    background-color: #555;
   }
 
   .brand {
