@@ -2,7 +2,7 @@
 <div class="hut-list clearfix">
   <table>
     <tr class="hut-list-item" 
-        ng-repeat="hut in filteredHuts | orderBy:'+name'" 
+        ng-repeat="hut in filteredHuts | limitTo:25 | orderBy:'+name'" 
         ng-mouseenter="mouseoverHut(hut)"
         ng-mouseleave="mouseoutHut(hut)"
         ng-click="clickHut(hut)"

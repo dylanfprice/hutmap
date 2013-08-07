@@ -40,7 +40,7 @@
 
 #show-hide-filter-sidebar {
   position: absolute;
-  top: @navbarHeight + 10px;
+  top: @navbarHeight + @hideFilterBarOffset;
   left: @filterBarWidth;
   z-index: 101;
   width: @fontSizeSmall;
@@ -94,7 +94,13 @@
     border-bottom: 1px dotted @borderColor;
 
     i {
+      text-align: center;
       .clickable-icon;
+      text-shadow-color: darken(@grayLighter, 10%);
+
+      &.unselected {
+        color: darken(@grayLight, 10%);
+      }
     }
 
     .summary-filtered-hut-count {
@@ -196,6 +202,33 @@
   }
 }
 
+#link-button {
+  .link-button-icons {
+    position: absolute;
+    right: 30%;
+    bottom: @hutBarHeight;
+    z-index: 101;
+    padding: .25em;
+    background-color: rgb(250,250,250);
+    .border-top-left-radius( 4px );
+    .border-top-right-radius( 4px );
+    border-left: @borderColor solid @filterBarBorderWidth;
+    border-top: @borderColor solid @filterBarBorderWidth;
+    border-right: @borderColor solid @filterBarBorderWidth;
+
+    i {
+      padding: .25em;
+      .clickable-icon;
+    }
+
+    .popover {
+      text-align: center;
+      font-size: @fontSizeSmall;
+      width: 120em;
+    }
+  }
+}
+
 #hut-bottombar {
   position: absolute;
   left: @filterBarWidth + @filterBarBorderWidth;
@@ -213,45 +246,11 @@
     font-size: 20px;
   }
 
-  .hut-list {
-    display: inline-block;
-    overflow-y: scroll; 
-    height: @hutBarHeight;
-    width: 25%;
-    float: left;
-
-    table {
-      width: 100%;
-      padding-left: 10px;
-      padding-right: 10px;
-
-      tr {
-        border-bottom: @borderColor solid @filterBarBorderWidth;
-
-        &.selected {
-          background-color: fade(@yellow, 50%);
-        }
-      }
-
-      td {
-        text-align: left;
-
-        &.name {
-          max-width: 200px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          padding-left: @fontSizeSmall;
-        }
-      }
-    }
-  }
-
   .hut-info {
     height: @hutBarHeight;
-    width: 75%;
+    width: 100%;
     position: absolute;
-    right: 0;
+    left: 0;
     bottom: 0;
 
     .hut-info-left {

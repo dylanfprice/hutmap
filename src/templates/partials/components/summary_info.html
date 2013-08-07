@@ -10,14 +10,11 @@
   </span>
   <br/>
   <i class="icon-refresh" 
-    ng-click="resetFilters(); filter();"></i>
-    reset all filters<br/>
-  <i ng-click="loadNewHuts = !loadNewHuts" 
-     ng-class="{
-       'icon-check': !loadNewHuts,
-       'icon-check-empty': loadNewHuts
-     }"
-     ></i> freeze huts
+     tooltip="Reset all filters"
+     tooltip-placement="right"
+     tooltip-popup-delay="500"
+     ng-click="resetFilters(); filter();"></i>
+   reset all filters
 </div>
 {% endverbatim %}
 

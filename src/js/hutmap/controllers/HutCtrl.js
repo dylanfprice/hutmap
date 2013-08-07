@@ -10,46 +10,24 @@
     var curQuery = 0; // incremented every time there's a new hut query
 
     $scope.loading = 0; // truthy if huts are being queried/loaded
-    $scope.huts; // array of hut objects
+    $scope.huts; // array of hut objects in current viewport
     $scope.filteredHuts; // array of hut objects corresp. to those matching the filters
     $scope.filteredHutIds; // sparse array of hut ids, each id is in filteredHutIds[id]
     $scope.query; // current query for the Huts service
     $scope.selectedHut; 
     $scope.selectedHutRegion;
     $scope.selectedHutAgency;
-    $scope.loadNewHuts = true; // if false, query doesn't change on map pan/zoom
 
     // fns for dealing with loading variable
     $scope.resetLoading = function() { $scope.loading = 0; };
     $scope.incLoading = function() { $scope.loading++; };
     $scope.decLoading = function() { if ($scope.loading > 0) { $scope.loading--; } };
 
-    // update browser url from scope
-    var updateLocation = function() {
-      if ($scope.selectedHut) {
-        $location.search('h_selected', $scope.selectedHut.id);
-      }
-    };
-
-    // update scope from browser url
-    var updateScope = function() {
-      var id = $location.search().h_selected;
-      if (id) {
-        Huts.hut(id).then(function(hut) {
-          $scope.setSelectedHut(hut);
-          $scope.$broadcast('clickSelected');
-        });
-      }
-    };
-
-    $scope.$watch('selectedHut', function(newValue, oldValue) {
-      if (newValue !== oldValue)
-        updateLocation();
-    });;
-
     // for child scopes
     $scope.setQuery = function(query) {
-      $scope.query = query;
+      if ($scope.ui.loadNewHuts) {
+        $scope.query = query;
+      }
     };
 
     // for child scopes
@@ -102,9 +80,27 @@
           if (id === curQuery) {
             doQuery(id, newQuery);
           }
-        }, 1000); // delay query 1 sec in case user is moving map around a lot
+        });
       }
     });
+ 
+    // update browser url from scope
+    $scope.$on('updateLocation', function() {
+      if ($scope.selectedHut) {
+        $location.search('h_selected', $scope.selectedHut.id);
+      }
+    });
+   
+    // update scope from browser url
+    var updateScope = function() {
+      var id = $location.search().h_selected;
+      if (id) {
+        Huts.hut(id).then(function(hut) {
+          $scope.setSelectedHut(hut);
+          $scope.$broadcast('clickSelected');
+        });
+      }
+    };
 
     // we update scope from browser url once, at beginning
     updateScope();
