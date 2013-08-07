@@ -102,7 +102,6 @@ label, input, button, select, textarea {
 
 	.nav li a {
 		padding: 5.5px 15px 3.5px 15px;
-		font-size: 95%;
 	}
 	
   #navbar-search {
@@ -115,7 +114,8 @@ label, input, button, select, textarea {
     margin-right: 10px;
 
     .search-query {
-    	padding-bottom: 2px; /* anti bootstrap */
+    	padding-top: 4px; /* anti bootstrap */
+    	padding-bottom: 1px; /* anti bootstrap */
       padding-left: @searchPaddingLeft;
       padding-right: @searchPaddingRight;
       border: @searchBorder solid darken(@gray, 5%);
@@ -133,11 +133,12 @@ label, input, button, select, textarea {
       z-index: 5;
 
       &:focus {
-        padding-top: @searchPadding;
-        padding-bottom: @searchPadding;
         background-color: darken(@white, 5%);
         width: @searchInputExpandedWidth;
         box-shadow: none;
+        text-shadow: none; /* anti bootstrap */
+        padding-top: 4px; /* anti bootstrap */
+        padding-bottom: 1px; /* anti bootstrap */
       }
 
       &::-webkit-input-placeholder { /* WebKit browsers */
