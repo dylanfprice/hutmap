@@ -349,7 +349,7 @@
 
     function matchServices(hut, keywords) {
       var matchServices = false;
-      if ($scope.f.noServices.include && !hut.has_services && !hut.has_optional_services) {
+      if ($scope.f.services[0].include && !hut.has_services && !hut.has_optional_services) {
         return true;
       } else if (keywords.length > 0) {
         if (hut.has_services && hut.services != null) {
@@ -362,7 +362,7 @@
 
     function matchReservations(hut) {
       var matchReservations = false;
-      if ($scope.f.anyReservations.include) {
+      if ($scope.f.reservations[0].include) {
         matchReservations = true;
       } else {
         angular.forEach($scope.f.reservations, function(reservation) {
