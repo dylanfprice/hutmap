@@ -3,30 +3,18 @@
 (function () {
   angular.module('hutmap.filters', []).
 
-  /**
-  * Truncate Filter
-  * @Param string
-  * @Param int, default = 10
-  * @Param string, default = "..."
-  * @return string
-  */
-  filter('truncate', function () {
-    return function (text, length, end) {
-      if (isNaN(length))
-        length = 10;
-         
-      if (end === undefined)
-        end = "...";
-         
-      if (text == null || text.length == 0) {
-        return null;
-      } else if (text.length <= length || text.length - end.length <= length) {
-        return text;
-      }
-      else {
-        return String(text).substring(0, length-end.length) + end;
-      }
-    };
-  });
+  filter('orderFilter', function() {
+    return function(obj) {
+      var array = [];
+      Object.keys(obj).forEach(function(key) {
+        var val = obj[key];
+        val.$name = key;
+        array.push(obj[key]);
+      });
+      array.sort(function(a, b) {
+        return a.$position - b.$position;
+      });
+      return array;
+  }});
 
 })();

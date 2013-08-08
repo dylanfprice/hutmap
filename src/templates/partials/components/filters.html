@@ -1,56 +1,20 @@
 <div class="hut-filter-table">
 	
-  <!-- Services -->
-  <div class="hut-filter-title">Season</div>
-  <ul class="hut-filter-list">
-    <li tooltip=""
-        tooltip-placement="right"
-        ng-class="{selected: f.anySeason.include}"
-        ng-click="f.anySeason.include = !f.anySeason.include; filter();">
-        <span class="hut-filter-item">any</span>
-    </li><li tooltip=""
-        tooltip-placement="right"
-        ng-class="{selected: f.season.summer}"
-        ng-click="f.season.summer = !f.season.summer; f.anySeason = false; filter();">
-        <span class="hut-filter-item">summer</span>
-    </li><li tooltip=""
-        tooltip-placement="right"
-        ng-class="{selected: f.season.winter}"
-        ng-click="f.season.winter = !f.season.winter; f.anySeason = false; filter();">
-        <span class="hut-filter-item">winter</span>
-    </li>
-  </ul>
-  
+  <!-- Season -->
+  {% include "partials/components/word_filter.html" with filter="season" %}
+ 
   <!-- Shelter Type -->
-  {% include "partials/components/filter_with_any.html" with filter="shelterType" %}
+  {% include "partials/components/word_filter.html" with filter="shelterType" %}
   
   <!-- Access Type -->
-  {% include "partials/components/filter_with_any.html" with filter="backcountryAccess" %}
+  {% include "partials/components/word_filter.html" with filter="backcountryAccess" %}
 
   <!-- Reservations -->
-  <div class="hut-filter-title">Reservations</div>
-  <ul class="hut-filter-list">
-    <li ng-repeat="i in sorted(f.reservations)" 
-        tooltip="[*f.reservations[i].$tooltip*]"
-        tooltip-placement="right"
-        ng-class="{selected: f.reservations[i ].include}"
-        ng-click="f.reservations[i].include = !f.reservations[i].include; filter();">
-        <span class="hut-filter-item">[*f.reservations[i].name*]</span>
-    </li>
-  </ul>
-  
+  {% include "partials/components/word_filter.html" with filter="reservations" %}
+ 
   <!-- Services -->
-  <div class="hut-filter-title">Services</div>
-  <ul class="hut-filter-list">
-    <li ng-repeat="i in sorted(f.services)" 
-        tooltip="[*f.services[i].$tooltip*]"
-        tooltip-placement="right"
-        ng-class="{selected: f.services[i].include}"
-        ng-click="f.services[i].include = !f.services[i].include; filter();">
-        <span class="hut-filter-item">[*f.services[i].name*]</span>
-    </li>
-  </ul>
-  
+  {% include "partials/components/word_filter.html" with filter="services" %}
+ 
   <!-- Capacity -->
   <div class="hut-filter-title">Capacity</div>
   <div class="hut-filter-minmax">

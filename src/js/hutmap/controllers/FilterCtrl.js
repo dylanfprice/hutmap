@@ -18,56 +18,70 @@
         include: true,
       };
       $scope.f.season = {
-        summer: false,
-        winter: false,
+        'any': {
+          include: true,
+          $position: 0
+        },
+        'summer': {
+          include: false,
+          $position: 1
+        },
+        'winter': {
+          include: false,
+          $position: 2,
+        }
       };
       
-      $scope.f.anyShelterType = {
-        include: true,
-        $tooltip: '',
-      };
       $scope.f.shelterType = {
-        0: {
-          name: 'caves',
-          include: false,
-          $keywords: ['Cave'],
+        'any': {
+          include: true,
+          $position: 0,
+          $keywords: []
         },
-        1: {
-          name: 'huts & yurts',
+        'caves': {
           include: false,
+          $position: 1,
+          $keywords: ['Cave']
+        },
+        'huts & yurts': {
+          include: false,
+          $position: 2,
           $keywords: ['Hut', 'Yurt', 'Chickee', 'Lean-to', 'Wall Tent', 'Shelter'],
-          $tooltip: 'Hut, Yurt, Lean-to, Wall tent, etc',
+          $tooltip: 'Hut, Yurt, Lean-to, Wall tent, etc'
         },
-        2: {
-          name: 'fire lookouts',
+        'fire lookouts': {
           include: false,
-          $keywords: ['Fire Lookout'],
+          $position: 3,
+          $keywords: ['Fire Lookout']
         },
-        3: {
-          name: 'compounds',
+        'compounds': {
           include: false,
+          $position: 4,
           $keywords: ['Compound', 'Hostel', 'Tea House', 'Lodge', 'Chalet', 'Ranch', 'Farm'],
-          $tooltip: 'Lodge, Hostel, Ranch, Farm, etc',
+          $tooltip: 'Lodge, Hostel, Ranch, Farm, etc'
         }
       };
 
-      $scope.f.anyBackcountryAccess = {
-        include: true,
-        $tooltip: ''
-      };
       $scope.f.backcountryAccess = {
-        0: {
-          name: 'road',
+        'any': {
+          include: true,
+          $position: 0,
+          $match: function(hut) {
+            return true;
+          }
+        },
+        'road': {
           include: false,
+          $position: 1,
           $tooltip: 'Accessible by car',
           $match: function(hut) {
             return hut.backcountry === 0 ||
-              (hut.backcountry === 1 && $scope.f.season.summer);
+              (hut.backcountry === 1 && $scope.f.season.summer.include);
           }
         },
-        1: {
-          name: 'trail',
+        'trail': {
           include: false,
+          $position: 2,
           $tooltip: 'Accessible by trail',
           $match: function(hut) {
             var match = false;
@@ -77,9 +91,9 @@
             return match;
           }
         },
-        2: {
-          name: 'off-trail',
+        'off-trail': {
           include: false,
+          $position: 3,
           $tooltip: 'Bushwack, Scramble, Glacier travel, etc',
           $match: function(hut) {
             var match = false;
@@ -90,13 +104,13 @@
             return match;
           }
         },
-        3: {
-          name: 'snow',
+        'snow': {
           include: false,
+          $position: 4,
           $tooltip: 'Ski, Snowmobile, etc',
           $match: function(hut) {
             var match = false;
-            if (hut.backcountry === 1 && $scope.f.season.winter) {
+            if (hut.backcountry === 1 && $scope.f.season.winter.include) {
               match = true;
             } else if (hut.backcountry >= 2) {
               match = checkKeywords(hut.access_no_snow, 
@@ -105,9 +119,9 @@
             return match;
           }
         },
-        4: {
-          name: 'boat',
+        'boat': {
           include: false,
+          $position: 5,
           $tooltip: 'Motor Boat, Canoe, etc',
           $match: function(hut) {
             var match = false;
@@ -118,9 +132,9 @@
             return match;
           }
         },
-        5: {
-          name: 'aircraft',
+        'aircraft': {
           include: false,
+          $position: 6,
           $tooltip: 'Helicopter, Plane, etc',
           $match: function(hut) {
             var match = false;
@@ -134,51 +148,52 @@
       };
 
       $scope.f.services = {
-        0: {
-					name: 'none',
+        'none': {
           include: true,
-          $tooltip: 'Self-service only'
+          $position: 0,
+          $tooltip: 'Self-service only',
+          $keywords: []
         },
-        1: {
-          name: 'transportation',
+        'tranpsortation': {
           include: true,
-          $keywords: ['Transportation (Helicopter)', 'Transportation (Snowcat)'],
-          $tooltip: 'Helicopter, Snowcat, etc'
+          $position: 1,
+          $tooltip: 'Helicopter, Snowcat, etc',
+          $keywords: ['Transportation (Helicopter)', 'Transportation (Snowcat)']
         },
-        2: {
-          name: 'food',
+        'food': {
           include: true,
-          $keywords: ['Half Board', 'Full Board', 'Stocked Food', 'Breakfast'],
-          $tooltip: 'Cooked meals, Stocked food, etc'
+          $position: 2,
+          $tooltip: 'Cooked meals, Stocked food, etc',
+          $keywords: ['Half Board', 'Full Board', 'Stocked Food', 'Breakfast']
         },
-        3: {
-          name: 'guide',
+        'guide': {
           include: true,
+          $position: 3,
           $keywords: ['Guide']
         }
       };
 
       $scope.f.reservations = {
-        0: {
-          name: 'none',
+        'none': {
           include: true,
-          $tooltip: '',
+          $position: 0,
+          $tooltip: 'The hut can not be reserved',
           $match: function(hut) {
             return hut.is_fee_person && hut.fee_person_min === 0 &&
               hut.fee_person_max === 0 && !hut.is_fee_hut && !hut.reservations
           }
         },
-        1: {
-          name: 'shared',
+        'shared': {
           include: true,
+          $position: 1,
           $tooltip: 'A spot in the hut can be reserved',
           $match: function(hut) {
             return hut.is_fee_person && hut.reservations;
           }
         },
-        2: {
-          name: 'private',
+       'private': {
           include: true,
+          $position: 2,
           $tooltip: 'The whole hut can be reserved',
           $match: function(hut) {
             return hut.is_fee_hut && hut.reservations;
@@ -199,43 +214,23 @@
     };
 
     function setIncludes(filter, include) {
-      angular.forEach(filter, function(data) {
-        data.include = false;
+      angular.forEach(filter, function(item, name) {
+        if (name !== 'any') {
+          item.include = false;
+        }
       });
     }
 
-		$scope.$watch('f.anySeason.include', function(newValue, oldValue) {
-      if (newValue) {
-        $scope.f.season.summer = false;
-        $scope.f.season.winter = false;
+    $scope.including = function(filter, item) {
+      if (item.include) {
+        if (item.$name == 'any') {
+          setIncludes($scope.f[filter], false);
+        } else if ('any' in $scope.f[filter]) {
+          $scope.f[filter]['any'].include = false;    
+        }
       }
-    });
-    
-    $scope.$watch('f.anyShelterType.include', function(newValue, oldValue) {
-      if (newValue) {
-        setIncludes($scope.f.shelterType, false);
-      }
-    });
-
-    $scope.$watch('f.anyBackcountryAccess.include', function(newValue, oldValue) {
-      if (newValue) {
-        setIncludes($scope.f.backcountryAccess, false);
-      }
-    });
-
-    $scope.$watch('f.anyReservations.include', function(newValue, oldValue) {
-      if (newValue) {
-        setIncludes($scope.f.reservations, false);
-      }
-    });
-
-    $scope.sorted = function(filter) {
-      var keys = Object.keys(filter);
-      keys.sort();
-      return keys;
     };
 
-   
     // filter function
 
     $scope.filter = function() {
@@ -314,42 +309,36 @@
     // matchers
    
     function matchSeason(hut) {
-      if ($scope.f.anySeason.include) {
+      if ($scope.f.season.any.include) {
       	return true;
       } else {
-				return ($scope.f.season.summer && hut.open_summer) || 
-							 ($scope.f.season.winter && hut.open_winter);
+				return ($scope.f.season.summer.include && hut.open_summer) || 
+							 ($scope.f.season.winter.include && hut.open_winter);
 			}							 
     };
 
     function matchShelterType(hut, keywords) {
-      var matchShelterType = false;
-      if ($scope.f.anyShelterType.include) {
-        matchShelterType = true;
+      if ($scope.f.shelterType.any.include) {
+        return true;
       } else {
-        matchShelterType = checkKeywords(hut.types, keywords);
+        return checkKeywords(hut.types, keywords);
       }
-      return matchShelterType;
     };
 
     function matchBackcountryAccess(hut) {
       var matchBackcountryAccess = false;
-      if ($scope.f.anyBackcountryAccess.include) {
-        matchBackcountryAccess = true;
-      } else {
-        angular.forEach($scope.f.backcountryAccess, function(backcountryAccess) {
-          if (backcountryAccess.include && backcountryAccess.$match(hut)) {
-            matchBackcountryAccess = true;
-            return;
-          }
-        });
-      }
+      angular.forEach($scope.f.backcountryAccess, function(backcountryAccess) {
+        if (backcountryAccess.include && backcountryAccess.$match(hut)) {
+          matchBackcountryAccess = true;
+          return;
+        }
+      });
       return matchBackcountryAccess;
     };
 
     function matchServices(hut, keywords) {
       var matchServices = false;
-      if ($scope.f.services[0].include && !hut.has_services && !hut.has_optional_services) {
+      if ($scope.f.services.none.include && !hut.has_services && !hut.has_optional_services) {
         return true;
       } else if (keywords.length > 0) {
         if (hut.has_services && hut.services != null) {
@@ -362,16 +351,12 @@
 
     function matchReservations(hut) {
       var matchReservations = false;
-      if ($scope.f.reservations[0].include) {
-        matchReservations = true;
-      } else {
-        angular.forEach($scope.f.reservations, function(reservation) {
-          if (reservation.include && reservation.$match(hut)) {
-            matchReservations = true;
-            return;
-          }
-        });
-      }
+      angular.forEach($scope.f.reservations, function(reservation) {
+        if (reservation.include && reservation.$match(hut)) {
+          matchReservations = true;
+          return;
+        }
+      });
       return matchReservations;
     };
 
