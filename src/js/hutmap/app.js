@@ -34,19 +34,20 @@
 
   constant('hutmapMapId', 'map_canvas').
 
-  value('mapOptions', {
-    zoom : 3,
-    center : new google.maps.LatLng(46.87916, -120),
-    mapTypeId : google.maps.MapTypeId.TERRAIN, // overriden in the run block below
-    streetViewControl: false,
-    panControlOptions: {
-      position: google.maps.ControlPosition.LEFT_CENTER
-    },
-    zoomControlOptions: {
-      position: google.maps.ControlPosition.LEFT_CENTER
-    },
-
-  }).
+  factory('mapOptions', ['mapTypes', function(mapTypes) {
+    return {
+      zoom : 3,
+      center : new google.maps.LatLng(46.87916, -120),
+      mapTypeId : mapTypes.ARC_GIS_WORLD.name,
+      streetViewControl: false,
+      panControlOptions: {
+        position: google.maps.ControlPosition.LEFT_CENTER
+      },
+      zoomControlOptions: {
+        position: google.maps.ControlPosition.LEFT_CENTER
+      },
+    };
+  }]).
 
   value('markerOptions', {
     huts: {
@@ -71,7 +72,89 @@
     }
   }).
 
-  run(['hutmapMapId', 'angulargmContainer', function(hutmapMapId, angulargmContainer) {
+  factory('mapTypes', function() {
+    var getTile = {};
+
+    /**
+     * Function for retrieving MSR USGS topo tiles.
+     *
+     * @param {google.maps.Point} point The tile coordinate.
+     * @param {number} zoom The zoom level of the map.
+     * @returns {string} The URL of the needed tile.
+     */
+    getTile.MSR_TOPO = function(point, zoom) {
+      var projection = gmap.getProjection();
+      var h = Math.pow(2, zoom);
+      var swPnt = new google.maps.Point(point.x * 256 / h, (point.y + 1) * 256 / h);
+      var nePnt = new google.maps.Point((point.x + 1) * 256 / h, (point.y) * 256 / h);
+      var sw = projection.fromPointToLatLng(swPnt);
+      var ne = projection.fromPointToLatLng(nePnt);
+      var bbox = [sw.lng(), sw.lat(), ne.lng(), ne.lat()];
+      var url = "http://msrmaps.com/ogcmap.ashx?version=1.1.1&request=GetMap&Layers=drg&Styles=default&SRS=EPSG:4326&BBOX=" +
+        bbox.join(',') + "&width=256&height=256&format=image/jpeg";
+      return url;
+    };
+
+    /**
+     * Retrieves ArcGis USA topo tiles.
+     */
+    getTile.ARC_GIS_USA = function(point, zoom) {
+      var c = 1 << zoom,
+      column = (point.x % c);
+      if (column < 0) { column += c }
+      var url = "http://services.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/";
+      return url + (parseInt(zoom)) + "/" + point.y + "/" + column
+    };
+
+    /**
+     * Retrieves ArcGis World topo tiles.
+     */
+    getTile.ARC_GIS_WORLD = function(point, zoom) {
+      var c = 1 << zoom,
+      column = (point.x % c);
+      if (column < 0) { column += c }
+      var url = "http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/";
+      return url + (parseInt(zoom)) + "/" + point.y + "/" + column
+    };
+
+
+    var mapTypes = {
+      MSR_TOPO: new google.maps.ImageMapType({
+        name: "MSR USGS",
+        alt: "USGS topos from Microsoft Research",
+        minZoom: 1,
+        maxZoom: 15,
+        tileSize: new google.maps.Size(256, 256),
+        isPng: false,
+        getTileUrl: getTile.MSR_TOPO
+      }),
+
+      ARC_GIS_USA: new google.maps.ImageMapType({
+        name: "ArcGIS USA",
+        alt: "ArcGIS USA Topos",
+        minZoom: 1,
+        maxZoom: 15,
+        tileSize: new google.maps.Size(256, 256),
+        isPng: true,
+        getTileUrl: getTile.ARC_GIS_USA
+      }),
+
+      ARC_GIS_WORLD: new google.maps.ImageMapType({
+        name: "ArcGIS World",
+        alt: "ArcGIS World Topos",
+        minZoom: 1,
+        maxZoom: 15,
+        tileSize: new google.maps.Size(256, 256),
+        isPng: true,
+        getTileUrl: getTile.ARC_GIS_WORLD
+      })
+    };
+    return mapTypes;
+  }).
+
+  run(['hutmapMapId', 'angulargmContainer', 'mapTypes', 'mapOptions',
+      function(hutmapMapId, angulargmContainer, mapTypes, mapOptions) {
+
     var gmapPromise = angulargmContainer.getMapPromise(hutmapMapId);
 
     /**
@@ -79,82 +162,6 @@
      * Add drag zoom control.
      */
     gmapPromise.then(function(gmap) {
-      var getTile = {};
-
-      /**
-       * Function for retrieving MSR USGS topo tiles.
-       *
-       * @param {google.maps.Point} point The tile coordinate.
-       * @param {number} zoom The zoom level of the map.
-       * @returns {string} The URL of the needed tile.
-       */
-      getTile.MSR_TOPO = function(point, zoom) {
-        var projection = gmap.getProjection();
-        var h = Math.pow(2, zoom);
-        var swPnt = new google.maps.Point(point.x * 256 / h, (point.y + 1) * 256 / h);
-        var nePnt = new google.maps.Point((point.x + 1) * 256 / h, (point.y) * 256 / h);
-        var sw = projection.fromPointToLatLng(swPnt);
-        var ne = projection.fromPointToLatLng(nePnt);
-        var bbox = [sw.lng(), sw.lat(), ne.lng(), ne.lat()];
-        var url = "http://msrmaps.com/ogcmap.ashx?version=1.1.1&request=GetMap&Layers=drg&Styles=default&SRS=EPSG:4326&BBOX=" +
-          bbox.join(',') + "&width=256&height=256&format=image/jpeg";
-        return url;
-      };
-
-      /**
-       * Retrieves ArcGis USA topo tiles.
-       */
-      getTile.ARC_GIS_USA = function(point, zoom) {
-        var c = 1 << zoom,
-        column = (point.x % c);
-        if (column < 0) { column += c }
-        var url = "http://services.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/";
-        return url + (parseInt(zoom)) + "/" + point.y + "/" + column
-      };
-
-      /**
-       * Retrieves ArcGis World topo tiles.
-       */
-      getTile.ARC_GIS_WORLD = function(point, zoom) {
-        var c = 1 << zoom,
-        column = (point.x % c);
-        if (column < 0) { column += c }
-        var url = "http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/";
-        return url + (parseInt(zoom)) + "/" + point.y + "/" + column
-      };
-
-
-      var mapTypes = {
-        MSR_TOPO: new google.maps.ImageMapType({
-          name: "MSR USGS",
-          alt: "USGS topos from Microsoft Research",
-          minZoom: 1,
-          maxZoom: 15,
-          tileSize: new google.maps.Size(256, 256),
-          isPng: false,
-          getTileUrl: getTile.MSR_TOPO
-        }),
-
-        ARC_GIS_USA: new google.maps.ImageMapType({
-          name: "ArcGIS USA",
-          alt: "ArcGIS USA Topos",
-          minZoom: 1,
-          maxZoom: 15,
-          tileSize: new google.maps.Size(256, 256),
-          isPng: true,
-          getTileUrl: getTile.ARC_GIS_USA
-        }),
-
-        ARC_GIS_WORLD: new google.maps.ImageMapType({
-          name: "ArcGIS World",
-          alt: "ArcGIS World Topos",
-          minZoom: 1,
-          maxZoom: 15,
-          tileSize: new google.maps.Size(256, 256),
-          isPng: true,
-          getTileUrl: getTile.ARC_GIS_WORLD
-        })
-      };
 
       angular.forEach(mapTypes, function(mapType, key) {
         gmap.mapTypes.set(mapType.name, mapType);
@@ -172,7 +179,8 @@
         }
       });
 
-      gmap.setMapTypeId(mapTypes.ARC_GIS_WORLD.name);
+      // in case mapOptions.mapTypeId didn't exist until now
+      gmap.setMapTypeId(mapOptions.mapTypeId);
 
       gmap.enableKeyDragZoom({
         key: 'alt',
