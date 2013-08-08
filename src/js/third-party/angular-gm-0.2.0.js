@@ -1,6 +1,6 @@
 /**
  * AngularGM - Google Maps Directives for AngularJS
- * @version v0.1.1 - 2013-08-06
+ * @version v0.2.0 - 2013-08-07
  * @link http://dylanfprice.github.com/angular-gm
  * @author Dylan Price <the.dylan.price@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -8,40 +8,57 @@
 'use strict';
 
 /**
+ * @doc module
+ * @name angulargm
+ *
+ * @description
  * Module for embedding Google Maps into AngularJS applications. 
  *
- * ## API Documentation
+ *
+ * # API Documentation
  * See...
  *
- * + {@link module:gmMap}               for usage of the `<gm-map>` directive
- * + {@link module:gmMarkers}           for usage of the `<gm-markers>` directive
- * + {@link module:gmInfoWindow}        for usage of the `<div gm-info-window="...>` directive
- * + {@link module:angulargmContainer}  if you need to run custom configuration on the map, e.g. add new map types
- * + {@link module:angulargmDefaults}   to override the default map options
+ * + {@link angulargm.directive:gmMap gmMap} for usage of the `gm-map`
+ * directive
  *
- * ## Example Plunkers ([fullscreen](http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL))
+ * + {@link angulargm.directive:gmMarkers gmMarkers} for usage of the
+ * `gm-markers` directive
+ *
+ * + {@link angulargm.directive:gmInfoWindow gmInfoWindow} for usage of the
+ * `gm-info-window` directive
+ *
+ * + {@link angulargm.service:angulargmContainer angulargmContainer} if you
+ * need to run custom configuration on the map, e.g. add new map types
+ *
+ * + {@link angulargm.service:angulargmDefaults angulargmDefaults} to override
+ * the default map options
+ *
+ * + {@link angulargm.service:angulargmUtils angulargmUtils} to use utility
+ * functions for LatLng and LatLngBounds
+ *
+ *
+ * # Example Plunkers ([fullscreen](http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL))
  *  
  * <iframe style="width: 100%; height: 400px" src="http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL" frameborder="0" allowfullscreen="allowfullscreen">
  * </iframe>
  *
- * (JSDoc is escaping my iframe so for the time being just click the link.)
- *  
- * @module AngularGM
- * @author Dylan Price <the.dylan.price@gmail.com>
+ * Author: Dylan Price <the.dylan.price@gmail.com>
  */
 (function() {
   angular.module('AngularGM', []).
 
   /**
+   * @ngdoc service
+   * @name angulargm.service:angulargmDefaults
+   *
+   * @description
    * Default configuration.
    *
    * To provide your own default config, use the following
-   * ```
+   * ```js
    * angular.module('myModule').config(function($provide) {
    *   $provide.decorator('angulargmDefaults', function($delegate) {
    *     return angular.extend($delegate, {
-   *       // Note: markerConstructor must implement getPosition() and setMap()
-   *       // like google.maps.Marker
    *       'markerConstructor': myCustomMarkerConstructor,
    *       'mapOptions': {
    *         center: new google.maps.LatLng(55, 111),
@@ -52,8 +69,6 @@
    *   });
    * });
    * ```
-   *
-   * @module angulargmDefaults
    */
   value('angulargmDefaults', {
     'markerConstructor': google.maps.Marker,
@@ -69,31 +84,31 @@
 'use strict';
 
 /**
+ * @ngdoc directive
+ * @name angulargm.directive:gmInfoWindow
+ * @element ANY
+ * 
+ * @description
  * A directive for creating a google.maps.InfoWindow.  
  *
- * Usage:
+ * @param {expression} gm-info-window scope variable to store the
+ * [google.maps.InfoWindow](https://developers.google.com/maps/documentation/javascript/reference#InfoWindow)
+ * in. Does not have to already exist.
+ *
+ * @param {expression} gm-info-window-options object in the current scope
+ * that is a
+ * [google.maps.InfoWindowOptions](https://developers.google.com/maps/documentation/javascript/reference#InfoWindowOptions)
+ * object. If unspecified, google maps api defaults will be used.
+ *
+ * @param {expression} gm-on-*event* an angular expression which evaluates to an
+ * event handler. This handler will be attached to the InfoWindow's \*event\*
+ * event.  The variable `infoWindow` evaluates to the InfoWindow.  For example:
  * ```html
- * <div gm-info-window="myInfoWindow"
- *      gm-info-window-options="myInfoWindowOptions"
- *      gm-on-*event*="myEventHandler">
- * </div>
- * ```
- *
- *   + `gm-info-window`: name of scope variable to store the
- *   google.maps.InfoWindow in. Does not have to already exist.
- *
- *   + `gm-info-window-options`: object in the current scope that is a
- *   google.maps.InfoWindowOptions object. If unspecified, google maps api
- *   defaults will be used.
- *
- *   + `gm-on-*event*`: an angular expression which evaluates to an event
- *   handler. This handler will be attached to the InfoWindow's \*event\*
- *   event.  The variable 'infoWindow' evaluates to the InfoWindow.  For
- *   example: `gm-on-closeclick="myCloseclickFn(infoWindow)"` will call your
- *   myCloseclickFn whenever the InfoWindow is clicked closed. You may have
- *   multiple `gm-on-*event*` handlers, but only one for each type of event.
- *
- * @module gmInfoWindow
+ * gm-on-closeclick="myCloseclickFn(infoWindow)"
+ * ``` 
+ * will call your myCloseclickFn whenever the InfoWindow is clicked closed. You
+ * may have multiple `gm-on-*event*` handlers, but only one for each type of
+ * event.
  */
 (function () {
 
@@ -164,65 +179,64 @@
 'use strict';
 
 /**
+ * @ngdoc directive
+ * @name angulargm.directive:gmMap
+ * @element ANY
+ * 
+ * @description
  * A directive for embedding google maps into your app. 
  *
- * Usage:
- * ```html
- * <gm-map gm-map-id="myMapId" 
- *         gm-center="myCenter" 
- *         gm-zoom="myZoom" 
- *         gm-bounds="myBounds" 
- *         gm-map-type-id="myMapTypeId"
- *         gm-map-options="myMapOptions">
- * </gm-map>
- * ```
- *
- *   + `gm-map-id`: angular expression that evaluates to a unique string id for
- *   the map, e.g. "'map_canvas'" or "myMapId" where myMapId is a variable in
- *   the current scope. This allows you to have multiple maps/instances of the
- *   directive.
- *
- *   + `gm-center`: name for a center variable in the current scope.  The value
- *   will be a google.maps.LatLng object.
- *
- *   + `gm-zoom`: name for a zoom variable in the current scope.  Value will be
- *   an integer.
- *
- *   + `gm-bounds`: name for a bounds variable in the current scope.  Value will
- *   be a google.maps.LatLngBounds object.
- *
- *   + `gm-map-type-id`: name for a mapTypeId variable in the current scope.
- *   Value will be a string.
- *
- *   + `gm-map-options`: object in the current scope that is a
- *   google.maps.MapOptions object. If unspecified, will use the values in
- *   angulargmDefaults.mapOptions. [angulargmDefaults]{@link module:angulargmDefaults}
- *   is a service, so it is both injectable and overrideable (using
- *   $provide.decorator).
- *
- * All attributes except `gm-map-options` are required. The `gm-center`,
- * `gm-zoom`, `gm-bounds`, and `gm-map-type-id` variables do not have to exist in
- * the current scope--they will be created if necessary. All three have
- * bi-directional association, i.e.  drag or zoom the map and they will update,
- * update them and the map will change.  However, any initial state of these
- * three variables will be ignored.
+ * `gm-map-id` is required. The `gm-center`, `gm-zoom`, `gm-bounds`, and
+ * `gm-map-type-id` variables do not have to exist in the current scope--they
+ * will be created if necessary. All three have bi-directional association,
+ * i.e.  drag or zoom the map and they will update, update them and the map
+ * will change.  However, any initial state of these three variables will be
+ * ignored.
  *
  * If you need to get a handle on the google.maps.Map object, see
- * [angulargmContainer]{@link module:angulargmContainer}
+ * {@link angulargm.service:angulargmContainer angulargmContainer}
  *
- * Events:
+ * @param {expression} gm-map-id angular expression that evaluates to a unique
+ * string id for the map, e.g. `'map_canvas'` or `myMapId` where myMapId is a
+ * variable in the current scope. This allows you to have multiple
+ * maps/instances of the directive.
  *
- *   + `gmMapResize`: google.maps.event.trigger(map, 'resize') To use:
- *   `$scope.$broadcast('gmMapResize', 'myMapId')`
  *
- *   Parameters:
+ * @param {expression} gm-center center variable in the current scope.  The
+ * value will be a google.maps.LatLng object.
  *
- *       + `mapId`: required. The id of your map.  This is what you set
- *       `gm-map-id` to.  It is necessary because there may be multiple
- *       instances of the `gmMap` directive.
  *
- * @module gmMap
+ * @param {expression} gm-zoom zoom variable in the current scope.  Value will
+ * be an integer.
+ *
+ *
+ * @param {expression} gm-bounds bounds variable in the current scope.  Value
+ * will be a google.maps.LatLngBounds object.
+ *
+ *
+ * @param {expression} gm-map-type-id mapTypeId variable in the current scope.
+ * Value will be a string.
+ *
+ *
+ * @param {expression} gm-map-options object in the current scope that is a
+ * google.maps.MapOptions object. If unspecified, will use the values in
+ * angulargmDefaults.mapOptions. {@link angulargm.service:angulargmDefaults angulargmDefaults} is a service, so it is
+ * both injectable and overrideable (using $provide.decorator).
+ *
  */
+
+/**
+ * @ngdoc event
+ * @name angulargm.directive:gmMap#gmMapResize
+ * @eventOf angulargm.directive:gmMap
+ * @eventType listen on current gmMap scope
+ * @param {string} mapId Required. The id of your map.
+ * @example
+ * ```js
+ * $scope.$broadcast('gmMapResize', 'myMapId')
+ * ```
+ */
+
 (function () {
   angular.module('AngularGM').
 
@@ -343,6 +357,8 @@
           controller.mapTrigger('resize');
         }
       });
+
+      controller.mapTrigger('resize');
     }
 
 
@@ -372,6 +388,11 @@
 'use strict';
 
 /**
+ * @ngdoc directive
+ * @name angulargm.directive:gmMarkers
+ * @element ANY
+ *
+ * @description
  * A directive for adding markers to a `gmMap`. You may have multiple per `gmMap`.
  *
  * To use, you specify an array of custom objects and tell the directive how to
@@ -379,106 +400,114 @@
  * objects. If you assign a new array to your scope variable or change the
  * array's length, the markers will also update.
  *
- * Usage:
- * ```html
- * <gm-map ... >
- *   <gm-markers gm-objects="myObjects" 
- *               gm-get-lat-lng="myGetLatLng" 
- *               gm-get-marker-options="myGetMarkerOptions" 
- *               gm-events="myEvents"
- *               gm-on-*event*="myEventHandler">
- *   </gm-markers>
- * </gm-map>
- * ```
- *
- *   + `gm-objects`: an array of objects in the current scope. These can be any
- *   objects you wish to attach to markers, the only requirement is that they
- *   have a uniform method of accessing a lat and lng.
- *
- *   + `gm-get-lat-lng`: an angular expression that given an object from
- *   `gm-objects`, evaluates to an object with lat and lng properties. Your
- *   object can be accessed through the variable 'object'.  For example, if
- *   your controller has
- *   ```
- *   ...
- *   $scope.myObjects = [
- *     { id: 0, location: { lat: 5, lng: 5} }, 
- *     { id: 1, location: { lat: 6, lng: 6} }
- *   ]
- *   ...
- *   ```
- *   then in the `gm-markers` directive you would put
- *   ```
- *   ...
- *   gm-objects="myObjects"
- *   gm-get-lat-lng="{ lat: object.location.lat, lng: object.location.lng }"
- *   ...
- *   ```
- *
- *   + `gm-get-marker-options`: an angular expression that given an object from
- *   `gm-objects`, evaluates to a google.maps.MarkerOptions object. Your object
- *   can be accessed through the variable 'object'. If unspecified, google maps
- *   api defaults will be used.
- *
- *   + `gm-events`: a variable in the current scope that is used to simulate
- *   events on markers. Setting this variable to an object of the form 
- *   ```
- *       [
- *         {
- *           event: 'click',
- *           locations: [new google.maps.LatLng(45, -120), ...]
- *         },
- *         ...
- *       ]
- *   ```
- *   will generate the named events on the markers at the given locations, if a
- *   marker at each location exists. Note: when setting the `gm-events`
- *   variable, you must set it to a new object for the changes to be detected.
- *   Code like `myEvent[0]["locations"] = [new google.maps.LatLng(45,-120)]`
- *   will not work.
- *                        
- *
- *   + `gm-on-*event*`: an angular expression which evaluates to an event
- *   handler. This handler will be attached to each marker's \*event\* event.
- *   The variables 'object' and 'marker' evaluate to your object and the
- *   google.maps.Marker, respectively. For example:
- *   `gm-on-click="myClickFn(object, marker)"` will call your myClickFn
- *   whenever a marker is clicked.  You may have multiple `gm-on-*event*`
- *   handlers, but only one for each type of event.
- *
- *
  * Only the `gm-objects` and `gm-get-lat-lng` attributes are required.
  *
- * Events:
+ * @param {expression} gm-objects an array of objects in the current scope.
+ * These can be any objects you wish to attach to markers, the only requirement
+ * is that they have a uniform method of accessing a lat and lng.
  *
- *   + `gmMarkersRedraw`: force the gmMarkers directive to clear and redraw all
- *   markers. To use: `$scope.$broadcast('gmMarkersRedraw', 'myObjects')`
  *
- *   Parameters:
+ * @param {expression} gm-get-lat-lng an angular expression that given an object from
+ * `gm-objects`, evaluates to an object with lat and lng properties. Your
+ * object can be accessed through the variable `object`.  For example, if
+ * your controller has
+ * ```js
+ * ...
+ * $scope.myObjects = [
+ *   { id: 0, location: { lat: 5, lng: 5} }, 
+ *   { id: 1, location: { lat: 6, lng: 6} }
+ * ]
+ * ...
+ * ```
+ * then in the `gm-markers` directive you would put
+ * ```js
+ * ...
+ * gm-objects="myObjects"
+ * gm-get-lat-lng="{ lat: object.location.lat, lng: object.location.lng }"
+ * ...
+ * ```
  *
- *       + `objects`: Not required. The name of the scope variable which holds
- *       the objects to redraw markers for, i.e. what you set `gm-objects` to.
- *       It is useful because there may be multiple instances of the
- *       `gmMarkers` directive. If not specified, all instances of gmMarkers
- *       which are child scopes will redraw their markers.
+ * @param {expression} gm-get-marker-options an angular expression that given
+ * an object from `gm-objects`, evaluates to a
+ * [google.maps.MarkerOptions](https://developers.google.com/maps/documentation/javascript/reference#MarkerOptions)
+ * object.  Your object can be accessed through the variable `object`. If
+ * unspecified, google maps api defaults will be used.
  *
- *   + `gmMarkersUpdated`: emitted when markers are updated. To use: 
- *   ```
- *   $scope.$on('gmMarkersUpdated', function(event, objects) {
- *       if (objects === 'myObjects') {
- *         ...
- *       }
- *   });
- *   ```
  *
- *   Parameters:
- *       
- *       + `objects`: the name of the scope variable which holds the objects the
- *       gmMarkers directive was constructed with. This is what `gm-objects`
- *       was set to.
+ * @param {expression} gm-events a variable in the current scope that is used to
+ * simulate events on markers. Setting this variable to an object of the form 
+ * ```js
+ *     [
+ *       {
+ *         event: 'click',
+ *         locations: [new google.maps.LatLng(45, -120), ...]
+ *       },
+ *       ...
+ *     ]
+ * ```
+ * will generate the named events on the markers at the given locations, if a
+ * marker at each location exists. Note: when setting the `gm-events` variable,
+ * you must set it to a new object for the changes to be detected.  Code like
+ * ```js
+ * myEvent[0]["locations"] = [new google.maps.LatLng(45,-120)]
+ * ``` 
+ * will not work.
+ *                      
  *
- * @module gmMarkers
+ * @param {expression} gm-on-*event* an angular expression which evaluates to
+ * an event handler. This handler will be attached to each marker's \*event\*
+ * event.  The variables 'object' and 'marker' evaluate to your object and the
+ * [google.maps.Marker](https://developers.google.com/maps/documentation/javascript/reference#Marker),
+ * respectively. For example: 
+ * ```html
+ * gm-on-click="myClickFn(object, marker)"
+ * ```
+ * will call your `myClickFn` whenever a marker is clicked.  You may have
+ * multiple `gm-on-*event*` handlers, but only one for each type of event.
  */
+
+/**
+ * @ngdoc event
+ * @name angulargm.directive:gmMarkers#gmMarkersRedraw
+ * @eventOf angulargm.directive:gmMarkers
+ * @eventType listen on current gmMarkers scope
+ *
+ * @description Force the gmMarkers directive to clear and redraw all markers.
+ *
+ * @param {string} objects Not required. The name of the scope variable which
+ * holds the objects to redraw markers for, i.e. what you set `gm-objects` to.
+ * It is useful because there may be multiple instances of the `gmMarkers`
+ * directive. If not specified, all instances of gmMarkers which are child
+ * scopes will redraw their markers.
+ *
+ * @example
+ * ```js
+ * $scope.$broadcast('gmMarkersRedraw', 'myObjects');
+ * ```
+ */
+ 
+/**
+ * @ngdoc event
+ * @name angulargm.directive:gmMarkers#gmMarkersUpdated
+ * @eventOf angulargm.directive:gmMarkers
+ * @eventType emit on current gmMarkers scope
+ * 
+ * @description Emitted when markers are updated.
+ *
+ * @param {string} objects the name of the scope variable which holds the
+ * objects the gmMarkers directive was constructed with. This is what
+ * `gm-objects` was set to.
+ *
+ * @example
+ * ```js
+ * $scope.$on('gmMarkersUpdated', function(event, objects) {
+ *     if (objects === 'myObjects') {
+ *       ...
+ *     }
+ * });
+ * ```
+ */
+
 (function () {
   angular.module('AngularGM').
 
@@ -620,13 +649,17 @@
 'use strict';
 
 /**
+ * @ngdoc service
+ * @name angulargm.service:angulargmContainer
+ *
+ * @description
  * A container which maps mapIds to google.maps.Map instances, and additionally
  * allows getting a promise of a map for custom configuration of the map.
  *
- * If you want a handle to the map, you should use the getMapPromise(mapId)
+ * If you want a handle to the map, you should use the `getMapPromise(mapId)`
  * method so you can guarantee the map will be initialized. For example,
  *
- * ```
+ * ```js
  * angular.module('myModule').
  *
  * run(function(angulargmContainer) {
@@ -637,8 +670,6 @@
  *   });
  * });
  * ```
- *
- * @module angulargmContainer
  */
 (function () {
   angular.module('AngularGM').
@@ -653,7 +684,6 @@
      * @param {google.maps.Map} map the google map
      * @throw if there is already a map with mapId, or if map is not a
      *   google.maps.Map
-     * @method
      */
     function addMap(mapId, map) {
       if (!(map instanceof google.maps.Map)) {
@@ -672,7 +702,6 @@
      * @param {string} mapId the unique id of the map
      * @return {google.maps.Map|undefined} the map, or undefined if there is no
      *   map for mapId
-     * @method
      */
     function getMap(mapId) {
       return maps[mapId];
@@ -684,7 +713,6 @@
      *   been created yet
      * @return {angular.q.promise} a promise of a map that will be resolved
      *   when the map is added
-     * @method
      */
     function getMapPromise(mapId) {
       var defer = defers[mapId] || $q.defer();  
@@ -699,7 +727,6 @@
      * http://stackoverflow.com/questions/10485582/what-is-the-proper-way-to-destroy-a-map-instance
      *
      * @param {string} mapId the unique id of the map to remove
-     * @method
      */
     function removeMap(mapId) {
       if (mapId in maps) {
@@ -732,6 +759,10 @@
 'use strict';
 
 /**
+ * @ngdoc service
+ * @name angulargm.service:angulargmUtils
+ *
+ * @description
  * Common utility functions.
  */
 (function () {
@@ -741,15 +772,22 @@
 
     /**
      * Check if two floating point numbers are equal. 
-     * @return true if f1 and f2 are 'very close'
+     *
+     * @param {number} f1 first number
+     * @param {number} f2 second number
+     * @return {boolean} true if f1 and f2 are 'very close' (within 0.000001)
      */
     function floatEqual (f1, f2) {
       return (Math.abs(f1 - f2) < 0.000001);
     }
 
     /**
-     * @param {google.maps.LatLng} l1
-     * @param {google.maps.LatLng} l2
+     * @ngdoc function
+     * @name #latLngEqual
+     * @methodOf angulargm.service:angulargmUtils
+     *
+     * @param {google.maps.LatLng} l1 first
+     * @param {google.maps.LatLng} l2 second
      * @return {boolean} true if l1 and l2 are 'very close'. If either are null
      * or not google.maps.LatLng objects returns false.
      */
@@ -762,8 +800,12 @@
     }
 
     /**
-     * @param {google.maps.LatLngBounds} b1
-     * @param {google.maps.LatLngBounds} b2
+     * @ngdoc function
+     * @name #boundsEqual
+     * @methodOf angulargm.service:angulargmUtils
+     *
+     * @param {google.maps.LatLngBounds} b1 first
+     * @param {google.maps.LatLngBounds} b2 second
      * @return {boolean} true if b1 and b2 are 'very close'. If either are null
      * or not google.maps.LatLngBounds objects returns false.
      */
@@ -781,7 +823,11 @@
     }
 
     /**
-     * @param {google.maps.LatLng} latLng
+     * @ngdoc function
+     * @name #latLngToObj
+     * @methodOf angulargm.service:angulargmUtils
+     *
+     * @param {google.maps.LatLng} latLng the LatLng
      * @return {Object} object literal with 'lat' and 'lng' properties.
      * @throw if latLng not instanceof google.maps.LatLng
      */
@@ -796,6 +842,10 @@
     }
 
     /**
+     * @ngdoc function
+     * @name #objToLatLng
+     * @methodOf angulargm.service:angulargmUtils
+     *
      * @param {Object} obj of the form { lat: 40, lng: -120 } 
      * @return {google.maps.LatLng} returns null if problems with obj (null,
      * NaN, etc.)
@@ -814,8 +864,12 @@
     }
 
     /**
-     * @param {google.maps.LatLng} latLng
-     * @return true if either lat or lng of latLng is null or isNaN
+     * @ngdoc function
+     * @name #hasNaN
+     * @methodOf angulargm.service:angulargmUtils
+     *
+     * @param {google.maps.LatLng} latLng the LatLng
+     * @return {boolean} true if either lat or lng of latLng is null or isNaN
      */
     function hasNaN(latLng) {
       if (!(latLng instanceof google.maps.LatLng))
