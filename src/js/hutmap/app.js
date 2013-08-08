@@ -5,10 +5,7 @@
     'hutmap.filters', 'hutmap.controllers', 'AngularGM', 'ngResource',
     'ui.bootstrap']).
 
-  config(
-    ['$routeProvider', '$locationProvider', 'PlacesProvider', 
-    function($routeProvider, $locationProvider, PlacesProvider) {
-
+  config(['$routeProvider', function($routeProvider) {
     $routeProvider.
       when('/', {
         templateUrl: '/partials/home.html',
@@ -23,13 +20,22 @@
         templateUrl: '/partials/about.html',
         activetab: 'about',
       });
+  }]).
 
+  config(['$locationProvider', function($locationProvider) {
     $locationProvider.html5Mode(true);
+  }]).
 
+  config(['PlacesProvider', function(PlacesProvider) {
     // suggest bounds for our search results
     PlacesProvider.bounds(new google.maps.LatLngBounds(
         new google.maps.LatLng(30, -130),
         new google.maps.LatLng(65, -80)));
+  }]).
+
+  config(['$interpolateProvider', function($interpolateProvider) {
+    $interpolateProvider.startSymbol('[*');
+    $interpolateProvider.endSymbol('*]');
   }]).
 
   constant('hutmapMapId', 'map_canvas').

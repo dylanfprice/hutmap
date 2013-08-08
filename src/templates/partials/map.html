@@ -1,10 +1,9 @@
-{% verbatim %}
 <div ng-controller="LinkCtrl">
 <div ng-controller="HutCtrl">
   <div ng-controller="HutImgCtrl">
   <div ng-controller="AlertCtrl">
     <div id="alert-topbar" ng-show="alerts.length">
-      <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+      <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">[*alert.msg*]</alert>
     </div> 
     <div id="loading-indicator" ng-show="loading">
       <i class="img-loading"></i> 
@@ -19,15 +18,11 @@
            ng-click="ui.showFilterSidebar = !ui.showFilterSidebar" ></i>
       </div>
     </div>
-    {% endverbatim %}
-      {% include "partials/components/link_button.html" %}
-    {% verbatim %}
+    {% include "partials/components/link_button.html" %}
     <div ng-controller="FilterCtrl">
       <div id="filter-sidebar" ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
-        {% endverbatim %}
-          {% include "partials/components/summary_info.html" %}
-          {% include "partials/components/filters.html" %}
-        {% verbatim %}
+        {% include "partials/components/summary_info.html" %}
+        {% include "partials/components/filters.html" %}
       </div>
       <div ng-controller="MapConfigCtrl">
         <div ng-controller="MapCtrl">
@@ -50,9 +45,7 @@
             </gm-map>
           </div>
           <div id="hut-bottombar" ng-controller="BottomBarCtrl" ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
-            {% endverbatim %}
-              {% include "partials/components/hut_info.html" %}
-            {% verbatim %}
+            {% include "partials/components/hut_info.html" %}
           </div>
         </div>
       </div>
@@ -61,4 +54,3 @@
   </div>
 </div>
 </div>
-{% endverbatim %}

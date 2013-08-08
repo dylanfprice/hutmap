@@ -1,12 +1,9 @@
-{% verbatim %}
 <div class="hut-info">
   <div class="hut-info-left">
     <h4 class="hut-info-title muted" ng-show="selectedHut == null">Select a hut.</h4>
-    <h4 class="hut-info-title">{{selectedHut.name}}</h4>
+    <h4 class="hut-info-title">[*selectedHut.name*]</h4>
     <div class="hut-detail-img" ng-hide="selectedHut == null">
-      {% endverbatim %}
-        {% include "partials/components/hut_img.html" with hut_object_name="selectedHut" width="180" height="130" %}
-      {% verbatim %}
+      {% include "partials/components/hut_img.html" with hut_object_name="selectedHut" width="180" height="130" %}
     </div>
   </div>
   <div class="hut-info-right">
@@ -14,12 +11,12 @@
       <tr>
         <td class="hut-detail-title">Hut Url:</td>
         <td class="hut-detail">
-          <a ng-href="{{selectedHut.hut_url}}" target="_blank">{{selectedHut.hut_url}}</a>
+          <a ng-href="[*selectedHut.hut_url*]" target="_blank">[*selectedHut.hut_url*]</a>
         </td>
       </tr>
       <tr>
         <td class="hut-detail-title">Types:</td>
-        <td class="hut-detail">{{selectedHut.types.join(',')}}</td>
+        <td class="hut-detail">[*selectedHut.types.join(',')*]</td>
       </tr>
       <tr>
         <td class="hut-detail-title">Seasons:</td>
@@ -31,17 +28,17 @@
       </tr>
       <tr>
         <td class="hut-detail-title">Location:</td>
-        <td class="hut-detail">{{selectedHut.location.coordinates[1]|number:2}}, {{selectedHut.location.coordinates[0]|number:2}}</td>
+        <td class="hut-detail">[*selectedHut.location.coordinates[1]|number:2*], [*selectedHut.location.coordinates[0]|number:2*]</td>
       </tr>
       <tr>
         <td class="hut-detail-title">Accuracy:</td>
         <td>
-          {{accuracy_text[selectedHut.location_accuracy]}}
+          [*accuracy_text[selectedHut.location_accuracy]*]
           <span ng-show="selectedHut.location_accuracy < 3 && selectedHut.location_references.length > 0">
             &mdash; references: 
             <ul>
               <li class="hut-detail" ng-repeat="ref in selectedHut.location_references">
-              <a ng-href="{{ref}}" target="_blank">{{ref}}</a>
+              <a ng-href="[*ref*]" target="_blank">[*ref*]</a>
               </li>
             </ul>
           </span>
@@ -51,4 +48,3 @@
     </table>
   </div>
 </div>
-{% endverbatim %}

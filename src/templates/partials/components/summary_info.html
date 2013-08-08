@@ -1,12 +1,11 @@
-{% verbatim %}
 <div class="summary-info">
   <span ng-hide="huts.length">
     No huts in view
   </span>
   <span ng-show="huts.length">
     Selected 
-    <span class="summary-filtered-hut-count">{{filteredHuts.length}}</span> of 
-    <span class="summary-total-hut-count">{{huts.length}}</span>
+    <span class="summary-filtered-hut-count">[*filteredHuts.length*]</span> of 
+    <span class="summary-total-hut-count">[*huts.length*]</span>
   </span>
   <br/>
   <i class="icon-refresh" 
@@ -16,5 +15,3 @@
      ng-click="resetFilters(); filter();"></i>
    reset all filters
 </div>
-{% endverbatim %}
-

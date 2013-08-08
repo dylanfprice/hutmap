@@ -63,10 +63,10 @@
                  typeahead="place as place.description for place in getPlaces($viewValue)"
                  />
           <span class="search-icon">
-            <span ng-class="{% templatetag openbrace %} 
-                    'icon-search': !submitting && !autocompleting,
-                    'img-spinner': submitting || autocompleting
-                    {% templatetag closebrace %}"></span>
+            <span ng-class="{
+              'icon-search': !submitting && !autocompleting,
+              'img-spinner': submitting || autocompleting
+            }"></span>
             <button class="transparent" type="submit">
               <span class="visuallyhidden">Search</span>
             </button>
@@ -74,19 +74,12 @@
         </form>
         
         <ul class="nav">
-          <!--
-          <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'home'{% templatetag closebrace %}">
-            <a href="/">
-              Home
-            </a>
-          </li>
-          -->
-          <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'map'{% templatetag closebrace %}">
+          <li ng-class="{ active: $route.current.activetab == 'map'}">
             <a ng-href="/map/">
               Map
             </a>
           </li>
-          <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'about'{% templatetag closebrace %}">
+          <li ng-class="{ active: $route.current.activetab == 'about'}">
             <a href="/about/">
               About
             </a>

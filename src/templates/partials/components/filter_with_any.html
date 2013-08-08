@@ -1,26 +1,26 @@
 {% load titleize %}
 <div class="hut-filter-title">{{ filter | titleize }}</div>
 <ul class="hut-filter-list">
-  <li tooltip="{% templatetag openbrace %}{% templatetag openbrace %}
+  <li tooltip="[*
         f.any{{ filter | capfirst }}.$tooltip
-      {% templatetag closebrace %}{% templatetag closebrace %}"
+      *]"
       tooltip-placement="right"
-      ng-class="{% templatetag openbrace %}
+      ng-class="{
         'selected': f.any{{ filter | capfirst }}.include
-      {% templatetag closebrace %}"
+      }"
       ng-click="f.any{{ filter | capfirst }}.include = !f.any{{ filter | capfirst }}.include; filter();">
       <span class="hut-filter-item">any</span>
   </li><li ng-repeat="i in sorted(f.{{ filter }})" 
-      tooltip="{% templatetag openbrace %}{% templatetag openbrace %}
+      tooltip="[*
         f.{{ filter }}[i].$tooltip
-      {% templatetag closebrace %}{% templatetag closebrace %}"
+      *]"
       tooltip-placement="right"
-      ng-class="{% templatetag openbrace %}
+      ng-class="{
         'selected': f.{{ filter }}[i].include
-      {% templatetag closebrace %}"
+      }"
       ng-click="f.{{ filter }}[i].include = !f.{{ filter }}[i].include; f.any{{ filter | capfirst }}.include = false; filter();">
-      <span class="hut-filter-item">{% templatetag openbrace %}{% templatetag openbrace %}
+      <span class="hut-filter-item">[*
         f.{{ filter }}[i].name
-      {% templatetag closebrace %}{% templatetag closebrace %}</span>
+      *]</span>
   </li>
 </ul>
