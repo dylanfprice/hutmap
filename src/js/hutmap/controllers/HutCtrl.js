@@ -94,6 +94,7 @@
     // update scope from browser url
     var updateScope = function() {
       var id = $location.search().h_selected;
+      $location.search('h_selected', null);
       if (id) {
         Huts.hut(id).then(function(hut) {
           $scope.setSelectedHut(hut);
