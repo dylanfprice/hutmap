@@ -2,3 +2,4 @@ gunicorn
 MySQL-python==1.2.3
 django==1.5
 django-tastypie==0.9.14
+pil==1.1.7
