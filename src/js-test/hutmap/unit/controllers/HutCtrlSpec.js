@@ -1,7 +1,7 @@
 describe('HutCtrl', function() {
   var $rootScope, hutmapScope, hutScope;
   var Huts;
-  var $timeout;
+  var $timeout, $location;
 
   beforeEach(function() {
     module('hutmap');
@@ -11,6 +11,7 @@ describe('HutCtrl', function() {
     Huts = {};
     Huts.totalHutCount = jasmine.createSpy();
     Huts.query = jasmine.createSpy();
+    Huts.hut = jasmine.createSpy();
     Huts.agency = jasmine.createSpy();
     Huts.region = jasmine.createSpy();
 
@@ -34,6 +35,11 @@ describe('HutCtrl', function() {
         deferred.resolve(huts);
         return deferred.promise; 
       });
+      Huts.hut.andCallFake(function() {
+        var deferred = $q.defer();
+        deferred.resolve({id:1,agency:1,region:1});
+        return deferred.promise;
+      });
       Huts.agency.andCallFake(function() {
         var deferred = $q.defer();
         deferred.resolve({id: 1, name: 'agency'});
@@ -51,15 +57,17 @@ describe('HutCtrl', function() {
     });
   });
 
-  beforeEach(inject(function(_$timeout_, _$rootScope_, $controller) {
+  beforeEach(inject(function(_$timeout_, _$rootScope_, _$location_, $controller) {
     $timeout = _$timeout_;
     $rootScope = _$rootScope_;
+    $location = _$location_;
+
+    $location.search('h_selected', 1);
 
     hutmapScope = $rootScope.$new();
     var hutmapCtrl = $controller('HutmapCtrl', {$scope: hutmapScope});
     hutScope = hutmapScope.$new();
     var hutCtrl = $controller('HutCtrl', {$scope: hutScope});
-
   }));
 
   var setQuery = function(num) {
@@ -118,10 +126,23 @@ describe('HutCtrl', function() {
     });
   });
 
-  describe('totalHutCount', function() {
-    it('gets set', function() {
+  describe('$location', function() {
+
+    beforeEach(function() {
       $rootScope.$apply();
-      expect(hutScope.totalHutCount).toEqual(2);
+    });
+      
+    it('is read for selectedHut', function() {
+      expect(hutScope.selectedHut.id).toEqual(1);
+    });
+
+    it('is updated with selectedHut', function() {
+      setQuery(2);
+      hutScope.$digest();
+      $timeout.flush();
+      hutScope.setSelectedHut(hutScope.huts[1]);
+      $rootScope.$apply();
+      expect($location.search().h_selected).toEqual(2);
     });
   });
 

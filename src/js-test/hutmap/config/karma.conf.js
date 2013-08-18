@@ -10,7 +10,11 @@ files = [
   'js-test/lib/angular/angular-mocks.js',
   'js/third-party/**/*.js',
   'js/hutmap/app.js',
+  'js/hutmap/**/module.js',
+  'js/hutmap/directives.js',
+  'js/hutmap/filters.js',
   'js/hutmap/**/*.js',
+  'js-test/hutmap/unit/fixtures.js',
   'js-test/hutmap/unit/**/*.js'
 ];
 

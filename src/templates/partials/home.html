@@ -1,5 +1,4 @@
 <div>
-  {% verbatim %}
   <div ng-controller="CarouselCtrl">
     <carousel interval="carouselInterval">
       <div class="carousel-loading muted" ng-show="carouselInterval < 0">Loading images...</div>
@@ -9,13 +8,13 @@
           <table>
             <tr>
               <td class="caption-image">
-                <img ng-src="{{slide.thumbnail}}">
+                <img ng-src="[*slide.thumbnail*]">
               </td>
               <td class="caption-details">
-                <h4>{{slide.title}}</h4>
-                <p>{{slide.location}}</p>
-                <a ng-href="{{slide.hutLink}}">&gt;&gt; show on map</a><br/>
-                <a ng-href="{{slide.agency.url}}">&gt;&gt; {{slide.agency.name}} website</a>
+                <h4>[*slide.title*]</h4>
+                <p>[*slide.location*]</p>
+                <a ng-href="[*slide.hutLink*]">&gt;&gt; show on map</a><br/>
+                <a ng-href="[*slide.agency.url*]">&gt;&gt; [*slide.agency.name*] website</a>
               </td>
             </tr>
           </table>
@@ -23,5 +22,4 @@
       </slide>
     </carousel>
   </div>
-  {% endverbatim %}
 </div>

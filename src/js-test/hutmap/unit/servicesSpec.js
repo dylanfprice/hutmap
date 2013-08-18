@@ -1,59 +1,14 @@
 describe('services', function() {
+  var hut1;
 
   beforeEach(function() {
     module('hutmap');
   });
 
-  function createHut(id) {
-    return {
-      id: id,
-      location: {
-        type: 'Point',
-        coordinates: [id + 2, id + 1]
-      }, 
-      resource_uri: '/huts/api/v1/hut/' + id + '/',
-      agency: id,
-      region: id,
-    };
-  }
-
   beforeEach(inject(function($httpBackend) {
     $httpBackend.expectGET('/static/data/huts.json').
-      respond({
-        huts: {
-          meta: { total_count: 2 },
-          object_index: {
-            1: createHut(1),
-            2: createHut(2)
-          }
-        },
-        agencies: {
-          meta: {total_count: 2},
-          object_index: {
-            1: {
-              id: 1,
-              name: '1'
-            },
-            2: {
-              id: 2,
-              name: '2'
-            }
-          }
-        },
-        regions: {
-          meta: {total_count: 2},
-          object_index: {
-            1: {
-              id: 1,
-              name: '1'
-            },
-            2: {
-              id: 2,
-              name: '2'
-            }
-          }
-        }
-      });
+      respond(hutmap.fixtures.hutdata());
+    hut1 = hutmap.fixtures.hutdata().huts.object_index['1'];
   }));
 
   describe('Huts', function() {
@@ -103,7 +58,7 @@ describe('services', function() {
           huts = _huts_;
         });
         $rootScope.$apply();
-        expect(huts.length).toEqual(2);
+        expect(huts.length).toEqual(3);
       });
 
       it('limits the number of huts returned', function() {
@@ -252,9 +207,8 @@ describe('services', function() {
     });
 
     it('correctly creates latLng from hut', function() {
-      var hut = createHut(1);
       var latLng = new google.maps.LatLng(2, 3);
-      expect(utils.latLngFromHut(hut)).toEqual(latLng);
+      expect(utils.latLngFromHut(hut1)).toEqual(latLng);
     });
 
     it('correctly converts url value to bounds', function() {

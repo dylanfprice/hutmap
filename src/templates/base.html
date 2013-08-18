@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
+  <!-- Meta Tags -->
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
-  <title>Hutmap</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
+  <title>Hutmap</title>
+  <meta name="description" content="Your guide to North America's backcountry huts." />
+  <meta name="keywords" content="map, backcountry, hut, cabin, yurt, lean-to, shelter, cave, chickee, skiing, hiking, backpacking, mountaineering, climbing, adventure, outdoors, Hutmap, Ethan Welty, Dylan Price" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{{ STATIC_URL }}img/logo-icon-dark.ico">
+  
+	<!-- Facebook OpenGraph Tags -->
+  <meta property="og:title" content="Hutmap" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://www.hutmap.com/" />
+  <meta property="og:description" content="Your guide to North America's backcountry huts." />
+  <meta property="og:image" content="{{ STATIC_URL }}img/og/logo-icon-dark.png" />
+  <meta property="og:image" content="{{ STATIC_URL }}img/og/logo-square-dark.png" />
+  <meta property="og:image" content="{{ STATIC_URL }}img/og/110318_0354.jpg" />
+	
+	<!-- CSS -->	
   <link href="{{ STATIC_URL }}css/hutmap-{{ HUTMAP_VERSION }}.min.css" rel="stylesheet">
   
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -15,58 +30,72 @@
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
 
-  <link rel="shortcut icon" href="{{ STATIC_URL }}img/logo-icon-dark.ico">
-  <!-- TODO: Fav and touch icons  
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">
-  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
-  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">
-  <link rel="apple-touch-icon-precomposed" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">
-  -->
+	<!-- Google Analytics -->
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-40265178-1']);
+		_gaq.push(['_trackPageview']);
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
 </head>
 
 <body>
 
   <div ng-app="hutmap" ng-controller="HutmapCtrl" ng-init="STATIC_URL = '{{ STATIC_URL }}'; GOOGLE_API_KEY = '{{ GOOGLE_API_KEY }}';">
 
-    <div id="navbar" class="navbar navbar-inverse navbar-static-top">
-      <div class="navbar-inner">
-        <a class="brand" href="/"><i class="img-logo up1"></i>Hutmap</a>
-        <form id="navbar-search" class="navbar-search" ng-controller="SearchCtrl">
-          <div class="img-triangle"></div>
+    <div id="navbar" class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner"">
+        
+        <a class="brand" href="/"><i class="img-logo up1"></i><span class="logo">Hutmap</span>
+        </a>
+        <form id="navbar-search" class="navbar-search" ng-controller="SearchCtrl" ng-submit="search(selected)">
+          <img style="z-index: 10;position: absolute;" src="{{ STATIC_URL }}img/triangle-right.png" />
           <input type="text" 
                  class="search-query" 
                  placeholder="Find backcountry huts" 
                  autocomplete="off"
                  ng-model="selected" 
                  typeahead="place as place.description for place in getPlaces($viewValue)"
-                 blur="clickBody()"/>
+                 />
           <span class="search-icon">
-            <span ng-class="{% templatetag openbrace %} 
+            <span ng-class="{
               'icon-search': !submitting && !autocompleting,
               'img-spinner': submitting || autocompleting
-           {% templatetag closebrace %}"></span>
+            }"></span>
+            <button class="transparent" type="submit">
+              <span class="visuallyhidden">Search</span>
+            </button>
           </span>
         </form>
+        
         <ul class="nav">
-          <!--
-          <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'home'{% templatetag closebrace %}">
-            <a href="/">
-              Home
-            </a>
-          </li>
-          -->
-          <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'map'{% templatetag closebrace %}">
+          <li ng-class="{ active: $route.current.activetab == 'map'}">
             <a ng-href="/map/">
               Map
             </a>
           </li>
-          <li ng-class="{% templatetag openbrace %} active: $route.current.activetab == 'about'{% templatetag closebrace %}">
+          <li ng-class="{ active: $route.current.activetab == 'about'}">
             <a href="/about/">
               About
             </a>
           </li>
         </ul>
+        
       </div>
+      
+      <!-- AddThis Buttons -->
+			<div id="share_controls" class="addthis_toolbox addthis_default_style" >
+				<a class="addthis_button_facebook_like" fb:like:layout="button_count" addthis:url="http://www.facebook.com/Hutmap"></a> 	
+				<a class="addthis_counter addthis_pill_style" addthis:url="http://www.hutmap.com"></a>
+			</div>
+			<!-- URL tracking <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>-->
+			<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51390d312330c4fe"></script>
+
     </div>
 
     <div ng-cloak>
@@ -81,8 +110,11 @@
     <script type="text/ng-template" id="template/carousel/slide.html">
       {% include "partials/components/slide.html" %}
     </script>
-    <script type="text/ng-template" id="template/typeahead/typeahead.html">
-      {% include "partials/components/typeahead.html" %}
+    <script type="text/ng-template" id="template/typeahead/typeahead-popup.html">
+      {% include "partials/components/typeahead-popup.html" %}
+    </script>
+    <script type="text/ng-template" id="template/typeahead/typeahead-match.html">
+      {% include "partials/components/typeahead-match.html" %}
     </script>
     <script type="text/ng-template" id="template/alert/alert.html">
       {% include "partials/components/alert.html" %}
@@ -90,29 +122,43 @@
     <script type="text/ng-template" id="template/tooltip/tooltip-popup.html">
       {% include "partials/components/tooltip-popup.html" %}
     </script>
+    <script type="text/ng-template" id="template/popover/popover.html">
+      {% include "partials/components/popover.html" %}
+    </script>
 
   </div>
 
   <script src="//maps.googleapis.com/maps/api/js?v=3.12&sensor=false&libraries=places&key={{ GOOGLE_API_KEY }}"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js"></script>
-  {% if DEBUG %}
+  <script src="https://apis.google.com/js/client.js"></script>
+  {% if not DEBUG %}
   <script src="{{ STATIC_URL }}js/hutmap-{{ HUTMAP_VERSION }}.min.js"></script>
   {% else %}
-  <script src="/dev/js/third-party/ui-bootstrap-0.3.0-SNAPSHOT.js"></script>
+  <script src="/dev/js/third-party/ui-bootstrap-0.6.0-SNAPSHOT.js"></script>
   <script src="/dev/js/third-party/keydragzoom.js"></script>
-  <script src="/dev/js/third-party/angular-gm-0.0.2.min.js"></script>
+  <script src="/dev/js/third-party/angular-gm-0.2.0.js"></script>
   <script src="/dev/js/hutmap/app.js"></script>
-  <script src="/dev/js/hutmap/services.js"></script>
+  <script src="/dev/js/hutmap/services/module.js"></script>
+  <script src="/dev/js/hutmap/controllers/module.js"></script>
   <script src="/dev/js/hutmap/filters.js"></script>
   <script src="/dev/js/hutmap/directives.js"></script>
-  <script src="/dev/js/hutmap/controllers/controllers.js"></script>
+  <script src="/dev/js/hutmap/services/Huts.js"></script>
+  <script src="/dev/js/hutmap/services/Places.js"></script>
+  <script src="/dev/js/hutmap/services/MarkerTooltip.js"></script>
+  <script src="/dev/js/hutmap/services/utils.js"></script>
+  <script src="/dev/js/hutmap/controllers/HutmapCtrl.js"></script>
+  <script src="/dev/js/hutmap/controllers/CarouselCtrl.js"></script>
+  <script src="/dev/js/hutmap/controllers/AlertCtrl.js"></script>
+  <script src="/dev/js/hutmap/controllers/BottomBarCtrl.js"></script>
+  <script src="/dev/js/hutmap/controllers/HutImgCtrl.js"></script>
   <script src="/dev/js/hutmap/controllers/HutCtrl.js"></script>
   <script src="/dev/js/hutmap/controllers/MapCtrl.js"></script>
   <script src="/dev/js/hutmap/controllers/MapConfigCtrl.js"></script>
   <script src="/dev/js/hutmap/controllers/SearchCtrl.js"></script>
   <script src="/dev/js/hutmap/controllers/FilterCtrl.js"></script>
+  <script src="/dev/js/hutmap/controllers/LinkCtrl.js"></script>
   {% endif %}
 
 </body>

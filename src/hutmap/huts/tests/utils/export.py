@@ -7,8 +7,8 @@ class ExportTestCase(TestCase):
 
   def test_export_db_as_json(self):
     data = json.loads(export.db_as_json())
-    self.assertEqual(data['huts']['meta']['total_count'], 50)
-    self.assertEqual(data['agencies']['meta']['total_count'], 341)
-    self.assertEqual(data['regions']['meta']['total_count'], 160)
+    self.assertEqual(50, data['huts']['meta']['total_count'])
+    self.assertEqual(355, data['agencies']['meta']['total_count'])
+    self.assertEqual(120, data['regions']['meta']['total_count'])
 
-    self.assertEqual(data['huts']['object_index']['1']['name'], 'Elkton Hut')
+    self.assertEqual(u'First Creek Cabin', data['huts']['object_index']['1']['name'])

@@ -3,15 +3,93 @@
  */
 
 html, body {
-  .grid;
+	background-color: rgb(250,250,250);
+  font-family: "Myriad Pro", Verdana, "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1em;
+	color: #333;
 }
 
+p {
+  line-height: 120%;
+  margin: 1em 0; /* anti bootstrap */
+  word-spacing: +0.1em; /* anti bootstrap */
+}
+
+a, a:hover {
+	text-decoration: none;
+	color: blue;
+}
+
+h1, h2 {
+	font-weight: 500; /* semibold */
+	line-height: inherit;
+}
+
+h1 {
+	font-size: 145%;
+	margin-top: 0;
+}
+
+h2 {
+	font-size: 130%;
+	margin-top: 1em;
+}
+
+hr {
+	border: none;
+	border-bottom: 1px dotted #ccc;
+  height: 1px;
+  width: 70%;
+  margin: 2em 0 1.5em 15%;
+}
+
+.larger {
+	font-size: 105%;
+}
+
+.smaller {
+	font-size: 95%;
+}
+
+/** Header **/
+
+.logo {
+	font-family: "Cooper Medium";
+	line-height: 1.1em;
+	font-size: 0.95em;
+}
+
+#share_controls {
+	position: absolute;
+	right: 25px;
+	top: 4px;
+}
+
+
+/** OVERRIDE BOOTSTRAP **/
+
+blockquote {
+	border: none;
+}
+
+label, input, button, select, textarea {
+	font-size: inherit;
+	font-family: inherit;
+	padding: .1em .2em 0 .2em;
+}
+
+
+/** Dylan **/
+
 #navbar {
+
   .navbar-inner {
     color: @gray;
     border-width: 0px;
     background-image: none;
-    background-color: fade(@gray, 80%);
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #555;
   }
 
   .brand {
@@ -30,6 +108,10 @@ html, body {
     }
   }
 
+	.nav li a {
+		padding: 5.5px 15px 3.5px 15px;
+	}
+	
   #navbar-search {
     @searchPaddingLeft: 30px;
     @searchPaddingRight: 30px;
@@ -37,10 +119,11 @@ html, body {
     @searchPadding: 4px;
     @searchBarShift: 10px;
     @placeholderColor: @gray;
-
     margin-right: 10px;
 
     .search-query {
+    	padding-top: 4px; /* anti bootstrap */
+    	padding-bottom: 1px; /* anti bootstrap */
       padding-left: @searchPaddingLeft;
       padding-right: @searchPaddingRight;
       border: @searchBorder solid darken(@gray, 5%);
@@ -49,6 +132,7 @@ html, body {
       height: @searchInputHeight;
       width: @searchInputStartingWidth;
       position: relative;
+			top: 1px;
       right: @searchBarShift;
       color: @placeholderColor;
       background-color: @searchBackgroundColor;
@@ -57,11 +141,12 @@ html, body {
       z-index: 5;
 
       &:focus {
-        padding-top: @searchPadding;
-        padding-bottom: @searchPadding;
         background-color: darken(@white, 5%);
         width: @searchInputExpandedWidth;
         box-shadow: none;
+        text-shadow: none; /* anti bootstrap */
+        padding-top: 4px; /* anti bootstrap */
+        padding-bottom: 1px; /* anti bootstrap */
       }
 
       &::-webkit-input-placeholder { /* WebKit browsers */
@@ -88,12 +173,12 @@ html, body {
     }
 
     .search-icon {
-      //cursor: pointer;
+      cursor: pointer;
       display: block;
       height: 100%;
       width: @searchPaddingRight;
       position: absolute;
-      top: 0px;
+      top: 1px;
       right: @searchBarShift;
       z-index: 10;
 

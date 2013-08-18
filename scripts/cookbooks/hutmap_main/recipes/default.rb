@@ -10,6 +10,10 @@ hutmap_fns = "/etc/mysql/hutmap_fns.sql"
 hutmap_drop = "/etc/mysql/hutmap_drop.sql"
 profile = "/etc/profile.d/hutmap.sh"
 user = "vagrant"
+python_version = "2.7.3"
+pythonbrew = "/home/#{user}/.pythonbrew/bin/pythonbrew"
+python = "/home/#{user}/.pythonbrew/venvs/Python-#{python_version}/hutmap/bin/python"
+pip = "/home/#{user}/.pythonbrew/venvs/Python-#{python_version}/hutmap/bin/pip"
 
 ## MySQL config ##
 
@@ -85,6 +89,14 @@ package "curl" do
   action :install
 end
 
+package "libjpeg62-dev" do
+  action :install
+end
+
+execute "set locale to utf-8" do
+  command "update-locale LANG=en_US.utf8"
+end
+
 bash "install pythonbrew" do
   user "#{user}"
   environment ({"HOME" => "/home/#{user}"})
@@ -100,11 +112,11 @@ bash "setup pythonbrew" do
   environment ({"HOME" => "/home/#{user}"})
   pythonbrew = "/home/#{user}/.pythonbrew/bin/pythonbrew"
   code <<-EOH
-  #{pythonbrew} install 2.7.3 && \
-  #{pythonbrew} switch 2.7.3 && \
+  #{pythonbrew} install #{python_version} && \
+  #{pythonbrew} switch #{python_version} && \
   #{pythonbrew} venv init
   EOH
-  not_if { File.exists?("/home/#{user}/.pythonbrew/pythons/Python-2.7.3") }
+  not_if { File.exists?("/home/#{user}/.pythonbrew/pythons/Python-#{python_version}") }
   #action :nothing
   #subscribes :run, "bash[install pythonbrew]", :immediately
 end
@@ -112,15 +124,14 @@ end
 bash "set up hutmap virtualenv" do
   user "#{user}"
   environment ({"HOME" => "/home/#{user}"})
-  pythonbrew = "/home/#{user}/.pythonbrew/bin/pythonbrew"
-  pip = "/home/#{user}/.pythonbrew/venvs/Python-2.7.3/hutmap/bin/pip"
   code <<-EOH
-  #{pythonbrew} venv create hutmap -p 2.7.3 && \
+  #{pythonbrew} venv create hutmap -p #{python_version} && \
   #{pip} install "http://pypi.python.org/packages/source/M/MySQL-python/MySQL-python-1.2.4b4.tar.gz#md5=0958cb9c23d5a656caac031c4886b1cf" && \
   #{pip} install django==1.5 && \
-  #{pip} install django-tastypie==0.9.14
+  #{pip} install django-tastypie==0.9.14 && \
+  #{pip} install pil==1.1.7
   EOH
-  not_if { File.exists?("/home/#{user}/.pythonbrew/venvs/Python-2.7.3/hutmap") }
+  not_if { File.exists?("/home/#{user}/.pythonbrew/venvs/Python-#{python_version}/hutmap") }
   #action :nothing
   #subscribes :run, "bash[setup pythonbrew]", :immediately
 end
@@ -131,20 +142,27 @@ directory "/var/tmp/hutmap-django-cache" do
   action :create
 end
 
+cron "generate huts.json" do
+  minute "0"
+  hour "0"
+  user "#{user}"
+  data_dir = "/vagrant/public/static/data"
+  command ". #{profile} && #{python} /vagrant/src/hutmap/manage.py dumphutsjson > #{data_dir}/huts.new.json 2>&1 && mv #{data_dir}/huts.new.json #{data_dir}/huts.json\n"
+  action :create
+end
+
 
 ## Install dev dependencies ##
 
 bash "install shovel" do
   user "#{user}"
   environment ({"HOME" => "/home/#{user}"})
-  pythonbrew = "/home/#{user}/.pythonbrew/bin/pythonbrew"
-  pip = "/home/#{user}/.pythonbrew/venvs/Python-2.7.3/hutmap/bin/pip"
   code <<-EOH
   #{pip} install shovel && \
   #{pip} install argparse && \
   #{pip} install bottle && \
   # Temporary fix since shovel package is broken
-  cd /home/#{user}/.pythonbrew/venvs/Python-2.7.3/hutmap/lib/python2.7/site-packages/shovel/ && \
+  cd /home/#{user}/.pythonbrew/venvs/Python-#{python_version}/hutmap/lib/python2.7/site-packages/shovel/ && \
   mkdir templates && \
   cd templates && \
   wget https://raw.github.com/seomoz/shovel/master/shovel/templates/help.tpl && \
@@ -154,7 +172,7 @@ bash "install shovel" do
   cd static/css && \
   wget https://raw.github.com/seomoz/shovel/master/shovel/static/css/style.css
   EOH
-  not_if { File.exists?("/home/#{user}/.pythonbrew/venvs/Python-2.7.3/hutmap/lib/python2.7/site-packages/shovel/templates/help.tpl") }
+  not_if { File.exists?("/home/#{user}/.pythonbrew/venvs/Python-#{python_version}/hutmap/lib/python2.7/site-packages/shovel/templates/help.tpl") }
 end
 
 package "openjdk-6-jre" do
@@ -162,6 +180,10 @@ package "openjdk-6-jre" do
 end
 
 package "libfontconfig1" do
+  action :install
+end
+
+package "libjpeg-progs" do
   action :install
 end
 

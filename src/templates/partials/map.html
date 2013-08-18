@@ -1,40 +1,56 @@
-{% verbatim %}
+<div ng-controller="LinkCtrl">
 <div ng-controller="HutCtrl">
   <div ng-controller="HutImgCtrl">
   <div ng-controller="AlertCtrl">
     <div id="alert-topbar" ng-show="alerts.length">
-      <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+      <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">[*alert.msg*]</alert>
     </div> 
     <div id="loading-indicator" ng-show="loading">
       <i class="img-loading"></i> 
     </div>
+    <div id="show-hide-filter-sidebar"
+         ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
+      <div class="shade-background">
+        <i ng-class="{
+            'icon-chevron-right': !ui.showFilterSidebar,
+            'icon-chevron-left':  ui.showFilterSidebar
+           }"
+           ng-click="ui.showFilterSidebar = !ui.showFilterSidebar" ></i>
+      </div>
+    </div>
+    {% include "partials/components/link_button.html" %}
     <div ng-controller="FilterCtrl">
-      <div id="filter-sidebar">
-        {% endverbatim %}
-          {% include "partials/components/summary_info.html" %}
-          {% include "partials/components/filters.html" %}
-        {% verbatim %}
+      <div id="filter-sidebar" ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
+        {% include "partials/components/summary_info.html" %}
+        {% include "partials/components/filters.html" %}
       </div>
       <div ng-controller="MapConfigCtrl">
         <div ng-controller="MapCtrl">
-          <gm-map class="map" gm-map-id="hutmapMapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">
-            <gm-markers gm-objects="huts" 
-                        gm-get-lat-lng="{lat:object.location.coordinates[1], lng:object.location.coordinates[0]}" 
-                        gm-get-marker-options="getMarkerOptions(object)"
-                        gm-events="hutMarkerEvents"
-                        gm-on-click="selectHut(marker, object)">
-            </gm-markers>
-          </gm-map>
+          <div id="map" ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
+            <gm-map class="map" 
+                    gm-map-id="hutmapMapId" 
+                    gm-center="center" 
+                    gm-zoom="zoom" 
+                    gm-bounds="bounds" 
+                    gm-map-type-id="mapTypeId" 
+                    gm-map-options="mapOptions">
+              <gm-markers gm-objects="huts" 
+                          gm-get-lat-lng="{lat:object.location.coordinates[1], lng:object.location.coordinates[0]}" 
+                          gm-get-marker-options="getMarkerOptions(object)"
+                          gm-events="hutMarkerEvents"
+                          gm-on-click="selectHut(marker, object)"
+                          gm-on-mouseover="showMarkerTooltip(marker, object)"
+                          gm-on-mouseout="hideMarkerTooltip(marker, object)">
+              </gm-markers>
+            </gm-map>
+          </div>
+          <div id="hut-bottombar" ng-controller="BottomBarCtrl" ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
+            {% include "partials/components/hut_info.html" %}
+          </div>
         </div>
       </div>
-    </div>
-    <div id="hut-sidebar">
-      {% endverbatim %}
-        {% include "partials/components/hut_info.html" %}
-        {% comment %}{% include "partials/components/hut_list.html" %}{% endcomment %}
-      {% verbatim %}
     </div>
   </div>
   </div>
 </div>
-{% endverbatim %}
+</div>

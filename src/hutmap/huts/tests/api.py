@@ -4,6 +4,13 @@ from tastypie.test import ResourceTestCase
 def float_equals(a, b):
   return abs(a - b) < 0.00001
 
+class HutResourceTestCase(ResourceTestCase):
+  fixtures = ['test_data.json']
+  url = '/huts/api/v1/hut/'
+
+  def test_get_csv(self):
+    self.client.get(self.url, data={'format': 'csv', 'limit': 1})
+
 class HutSearchResourceTestCase(ResourceTestCase):
   fixtures = ['test_data.json']
   url = '/huts/api/v1/hutsearch/'
@@ -20,7 +27,7 @@ class HutSearchResourceTestCase(ResourceTestCase):
   def test_query_bounds_across_180th_meridian(self):
     response = self.client.get(self.url, data={'bounds': '44.302615,145.859282,74.411905,-103.398531'})
     results = self.deserialize(response)
-    self.assertEqual(29, results['meta']['total_count'])
+    self.assertEqual(30, results['meta']['total_count'])
 
   def test_query_id_in(self):
     response = self.client.get(self.url, data={'id__in': '3,4'})
@@ -37,8 +44,8 @@ class HutSearchResourceTestCase(ResourceTestCase):
     results = self.deserialize(response)
     hut = results['objects'][0]
     location = hut['location']
-    self.assertTrue(float_equals(38.9635, location['coordinates'][1]))
-    self.assertTrue(float_equals(-107.03731, location['coordinates'][0]))
+    self.assertTrue(float_equals(46.67448, location['coordinates'][1]))
+    self.assertTrue(float_equals(-122.01292, location['coordinates'][0]))
 
   def test_order_by_distance(self):
     response = self.client.get(self.url, data={

@@ -1,0 +1,4 @@
+CSV_NULL = ''
+CSV_NA = 'NA'
+CSV_FALSE = '0'
+CSV_TRUE = '1'
