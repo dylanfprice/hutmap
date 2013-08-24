@@ -1,0 +1,3 @@
+---
+- name: restart django-devserver
+  service: name=django-devserver state=restarted

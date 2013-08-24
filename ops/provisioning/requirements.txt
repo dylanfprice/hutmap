@@ -1,0 +1,5 @@
+mysql-python==1.2.4
+django==1.5
+django-tastypie==0.9.14
+django_compressor==1.3
+pil==1.1.7

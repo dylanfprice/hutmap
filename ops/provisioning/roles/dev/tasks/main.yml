@@ -1,0 +1,21 @@
+---
+- name: setup django development server as a service
+  template: src='django-devserver.conf.j2' dest='/etc/init/django-devserver.conf'
+  notify:
+    restart django-devserver
+
+- name: create the scripts directory
+  file: path=$scripts_dir state=directory
+
+- name: install get_started script
+  template: src='get_started.sh.j2' dest='$scripts_dir/get_started.sh' mode=0744
+
+- name: install npm
+  apt: pkg=npm state=latest
+
+- name: install development tools
+  npm: name=$item global=yes state=latest
+  with_items:
+    - karma
+    - less
+    - phantomjs

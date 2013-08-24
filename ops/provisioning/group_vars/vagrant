@@ -1,0 +1,17 @@
+---
+user: 'vagrant'
+mysql_root_password: 'vagrant'
+
+hutmap:
+  version: 'dev'
+  db_name: 'hutmap' 
+  db_user: 'hutmap'
+  db_password: 'hutmap'
+  db_host: ''
+  db_port: ''
+  secret_key: '516713f0-518b-11e2-bcfd-0800200c9a66'
+  debug: 'true'
+  google_api_key: 'AIzaSyDKzNYkeusCcplMH7XWA9l0QLZ8Cwn01_M'
+  email_host_user: ''
+  email_host_password: ''
+  

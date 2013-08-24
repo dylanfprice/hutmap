@@ -1,0 +1,17 @@
+# aliases
+alias ls="ls --color=auto --ignore='*.pyc'"
+
+
+# environment variables
+{% for key,value in hutmap.iteritems() %}
+export HUTMAP_{{ key|upper }}={{ value }}
+{% endfor %}
+
+
+# bash functions
+workon_hutmap () {
+    . {{ virtualenv }}/bin/activate
+    cd {{ app_dir }}
+}
+
+workon_hutmap

@@ -1,0 +1,6 @@
+---
+home: '/home/$user'
+virtualenv: '$home/.venvs/hutmap/'
+profile: '$home/.bash_profile'
+app_dir: '$repo_dir/src/hutmap'
+scripts_dir: '$app_dir/scripts'

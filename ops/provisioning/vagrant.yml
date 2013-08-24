@@ -1,0 +1,73 @@
+---
+- hosts: vagrant
+  user: $user
+  sudo: yes
+
+  roles: 
+    - mysql
+    - dev
+
+  tasks:
+    - name: update locale to utf-8
+      command: /usr/sbin/update-locale LANG=en_US.utf8
+
+    - name: install hutmap profile
+      template: src='hutmap_profile.j2' dest='$profile'
+
+    - name: create the scripts directory
+      file: path=$scripts_dir state=directory
+
+    - name: install update_huts_json script
+      template: src='update_huts_json.sh.j2' dest='$scripts_dir/update_huts_json.sh' mode=0744
+
+    - name: install crontab
+      cron: 
+        name: update huts.json
+        user: $user
+        state: present
+        hour: 0
+        minute: 0
+        job: $scripts_dir/update_huts_json.sh
+
+    # mysql
+    - name: create hutmap databases for mysql
+      mysql_db:
+        name=$item
+        state=present
+      with_items:
+        - ${hutmap.db_name}
+        - test_${hutmap.db_name}
+
+    - name: create hutmap user for mysql
+      mysql_user: 
+        name=${hutmap.db_user}
+        password=${hutmap.db_password}
+        host='%'
+        priv=${hutmap.db_name}.*:ALL/test_${hutmap.db_name}.*:ALL
+        state=present
+
+    # python and django
+    - name: install pip
+      apt: pkg=python-pip state=latest
+
+    - name: install virtualenv
+      pip: name=virtualenv
+
+    - name: install packages needed by mysql-python
+      apt: pkg=$item state=installed
+      with_items:
+        - libmysqlclient-dev
+        - python-dev
+
+    - name: copy requirements
+      copy: src='requirements.txt' dest='$home/requirements.txt'
+
+    - name: install requirements
+      sudo: no
+      pip: requirements='$home/requirements.txt' virtualenv=$virtualenv
+      notify:
+        - restart django-devserver
+
+    - name: install geos
+      apt: pkg=libgeos-c1 state=present
+

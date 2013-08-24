@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+DATA={{ repo_dir }}/public/static/data
+mkdir -p $DATA
+
+. {{ profile }}
+workon_hutmap
+./manage.py dumphutsjson > $DATA/huts.new.json
+mv $DATA/huts.new.json $DATA/huts.json
