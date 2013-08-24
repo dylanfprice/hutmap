@@ -3,7 +3,7 @@ from django.core.files.base import ContentFile
 from huts.model_fields import CountryField, ListField
 from huts.utils.image import retrieve_and_resize
 from os import path
-from urllib2 import HTTPError
+from urllib2 import HTTPError, URLError
 
 class HutManager(models.GeoManager):
   def published(self):
@@ -127,11 +127,11 @@ class Hut(models.Model):
           ContentFile(image.read()),
           save=True
         )
-      except HTTPError:
+      except (HTTPError, URLError, IOError):
         self.photo_url = None
         self.save()
       except:
-        pass
+        pass #TODO: log this
         
 
   def save(self, *args, **kwargs):
