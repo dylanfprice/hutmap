@@ -63,6 +63,21 @@
         - libmysqlclient-dev
         - python-dev
 
+    - name: install packages needed by pil
+      apt: pkg=$item state=installed
+      with_items:
+        - libjpeg-dev
+        - libfreetype6-dev 
+        - zlib1g-dev
+
+    - name: symlink libraries to /usr/lib
+      shell: ln -s /usr/lib/`uname -i`-linux-gnu/$item /usr/lib/
+        creates=/usr/lib/$item
+      with_items:
+        - libfreetype.so
+        - libjpeg.so
+        - libz.so
+
     - name: copy requirements
       copy: src='requirements.txt' dest='$home/requirements.txt'
 
