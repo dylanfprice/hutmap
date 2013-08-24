@@ -1,9 +1,0 @@
-# Set HUTMAP environment variables
-<% node.each do |key, value| %>
-  <% if key.to_s.start_with?('HUTMAP') %>
-export <%= key %>='<%= value %>'  
-  <% end %>
-<% end %>
-
-# Update $PATH for dev tools
-export PATH=$PATH:'<%= node[:install_dir] %>/node/bin/':'<%= node[:install_dir] %>/phantomjs/bin'
