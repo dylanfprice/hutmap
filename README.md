@@ -62,8 +62,9 @@ hutmap:
 
 ```bash
 $ cd ops/
-$ vagrant up # This will take a long time
+$ vagrant up # this will take a while
 ```
+On my machine with an ~ 30MBps connection this took around 30 minutes.
 
 Go to <http://localhost:8000> in your browser and verify you see the homepage.
 
