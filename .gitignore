@@ -1,7 +1,8 @@
-logs/
 coverage/
+logs/
+public/
+src/hutmap/scripts/
+
 *.vagrant
 *.swp
 *.pyc
-public/static/data/
-public/media/huts/
