@@ -10,6 +10,9 @@
 - name: install get_started script
   template: src='get_started.sh.j2' dest='$scripts_dir/get_started.sh' mode=0744
 
+- name: install libfontconfig which is needed by phantomjs
+  apt: pkg=libfontconfig1 state=latest
+
 - name: ensure add-apt-repository command
   apt: pkg=python-software-properties state=latest
 
