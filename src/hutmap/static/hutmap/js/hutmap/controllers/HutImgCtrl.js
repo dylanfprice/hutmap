@@ -20,7 +20,7 @@
                 '&size=' + width + 'x' + height +
                 '&maptype=satellite' +
                 '&sensor=false' +
-                '&key=' + $scope.GOOGLE_API_KEY;
+                '&key=' + hutmap.GOOGLE_API_KEY;
         } else {
           url = hutmap.STATIC_URL + 'hutmap/img/no-image-available.gif';
         }
