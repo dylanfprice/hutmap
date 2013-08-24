@@ -14,9 +14,6 @@
 
       $scope.f = {};
 
-			$scope.f.anySeason = {
-        include: true,
-      };
       $scope.f.season = {
         'any': {
           include: true,
