@@ -89,6 +89,15 @@ $ workon_hutmap
 $ ./manage.py <command>
 ```
 
+Django's devserver is wrapped in an upstart service, so it should restart
+automatically if you crash it. But if you want to stop, start, or restart it
+for any reason, then while logged in to the vm you can run; 
+```bash
+$ sudo stop django-devserver
+$ sudo start django-devserver
+$ sudo restart django-devserver
+```
+
 ### Developing Javascript (AngularJS) ###
 
 Edit the js files in `src/hutmap/static/hutmap/js/` and add tests in
