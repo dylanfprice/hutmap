@@ -1,6 +1,6 @@
 ---
 - name: install mysql
-  apt: pkg=$item state=installed
+  apt: pkg=$item state=installed update_cache=yes
   with_items:
     - python-mysqldb
     - mysql-client
