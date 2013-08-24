@@ -16,7 +16,7 @@ logfile.write("environ: {0}\n".format(str(os.environ)))
 
 
 # run in our virtualenv
-INTERP = os.path.join(os.environ['HOME'], '.pythonbrew', 'venvs', 'Python-2.7.3', 'hutmap', 'bin', 'python')
+INTERP = os.path.join(os.environ['HOME'], '.venvs', 'hutmap', 'bin', 'python')
 if sys.executable != INTERP:
   logfile.write("sys.executable ({0}) was not {1}. Re-executing.\n".format(sys.executable, INTERP))
   os.execl(INTERP, INTERP, *sys.argv)
