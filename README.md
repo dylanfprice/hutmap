@@ -7,145 +7,104 @@ This section describes how to set up and run hutmap as a developer.
 
 I am assuming a working knowledge of Linux, Bash, Python, and Django. You may
 not know Vagrant, so walk through the
-[tutorial](http://vagrantup.com/v1/docs/getting-started/index.html) before
-setting everything up.
+[tutorial](http://docs.vagrantup.com/v2/getting-started/) before setting
+everything up.
 
-You can try this on Mac or Windows but I've only ever used Linux so no guarantees.
+It should work on Mac or Windows but I've only ever used Linux so no guarantees.
 
 ## Clone the Repo ##
 
-  Get the code, and repos the project depends on:
+Get the code, and repos the project depends on:
 
-  ```bash
-  $ git clone https://github.com/dylanfprice/hutmap.git
-  $ git submodule init
-  $ git submodule update
-  ```
+```bash
+$ git clone https://github.com/dylanfprice/hutmap.git
+$ git submodule init
+$ git submodule update
+```
 
 ## Install Dependencies ##
 
-First, make sure you have [Python](http://www.python.org) installed. Any 2.x
-version should do.  Note that this Python installation is *only* used for
-running scripts in scripts/utils/, and not for running the code. Vagrant will
-provision a separate Python install for the development vm that runs the code.
+Install:
+- [Python](http://www.python.org) 2.x
+- [Vagrant](http://docs.vagrantup.com/v2/installation/)
+- [Ansible](http://www.ansibleworks.com/docs/gettingstarted.html)
 
-Next install [Vagrant](http://www.vagrantup.com). Vagrant requires both
-[Ruby](http://www.ruby-lang.org) and [VirtualBox](https://www.virtualbox.org),
-I'm not sure if the installer installs these for you or not so you may need to
-install those first.
+If you run a Debian based Linux distro like me this should work:
+```bash
+$ sudo apt-get install vagrant
+$ sudo easy_install pip
+$ sudo pip install ansible
+```
 
 ## Configure ##
 
-After you've installed the dependencies, add the following to your ~/.profile
-to set the necessary environment variables, or do the equivalent thing for your
-operating system.  Where appropriate, defaults are provided for convenience,
-however you may change these if you wish and it won't break anything (e.g. you
-can change the name of the database and vagrant will propagate it correctly to
-the vm when it builds it). Warning: Don't change the values after you call
-'vagrant up' (see next step) or you will have to rebuild the vm by running
-'vagrant destroy', then 'vagrant up' again.
+Create the file `ops/provisioning/group\_vars/vagrant` with the following in it:
+```yaml
+---
+user: 'vagrant'
+mysql_root_password: 'vagrant'
 
-  ```bash
-  export HUTMAP_VERSION='development'
-  export HUTMAP_DB_NAME='hutmap' 
-  export HUTMAP_DB_USER='hutmap'
-  export HUTMAP_DB_PASSWORD='hutmap'
-  export HUTMAP_DB_HOST='' # Don't set this since we put Apache and MySQL on the same vm
-  export HUTMAP_DB_PORT='' # Same goes for this
-  export HUTMAP_SECRET_KEY='6b1c3b50-14b3-11e2-892e-0800200c9a66'
-  export HUTMAP_DEBUG='true'
-  export HUTMAP_GOOGLE_API_KEY='your_google_maps_api_key_here'
-  export HUTMAP_EMAIL_HOST_USER=''     # These two are not relevant for development,
-  export HUTMAP_EMAIL_HOST_PASSWORD='' # see django docs for usage
-  ```
-
+hutmap:
+  version: 'dev'
+  db_name: 'hutmap' 
+  db_user: 'hutmap'
+  db_password: 'hutmap'
+  db_host: ''
+  db_port: ''
+  secret_key: '516713f0-518b-11e2-bcfd-0800200c9a66'
+  debug: 'true'
+  google_api_key: 'YOUR_GOOGLE_API_KEY'
+  email_host_user: ''
+  email_host_password: ''
+```
+  
 ## Setup Dev Environment ##
 
-This step will build and provision a development vm for running the hutmap
-code. In the directory containing this README.md, perform the following:
+```bash
+$ cd ops/
+$ vagrant up # This will take a long time
+```
 
-  ```bash
-  $ source ~/.profile
-  $ cd scripts/
-  $ vagrant box add lucid32 http://files.vagrantup.com/lucid32.box
-  $ vagrant up # This will take a while
-  ```
-
-Go to <http://localhost:8080> in your browser and verify you see the homepage.
+Go to <http://localhost:8000> in your browser and verify you see the homepage.
 
 ## Development and Testing ##
 
-Hutmap uses [shovel](https://github.com/seomoz/shovel) for utility scripts,
-testing, building, deploying, etc. By running a shovel server on the
-development vm, there is no need for you to install or set up anything. Simply
-run:
-
-  ```bash
-  $ scripts/utils/shovel-server.py start
-  ```
-
-Then go to <http://localhost:3000/help> in your browser to see a list of all
-available commands.
-
-You may want to build the css, initialize the database, and load in some test
-data:
-+ <http://localhost:3000/build.css>
-+ <http://localhost:3000/django.manage?validate>
-+ <http://localhost:3000/django.manage?syncdb&--noinput>
-+ <http://localhost:3000/django.manage?loaddata&test_data>
-
-You can also run shovel commands directly on the vm like so:
-
-  ```bash
-  $ cd scripts/
-  $ vagrant ssh
-  $ cd /vagrant/scripts/
-  $ pythonbrew venv use hutmap
-  $ shovel help
-  ```
+You will probably want to sync the database and load in some data:
+```bash
+$ cd ops/
+$ vagrant ssh
+$ workon_hutmap
+$ ./manage.py syncdb
+$ ./manage.py loaddata huts/fixtures/test_data.json #TODO: fix test_data fixture
+```
 
 ### Developing Python (Django) ###
 
-The django project is found in src/hutmap/ and the templates are in
-src/templates/. Be careful editing the templates as both Django and AngularJS
-use the same {{ variable }} syntax so there are a lot of {% verbatim %} blocks.
-Edit the files as usual. Run tests at <http://localhost:3000/test.hutmappy>. To
-see your changes show up at <http://localhost:8080>, you may need to reload the
-server <http://localhost:3000/server.reload>.
-
-You can run any non-interactive manage.py commands through the endpoint
-<http://localhost:3000/django.manage>, e.g.
-<http://localhost:3000/django.manage?validate>.
-
-If you need to run other manage.py commands, or just want 'normal' access to
-the django project, use the following:
-
-  ```bash
-  $ cd scripts/
-  $ vagrant ssh
-  $ cd /vagrant/src/hutmap
-  $ pythonbrew venv use hutmap
-  $ # now do what you want
-  ```
+The main django app is in src/hutmap/huts/. You can run manage.py commands by logging into the vm:
+```bash
+$ cd ops/
+$ vagrant ssh
+$ workon_hutmap
+$ ./manage.py <command>
+```
 
 ### Developing Javascript (AngularJS) ###
 
-Edit the js files in src/js/ and add tests in src/js-test/. Changes will show
-up when you reload the page. 
+Edit the js files in src/hutmap/static/hutmap/js/ and add tests in
+src/hutmap/static/hutmap/js-test/. Changes will show up when you reload the
+page. 
 
-Run the tests at <http://localhost:3000/test.hutmapjs>, but this may get
-tedious, so you can start a karma server to watch the files for changes and
-automatically re-run tests:
-
-  ```bash
-  $ cd scripts/
-  $ vagrant ssh
-  $ karma start /vagrant/src/js-test/hutmap/config/karma.conf.js
-  ```
+Run the tests by logging into the vm and starting a karma server:
+```bash
+$ cd ops/
+$ vagrant ssh
+$ karma start /vagrant/src/hutmap/static/hutmap/js-test/hutmap/config/karma.conf.js
+```
 
 ### Developing CSS ###
 
-The css is located at src/css/. It is written in [less](http://lesscss.org/).
-This means you need to compile it at <http://localhost:3000/build.css> for any
-changes to show up.
+The css is located at src/hutmap/static/hutmap/css/. It is written in
+[less](http://lesscss.org/). The less is automatically compiled to css using
+[django_compressor](http://django-compressor.readthedocs.org/en/latest/) so you
+just need to reload the page.
 
