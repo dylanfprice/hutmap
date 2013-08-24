@@ -80,7 +80,7 @@ $ ./manage.py loaddata huts/fixtures/test_data.json #TODO: fix test_data fixture
 
 ### Developing Python (Django) ###
 
-The main django app is in src/hutmap/huts/. You can run manage.py commands by logging into the vm:
+The main django app is in `src/hutmap/huts/`. You can run manage.py commands by logging into the vm:
 ```bash
 $ cd ops/
 $ vagrant ssh
@@ -90,8 +90,8 @@ $ ./manage.py <command>
 
 ### Developing Javascript (AngularJS) ###
 
-Edit the js files in src/hutmap/static/hutmap/js/ and add tests in
-src/hutmap/static/hutmap/js-test/. Changes will show up when you reload the
+Edit the js files in `src/hutmap/static/hutmap/js/` and add tests in
+`src/hutmap/static/hutmap/js-test/`. Changes will show up when you reload the
 page. 
 
 Run the tests by logging into the vm and starting a karma server:
@@ -103,7 +103,7 @@ $ karma start /vagrant/src/hutmap/static/hutmap/js-test/hutmap/config/karma.conf
 
 ### Developing CSS ###
 
-The css is located at src/hutmap/static/hutmap/css/. It is written in
+The css is located at `src/hutmap/static/hutmap/css/`. It is written in
 [less](http://lesscss.org/). The less is automatically compiled to css using
 [django_compressor](http://django-compressor.readthedocs.org/en/latest/) so you
 just need to reload the page.
