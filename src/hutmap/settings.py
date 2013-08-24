@@ -118,18 +118,37 @@ else:
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+  join(LOCAL_PATH, 'static'),
 )
 
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+  'django.contrib.staticfiles.finders.FileSystemFinder',
+  'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+  'compressor.finders.CompressorFinder',
 )
+
+COMPRESS_CSS_FILTERS = [
+  'compressor.filters.template.TemplateFilter',
+  'compressor.filters.css_default.CssAbsoluteFilter',
+  'compressor.filters.datauri.CssDataUriFilter',
+  'compressor.filters.cssmin.CSSMinFilter',
+]
+
+COMPRESS_DATA_URI_MAX_SIZE = 32000
+
+COMPRESS_JS_FILTERS = [
+  'compressor.filters.jsmin.JSMinFilter',
+]
+
+COMPRESS_PRECOMPILERS = (
+  ('text/coffeescript', 'coffee --compile --stdio'),
+  ('text/less', 'lessc {infile} {outfile}'),
+)
+
+COMPRESS_OFFLINE = True
+COMPRESS_OFFLINE_MANIFEST = 'manifest-{}.json'.format(HUTMAP_VERSION)
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -164,7 +183,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
-  join(LOCAL_PATH, '..', 'templates')
+  join(LOCAL_PATH, 'templates')
 )
 
 INSTALLED_APPS = (
@@ -175,6 +194,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.gis',
+    'django.contrib.staticfiles',
+    'compressor',
     'huts',
 )
 

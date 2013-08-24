@@ -1,3 +1,6 @@
+{% load staticfiles %}
+{% load compress %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,19 +14,21 @@
   <meta name="keywords" content="map, backcountry, hut, cabin, yurt, lean-to, shelter, cave, chickee, skiing, hiking, backpacking, mountaineering, climbing, adventure, outdoors, Hutmap, Ethan Welty, Dylan Price" />
   
   <!-- Favicon -->
-  <link rel="shortcut icon" href="{{ STATIC_URL }}img/logo-icon-dark.ico">
+  <link rel="shortcut icon" href="{% static "hutmap/img/logo-icon-dark.ico" %}">
   
 	<!-- Facebook OpenGraph Tags -->
   <meta property="og:title" content="Hutmap" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://www.hutmap.com/" />
   <meta property="og:description" content="Your guide to North America's backcountry huts." />
-  <meta property="og:image" content="{{ STATIC_URL }}img/og/logo-icon-dark.png" />
-  <meta property="og:image" content="{{ STATIC_URL }}img/og/logo-square-dark.png" />
-  <meta property="og:image" content="{{ STATIC_URL }}img/og/110318_0354.jpg" />
+  <meta property="og:image" content="{% static "hutmap/img/og/logo-icon-dark.png" %}" />
+  <meta property="og:image" content="{% static "hutmap/img/og/logo-square-dark.png" %}" />
+  <meta property="og:image" content="{% static "hutmap/img/og/110318_0354.jpg" %}" />
 	
 	<!-- CSS -->	
-  <link href="{{ STATIC_URL }}css/hutmap-{{ HUTMAP_VERSION }}.min.css" rel="stylesheet">
+  {% compress css %}
+  <link rel="stylesheet" type="text/less" charset="utf-8" href="{% static "hutmap/css/hutmap.less" %}">
+  {% endcompress %}
   
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
   <!--[if lt IE 9]>
@@ -46,7 +51,7 @@
 
 <body>
 
-  <div ng-app="hutmap" ng-controller="HutmapCtrl" ng-init="STATIC_URL = '{{ STATIC_URL }}'; GOOGLE_API_KEY = '{{ GOOGLE_API_KEY }}';">
+  <div ng-app="hutmap" ng-controller="HutmapCtrl">
 
     <div id="navbar" class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner"">
@@ -54,7 +59,7 @@
         <a class="brand" href="/"><i class="img-logo up1"></i><span class="logo">Hutmap</span>
         </a>
         <form id="navbar-search" class="navbar-search" ng-controller="SearchCtrl" ng-submit="search(selected)">
-          <img style="z-index: 10;position: absolute;" src="{{ STATIC_URL }}img/triangle-right.png" />
+          <img style="z-index: 10;position: absolute;" src="{% static "hutmap/img/triangle-right.png" %}" />
           <input type="text" 
                  class="search-query" 
                  placeholder="Find backcountry huts" 
@@ -132,34 +137,38 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js"></script>
-  <script src="https://apis.google.com/js/client.js"></script>
-  {% if not DEBUG %}
-  <script src="{{ STATIC_URL }}js/hutmap-{{ HUTMAP_VERSION }}.min.js"></script>
-  {% else %}
-  <script src="/dev/js/third-party/ui-bootstrap-0.6.0-SNAPSHOT.js"></script>
-  <script src="/dev/js/third-party/keydragzoom.js"></script>
-  <script src="/dev/js/third-party/angular-gm-0.2.0.js"></script>
-  <script src="/dev/js/hutmap/app.js"></script>
-  <script src="/dev/js/hutmap/services/module.js"></script>
-  <script src="/dev/js/hutmap/controllers/module.js"></script>
-  <script src="/dev/js/hutmap/filters.js"></script>
-  <script src="/dev/js/hutmap/directives.js"></script>
-  <script src="/dev/js/hutmap/services/Huts.js"></script>
-  <script src="/dev/js/hutmap/services/Places.js"></script>
-  <script src="/dev/js/hutmap/services/MarkerTooltip.js"></script>
-  <script src="/dev/js/hutmap/services/utils.js"></script>
-  <script src="/dev/js/hutmap/controllers/HutmapCtrl.js"></script>
-  <script src="/dev/js/hutmap/controllers/CarouselCtrl.js"></script>
-  <script src="/dev/js/hutmap/controllers/AlertCtrl.js"></script>
-  <script src="/dev/js/hutmap/controllers/BottomBarCtrl.js"></script>
-  <script src="/dev/js/hutmap/controllers/HutImgCtrl.js"></script>
-  <script src="/dev/js/hutmap/controllers/HutCtrl.js"></script>
-  <script src="/dev/js/hutmap/controllers/MapCtrl.js"></script>
-  <script src="/dev/js/hutmap/controllers/MapConfigCtrl.js"></script>
-  <script src="/dev/js/hutmap/controllers/SearchCtrl.js"></script>
-  <script src="/dev/js/hutmap/controllers/FilterCtrl.js"></script>
-  <script src="/dev/js/hutmap/controllers/LinkCtrl.js"></script>
-  {% endif %}
+  <script src="//apis.google.com/js/client.js"></script>
+  {% compress js %}
+  <script type="text/javascript" charset="utf-8">
+    window.hutmap = {
+      STATIC_URL: '{{ STATIC_URL }}',
+      GOOGLE_API_KEY: '{{ GOOGLE_API_KEY }}',
+    };
+  </script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/third-party/ui-bootstrap-0.6.0-SNAPSHOT.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/third-party/keydragzoom.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/third-party/angular-gm-0.2.0.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/app.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/module.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/module.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/filters.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/directives.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/Huts.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/Places.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/MarkerTooltip.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/utils.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/HutmapCtrl.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/CarouselCtrl.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/AlertCtrl.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/BottomBarCtrl.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/HutImgCtrl.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/HutCtrl.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/MapCtrl.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/MapConfigCtrl.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/SearchCtrl.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/FilterCtrl.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/LinkCtrl.js" %}"></script>
+  {% endcompress %}
 
 </body>
 </html>

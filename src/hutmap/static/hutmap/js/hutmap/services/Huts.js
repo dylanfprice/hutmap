@@ -10,7 +10,7 @@
     var error;
     var dbLoaded = $q.defer();
 
-    $http.get('/static/data/huts.json').success(function(resp) {
+    $http.get(hutmap.STATIC_URL + 'hutmap/data/huts.json').success(function(resp) {
       if (resp != null) {
         data = resp;  
         dbLoaded.resolve();

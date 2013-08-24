@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.conf.urls import patterns, url, include
+from django.conf.urls.static import static
 from django.views.generic.base import TemplateView
 #from huts.api import HutSearchResource, HutResource, AgencyResource, RegionResource
 #from tastypie.api import Api
@@ -20,6 +22,9 @@ urlpatterns += patterns('',
   url(r'^admin/doc/',  include('django.contrib.admindocs.urls')),
   url(r'^admin/',      include(admin.site.urls)),
 )
+
+# serve media files during development
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # api
 #api = Api(api_name='v1')

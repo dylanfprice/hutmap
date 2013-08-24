@@ -13,8 +13,8 @@
           name: 'BC Mountaineering Club',
           url:  ''
         },
-        thumbnail: '/static/img/no-image-available.gif',
-        image: '/static/img/carousel/plummer-hut-hires.jpg'
+        thumbnail: hutmap.STATIC_URL + 'hutmap/img/no-image-available.gif',
+        image: hutmap.STATIC_URL + 'hutmap/img/carousel/plummer-hut-hires.jpg'
       },
       {
         title: 'Joe River Chickee', 
@@ -24,8 +24,8 @@
           name: 'lorem ipsum dolor',
           url:  ''
         },
-        thumbnail: '/static/img/no-image-available.gif',
-        image: '/static/img/carousel/joe-river-chickee-hires.jpg'
+        thumbnail: hutmap.STATIC_URL + 'hutmap/img/no-image-available.gif',
+        image: hutmap.STATIC_URL + 'hutmap/img/carousel/joe-river-chickee-hires.jpg'
       },
       {
         title: 'John Muir Shelter', 
@@ -35,8 +35,8 @@
           name: 'lorem ipsum dolor',
           url:  ''
         },
-        thumbnail: '/static/img/no-image-available.gif',
-        image: '/static/img/carousel/john-muir-shelter-hires.jpg'
+        thumbnail: hutmap.STATIC_URL + 'hutmap/img/no-image-available.gif',
+        image: hutmap.STATIC_URL + 'hutmap/img/carousel/john-muir-shelter-hires.jpg'
       }
     ];
     $scope.imgStyle = function(imgUrl) {

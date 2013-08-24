@@ -22,7 +22,7 @@
                 '&sensor=false' +
                 '&key=' + $scope.GOOGLE_API_KEY;
         } else {
-          url = $scope.STATIC_URL + 'img/no-image-available.gif';
+          url = hutmap.STATIC_URL + 'hutmap/img/no-image-available.gif';
         }
       }
       return url;

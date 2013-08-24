@@ -7,7 +7,7 @@
     ['$scope', '$location', '$q', '$rootScope',
     function($scope, $location, $q, $rootScope) {
 
-      var gapiKey = $scope.GOOGLE_API_KEY
+      var gapiKey = hutmap.GOOGLE_API_KEY
       var gapiDeferred = $q.defer();
       var gapiLoaded = gapiDeferred.promise;
 

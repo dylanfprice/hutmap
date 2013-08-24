@@ -2,16 +2,22 @@
  * Hutmap less code
  */
 
-// reset browsers' css settings
-@import "normalize.less";
+@deps: "../../../../../deps/";
+@bootstrap: "@{deps}/bootstrap/less";
 
-@import "../../deps/bootstrap/less/bootstrap.less";
-//@import "../../deps/bootstrap/less/variables.less";
-//@import "../../deps/bootstrap/less/mixins.less";
-//@import "../../deps/bootstrap/less/responsive.less";
+@import "@{bootstrap}/reset.less";
+@import "@{bootstrap}/variables.less";
+@import "@{bootstrap}/mixins.less";
+@import "@{bootstrap}/carousel.less";
+@import "@{bootstrap}/navbar.less";
+@import "@{bootstrap}/navs.less";
+@import "@{bootstrap}/type.less";
+@import "@{bootstrap}/tooltip.less";
+@import "@{bootstrap}/dropdowns.less";
+@import "@{bootstrap}/popovers.less";
 
 // Override bootstrap icons
-@import "../../deps/Font-Awesome/less/font-awesome.less";
+@import "@{deps}/Font-Awesome/less/font-awesome.less";
 
 // Override bootstrap and FontAwesome vars and set some of our own
 @import "variables.less";
