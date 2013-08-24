@@ -72,6 +72,9 @@
       notify:
         - restart django-devserver
 
-    - name: install geos
-      apt: pkg=libgeos-c1 state=present
+    - name: install geodjango libs
+      apt: pkg=$item state=present
+      with_items:
+        - libgeos-c1
+        - libgdal1-1.7.0
 
