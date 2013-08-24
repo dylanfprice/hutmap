@@ -38,7 +38,7 @@ $ sudo pip install ansible
 
 ## Configure ##
 
-Create the file `ops/provisioning/group\_vars/vagrant` with the following in it:
+Create the file `ops/provisioning/group_vars/vagrant` with the following in it:
 ```yaml
 ---
 user: 'vagrant'
