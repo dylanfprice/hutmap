@@ -15,7 +15,7 @@
         data = resp;  
         dbLoaded.resolve();
       } else {
-        dbLoaded.reject("/static/data/huts.json response was null");
+        dbLoaded.reject(hutmap.STATIC_URL + "hutmap/data/huts.json response was null");
       }
     }).error(function(error) {
       dbLoaded.reject(error);
