@@ -9,9 +9,11 @@
     # - update version
     # - run collectstatic --noinput -i '*.less' -i 'js-test'
     # - run compress -f
-    # - add img/ font/ CACHE/ to branch:
-    # - commit and push
+    # - add img/ font/ CACHE/ to branch?
+    # - commit and push?
+    #        maybe we just rsync the public/ folder to dreamhost
     # on dreamhost:
+    # - copy wsgi template to passenger_wsgi.py
     # - [hutmap-all] create hutmap databases and user
     # - [hutmap-all] copy templates (hutmap_profile, update_huts_json, hutmap_drop, etc.)
     # - [hutmap-all] install crontab
