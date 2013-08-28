@@ -68,6 +68,18 @@ On my machine with an ~ 30MBps connection this took around 30 minutes.
 
 Go to <http://localhost:8000> in your browser and verify you see the homepage.
 
+If you encounter any errors, run
+```bash
+$ vagrant provision
+```
+and make sure it finishes without errors.
+
+When you are done working, make sure you do a 
+```bash
+$ vagrant suspend
+```
+before turning off your machine.
+
 ## Development and Testing ##
 
 You will probably want to sync the database and load in some data:
@@ -76,7 +88,8 @@ $ cd ops/
 $ vagrant ssh
 $ workon_hutmap
 $ ./manage.py syncdb
-$ ./manage.py loaddata huts/fixtures/test_data.json #TODO: fix test_data fixture
+$ ./manage.py loaddata init
+$ scripts/update_huts_json.sh
 ```
 
 ### Developing Python (Django) ###
@@ -102,7 +115,8 @@ $ sudo restart django-devserver
 
 Edit the js files in `src/hutmap/static/hutmap/js/` and add tests in
 `src/hutmap/static/hutmap/js-test/`. Changes will show up when you reload the
-page. 
+page. Note that Angular expressions are wrapped in [% %] instead of the default
+{{ }}, so as not to conflict with Django.
 
 Run the tests by logging into the vm and starting a karma server:
 ```bash
