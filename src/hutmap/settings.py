@@ -8,7 +8,7 @@ if node() == 'fulton':
   GEOS_LIBRARY_PATH = '/home/hutmap/hutmap.com/deps/geos-3.3.0/lib/libgeos_c.so'
   GDAL_LIBRARY_PATH = '/home/hutmap/hutmap.com/deps/gdal-1.8.0/lib/libgdal.so'
 
-  command = ['bash', '-c', 'source /home/hutmap/.profile && env']
+  command = ['bash', '-c', 'source /home/hutmap/.bash_profile && env']
 
   proc = subprocess.Popen(command, stdout = subprocess.PIPE)
   stdoutdata, stderrdata = proc.communicate()
