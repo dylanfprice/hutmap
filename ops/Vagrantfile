@@ -37,7 +37,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision :ansible do |ansible|
     ansible.playbook = "provisioning/vagrant.yml"
-    ansible.inventory_file = "provisioning/development_hosts"
+    ansible.inventory_file = "provisioning/inventory"
     ansible.extra_vars = {
       :repo_dir => repo_dir,
       :devserver_port => devserver_port,

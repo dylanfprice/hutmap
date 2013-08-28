@@ -1,0 +1,29 @@
+- hosts: vagrant
+  user: $user
+  sudo: no
+
+  pre_tasks:
+    - name: ensure latest hutmap code
+      git: repo=git://github.com/dylanfprice/hutmap.git
+           dest=$repo_dir
+           update=yes
+
+    - name: checkout our branch
+      command: /usr/bin/git checkout vagrant-ansible chdir=$repo_dir
+
+    - name: update our branch
+      command: /usr/bin/git pull chdir=$repo_dir
+
+    - name: install passenger_wsgi.py
+      template: src='templates/passenger_wsgi.py.j2' dest='$repo_dir/passenger_wsgi.py'
+
+  roles:
+    - pyenv
+    - webserver
+
+  #tasks:
+    # - TODO: [hutmap] ensure geos and gdal libs
+
+  handlers:
+    - name: restart webserver
+      command: /usr/bin/killall python
