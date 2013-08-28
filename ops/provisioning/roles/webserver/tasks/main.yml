@@ -1,0 +1,39 @@
+---
+# copy templates
+- name: install hutmap profile
+  template: src='hutmap_profile.j2' dest='$profile'
+
+- name: create the scripts directory
+  file: path=$scripts_dir state=directory
+
+- name: install update_huts_json script
+  template: src='update_huts_json.sh.j2' dest='$scripts_dir/update_huts_json.sh' mode=0744
+  notify: 
+    - update huts.json
+
+- name: copy media htaccess
+  copy: src='htaccess_media' dest='$public_dir/media/.htaccess'
+
+- name: copy static htaccess
+  copy: src='htaccess_static' dest='$public_dir/static/.htaccess'
+
+# install requirements
+- name: copy requirements
+  copy: src='requirements.txt' dest='$home/requirements.txt'
+
+- name: install requirements
+  sudo: no
+  pip: requirements='$home/requirements.txt' virtualenv=$virtualenv
+  notify:
+    - restart webserver
+
+# install crontab
+- name: install crontab
+  cron: 
+    name: update huts.json
+    user: $user
+    state: present
+    hour: 0
+    minute: 0
+    job: $scripts_dir/update_huts_json.sh
+

@@ -2,13 +2,10 @@
 - name: setup django development server as a service
   template: src='django-devserver.conf.j2' dest='/etc/init/django-devserver.conf'
   notify:
-    restart django-devserver
+    restart webserver
 
-- name: create the scripts directory
-  file: path=$scripts_dir state=directory
-
-- name: install get_started script
-  template: src='get_started.sh.j2' dest='$scripts_dir/get_started.sh' mode=0744
+- name: install deploy-dreamhost script
+  template: src='deploy-dreamhost.sh.j2' dest='$scripts_dir/deploy-dreamhost.sh'
 
 - name: install libfontconfig which is needed by phantomjs
   apt: pkg=libfontconfig1 state=latest

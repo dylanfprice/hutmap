@@ -16,7 +16,7 @@ logfile.write("environ: {0}\n".format(str(os.environ)))
 
 
 # run in our virtualenv
-INTERP = os.path.join(os.environ['HOME'], '.venvs', 'hutmap', 'bin', 'python')
+INTERP = os.path.join('{{ virtualenv }}', 'bin', 'python')
 if sys.executable != INTERP:
   logfile.write("sys.executable ({0}) was not {1}. Re-executing.\n".format(sys.executable, INTERP))
   os.execl(INTERP, INTERP, *sys.argv)
@@ -24,8 +24,8 @@ if sys.executable != INTERP:
 
 # add hutmap dir to the python path
 try:
-  src_dir = os.path.join(cwd, 'src')
-  hutmap_dir = os.path.join(src_dir, 'hutmap')
+  hutmap_dir = '{{ app_dir }}'
+  src_dir = os.path.join(hutmap_dir, '..')
   sys.path.insert(0, src_dir)
   sys.path.insert(0, hutmap_dir)
 except Exception as e:

@@ -1,0 +1,13 @@
+#!/bin/sh
+# Deploys the master branch to the hutmap.com dreamhost account. See
+# 'Deploying' in README.md for usage.
+
+. {{ profile }}
+workon_hutmap
+./manage.py collectstatic --noinput -i '*.less' -i 'js-test'
+./manage.py compress -f
+
+{% for host in groups['dreamhost'] %}
+  rsync -ave ssh --exclude 'data' {{ public_dir }}/static {{ user }}@{{ host }}:{{ hostvars[groups['vagrant'][0]]['public_dir'] }}
+{% endfor %}
+

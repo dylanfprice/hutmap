@@ -1,6 +1,0 @@
-#!/bin/sh -e
-
-. {{ profile }}
-workon_hutmap
-./manage.py syncdb --noinput
-./manage.py createsuperuser --username=admin --email=admin@nowhere.com

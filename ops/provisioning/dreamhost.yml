@@ -1,24 +1,26 @@
----
 - hosts: dreamhost
   user: $user
   sudo: no
 
-  tasks:
-    # on localhost (do this in a script):
-    # - switch to dreamhost branch
-    # - update version
-    # - run collectstatic --noinput -i '*.less' -i 'js-test'
-    # - run compress -f
-    # - add img/ font/ CACHE/ to branch?
-    # - commit and push?
-    #        maybe we just rsync the public/ folder to dreamhost
-    # on dreamhost:
-    # - copy wsgi template to passenger_wsgi.py
-    # - [hutmap-all] create hutmap databases and user
-    # - [hutmap-all] copy templates (hutmap_profile, update_huts_json, hutmap_drop, etc.)
-    # - [hutmap-all] install crontab
-    # - [hutmap-all] run update_huts_json.sh
-    # - [hutmap] ensure pip and virtualenv
-    # - [hutmap-all] install requirements.txt
-    # - [hutmap] ensure geos and gdal libs
-    # - update git repo
+  pre_tasks:
+    - name: ensure latest hutmap code
+      git: repo=git://github.com/dylanfprice/hutmap.git
+           dest=$repo_dir
+           update=yes
+
+    - name: checkout our branch
+      command: /usr/bin/git checkout vagrant-ansible chdir=$repo_dir
+
+    - name: install passenger_wsgi.py
+      template: src='templates/passenger_wsgi.py.j2' dest='$repo_dir/passenger_wsgi.py'
+
+  roles:
+    - pyenv
+    - webserver
+
+  #tasks:
+    # - TODO: [hutmap] ensure geos and gdal libs
+
+  handlers:
+    - name: restart webserver
+      command: killall python

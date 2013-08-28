@@ -3,8 +3,6 @@ logs/
 public/
 src/hutmap/scripts/
 
-ops/provisioning/group_vars/vagrant
-
 *.vagrant
 *.swp
 *.pyc
