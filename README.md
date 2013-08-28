@@ -115,7 +115,7 @@ $ sudo restart django-devserver
 
 Edit the js files in `src/hutmap/static/hutmap/js/` and add tests in
 `src/hutmap/static/hutmap/js-test/`. Changes will show up when you reload the
-page. Note that Angular expressions are wrapped in [% %] instead of the default
+page. Note that Angular expressions are wrapped in [* *] instead of the default
 {{ }}, so as not to conflict with Django.
 
 Run the tests by logging into the vm and starting a karma server:
