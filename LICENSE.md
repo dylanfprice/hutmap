@@ -1,7 +1,8 @@
 The MIT License
 
-Copyright (c) 2013 Dylan Price the.dylan.price@gmail.com <br/>
-                   Ethan Welty 
+Copyright (c) 2013 <br/>
+Dylan Price the.dylan.price@gmail.com <br/>
+Ethan Welty 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
