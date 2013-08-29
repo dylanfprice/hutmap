@@ -1,5 +1,8 @@
-# About #
 This is the code that powers [hutmap.com](http://www.hutmap.com).
+
+- [Setup](#setup)
+- [Develop](#develop)
+- [Deploy](#deploy)
 
 # Setup #
 
@@ -80,7 +83,7 @@ $ vagrant suspend
 ```
 before turning off your machine.
 
-## Development and Testing ##
+## Initialize Database ##
 
 You will probably want to sync the database and load in some data:
 ```bash
@@ -91,8 +94,12 @@ $ ./manage.py syncdb
 $ ./manage.py loaddata init
 $ scripts/update_huts_json.sh
 ```
+Got to <localhost:8000/map> and verify you see some data.
+You can now also log in to <localhost:8000/admin> with 'admin' for both username and password.
 
-### Developing Python (Django) ###
+# Develop #
+
+## Developing Python (Django) ##
 
 The main django app is in `src/hutmap/huts/`. You can run manage.py commands by logging into the vm:
 ```bash
@@ -111,7 +118,7 @@ $ sudo start django-devserver
 $ sudo restart django-devserver
 ```
 
-### Developing Javascript (AngularJS) ###
+## Developing Javascript (AngularJS) ##
 
 Edit the js files in `src/hutmap/static/hutmap/js/` and add tests in
 `src/hutmap/static/hutmap/js-test/`. Changes will show up when you reload the
@@ -125,10 +132,14 @@ $ vagrant ssh
 $ karma start /vagrant/src/hutmap/static/hutmap/js-test/hutmap/config/karma.conf.js
 ```
 
-### Developing CSS ###
+## Developing CSS ##
 
 The css is located at `src/hutmap/static/hutmap/css/`. It is written in
 [less](http://lesscss.org/). The less is automatically compiled to css using
 [django_compressor](http://django-compressor.readthedocs.org/en/latest/) so you
 just need to reload the page.
 
+
+# Deploy #
+
+## Deploy to Dreamhost ##
