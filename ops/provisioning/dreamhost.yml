@@ -42,4 +42,4 @@
 
   handlers:
     - name: restart webserver
-      shell: /usr/bin/pkill -f phusion_passenger
+      command: /usr/bin/pkill -f phusion_passenger || /bin/true
