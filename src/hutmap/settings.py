@@ -151,7 +151,7 @@ COMPRESS_PRECOMPILERS = (
 )
 
 COMPRESS_OFFLINE = True
-COMPRESS_OFFLINE_MANIFEST = 'manifest-{}.json'.format(HUTMAP_VERSION)
+COMPRESS_OFFLINE_MANIFEST =  'manifest-dev.json' if DEBUG else 'manifest-prod.json'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -213,6 +213,7 @@ else:
     'default': {
       'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
       'LOCATION': '/var/tmp/hutmap-django-cache',
+      'VERSION': HUTMAP_VERSION,
     }
   }
 
