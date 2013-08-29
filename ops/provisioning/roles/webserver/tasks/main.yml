@@ -11,6 +11,12 @@
   notify: 
     - update huts.json
 
+- name: create public folders
+  file: path=$public_dir/$item state=directory
+  with_items:
+    - static
+    - media
+
 - name: copy media htaccess
   copy: src='htaccess_media' dest='$public_dir/media/.htaccess'
 
