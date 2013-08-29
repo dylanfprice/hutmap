@@ -143,3 +143,54 @@ just need to reload the page.
 # Deploy #
 
 ## Deploy to Dreamhost ##
+There are two types of deploys: partial and full. A partial deployment assumes
+the server is already successfully serving hutmap and simply updates the code
+and static files (css, js, images, etc.). A full deploy assumes nothing and
+ensures all libraries and other 'one-time setup' items are taken care of.
+
+### Partial Deploy ###
+
+First step is to set up `ops/group_vars/dreamhost` with the following variables
+set to the values you want (Ethan I can send you this file):
+
+```yaml
+---
+user: 'me'
+repo_dir: '/home/me/mysite.com'
+
+hutmap:
+  version: ''
+  db_name: 'my_db_name' 
+  db_user: 'my_db_user'
+  db_password: 'my_db_password'
+  db_host: 'my_db_host'
+  db_port: 'my_db_port'
+  secret_key: 'my_secret_key'
+  debug: 'false'
+  google_api_key: 'my_google_api_key'
+  email_host_user: '' # Not implemented yet
+  email_host_password: '' # Not implemented yet
+```
+
+Next you need to set up the dreamhost server to authorize the vagrant vm's public key:
+
+```bash
+$ cd ops/
+$ vagrant ssh
+$ ssh-copy-id user@host # where user@host corresponds to your dreamhost account
+```
+
+Then, while still logged into the vm:
+```bash
+$ workon_hutmap
+$ scripts/deploy_dreamhost.sh
+```
+
+Re-run this script any time you need to deploy. 
+
+### Full Deploy ###
+Follow the same steps as Partial Deploy above, but at the last step run the following instead:
+```bash
+$ scripts/deploy_dreamhost.sh full
+```
+
