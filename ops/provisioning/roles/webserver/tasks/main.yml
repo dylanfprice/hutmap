@@ -2,6 +2,8 @@
 # copy templates
 - name: install hutmap profile
   template: src='hutmap_profile.j2' dest='$profile'
+  tags:
+    - partial
 
 - name: create the scripts directory
   file: path=$scripts_dir state=directory
