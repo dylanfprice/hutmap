@@ -1,4 +1,5 @@
 - hosts: dreamhost
+  gather_facts: no
   user: $user
   sudo: no
 
@@ -7,16 +8,34 @@
       git: repo=git://github.com/dylanfprice/hutmap.git
            dest=$repo_dir
            update=yes
-
-    - name: install passenger_wsgi.py
-      template: src='templates/passenger_wsgi.py.j2' dest='$repo_dir/passenger_wsgi.py'
+      tags:
+        - partial
 
   roles:
     - pyenv
     - webserver
 
-  #tasks:
+  tasks:
     # - TODO: [hutmap] ensure geos and gdal libs
+
+    - name: install passenger_wsgi.py
+      template: src='templates/passenger_wsgi.py.j2' dest='$repo_dir/passenger_wsgi.py'
+
+    - name: update static files
+      local_action: shell . \$HOME/.bash_profile && 
+        workon_hutmap && 
+        HUTMAP_DEBUG=${hutmap.debug} HUTMAP_VERSION=${hutmap.version}
+        python manage.py $item
+      with_items:
+        - collectstatic --noinput -i '*.less' -i 'js-test'
+        - compress -f
+      tags:
+        - partial
+
+    - name: upload static files
+      local_action: command rsync -ae ssh /vagrant/public/static $user@$inventory_hostname:$public_dir
+      tags:
+        - partial
 
   handlers:
     - name: restart webserver
