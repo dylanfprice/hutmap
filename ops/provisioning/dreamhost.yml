@@ -1,5 +1,4 @@
 - hosts: dreamhost
-  gather_facts: no
   user: $user
   sudo: no
 
@@ -8,6 +7,8 @@
       git: repo=git://github.com/dylanfprice/hutmap.git
            dest=$repo_dir
            update=yes
+      notify:
+        - restart webserver
       tags:
         - partial
 
@@ -34,9 +35,11 @@
 
     - name: upload static files
       local_action: command rsync -ae ssh /vagrant/public/static $user@$inventory_hostname:$public_dir
+      notify:
+        - restart webserver
       tags:
         - partial
 
   handlers:
     - name: restart webserver
-      command: /usr/bin/killall python
+      shell: /usr/bin/pkill -f phusion_passenger
