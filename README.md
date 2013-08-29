@@ -159,7 +159,8 @@ user: 'me'
 repo_dir: '/home/me/mysite.com'
 
 hutmap:
-  version: ''
+  # version changes on each deploy to invalidate old files in cache
+  version: '{{ lookup("pipe", "date +%s") }}'
   db_name: 'my_db_name' 
   db_user: 'my_db_user'
   db_password: 'my_db_password'
