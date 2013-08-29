@@ -186,8 +186,7 @@ $ workon_hutmap
 $ scripts/deploy_dreamhost.sh
 ```
 
-Re-run this script any time you need to deploy. Note that due to caching on the
-server it will take 10 minutes for any changes to show up on the site.
+Re-run this script any time you need to deploy.
 
 ### Full Deploy ###
 Follow the same steps as Partial Deploy above, but at the last step run the following instead:
