@@ -5,9 +5,16 @@
 . {{ profile }}
 workon_hutmap
 ./manage.py collectstatic --noinput -i '*.less' -i 'js-test'
-./manage.py compress -f
 
 {% for host in groups['dreamhost'] %}
-  rsync -ave ssh --exclude 'data' {{ public_dir }}/static {{ user }}@{{ host }}:{{ hostvars[groups['vagrant'][0]]['public_dir'] }}
+
+  {% set vars = hostvars[host] %}
+
+  HUTMAP_DEBUG={{ vars.hutmap.debug }} HUTMAP_VERSION={{ vars.hutmap.version }} \
+    ./manage.py compress -f
+
+  rsync -ave ssh --exclude 'data' {{ public_dir }}/static \
+    {{ vars.user }}@{{ host }}:{{ vars.repo_dir }}/public/
+
 {% endfor %}
 

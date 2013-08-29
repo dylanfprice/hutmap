@@ -5,7 +5,7 @@
     restart webserver
 
 - name: install deploy-dreamhost script
-  template: src='deploy-dreamhost.sh.j2' dest='$scripts_dir/deploy-dreamhost.sh'
+  template: src='deploy-dreamhost.sh.j2' dest='$scripts_dir/deploy-dreamhost.sh' mode=0755
 
 - name: install libfontconfig which is needed by phantomjs
   apt: pkg=libfontconfig1 state=latest
