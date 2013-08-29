@@ -43,5 +43,6 @@
     minute: 0
     job: $scripts_dir/update_huts_json.sh
 
-#- name: create django cache
-# TODO /var/tmp/hutmap-django-cache
+- name: create django cache
+  file: path='/var/tmp/hutmap-django-cache' state=directory
+
