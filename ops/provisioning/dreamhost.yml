@@ -34,7 +34,7 @@
         - partial
 
     - name: upload static files
-      local_action: command rsync -ae ssh /vagrant/public/static $user@$inventory_hostname:$public_dir
+      local_action: command rsync -ae ssh --exclude 'data' /vagrant/public/static $user@$inventory_hostname:$public_dir
       notify:
         - restart webserver
       tags:
