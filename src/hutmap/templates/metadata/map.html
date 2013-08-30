@@ -23,6 +23,7 @@
 {% block og_image %}
   {% if hut and hut.photo %}
     <meta property="og:image" content="{{ hut.photo.url }}" />
+  {% else %}
+    <meta property="og:image" content="{% static "hutmap/img/og/logo-square-dark.png" %}" />
   {% endif %}
-  <meta property="og:image" content="{% static "hutmap/img/og/logo-square-dark.png" %}" />
 {% endblock %}
