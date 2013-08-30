@@ -1,25 +1,31 @@
-<div>
-  <div ng-controller="CarouselCtrl">
-    <carousel interval="carouselInterval">
-      <div class="carousel-loading muted" ng-show="carouselInterval < 0">Loading images...</div>
-      <slide ng-repeat="slide in slides" active="slide.active">
-        <div class="hut-carousel-img" ng-style="imgStyle(slide.image)"></div>
-        <div class="hut-carousel-caption">
-          <table>
-            <tr>
-              <td class="caption-image">
-                <img ng-src="[*slide.thumbnail*]">
-              </td>
-              <td class="caption-details">
-                <h4>[*slide.title*]</h4>
-                <p>[*slide.location*]</p>
-                <a ng-href="[*slide.hutLink*]">&gt;&gt; show on map</a><br/>
-                <a ng-href="[*slide.agency.url*]">&gt;&gt; [*slide.agency.name*] website</a>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </slide>
-    </carousel>
-  </div>
+<script type="text/ng-template" id="template/carousel/carousel.html">
+  {% include "partials/components/carousel.html" %}
+</script>
+<script type="text/ng-template" id="template/carousel/slide.html">
+  {% include "partials/components/slide.html" %}
+</script>
+
+<div ng-controller="CarouselCtrl">
+  <carousel interval="carouselInterval">
+    <div class="carousel-loading muted" ng-show="carouselInterval < 0">Loading images...</div>
+    <slide ng-repeat="slide in slides" active="slide.active">
+      <div class="hut-carousel-img" ng-style="imgStyle(slide.image)"></div>
+      <div class="hut-carousel-caption">
+        <table>
+          <tr>
+            <td class="caption-image">
+              <img ng-src="[*slide.thumbnail*]">
+            </td>
+            <td class="caption-details">
+              <h4>[*slide.title*]</h4>
+              <p>[*slide.location*]</p>
+              <a ng-href="[*slide.hutLink*]">&gt;&gt; show on map</a><br/>
+              <a ng-href="[*slide.agency.url*]">&gt;&gt; [*slide.agency.name*] website</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </slide>
+  </carousel>
 </div>
+

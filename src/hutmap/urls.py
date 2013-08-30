@@ -1,20 +1,25 @@
 from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.conf.urls.static import static
-from django.views.generic.base import TemplateView
+from django.contrib.gis import admin
+from huts.views import DynamicTemplateView, BaseView
 #from huts.api import HutSearchResource, HutResource, AgencyResource, RegionResource
 #from tastypie.api import Api
 
-from django.contrib.gis import admin
 admin.autodiscover()
 
 # main site
 urlpatterns = patterns('',
-  url(r'^$', TemplateView.as_view(template_name='base.html'), name='hutmap_home'),
-  url(r'^(map/|about/)$', TemplateView.as_view(template_name='base.html')),
-  url(r'^partials/home.html$', TemplateView.as_view(template_name='partials/home.html')),
-  url(r'^partials/map.html$', TemplateView.as_view(template_name='partials/map.html')),
-  url(r'^partials/about.html$', TemplateView.as_view(template_name='partials/about.html')),
+
+  url(r'^$',       BaseView.as_view(), name='hutmap_home'),
+
+  url(r'^map/$',   BaseView.as_view(metadata='metadata/map.html'), 
+    name='hutmap_map'),
+
+  url(r'^about/$', BaseView.as_view(metadata='metadata/about.html'),
+    name='hutmap_about'),
+  
+  url(r'^partials/(?P<template>\w+)\.html$', DynamicTemplateView.as_view(folder='partials')),
 )
 
 # admin

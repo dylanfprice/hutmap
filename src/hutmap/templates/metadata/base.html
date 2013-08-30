@@ -1,0 +1,27 @@
+{% load staticfiles %}
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Hutmap</title>
+
+{% block description %}
+{% include 'metadata/snippet_description.html' with description='Your guide to North America\'s backcountry huts.' %}
+{% endblock %}
+
+<meta property="og:site_name" content="Hutmap" />
+<meta property="og:type" content="website" />
+
+{% block og_title %}
+<meta property="og:title" content="Hutmap" />
+{% endblock %}
+
+{% block og_url %}
+<meta property="og:url" content="http://www.hutmap.com/" />
+{% endblock %}
+
+{% block og_image %}
+<meta property="og:image" content="{% static "hutmap/img/og/logo-icon-dark.png" %}" />
+<meta property="og:image" content="{% static "hutmap/img/og/logo-square-dark.png" %}" />
+<meta property="og:image" content="{% static "hutmap/img/og/110318_0354.jpg" %}" />
+{% endblock %}

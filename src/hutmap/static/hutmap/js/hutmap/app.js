@@ -7,18 +7,18 @@
 
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.
-      when('/', {
+      when(hutmap.url.home, {
         templateUrl: '/partials/home.html',
-        activetab: 'home',
+        active: hutmap.url.home,
       }).
-      when('/map/', {
+      when(hutmap.url.map, {
         templateUrl: '/partials/map.html',
-        activetab: 'map',
+        active: hutmap.url.map,
         reloadOnSearch: false,
       }).
-      when('/about/', {
+      when(hutmap.url.about, {
         templateUrl: '/partials/about.html',
-        activetab: 'about',
+        active: hutmap.url.about,
       });
   }]).
 

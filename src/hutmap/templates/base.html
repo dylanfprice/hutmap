@@ -5,26 +5,11 @@
 <html lang="en">
 <head>
   
-  <!-- Meta Tags -->
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hutmap</title>
-  <meta name="description" content="Your guide to North America's backcountry huts." />
-  <meta name="keywords" content="map, backcountry, hut, cabin, yurt, lean-to, shelter, cave, chickee, skiing, hiking, backpacking, mountaineering, climbing, adventure, outdoors, Hutmap, Ethan Welty, Dylan Price" />
-  
   <!-- Favicon -->
   <link rel="shortcut icon" href="{% static "hutmap/img/logo-icon-dark.ico" %}">
-  
-	<!-- Facebook OpenGraph Tags -->
-  <meta property="og:title" content="Hutmap" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://www.hutmap.com/" />
-  <meta property="og:description" content="Your guide to North America's backcountry huts." />
-  <meta property="og:image" content="{% static "hutmap/img/og/logo-icon-dark.png" %}" />
-  <meta property="og:image" content="{% static "hutmap/img/og/logo-square-dark.png" %}" />
-  <meta property="og:image" content="{% static "hutmap/img/og/110318_0354.jpg" %}" />
-	
+
+  {% include metadata %}
+
 	<!-- CSS -->	
   {% compress css %}
   <link rel="stylesheet" type="text/less" charset="utf-8" href="{% static "hutmap/css/hutmap.less" %}">
@@ -57,8 +42,21 @@
 
   <div ng-app="hutmap" ng-controller="HutmapCtrl">
 
+    <span ng-cloak>
+    <script type="text/ng-template" id="template/typeahead/typeahead-popup.html">
+      {% include "partials/components/typeahead-popup.html" %}
+    </script>
+    <script type="text/ng-template" id="template/typeahead/typeahead-match.html">
+      {% include "partials/components/typeahead-match.html" %}
+    </script>
+    <script type="text/ng-template" id="template/tooltip/tooltip-popup.html">
+      {% include "partials/components/tooltip-popup.html" %}
+    </script>
+    </span>
+
+
     <div id="navbar" class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner"">
+      <div class="navbar-inner">
         
         <a class="brand" href="/"><i class="img-logo up1"></i><span class="logo">Hutmap</span>
         </a>
@@ -83,13 +81,13 @@
         </form>
         
         <ul class="nav">
-          <li ng-class="{ active: $route.current.activetab == 'map'}">
-            <a href="/map/">
+          <li ng-class="{ active: ui.$route.current.active == '{% url 'hutmap_map' %}'}">
+            <a href="{% url 'hutmap_map' %}">
               Map
             </a>
           </li>
-          <li ng-class="{ active: $route.current.activetab == 'about'}">
-            <a href="/about/">
+          <li ng-class="{ active: ui.$route.current.active == '{% url 'hutmap_about' %}'}">
+            <a href="{% url 'hutmap_about' %}">
               About
             </a>
           </li>
@@ -104,35 +102,9 @@
 
     </div>
 
-    <div ng-cloak>
-      <div id="content">
-        <ng-view></ng-view>
-      </div>
+    <div id="content" ng-cloak>
+      <ng-view></ng-view>
     </div>
-
-    <span ng-cloak>
-    <script type="text/ng-template" id="template/carousel/carousel.html">
-      {% include "partials/components/carousel.html" %}
-    </script>
-    <script type="text/ng-template" id="template/carousel/slide.html">
-      {% include "partials/components/slide.html" %}
-    </script>
-    <script type="text/ng-template" id="template/typeahead/typeahead-popup.html">
-      {% include "partials/components/typeahead-popup.html" %}
-    </script>
-    <script type="text/ng-template" id="template/typeahead/typeahead-match.html">
-      {% include "partials/components/typeahead-match.html" %}
-    </script>
-    <script type="text/ng-template" id="template/alert/alert.html">
-      {% include "partials/components/alert.html" %}
-    </script>
-    <script type="text/ng-template" id="template/tooltip/tooltip-popup.html">
-      {% include "partials/components/tooltip-popup.html" %}
-    </script>
-    <script type="text/ng-template" id="template/popover/popover.html">
-      {% include "partials/components/share.html" %}
-    </script>
-    </span>
 
   </div>
 
@@ -141,6 +113,11 @@
     var hutmap = hutmap || {};
     hutmap.STATIC_URL = '{{ STATIC_URL }}';
     hutmap.GOOGLE_API_KEY = '{{ GOOGLE_API_KEY }}';
+    hutmap.url = {
+      home:  '{% url 'hutmap_home' %}',
+      map:   '{% url 'hutmap_map' %}',
+      about: '{% url 'hutmap_about' %}'
+    };
 
     var addthis_config = {
       data_track_addressbar: false,
@@ -150,11 +127,11 @@
 
   </script>
   <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51390d312330c4fe"></script>
+  <script src="//apis.google.com/js/client.js"></script>
   <script src="//maps.googleapis.com/maps/api/js?v=3.12&sensor=false&libraries=places&key={{ GOOGLE_API_KEY }}"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js"></script>
-  <script src="//apis.google.com/js/client.js"></script>
   {% compress js %}
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/third-party/ui-bootstrap-0.6.0-SNAPSHOT.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/third-party/keydragzoom.js" %}"></script>

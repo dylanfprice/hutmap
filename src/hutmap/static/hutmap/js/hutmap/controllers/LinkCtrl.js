@@ -45,7 +45,6 @@
       $scope.generateLink = function() {
         $scope.link.value = '...';
         $scope.link.open = !$scope.link.open;
-        console.log('here');
 
         if ($scope.link.open) {
           $scope.$broadcast('updateLocation');
