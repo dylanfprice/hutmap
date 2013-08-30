@@ -80,7 +80,7 @@
         
         <ul class="nav">
           <li ng-class="{ active: $route.current.activetab == 'map'}">
-            <a ng-href="/map/">
+            <a href="/map/">
               Map
             </a>
           </li>
@@ -96,7 +96,6 @@
       <!-- AddThis Buttons -->
 			<div id="share_controls" class="addthis_toolbox addthis_default_style" >
 				<a class="addthis_button_facebook_like" fb:like:layout="button_count" addthis:url="http://www.facebook.com/Hutmap"></a> 	
-				<a class="addthis_counter addthis_pill_style" addthis:url="http://www.hutmap.com"></a>
 			</div>
 
     </div>
@@ -127,25 +126,31 @@
       {% include "partials/components/tooltip-popup.html" %}
     </script>
     <script type="text/ng-template" id="template/popover/popover.html">
-      {% include "partials/components/popover.html" %}
+      {% include "partials/components/share.html" %}
     </script>
     </span>
 
   </div>
 
-  <!-- URL tracking <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>-->
+  <script type="text/javascript">
+
+    window.addthis_config = {
+      data_track_addressbar: false,
+      data_track_clickback: false,
+    };
+
+    window.hutmap = {
+      STATIC_URL: '{{ STATIC_URL }}',
+      GOOGLE_API_KEY: '{{ GOOGLE_API_KEY }}',
+    };
+
+  </script>
   <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51390d312330c4fe"></script>
   <script src="//maps.googleapis.com/maps/api/js?v=3.12&sensor=false&libraries=places&key={{ GOOGLE_API_KEY }}"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js"></script>
   <script src="//apis.google.com/js/client.js"></script>
-  <script type="text/javascript" charset="utf-8">
-    window.hutmap = {
-      STATIC_URL: '{{ STATIC_URL }}',
-      GOOGLE_API_KEY: '{{ GOOGLE_API_KEY }}',
-    };
-  </script>
   {% compress js %}
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/third-party/ui-bootstrap-0.6.0-SNAPSHOT.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/third-party/keydragzoom.js" %}"></script>

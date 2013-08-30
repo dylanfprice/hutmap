@@ -4,8 +4,8 @@
   angular.module('hutmap.controllers').
 
   controller('LinkCtrl', 
-    ['$scope', '$location', '$q', '$rootScope',
-    function($scope, $location, $q, $rootScope) {
+    ['$scope', '$location', '$q', '$rootScope', '$timeout',
+    function($scope, $location, $q, $rootScope, $timeout) {
 
       var gapiKey = hutmap.GOOGLE_API_KEY
       var gapiDeferred = $q.defer();
@@ -36,21 +36,29 @@
       };
 
       var resetLink = function() {
-        $scope.link = {
-          value: '...'
-        };
       }
 
-      $scope.generateLink = function() {
-        resetLink();
-        $scope.$broadcast('updateLocation');
-        var url = $location.absUrl();
-        shorten(url).then(function(url) {
-          $scope.link.value = url;
-        });
-        $location.search({});
+      $scope.link = {
+        open: false,
       };
 
-      resetLink();
+      $scope.generateLink = function() {
+        $scope.link.value = '...';
+        $scope.link.open = !$scope.link.open;
+        console.log('here');
+
+        if ($scope.link.open) {
+          $scope.$broadcast('updateLocation');
+          var url = $location.absUrl();
+          shorten(url).then(function(url) {
+            $scope.link.value = url;
+            $timeout(function() {
+              addthis.toolbox('.addthis_toolbox');
+            });
+          });
+          $location.search({});
+        }
+      };
+
   }]);
 })();

@@ -237,16 +237,38 @@
     border-right: @borderColor solid @filterBarBorderWidth;
 
     i {
-      padding: .25em;
+      padding: .15em;
       .clickable-icon;
     }
 
-    .popover {
+  }
+
+  .popover {
+    font-size: @fontSizeSmall;
+    //width: 120em;
+
+    input {
+      margin-bottom: 2em;
+    }
+
+    .addthis {
+      height: 37px;
+      line-height: 37px;
+
+      label, .addthis_toolbox {
+        display: inline-block;
+      }
+
+      label {
+        float: left;
+      }
+    }
+
+    .popover-title {
       text-align: center;
-      font-size: @fontSizeSmall;
-      width: 120em;
     }
   }
+
 }
 
 #hut-bottombar {
