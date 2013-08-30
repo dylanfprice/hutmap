@@ -37,8 +37,12 @@
 
 	<!-- Google Analytics -->
 	<script type="text/javascript">
+
+    var hutmap = hutmap || {};
+    hutmap.GOOGLE_ANALYTICS_KEY = 'UA-40265178-1';
+
 		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-40265178-1']);
+		_gaq.push(['_setAccount', hutmap.GOOGLE_ANALYTICS_KEY]);
 		_gaq.push(['_trackPageview']);
 		(function() {
 			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -134,14 +138,14 @@
 
   <script type="text/javascript">
 
-    window.addthis_config = {
+    var hutmap = hutmap || {};
+    hutmap.STATIC_URL = '{{ STATIC_URL }}';
+    hutmap.GOOGLE_API_KEY = '{{ GOOGLE_API_KEY }}';
+
+    var addthis_config = {
       data_track_addressbar: false,
       data_track_clickback: false,
-    };
-
-    window.hutmap = {
-      STATIC_URL: '{{ STATIC_URL }}',
-      GOOGLE_API_KEY: '{{ GOOGLE_API_KEY }}',
+      data_ga_property: hutmap.GOOGLE_ANALYTICS_KEY
     };
 
   </script>
