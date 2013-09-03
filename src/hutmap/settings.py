@@ -103,7 +103,10 @@ MEDIA_ROOT = join(LOCAL_PATH, '..', '..', 'public', 'media')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = '/media/'
+if DEBUG:
+  MEDIA_URL = '/media/'
+else:
+  MEDIA_URL = 'http://www.hutmap.com/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
