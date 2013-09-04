@@ -19,17 +19,18 @@
     var prevSelectedMarker;
     var prevIcon;
 
-    $scope.hutmapMapId = hutmapMapId;
-    $scope.mapOptions = mapOptions;
-    $scope.markerOptions = markerOptions;
+    $scope.mc = {
+      hutmapMapId: hutmapMapId,
+      mapOptions: mapOptions
+    };
 
     // return proper google.maps.MapOptions for the given hut
     $scope.getMarkerOptions = function(hut) {
       var opts = {};
-      if ($scope.filteredHuts && hut.id in $scope.filteredHutIds) {
-        return angular.extend(opts, $scope.markerOptions.filteredHuts);
+      if ($scope.h.filteredHuts && hut.id in $scope.h.filteredHutIds) {
+        return angular.extend(opts, markerOptions.filteredHuts);
       } else {
-        return angular.extend(opts, $scope.markerOptions.huts);
+        return angular.extend(opts, markerOptions.huts);
       }
     };
 
@@ -42,7 +43,7 @@
       prevSelectedMarker = marker;
       prevIcon = marker.getIcon();
       marker.setOptions(markerOptions.selected);
-      $scope.setSelectedHut(hut);
+      $scope.h.selectedHut = hut;
     };
   }]);
 })();

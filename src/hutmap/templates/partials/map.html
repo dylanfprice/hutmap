@@ -1,6 +1,7 @@
 <script type="text/ng-template" id="template/alert/alert.html">
   {% include "partials/components/alert.html" %}
 </script>
+
 <script type="text/ng-template" id="template/popover/popover.html">
   {% include "partials/components/share.html" %}
 </script>
@@ -17,13 +18,11 @@
     </div>
     <div id="show-hide-filter-sidebar"
          ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
-      <div class="shade-background">
-        <i ng-class="{
-            'icon-chevron-right': !ui.showFilterSidebar,
-            'icon-chevron-left':  ui.showFilterSidebar
-           }"
-           ng-click="ui.showFilterSidebar = !ui.showFilterSidebar" ></i>
-      </div>
+      <i ng-class="{
+          'icon-chevron-right': !ui.showFilterSidebar,
+          'icon-chevron-left':  ui.showFilterSidebar
+         }"
+         ng-click="ui.showFilterSidebar = !ui.showFilterSidebar" ></i>
     </div>
     {% include "partials/components/link_button.html" %}
     <div ng-controller="FilterCtrl">
@@ -35,16 +34,16 @@
         <div ng-controller="MapCtrl">
           <div id="map" ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
             <gm-map class="map" 
-                    gm-map-id="hutmapMapId" 
-                    gm-center="center" 
-                    gm-zoom="zoom" 
-                    gm-bounds="bounds" 
-                    gm-map-type-id="mapTypeId" 
-                    gm-map-options="mapOptions">
-              <gm-markers gm-objects="huts" 
+                    gm-map-id="mc.hutmapMapId" 
+                    gm-center="m.center" 
+                    gm-zoom="m.zoom" 
+                    gm-bounds="m.bounds" 
+                    gm-map-type-id="m.mapTypeId" 
+                    gm-map-options="mc.mapOptions">
+              <gm-markers gm-objects="h.huts" 
                           gm-get-lat-lng="{lat:object.location.coordinates[1], lng:object.location.coordinates[0]}" 
                           gm-get-marker-options="getMarkerOptions(object)"
-                          gm-events="hutMarkerEvents"
+                          gm-events="m.hutMarkerEvents"
                           gm-on-click="selectHut(marker, object)"
                           gm-on-mouseover="showMarkerTooltip(marker, object)"
                           gm-on-mouseout="hideMarkerTooltip(marker, object)">

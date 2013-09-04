@@ -242,7 +242,7 @@
       var filteredHutIds = [];
       var typeKeywords = getKeywords($scope.f.shelterType);
       var serviceKeywords = getKeywords($scope.f.services);
-      angular.forEach($scope.huts, function(hut) {
+      angular.forEach($scope.h.huts, function(hut) {
         if (
           matchSeason(hut) &&
           matchShelterType(hut, typeKeywords) &&
@@ -256,11 +256,12 @@
           filteredHutIds[hut.id] = hut.id;
         }
       });
-      $scope.setFilteredHuts(filteredHuts, filteredHutIds);
-      $scope.$broadcast('gmMarkersRedraw', 'huts');
+      $scope.h.filteredHuts = filteredHuts;
+      $scope.h.filteredHutIds = filteredHutIds;
+      $scope.$broadcast('gmMarkersRedraw', 'h.huts');
     };
 
-    $scope.$watch('huts', function() {
+    $scope.$watch('h.huts', function() {
       $scope.filter();
     });
 

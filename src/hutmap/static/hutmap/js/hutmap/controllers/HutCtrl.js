@@ -9,45 +9,33 @@
 
     var curQuery = 0; // incremented every time there's a new hut query
 
-    $scope.loading = 0; // truthy if huts are being queried/loaded
-    $scope.huts; // array of hut objects in current viewport
-    $scope.filteredHuts; // array of hut objects corresp. to those matching the filters
-    $scope.filteredHutIds; // sparse array of hut ids, each id is in filteredHutIds[id]
-    $scope.query; // current query for the Huts service
-    $scope.selectedHut; 
-    $scope.selectedHutRegion;
-    $scope.selectedHutAgency;
-
+    $scope.h = {
+      loading: 0,            // truthy if huts are being queried/loaded
+      huts: null,            // array of hut objects in current viewport
+      filteredHuts: null,    // array of hut objects corresp. to those matching the filters
+      filteredHutIds: null,  // sparse array of hut ids, each id is in filteredHutIds[id]
+      query: null,           // current query for the Huts service
+      selectedHut: null, 
+      selectedHutRegion: null,
+      selectedHutAgency: null,
+    };
+    
     // fns for dealing with loading variable
-    $scope.resetLoading = function() { $scope.loading = 0; };
-    $scope.incLoading = function() { $scope.loading++; };
-    $scope.decLoading = function() { if ($scope.loading > 0) { $scope.loading--; } };
+    $scope.resetLoading = function() { $scope.h.loading = 0; };
+    $scope.incLoading = function() { $scope.h.loading++; };
+    $scope.decLoading = function() { if ($scope.h.loading > 0) { $scope.h.loading--; } };
 
     // for child scopes
-    $scope.setQuery = function(query) {
-      if ($scope.ui.loadNewHuts) {
-        $scope.query = query;
-      }
-    };
-
-    // for child scopes
-    $scope.setFilteredHuts = function(filteredHuts, filteredHutIds) {
-      $scope.filteredHuts = filteredHuts;
-      $scope.filteredHutIds = filteredHutIds;
-    };
-
-    // for child scopes
-    $scope.setSelectedHut = function(hut) {
-      $scope.selectedHut = hut;
+    $scope.$watch('h.selectedHut', function(hut) {
       if (hut) {
         Huts.agency(hut.agency).then(function(agency) {
-          $scope.selectedHutAgency = agency;
+          $scope.h.selectedHutAgency = agency;
         });
         Huts.region(hut.region).then(function(region) {
-          $scope.selectedHutRegion = region;
+          $scope.h.selectedHutRegion = region;
         });
       }
-    };
+    });
 
     // performs the work of the 'query' $watch expression
     var doQuery = function(id, query) {
@@ -59,7 +47,7 @@
             // only update huts if there is not a newer query
             if (id === curQuery) {
               $scope.resetLoading();
-              $scope.huts = resp;
+              $scope.h.huts = resp;
             }
           },
           function(error) {
@@ -70,9 +58,9 @@
       }
     };
 
-    // when query changes, send query to Huts service and update $scope.huts
+    // when query changes, send query to Huts service and update $scope.h.huts
     // with results
-    $scope.$watch('query', function(newQuery) {
+    $scope.$watch('h.query', function(newQuery) {
       if (newQuery != null) {
         var id = ++curQuery;
         $timeout(function() {
@@ -86,8 +74,8 @@
  
     // update browser url from scope
     $scope.$on('updateLocation', function() {
-      if ($scope.selectedHut) {
-        $location.search('h_selected', $scope.selectedHut.id);
+      if ($scope.h.selectedHut) {
+        $location.search('h_selected', $scope.h.selectedHut.id);
       }
     });
    
@@ -97,7 +85,7 @@
       $location.search('h_selected', null);
       if (id) {
         Huts.hut(id).then(function(hut) {
-          $scope.setSelectedHut(hut);
+          $scope.h.selectedHut = hut;
           $scope.$broadcast('clickSelected');
         });
       }
