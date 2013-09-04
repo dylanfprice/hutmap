@@ -3,20 +3,18 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title ng-bind="'Hutmap'">
 {% block title %}
-<title>Hutmap</title>
+Find backcountry huts - Hutmap
 {% endblock %}
+</title>
 
 {% block description %}
-{% include 'metadata/snippet_description.html' with description='Your guide to North America\'s backcountry huts.' %}
+<meta name="description" content="Hutmap is your guide to North America's backcountry huts. Cabins, yurts, lean-tos, lookouts, and lodges! If it provides covered shelter in the backcountry, it belongs on Hutmap." />
 {% endblock %}
 
 <meta property="og:site_name" content="Hutmap" />
 <meta property="og:type" content="website" />
-
-{% block og_title %}
-<meta property="og:title" content="Hutmap" />
-{% endblock %}
 
 {% block og_url %}
 <meta property="og:url" content="{{ absolute_uri }}" />
