@@ -13,7 +13,7 @@
         }
         else if (hut.photo_url) {
           url = hut.photo_url;
-        } else if (hut.location_accuracy === 3 || hut.location_accuracy === 5) {
+        } else if (hut.show_satellite) {
           url = 'http://maps.googleapis.com/maps/api/staticmap' + 
                 '?center=' + hut.location.coordinates[1] + '%2C' + hut.location.coordinates[0] +
                 '&zoom=19' +
