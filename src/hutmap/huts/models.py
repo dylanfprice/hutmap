@@ -32,10 +32,12 @@ class Hut(models.Model):
   updated = models.DateField(auto_now=True)
 
   ## location ##
-  location = models.PointField()
+  # NOTE: change this to true if we ever do spatial queries (and mysql engine to MyISAM)
+  location = models.PointField(spatial_index=False) 
   altitude_meters = models.IntegerField('altitude (m)', null=True, blank=True)
   location_accuracy = models.IntegerField(choices=LOCATION_ACCURACY_CHOICES, null=True, blank=True)
   show_satellite = models.NullBooleanField()
+  show_topo = models.NullBooleanField()
 
   location_references = ListField(null=True, blank=True)
 
@@ -52,6 +54,7 @@ class Hut(models.Model):
   name = models.CharField(max_length=100, null=True, blank=True)
   alternate_names = ListField(null=True, blank=True)
   hut_url = models.URLField(max_length=250, null=True, blank=True)
+  hut_references = ListField(null=True, blank=True)
 
   # returns path to save photo, relative to MEDIA_ROOT
   def image_path(hut, filename):
@@ -78,6 +81,7 @@ class Hut(models.Model):
 
   types = ListField()
   structures = models.IntegerField('number of structures', null=True, blank=True)
+  overnight = models.NullBooleanField('available for overnight stays')
 
   ## capacity ##
   capacity_max = models.IntegerField('total capacity', null=True, blank=True)
@@ -99,6 +103,7 @@ class Hut(models.Model):
   has_services = models.NullBooleanField('are services included?')
   has_optional_services = models.NullBooleanField('optional services are available at further cost')
   services = ListField(null=True, blank=True)
+  optional_services = ListField(null=True, blank=True)
 
   is_restricted = models.NullBooleanField('is access restricted?')
   restriction = models.CharField(max_length=100, null=True, blank=True)
@@ -162,7 +167,7 @@ class Agency(models.Model):
   parent = models.ForeignKey('Agency', null=True, blank=True)
   # contact info
   url = models.URLField(max_length=250, null=True, blank=True)
-  phone = models.PositiveSmallIntegerField(null=True, blank=True)
+  phone = models.BigIntegerField(null=True, blank=True)
   email = models.CharField(max_length=100, null=True, blank=True)
 
   objects = models.GeoManager()

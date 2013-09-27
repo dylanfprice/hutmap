@@ -68,6 +68,9 @@ def save_agency(values):
       parent = parent_agency,
     )
     agency.url = get_string(values, 'agency_url')
+    agency.email = get_string(values, 'agency_email')
+    agency.phone = get_string(values, 'agency_phone')
+    agency.address = get_string(values, 'agency_address')
     agency.save()
 
 
@@ -101,6 +104,7 @@ def save_hut(values):
       altitude_meters = get_pos_int(values, 'altitude_meters'),
       location_accuracy = get_pos_int(values, 'location_accuracy'),
       show_satellite = get_bool(values, 'show_satellite'),
+      show_topo = get_bool(values, 'show_topo'),
       location_references = get_list(values, 'location_references'),
 
       country = lookup_country_code(get_string(values, 'country')),
@@ -114,6 +118,7 @@ def save_hut(values):
       name = get_string(values, 'name'),
       alternate_names = get_list(values, 'alternate_names'),
       hut_url = get_string(values, 'hut_url'),
+      hut_references = get_list(values, 'hut_references'),
       photo_url = get_string(values, 'photo_url'),
       photo_credit_name = get_string(values, 'photo_credit_name'),
       photo_credit_url = get_string(values, 'photo_credit_url'),
@@ -128,6 +133,7 @@ def save_hut(values):
 
       types = get_list(values, 'types'),
       structures = get_pos_int(values, 'structures'),
+      overnight = get_bool(values, 'overnight'),
 
       capacity_max = get_pos_int(values, 'capacity_max'),
       capacity_hut_min = get_pos_int(values, 'capacity_hut_min'),
