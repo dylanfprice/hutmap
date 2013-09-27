@@ -39,7 +39,8 @@ def get_datetime(values, key):
       lambda x: datetime.strptime(x, '%Y-%m-%d'))
 
 def get_list(values, key):
-  return get(values, key, lambda x: x.split(','))
+  return get(values, key, 
+      lambda values: [x.strip() for x in values.split(',')])
 
 def get_bool(values, key):
   return get(values, key, lambda x: x == CSV_TRUE)
@@ -153,6 +154,7 @@ def save_hut(values):
       has_services = get_bool(values, 'has_services'),
       has_optional_services = get_bool(values, 'has_optional_services'),
       services = get_list(values, 'services'),
+      optional_services = get_list(values, 'optional_services'),
       is_restricted = get_bool(values, 'is_restricted'),
       restriction = get_string(values, 'restriction'),
       reservations = get_bool(values, 'reservations'),
