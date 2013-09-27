@@ -161,12 +161,17 @@
           include: true,
           $position: 2,
           $tooltip: 'Cooked meals, Stocked food, etc',
-          $keywords: ['Half Board', 'Full Board', 'Stocked Food', 'Breakfast']
+          $keywords: ['Half Board', 'Full Board', 'Stocked Food', 'Breakfast', 'Catering']
         },
         'guide': {
           include: true,
           $position: 3,
           $keywords: ['Guide']
+        },
+        'other': {
+          include: true,
+          $position: 4,
+          $keywords: ['Internet', 'Ski Pass', 'Gear shuttle']
         }
       };
 
@@ -176,8 +181,7 @@
           $position: 0,
           $tooltip: 'The hut can not be reserved',
           $match: function(hut) {
-            return hut.is_fee_person && hut.fee_person_min === 0 &&
-              hut.fee_person_max === 0 && !hut.is_fee_hut && !hut.reservations
+            return hut.reservations === false;
           }
         },
         'shared': {
@@ -196,6 +200,14 @@
             return hut.is_fee_hut && hut.reservations;
           }
         },
+       'unknown': {
+          include: true,
+          $position: 3,
+          $tooltip: 'It is unknown whether the hut can be reserved.',
+          $match: function(hut) {
+            return hut.reservations === null;
+          }
+       },
       };
 
       $scope.f.capacity = {
@@ -342,7 +354,9 @@
         if (hut.has_services && hut.services != null) {
           matchServices = checkKeywords(hut.services, keywords);
         }
-        // TODO: checkKeywords(hut.optional_services, keywords);
+        if (!matchServices && hut.has_optional_services && hut.optional_services != null) {
+          matchServices = checkKeywords(hut.optional_services, keywords);
+        }
       }
       return matchServices;
     };
