@@ -1,3 +1,4 @@
+import re
 from csv_consts import CSV_NULL
 
 def assert_that(expression):
@@ -55,14 +56,23 @@ def assert_url_or_null(value):
 def validate_access_no_snow(value):
   pass
     
-def validate_agency_url(value):
+def validate_agency_address(value):
+  pass
+
+def validate_agency_email(value):
   pass
 
 def validate_agency_name(value):
   pass
 
+def validate_agency_url(value):
+  pass
+
 def validate_agency_parent(value):
   pass
+
+def validate_agency_phone(value):
+  assert_integer_ge_zero_or_null(value)
 
 def validate_alternate_names(value):
   pass
@@ -124,6 +134,9 @@ def validate_has_services(value):
 def validate_hut_url(value):
   assert_url_or_null(value)
 
+def validate_hut_references(value):
+  pass
+
 def validate_is_fee_hut(value):
   assert_bool_or_null(value)
 
@@ -169,6 +182,9 @@ def validate_open_summer(value):
 def validate_open_winter(value):
   assert_bool_or_null(value)
 
+def validate_optional_services(value):
+  pass
+
 def validate_photo_credit_name(value):
   pass
 
@@ -199,6 +215,9 @@ def validate_services(value):
 def validate_show_satellite(value):
   assert_bool_or_null(value)
 
+def validate_show_topo(value):
+  assert_bool_or_null(value)
+
 def validate_snow_min_km(value):
   assert_float_or_null(value)
 
@@ -207,6 +226,9 @@ def validate_state(value):
 
 def validate_structures(value):
   assert_integer_ge_zero_or_null(value)
+
+def validate_overnight(value):
+  assert_bool_or_null(value)
 
 def validate_systems(value):
   pass

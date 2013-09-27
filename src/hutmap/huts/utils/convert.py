@@ -6,10 +6,8 @@ from csv_consts import CSV_NULL, CSV_NA, CSV_TRUE, CSV_FALSE
 OLD_TO_NEW = {
   'Hut_ID': None,
   'Date_Added': None,
-  'Status': None,
   'Date_Updated': 'date_updated',
-  'Notes': None,
-  'Discretion': 'discretion',
+  'Discretion': 'discretion',                              
   'Country': 'country',
   'State': 'state',
   'Region': 'region',
@@ -18,46 +16,49 @@ OLD_TO_NEW = {
   'Parent_Agency': 'agency_parent',
   'Agency': 'agency_name',
   'Agency_URL': 'agency_url',
+  'Phone': 'agency_phone',
+  'Email': 'agency_email',
+  'Address': 'agency_address',
   'Name': 'name',
   'Alternate_Names': 'alternate_names',
   'Hut_URL': 'hut_url',
+  'Hut_References': 'hut_references',
   'Photo_URL': 'photo_url',
   'Photo_Credit_Name': 'photo_credit_name',
   'Photo_Credit_URL': 'photo_credit_url',
-  'Hut_References': None,
   'Latitude': 'latitude',
   'Longitude': 'longitude',
   'Accuracy': 'location_accuracy',
-  'Satview': None,
+  'Satview': 'show_satellite',
+  'Topoview': 'show_topo',
   'Location_References': 'location_references',
   'Altitude': 'altitude_meters',
   'Open_Summer': 'open_summer',
   'Open_Winter': 'open_winter',
-  'Activities': None,
   'Backcountry': 'backcountry',
   'Access_NoSnow': 'access_no_snow',
   'NoSnow_minKM': 'no_snow_min_km',
   'Snow_minKM': 'snow_min_km',
   'Types': 'types',
   'Structures': 'structures',
+  'Overnight': 'overnight',
   'Capacity_max': 'capacity_max',
   'Capacity_hutmin': 'capacity_hut_min',
   'Capacity_hutmax': 'capacity_hut_max',
-  'Fee': None,
   'Fee_personmin': 'fee_person_min',
   'Fee_personmax': 'fee_person_max',
   'Fee_hutmin': 'fee_hut_min',
   'Fee_hutmax': 'fee_hut_max',
   'Reservations': 'reservations',
-  'Locked': 'locked',
-  'Services_Included': 'services',
-  'Optional_Services_Available': 'has_optional_services',
+  'Services_Included': 'services',                         
+  'Optional_Services_Available': 'optional_services',
   'Restrictions': 'restriction',
   'Private': 'private',
-}
+  'Locked': 'locked',    
+  'Publish': 'published',
+}         
 
 NEW = {
-  'show_satellite': CSV_NULL,
   'is_snow_min_km': CSV_NULL,
   'is_fee_person': CSV_NULL,
   'is_fee_person_occupancy_min': CSV_NULL,
@@ -66,8 +67,8 @@ NEW = {
   'is_fee_hut_occupancy_max': CSV_NULL,
   'fee_hut_occupancy_max': CSV_NULL,
   'has_services': CSV_NULL,
+  'has_optional_services': CSV_NULL,
   'is_restricted': CSV_NULL,
-  'published': CSV_TRUE,
 }
 
 
@@ -122,6 +123,13 @@ def handle_special_fields(row, field, value):
   May modify row by adding new keys and values.
   """
 
+  if field == 'agency_phone':
+    value = value.replace('(', '')
+    value = value.replace(')', '')
+    value = value.replace('-', '')
+    value = value.replace(' ', '')
+    return value
+
   if field == 'snow_min_km':
     row['is_snow_min_km'] = is_value(value)
     return value
@@ -166,6 +174,11 @@ def handle_special_fields(row, field, value):
     if value == '0': # special NA value for services
       row['has_services'] = CSV_FALSE
 
+  if field == 'optional_services':
+    row['has_optional_services'] = is_value(value)
+    if value == '0': # special NA value for services
+      row['has_optional_services'] = CSV_FALSE
+
   if field == 'restriction':
     row['is_restricted'] = is_value(value)
     if value == '0': # special NA value for restriction
@@ -209,6 +222,7 @@ if __name__ == '__main__':
   outfile = sys.stdout
   new_rows = convert(csvfile)
   new_csvfile = DictWriter(outfile, fields)
+  #import codecs
   #outfile.write(codecs.BOM_UTF8)
   new_csvfile.writeheader()
   new_csvfile.writerows(new_rows)
