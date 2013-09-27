@@ -374,15 +374,13 @@
         hut.altitude_meters <= max;
     };
 
-    // update browser url from scope
-    $scope.$on('updateLocation', function() {
+    var writeLocation = function() {
       if ($scope.f) {
         $location.search('f', angular.toJson($scope.f));
       }
-    });
+    };
 
-    // update scope from browser url
-    var updateScope = function() {
+    var readLocation = function() {
       $scope.resetFilters();
       var f = $location.search().f;
       $location.search('f', null);
@@ -392,8 +390,9 @@
       $scope.filter();
     };
 
-    // we update scope from browser url once, at beginning
-    updateScope();
+    $scope.$on('writeLocation', writeLocation);
+
+    readLocation();
 
   }]);
 })();

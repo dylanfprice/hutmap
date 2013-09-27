@@ -56,7 +56,7 @@
       $scope.submitting = false;
       $route.reload();
       $location.
-        path('/map/').
+        path(hutmap.url.map).
         search({}).
         search('m_zoom', 8);
 

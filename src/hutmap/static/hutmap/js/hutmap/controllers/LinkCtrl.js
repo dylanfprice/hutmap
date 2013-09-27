@@ -4,8 +4,8 @@
   angular.module('hutmap.controllers').
 
   controller('LinkCtrl', 
-    ['$scope', '$location', '$q', '$rootScope', '$timeout', 'gapi',
-    function($scope, $location, $q, $rootScope, $timeout, gapi) {
+    ['$scope', '$location', '$rootScope', '$timeout', 'gapi',
+    function($scope, $location, $rootScope, $timeout, gapi) {
 
       $scope.link = {
         open: false,
@@ -16,7 +16,7 @@
         $scope.link.open = !$scope.link.open;
 
         if ($scope.link.open) {
-          $scope.$broadcast('updateLocation');
+          $scope.$broadcast('writeLocation');
           var url = $location.absUrl();
           gapi.shorten(url).then(function(url) {
             $scope.link.value = url;
@@ -27,6 +27,6 @@
           $location.search({});
         }
       };
-
+     
   }]);
 })();

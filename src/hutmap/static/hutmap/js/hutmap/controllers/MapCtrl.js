@@ -8,21 +8,20 @@
 
     function ($scope, $location, $timeout, $q, utils, MarkerTooltip) {
 
-    var scopeInitialized = $q.defer(); // for proper ordering of events
-    var hutsInitialized = $q.defer();  // for proper ordering of events
     var markerTooltips = {}; // map from lat lon to MarkerTooltip instance, lazy loaded
 
     $scope.m = {
-      center: null,          // google.maps.LatLng
-      zoom: null,            // integer
-      bounds: null,          // google.maps.LatLngBounds
-      mapTypeId: null,       // google.maps.MapTypeId
-      hutMarkerEvents: null, // see http://dylanfprice.github.io/angular-gm/docs/module-gmMarkers.html
+      center: null,            // google.maps.LatLng
+      zoom: null,              // integer
+      bounds: null,            // google.maps.LatLngBounds
+      mapTypeId: null,         // google.maps.MapTypeId
+      hutMarkerEvents: null,   // see http://dylanfprice.github.io/angular-gm/docs/module-gmMarkers.html
+      initialized: $q.defer(), // for proper ordering of events
     };
 
     // simulate a click on the selected hut
     var clickSelected = function() {
-      $q.all([scopeInitialized.promise, hutsInitialized.promise]).then(function() {
+      $q.all([$scope.m.initialized.promise, $scope.h.initialized.promise]).then(function() {
         if ($scope.h.selectedHut) {
           $scope.m.hutMarkerEvents = [{
             event: 'click',
@@ -32,8 +31,8 @@
       });
     };
 
-    $scope.$watch('m.center != null && m.zoom != null', function(v) { if (v) scopeInitialized.resolve(); });
-    $scope.$watch('h.huts != null', function(v) { if (v) hutsInitialized.resolve(); });
+    $scope.$watch('m.center != null && m.zoom != null', function(v) { if (v) $scope.m.initialized.resolve(); });
+
     $scope.$watch('m.bounds', function(bounds) {
       if (bounds && $scope.ui.loadNewHuts) {
         $scope.h.query = { bounds: bounds };
@@ -68,9 +67,8 @@
         tooltip.hide();
       });
     };
- 
-    // update browser url from scope
-    $scope.$on('updateLocation', function() {
+
+    var writeLocation = function() {
       if ($scope.m.center) {
         $location.search('m_center', $scope.m.center.toUrlValue());
       }
@@ -80,11 +78,9 @@
       if ($scope.m.mapTypeId) {
         $location.search('m_maptypeid', $scope.m.mapTypeId);
       }
-    });
+    };
 
-    // update scope from browser url
-    var updateScope = function() {
-      // get values
+    var readLocation = function() {
       var center = $location.search().m_center;
       var zoom = $location.search().m_zoom;
       var bounds = $location.search().m_bounds;
@@ -96,7 +92,7 @@
       $location.search('m_bounds', null);
       $location.search('m_maptypeid', null);
 
-      scopeInitialized.promise.then(function() {
+      $scope.m.initialized.promise.then(function() {
         var hasBounds = bounds != null;
         if (!hasBounds && center != null) {
           $scope.m.center = utils.latLngFromUrlValue(center);
@@ -114,8 +110,9 @@
       });
     };
 
-    // we update scope from browser url once, at beginning
-    updateScope();
+    $scope.$on('writeLocation', writeLocation);
+
+    readLocation();
 
   }]);
 })();

@@ -4,8 +4,8 @@
   angular.module('hutmap.controllers').
 
   controller('HutmapCtrl', 
-    ['$scope', '$route', '$timeout', '$window', 'hutmapMapId',
-    function($scope, $route, $timeout, $window, hutmapMapId) {
+    ['$scope', '$timeout', '$route', 'hutmapMapId',
+    function($scope, $timeout, $route, hutmapMapId) {
 
     $scope.ui = {
       $route: $route,

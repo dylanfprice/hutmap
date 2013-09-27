@@ -4,8 +4,8 @@
   angular.module('hutmap.controllers').
 
   controller('HutCtrl', 
-    ['$scope', '$location', '$timeout', 'Huts',
-    function($scope, $location, $timeout, Huts) {
+    ['$scope', '$location', '$timeout', '$q', 'Huts',
+    function($scope, $location, $timeout, $q, Huts) {
 
     var curQuery = 0; // incremented every time there's a new hut query
 
@@ -18,6 +18,7 @@
       selectedHut: null, 
       selectedHutRegion: null,
       selectedHutAgency: null,
+      initialized: $q.defer()
     };
     
     // fns for dealing with loading variable
@@ -25,7 +26,8 @@
     $scope.incLoading = function() { $scope.h.loading++; };
     $scope.decLoading = function() { if ($scope.h.loading > 0) { $scope.h.loading--; } };
 
-    // for child scopes
+    $scope.$watch('h.huts != null', function(v) { if (v) $scope.h.initialized.resolve(); });
+
     $scope.$watch('h.selectedHut', function(hut) {
       if (hut) {
         Huts.agency(hut.agency).then(function(agency) {
@@ -71,16 +73,14 @@
         });
       }
     });
- 
-    // update browser url from scope
-    $scope.$on('updateLocation', function() {
+
+    var writeLocation = function() {
       if ($scope.h.selectedHut) {
         $location.search('h_selected', $scope.h.selectedHut.id);
       }
-    });
-   
-    // update scope from browser url
-    var updateScope = function() {
+    };
+
+    var readLocation = function() {
       var id = $location.search().h_selected;
       $location.search('h_selected', null);
       if (id) {
@@ -91,8 +91,9 @@
       }
     };
 
-    // we update scope from browser url once, at beginning
-    updateScope();
+    $scope.$on('writeLocation', writeLocation);
+
+    readLocation();
 
   }]);
 })();
