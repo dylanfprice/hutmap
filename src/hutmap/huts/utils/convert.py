@@ -1,5 +1,4 @@
 from csv import DictWriter, DictReader
-import codecs
 import re
 import validate
 from csv_consts import CSV_NULL, CSV_NA, CSV_TRUE, CSV_FALSE
