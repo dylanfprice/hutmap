@@ -6,9 +6,6 @@
 Map - Hutmap
 {% endblock %}
 
-<meta property="og:description" content="Check it out!" />
-<meta property="og:title" content="My backcountry hut search - Hutmap" />
-
 {% block og_image %}
   {% if hut and hut.photo %}
     <meta property="og:image" content="{{ hut.photo.url }}" />
@@ -17,3 +14,9 @@ Map - Hutmap
     <meta property="og:image" content="{% static "hutmap/img/og/logo-icon-dark.png" %}" />
   {% endif %}
 {% endblock %}
+
+{% block og_other %}
+<meta property="og:description" content="Check it out!" />
+<meta property="og:title" content="My backcountry hut search - Hutmap" />
+{% endblock %}
+
