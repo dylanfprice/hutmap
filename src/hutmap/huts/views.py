@@ -15,14 +15,7 @@ class BaseView(TemplateView):
 
   def get_context_data(self, **kwargs):
     context = super(TemplateView, self).get_context_data(**kwargs)
-
     context['metadata'] = self.metadata
     context['absolute_uri'] = self.request.build_absolute_uri()
-
-    # TODO: make sure we are calling 'hutmap_map'
-    if 'h_selected' in self.request.GET:
-      id = self.request.GET['h_selected']
-      context['hut'] = Hut.objects.get(id=id)
-
     return context
 

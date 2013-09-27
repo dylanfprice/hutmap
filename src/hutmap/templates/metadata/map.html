@@ -6,19 +6,8 @@
 Map - Hutmap
 {% endblock %}
 
-{% if hut %}
-  {% with hut.region.region|add:', '|add:hut.state|add:', '|add:hut.country as description %}
-    <meta property="og:description" content="{{ description }}" />
-  {% endwith %}
-{% else %}
-  <meta property="og:description" content="Check it out!" />
-{% endif %}
-
-{% if hut and hut.name %}
-  <meta property="og:title" content="{{ hut.name }}" />
-{% else %}
-  <meta property="og:title" content="My backcountry hut search - Hutmap" />
-{% endif %}
+<meta property="og:description" content="Check it out!" />
+<meta property="og:title" content="My backcountry hut search - Hutmap" />
 
 {% block og_image %}
   {% if hut and hut.photo %}
