@@ -151,7 +151,7 @@
           $tooltip: 'Self-service only',
           $keywords: []
         },
-        'tranpsortation': {
+        'transportation': {
           include: true,
           $position: 1,
           $tooltip: 'Helicopter, Snowcat, etc',
@@ -167,11 +167,6 @@
           include: true,
           $position: 3,
           $keywords: ['Guide']
-        },
-        'other': {
-          include: true,
-          $position: 4,
-          $keywords: ['Internet', 'Ski Pass', 'Gear shuttle']
         }
       };
 
