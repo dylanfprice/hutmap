@@ -1,0 +1,9 @@
+syncdb and look at new model format
+refactor api code to automatically include list fields correctly
+add HutNew and HutEdit to api
+make simple form
+
+later:
+have to be able to suggest new agency/region
+eventually also edit agency/region
+link hut new / hut edit to user or some identifying info
