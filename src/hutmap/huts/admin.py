@@ -10,36 +10,37 @@ class HutAdmin(admin.ModelAdmin):
   search_fields = ('name', 'alternate_names', 'agency__name', 'agency__parent__name', 'region__region')
   fieldsets = (
     ('Basic', {
-      'classes': ('wide',),
-      'fields': (('name', 'alternate_names'), 'hut_url', 'types', ('photo_url', 'photo_credit_name', 'photo_credit_url'))
+      'classes': ('collapse',),
+      'fields': ('name', 'alternate_names', 'hut_url', 'types', 'photo_url', 'photo_credit_name', 'photo_credit_url')
     }),
     ('Location', {
-      'classes': ('wide',),
+      'classes': ('collapse',),
       'fields': ('location', 'location_references', 'altitude_meters', 'location_accuracy', 'show_satellite')
     }),
     ('Geopolitical', {
-      'classes': ('wide',), 
-      'fields': (('country', 'state'), 'region', ('designations', 'systems'), 'agency')
+      'classes': ('collapse',), 
+      'fields': ('country', 'state', 'region', 'designations', 'systems', 'agency')
     }),
     ('Access', {
-      'classes': ('wide',), 
-      'fields': ('backcountry', ('open_summer', 'open_winter'), 'access_no_snow', ('no_snow_min_km', 'is_snow_min_km', 'snow_min_km'))
+      'classes': ('collapse',), 
+      'fields': ('backcountry', 'open_summer', 'open_winter', 'access_no_snow', 'no_snow_min_km', 'is_snow_min_km', 'snow_min_km')
     }),
     ('Capacity', {
-      'classes': ('wide',), 
-      'fields': ('structures', ('capacity_max', 'capacity_hut_min', 'capacity_hut_max'))
+      'classes': ('collapse',), 
+      'fields': ('structures', 'capacity_max', 'capacity_hut_min', 'capacity_hut_max')
     }),
     ('Fees', {
-      'classes': ('wide',), 
-      'fields': (('is_fee_person', 'fee_person_min', 'fee_person_max', 'is_fee_person_occupancy_min', 'fee_person_occupancy_min'), 
-                 ('is_fee_hut', 'fee_hut_min', 'fee_hut_max', 'is_fee_hut_occupancy_max', 'fee_hut_occupancy_max'))
+      'classes': ('collapse',), 
+      'fields': ('is_fee_person', 'fee_person_min', 'fee_person_max', 'is_fee_person_occupancy_min', 'fee_person_occupancy_min', 
+                 'is_fee_hut', 'fee_hut_min', 'fee_hut_max', 'is_fee_hut_occupancy_max', 'fee_hut_occupancy_max')
     }),
     ('Services', {
-      'classes': ('wide',), 
-      'fields': (('has_services', 'services', 'has_optional_services')) 
+      'classes': ('collapse',), 
+      'fields': ('has_services', 'services', 'has_optional_services') 
     }),
     ('Availability', {
-      'fields': (('is_restricted', 'restriction', 'reservations'), 'locked', 'private', 'discretion', 'published')
+      'classes': ('collapse',),
+      'fields': ('is_restricted', 'restriction', 'reservations', 'locked', 'private', 'discretion', 'published')
     })
   )
   formfield_overrides = {
