@@ -5,12 +5,7 @@ from huts.utils.image import retrieve_and_resize
 from os import path
 from urllib2 import HTTPError, URLError
 
-class HutManager(models.GeoManager):
-  def published(self):
-    return super(HutManager, self).get_query_set().filter(published=True)
-
-
-class Hut(models.Model):
+class HutCommon(models.Model):
   LOCATION_ACCURACY_CHOICES = (
     (None, 'coordinates provided but unverified'),
     (1, 'wild guess'), 
@@ -113,14 +108,19 @@ class Hut(models.Model):
   private = models.NullBooleanField()
   discretion = models.NullBooleanField()
 
-  # true if we should display this hut on the site
-  published = models.BooleanField()
-
-  # for geodjango
-  objects = HutManager()
-
   def __unicode__(self):
     return u'{0}'.format(self.name)
+
+
+class HutManager(models.GeoManager):
+  def published(self):
+    return super(HutManager, self).get_query_set().filter(published=True)
+
+class Hut(HutCommon):
+  # true if we should display this hut on the site
+  published = models.BooleanField()
+  # for geodjango
+  objects = HutManager()
 
   def cache_photo(self):
     """Store image locally if we have a URL"""
@@ -143,6 +143,13 @@ class Hut(models.Model):
     super(Hut, self).save(*args, **kwargs) # Call the "real" save() method.
     self.cache_photo()
 
+class HutNew(HutCommon):
+  '''User suggested hut'''
+  pass
+
+class HutEdit(HutCommon):
+  '''User suggested hut edit'''
+  hut = models.ForeignKey(Hut, related_name='+') # '+' disables backwards relation
 
 class Region(models.Model):
   region = models.CharField(max_length=50, unique=True)
