@@ -35,7 +35,7 @@ DATABASES = {
         'HOST':     os.environ['HUTMAP_DB_HOST'],
         'PORT':     os.environ['HUTMAP_DB_PORT'],
         'OPTIONS': {
-          'init_command': 'SET storage_engine=MyISAM',
+          'init_command': 'SET storage_engine=INNODB',
         }
     }
 }
