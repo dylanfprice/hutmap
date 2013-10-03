@@ -203,6 +203,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'compressor',
     'south',
+    'django_nose',
     'huts',
 )
 
