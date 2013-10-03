@@ -202,6 +202,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'django.contrib.staticfiles',
     'compressor',
+    'south',
     'huts',
 )
 
