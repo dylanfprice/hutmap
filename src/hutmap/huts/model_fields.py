@@ -1,7 +1,11 @@
 from django.db import models
 from django.utils.translation import ugettext as _
 from huts.fields import ListFormField
+from south.modelsinspector import add_introspection_rules
 import ast
+
+add_introspection_rules([], ["^huts\.model_fields\.ListField"])
+add_introspection_rules([], ["^huts\.model_fields\.CountryField"])
 
 class ListField(models.TextField):
   __metaclass__ = models.SubfieldBase
