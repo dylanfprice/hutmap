@@ -11,7 +11,7 @@ class PointWidgetTestCase(TestCase):
     location = GEOSGeometry('POINT(-120 45)')
     expected = '<input name="location" type="text" value="45.0, -120.0" />'
     actual = self.pw.render('location', location)
-    self.assertEqual(expected, actual)
+    self.assert_equal(expected, actual)
 
   def test_value_from_datadict(self):
     data = { 'location': '45, -120' }

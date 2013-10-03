@@ -3,11 +3,72 @@ from huts.utils.convert import convert
 from StringIO import StringIO
 
 class ConvertTestCase(TestCase):
-  test1 = """Hut_ID,Date_Added,Status,Date_Updated,Notes,Discretion,Country,State,Region,Designations,Systems,Parent_Agency,Agency,Agency_URL,Name,Alternate_Names,Hut_URL,Photo_URL,Photo_Credit_Name,Photo_Credit_URL,Hut_References,Latitude,Longitude,Accuracy,Satview,Location_References,Altitude,Open_Summer,Open_Winter,Activities,Backcountry,Access_NoSnow,NoSnow_minKM,Snow_minKM,Types,Structures,Capacity_max,Capacity_hutmin,Capacity_hutmax,Fee,Fee_personmin,Fee_personmax,Fee_hutmin,Fee_hutmax,Reservations,Locked,Services_Included,Optional_Services_Available,Restrictions,Private
-,2012-11-27,1,2012-11-27,,0,United States,Colorado,Front Range,Arapaho National Forest,,,,,First Creek Cabin,,http://www.onlyskiing.com/?id=Blog&post=177,http://www.onlyskiing.com/Uploads/Uploads-BlogPhotos/177-FirstCreekCabin.jpg,,,,39.83257,-105.76895,3,,,"3,328",0,0,,2,Trail,1.1,1.1,Hut,1,8,8,8,,NA,NA,22.5 (2),25 (2),0,,0,0,0,0"""
+  test_row = {
+    'Hut_ID' : '',
+    'Notes' : '',
+    'Status' : '',
+    'Date_Added' : '',
+    'Date_Updated' : '2013-09-21',
+    'Discretion' : '',
+    'Country' : 'United States',
+    'State' : 'Colorado',
+    'Region' : 'Front Range',
+    'Designations' : 'Arapaho National Forest',
+    'Systems' : '',
+    'Parent_Agency' : '',
+    'Agency' : '',
+    'Agency_URL' : '',
+    'Phone' : '',
+    'Email' : '',
+    'Address' : '',
+    'Name' : 'First Creek Cabin',
+    'Alternate_Names' : '',
+    'Hut_URL' : '',
+    'Hut_References' : '',
+    'Photo_URL' : 'http://www.onlyskiing.com/?id=Blog&post=177',
+    'Photo_Credit_Name' : '',
+    'Photo_Credit_URL' : '',
+    'Latitude' : '39.83527',
+    'Longitude' : '-105.76895',
+    'Accuracy' : '3',
+    'Satview' : '',
+    'Topoview' : '',
+    'Location_References' : '',
+    'Altitude' : '"3,328"',
+    'Open_Summer' : '0',
+    'Open_Winter' : '0',
+    'Backcountry' : '2',
+    'Access_NoSnow' : 'Trail',
+    'NoSnow_minKM' : '1.1',
+    'Snow_minKM' : '1.1',
+    'Types' : 'Hut',
+    'Structures' : '1',
+    'Overnight' : '',
+    'Capacity_max' : '8',
+    'Capacity_hutmin' : '8',
+    'Capacity_hutmax' : '8',
+    'Fee' : '',
+    'Fee_personmin' : 'NA',
+    'Fee_personmax' : 'NA',
+    'Fee_hutmin' : '22.5 (2)',
+    'Fee_hutmax' : '25 (2)',
+    'Reservations' : '0',
+    'Services_Included' : '0',
+    'Optional_Services_Available' : '',
+    'Restrictions' : '',
+    'Locked' : '',
+    'Private' : '',
+    'Publish' : '',
+  }
+
+
+  def setUp(self):
+    col_names = ','.join(self.test_row.keys())
+    values = ','.join(self.test_row.values())
+    self.test_csv_row = col_names + '\n' + values
 
   def test_convert(self):
-    csvfile = StringIO(self.test1)
+    csvfile = StringIO(self.test_csv_row)
     new_rows = convert(csvfile)
     row = new_rows[0]
     self.assertEqual(row['altitude_meters'], '3328')
