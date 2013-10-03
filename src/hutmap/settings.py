@@ -207,6 +207,8 @@ INSTALLED_APPS = (
     'huts',
 )
 
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
 if DEBUG:
   CACHES = {
     'default': { 
