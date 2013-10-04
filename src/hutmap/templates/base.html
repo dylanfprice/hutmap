@@ -176,6 +176,8 @@
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/keydragzoom.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/bower_components/AngularGM/angular-gm.min.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.min.js" %}"></script>
+  {% compress js %}
+  {% endcompress %}
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/app.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/module.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/module.js" %}"></script>
