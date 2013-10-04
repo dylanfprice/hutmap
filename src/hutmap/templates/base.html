@@ -157,11 +157,7 @@
     var hutmap = hutmap || {};
     hutmap.STATIC_URL = '{{ STATIC_URL }}';
     hutmap.GOOGLE_API_KEY = '{{ GOOGLE_API_KEY }}';
-    hutmap.url = {
-      home:  '{% url 'huts:home' %}',
-      map:   '{% url 'huts:map' %}',
-      about: '{% url 'huts:about' %}'
-    };
+    hutmap.url = {{ hut_urls|safe }};
 
     var addthis_config = {
       data_track_addressbar: false,
