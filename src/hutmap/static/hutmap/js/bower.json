@@ -1,0 +1,7 @@
+{
+  "name": "hutmap",
+  "dependencies": {
+    "angular-ui-select2": "0.0.2",
+    "AngularGM": "0.3.0"
+  }
+}
