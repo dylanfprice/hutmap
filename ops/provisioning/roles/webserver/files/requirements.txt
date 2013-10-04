@@ -3,5 +3,6 @@ django==1.5
 django-tastypie==0.9.14
 django_compressor==1.3
 django-nose==1.2
+django-angular==0.2.1
 South==0.8
 pil==1.1.7

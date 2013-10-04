@@ -204,6 +204,7 @@ INSTALLED_APPS = (
     'compressor',
     'south',
     'django_nose',
+    'djangular',
     'huts',
 )
 
