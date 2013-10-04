@@ -14,6 +14,7 @@
 	<!-- CSS -->	
   {% compress css %}
   <link rel="stylesheet" type="text/less" charset="utf-8" href="{% static "hutmap/css/hutmap.less" %}">
+  <link rel="stylesheet" type="text/css"  charset="utf-8" href="{% static "hutmap/js/bower_components/select2/select2.css" %}">
   {% endcompress %}
   
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -176,6 +177,8 @@
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/keydragzoom.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/bower_components/AngularGM/angular-gm.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/bower_components/select2/select2.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/bower_components/angular-ui-select2/src/select2.js" %}"></script>
   {% compress js %}
   {% endcompress %}
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/app.js" %}"></script>
@@ -199,6 +202,7 @@
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/SearchCtrl.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/FilterCtrl.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/LinkCtrl.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/HutFormCtrl.js" %}"></script>
   {% endcompress %}
 
 </body>

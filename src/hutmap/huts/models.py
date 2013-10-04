@@ -108,6 +108,9 @@ class HutCommon(models.Model):
   private = models.NullBooleanField()
   discretion = models.NullBooleanField()
 
+  class Meta:
+    abstract = True
+
   def __unicode__(self):
     return u'{0}'.format(self.name)
 
@@ -143,7 +146,7 @@ class Hut(HutCommon):
     super(Hut, self).save(*args, **kwargs) # Call the "real" save() method.
     self.cache_photo()
 
-class HutNew(HutCommon):
+class HutSuggestion(HutCommon):
   '''User suggested hut'''
   pass
 

@@ -3,7 +3,7 @@
 (function() {
   angular.module('hutmap', ['hutmap.services', 'hutmap.directives',
     'hutmap.filters', 'hutmap.controllers', 'AngularGM', 'ngResource',
-    'ui.bootstrap']).
+    'ui.bootstrap', 'ui.select2']).
 
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.

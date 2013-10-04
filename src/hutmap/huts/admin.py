@@ -1,14 +1,13 @@
 from django.contrib.gis.db import models
 from django.contrib.gis import admin
 from huts.model_fields import ListField
-from huts.models import Hut, Region, Agency
+from huts.models import Hut, HutSuggestion, HutEdit, Region, Agency
 from huts.widgets import PointWidget, ListWidget
+from huts.forms import HutForm
 
-class HutAdmin(admin.ModelAdmin):
-  list_display = ('name', 'published', 'updated')
-  list_filter = ('published', 'updated')
-  search_fields = ('name', 'alternate_names', 'agency__name', 'agency__parent__name', 'region__region')
-  fieldsets = (
+def hut_fieldsets(other_fields=None):
+  other_fields = other_fields or []
+  return (
     ('Basic', {
       'classes': ('collapse',),
       'fields': ('name', 'alternate_names', 'hut_url', 'types', 'photo_url', 'photo_credit_name', 'photo_credit_url')
@@ -40,19 +39,48 @@ class HutAdmin(admin.ModelAdmin):
     }),
     ('Availability', {
       'classes': ('collapse',),
-      'fields': ('is_restricted', 'restriction', 'reservations', 'locked', 'private', 'discretion', 'published')
-    })
+      'fields': ('is_restricted', 'restriction', 'reservations', 'locked', 'private', 'discretion')
+    }),
+    ('Other', {
+      'classes': ('collapse',),
+      'fields': tuple(field for field in other_fields)
+    }),
   )
+
+class HutCommonAdmin(admin.ModelAdmin):
+  list_display = ('name', 'updated')
+  list_filter = ('updated',)
+  search_fields = ('name', 'alternate_names', 'agency__name', 'agency__parent__name', 'region__region')
   formfield_overrides = {
       models.PointField: {
         'widget': PointWidget,
         'help_text': PointWidget.help_text
       },
+#      models.ForeignKey: {
+#        'widget': django_select2.widgets.Select2Widget
+#      },
       ListField: {
         'widget': ListWidget, 
         'help_text': ListWidget.help_text
       },
   }
+
+  #def get_form(self, request, obj=None, **kwargs):
+  #  form = super(HutCommonAdmin, self).get_form(request, obj, **kwargs)
+  #  form.fields['agency'] = django_select2.fields.Select2ChoiceField()
+  #  return form
+
+class HutAdmin(admin.ModelAdmin):
+  #list_display = ('name', 'published', 'updated')
+  #list_filter = ('published', 'updated')
+  #fieldsets = hut_fieldsets(other_fields=['published'])
+  form = HutForm
+
+class HutSuggestionAdmin(HutCommonAdmin):
+  fieldsets = hut_fieldsets()
+
+class HutEditAdmin(HutCommonAdmin):
+  fieldsets = hut_fieldsets(other_fields=['hut'])
 
 class RegionAdmin(admin.ModelAdmin):
   search_fields = ('region',)
@@ -63,5 +91,8 @@ class AgencyAdmin(admin.ModelAdmin):
   search_fields = ('name', 'parent__name')
 
 admin.site.register(Hut, HutAdmin)
+admin.site.register(HutSuggestion, HutSuggestionAdmin)
+admin.site.register(HutEdit, HutEditAdmin)
 admin.site.register(Region, RegionAdmin)
 admin.site.register(Agency, AgencyAdmin)
+

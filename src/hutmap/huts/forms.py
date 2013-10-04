@@ -1,24 +1,21 @@
-from django.forms import ModelForm
+from django import forms
+from djangular.forms.angular_model import NgModelFormMixin
 from huts.models import Hut, Agency, Region
 
-class HutAdminForm(ModelForm):
+class HutAdminForm(forms.ModelForm):
   class Meta:
     model = Hut
     exclude = ['created', 'updated']
 
-class HutForm(ModelForm):
+class HutForm(NgModelFormMixin, forms.ModelForm):
+
   class Meta:
     model = Hut
-    fields = ['discretion', 'location', 'altitude_meters', 'location_accuracy',
-        'show_satellite', 'location_references', 'country', 'state', 'region',
-        'designations', 'systems', 'agency', 'name', 'alternate_names',
-        'hut_url', 'photo_url', 'photo_credit_name', 'photo_credit_url',
-        'backcountry', 'open_summer', 'open_winter', 'access_no_snow',
-        'no_snow_min_km', 'snow_min_km', 'types', 'structures', 'capacity_max',
-        'capacity_hut_min', 'capacity_hut_max', 'fee_person_min',
-        'fee_person_max', 'fee_person_occupancy_min', 'fee_hut_min',
-        'fee_hut_max', 'fee_hut_occupancy_max', 'services_included',
-        'optional_services_available', 'restriction', 'reservations', 'locked',
-        'overnight', 'private', 'published']
 
+  def __init__(self, *args, **kwargs):
+    kwargs.update(scope_prefix='hut')
+    super(HutForm, self).__init__(*args, **kwargs)
+    for name, field in self.fields.iteritems():
+      if name == 'agency':
+        field.widget.attrs['ui-select2'] = 'select2Options'
 
