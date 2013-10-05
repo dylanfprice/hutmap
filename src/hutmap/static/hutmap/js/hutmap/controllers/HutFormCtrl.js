@@ -9,6 +9,7 @@
     
     $scope.select2Options = {
       width: 'resolve',
+      placeholderOption: 'first',
     };
 
     $scope.submit = function() {

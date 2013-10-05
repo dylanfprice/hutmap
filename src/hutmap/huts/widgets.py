@@ -3,7 +3,6 @@ from django.forms import widgets
 
 class PointWidget(widgets.TextInput):
   """ Widget that renders a django.contrib.gis.db.models.PointField """
-  help_text = "Format: 'latitude, longitude'"
 
   def render(self, name, value, attrs=None):
     if isinstance(value, GEOSGeometry):
@@ -25,8 +24,6 @@ class PointWidget(widgets.TextInput):
 class ListWidget(widgets.TextInput):
   """ Widget that renders values from huts.model_fields.ListField """
 
-  help_text = 'Enter a comma separated list of values or leave blank for null'
-  
   def render(self, name, value, attrs=None):
     if isinstance(value, (list, tuple)):
       value = ', '.join(value)

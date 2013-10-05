@@ -1,4 +1,4 @@
-from django.db import models
+from django.contrib.gis.db import models
 from django.utils.translation import ugettext as _
 from huts.fields import ListFormField
 from south.modelsinspector import add_introspection_rules
@@ -34,7 +34,10 @@ class ListField(models.TextField):
     return self.get_db_prep_value(value, None)
 
   def formfield(self, **kwargs):
-    defaults = {'form_class': ListFormField}
+    defaults = {
+      'form_class': ListFormField,
+      'help_text': 'Enter a comma separated list of values or leave blank for null'
+    }
     defaults.update(kwargs)
     return super(ListField, self).formfield(**defaults)
 
