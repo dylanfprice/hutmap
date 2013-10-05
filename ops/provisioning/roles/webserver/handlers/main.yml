@@ -1,3 +1,0 @@
----
-- name: update huts.json
-  command: $scripts_dir/update_huts_json.sh

@@ -10,8 +10,6 @@
 
 - name: install update_huts_json script
   template: src='update_huts_json.sh.j2' dest='$scripts_dir/update_huts_json.sh' mode=0744
-  notify: 
-    - update huts.json
 
 - name: create public folders
   file: path=$public_dir/$item state=directory
