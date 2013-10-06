@@ -10,22 +10,28 @@
     <div class="carousel-loading muted" ng-show="carouselInterval < 0">Loading images...</div>
     <slide ng-repeat="slide in slides" active="slide.active">
       <div class="hut-carousel-img" ng-style="imgStyle(slide.image)"></div>
+      
       <div class="hut-carousel-caption">
         <table>
           <tr>
             <td class="caption-image">
-              <img ng-src="[*slide.thumbnail*]">
+              <div style="position:relative;">
+                <img ng-src="[*slide.thumbnail*]" />
+                <span class="credit-thumbnail">&copy; Thumbnail credit</span>
+              </div>
             </td>
-            <td class="caption-details">
-              <h4>[*slide.title*]</h4>
-              <p>[*slide.location*]</p>
-              <a ng-href="[*slide.hutLink*]">&gt;&gt; show on map</a><br/>
-              <a ng-href="[*slide.agency.url*]">&gt;&gt; [*slide.agency.name*] website</a>
+            <td class="caption-details" style="vertical-align:top;">
+              <h4>[*slide.title*]</h4><br />
+              [*slide.location*]<br />
+              <p><a ng-href="[*slide.hutLink*]">&gt;&gt; show on map</a><br/>
+              <a ng-href="[*slide.agency.url*]">&gt;&gt; [*slide.agency.name*] website</a></p>
             </td>
           </tr>
         </table>
       </div>
+      
     </slide>
   </carousel>
 </div>
 
+<span class="credit-slide">&copy; Slide credit</span>

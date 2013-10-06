@@ -3,7 +3,7 @@
  */
 
 html, body {
-	background-color: rgb(250,250,250);
+	background-color: @bodyColor;
   font-family: "Myriad Pro", Verdana, "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1em;
 	color: #333;
@@ -15,9 +15,14 @@ p {
   word-spacing: +0.1em; /* anti bootstrap */
 }
 
-a, a:hover {
-	text-decoration: none;
-	color: blue;
+a {
+  text-decoration: none;
+	color: #1BB7FD;
+	cursor: pointer;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 h1, h2 {
@@ -51,20 +56,14 @@ hr {
 	font-size: 95%;
 }
 
-/** Header **/
-
-.logo {
-	font-family: "Cooper Medium";
-	line-height: 1.1em;
-	font-size: 0.95em;
+input.button {
+  background-color: #EEE;
+  border: 1px solid #CCC;
 }
 
-#share_controls {
-	position: absolute;
-	right: 25px;
-	top: 4px;
+input.button:hover {
+  background-color: #DDD;
 }
-
 
 /** OVERRIDE BOOTSTRAP **/
 
@@ -75,134 +74,166 @@ blockquote {
 label, input, button, select, textarea {
 	font-size: inherit;
 	font-family: inherit;
-	padding: .1em .2em 0 .2em;
+	padding: .2em .2em 0 .2em;
 }
 
+/** HEADER **/
 
-/** Dylan **/
+div#navbar {
+  position: absolute;
+  top: 0;
+  height: @navbarHeight;
+  background-color: fade(#555, 85%);
+}
 
-#navbar {
-
-  .navbar-inner {
-    color: @gray;
-    border-width: 0px;
-    background-image: none;
-    padding-left: 20px;
-    padding-right: 20px;
-    background-color: fade(#555, 80%);
+div#brand {
+  background-color: lighten(@gray, 10%);
+  z-index: 10;
+  padding: 0px 10px 0px 20px;
+  float: left;
+  font-family: "Cooper Medium";
+  font-weight: 600;
+  font-size: 110%;
+  
+  a, a:hover {
+    text-decoration: none;
   }
+  
+  a:hover span {
+    color: #FFF;
+  }
+  
+  span {
+    color: #EEE;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  img {
+    height: @logoHeight;
+    padding: unit((@navbarHeight - @logoHeight) / 2, px) 0;
+  }
+}
 
-  .brand {
-    background-color: lighten(@gray, 10%);
-    font-size: 18px;
-    font-weight: 600;
-    position: relative;
-    z-index: 10;
-    height: 21px;
+img#triangle {
+  height: @navbarHeight;
+  z-index: 10;
+  float: left;
+}
 
-    i {
-      width: 20px;
-      height: 20px;
-      float: left;
-      margin-right: 5px;
+#navbar-search {
+
+  @searchPaddingLeft: 25px;
+  @searchPaddingRight: 30px;
+  @searchPaddingTop: 4px;
+  @searchPaddingBottom: 1px;
+  @searchBorder: 1px;
+  @searchPadding: 4px;
+  @searchBarShift: 20px;
+  @placeholderColor: @gray;
+  @searchInputStartingWidth: 250px; /* animation currently disabled */
+  @searchInputExpandedWidth: 250px;
+  @searchFontSize: 0.9 * @baseFontSize;
+
+  position: relative;
+  right: @searchBarShift;
+  z-index: -10;
+  margin: 0;
+  margin: unit((@navbarHeight - @searchInputHeight - (2*@searchBorder) - (@searchPaddingTop + @searchPaddingBottom)) / 2, px) 0;
+  
+  .search-query {
+    padding: @searchPaddingTop @searchPaddingRight @searchPaddingBottom @searchPaddingLeft;
+    border: @searchBorder solid darken(@gray, 5%);
+    border-radius: 8px;
+    font-size: @searchFontSize;
+    height: @searchInputHeight;
+    width: @searchInputStartingWidth;
+    color: @placeholderColor;
+    background-color: #E6E6E6;
+    .transition(background-color .2s ease-out .05s);
+    .transition(width .2s ease-out .05s);
+    text-shadow: none;
+  
+    &:focus {
+      background-color: @bodyColor;
+      width: @searchInputExpandedWidth;
+    }
+  
+    &::-webkit-input-placeholder { /* WebKit browsers */
+        color: @placeholderColor;
+    }
+    &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: @placeholderColor;
+    }
+    &::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: @placeholderColor;
+    }
+    &:-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: @placeholderColor;
     }
   }
-
-  .nav {
-    padding: 0px;
-  }
-
-	.nav li a {
-		padding: 5.5px 15px 3.5px 15px;
-	}
-	
-  #navbar-search {
-    @searchPaddingLeft: 30px;
-    @searchPaddingRight: 30px;
-    @searchBorder: 1px;
-    @searchPadding: 4px;
-    @searchBarShift: 10px;
-    @placeholderColor: @gray;
-    margin-right: 10px;
-
-    .search-query {
-    	padding-top: 4px; /* anti bootstrap */
-    	padding-bottom: 1px; /* anti bootstrap */
-      padding-left: @searchPaddingLeft;
-      padding-right: @searchPaddingRight;
-      border: @searchBorder solid darken(@gray, 5%);
-      margin: unit(((@navbarHeight - @searchInputHeight - (2*@searchBorder) - (2*@searchPadding))/2), px) 0;
-      font-size: @searchFontSize;
-      height: @searchInputHeight;
-      width: @searchInputStartingWidth;
-      position: relative;
-			top: 1px;
-      right: @searchBarShift;
-      color: @placeholderColor;
-      background-color: @searchBackgroundColor;
-      .transition(background-color .2s ease-out .05s);
-      .transition(width .2s ease-out .05s);
-      z-index: 5;
-
-      &:focus {
-        background-color: darken(@white, 5%);
-        width: @searchInputExpandedWidth;
-        box-shadow: none;
-        text-shadow: none; /* anti bootstrap */
-        padding-top: 4px; /* anti bootstrap */
-        padding-bottom: 1px; /* anti bootstrap */
-      }
-
-      &::-webkit-input-placeholder { /* WebKit browsers */
-          color:    @placeholderColor;
-      }
-      &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-          color:    @placeholderColor;
-      }
-      &::-moz-placeholder { /* Mozilla Firefox 19+ */
-          color:    @placeholderColor;
-      }
-      &:-ms-input-placeholder { /* Internet Explorer 10+ */
-          color:    @placeholderColor;
-      }
-    }
-
-    .dropdown-menu {
-      width: @searchInputExpandedWidth + 55px;
-      font-size: @searchFontSize;
-      li a {
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-
-    .search-icon {
+  
+  .dropdown-menu {
+    width: @searchInputExpandedWidth + 55px;
+    font-size: @searchFontSize;
+    background-color: @bodyColor;
+    position: absolute;
+    top: (@navbarHeight - (@navbarHeight - @searchInputHeight - (2*@searchBorder) - (@searchPaddingTop + @searchPaddingBottom)) / 2) ! important;
+    margin-top: 0;
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    
+    li a {
+      overflow: hidden;
+      text-overflow: ellipsis;
       cursor: pointer;
-      display: block;
-      height: 100%;
-      width: @searchPaddingRight;
+    }
+  }
+
+  .search-icon {
+    cursor: pointer;
+    display: block;
+    height: 100%;
+    width: @searchPaddingRight;
+    position: absolute;
+    top: -@searchBorder;
+    right: 0;
+    z-index: 10;
+    &:focus {
+      outline: none
+    }
+
+    span {
       position: absolute;
-      top: 1px;
-      right: @searchBarShift;
-      z-index: 10;
+      top: 6px;
+      right: 10px;
+      font-size: @searchFontSize;
+      color: @gray;
+    }
 
-      span {
-        position: absolute;
-        top: 6px;
-        right: 10px;
-        font-size: @searchFontSize;
-        color: @gray;
-      }
-
-      button {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        z-index: 15;
+    button {
+      width: 100%;
+      height: 100%;
+      z-index: 15;
+      position: absolute;
+      top: 0;
+      right: 0;
+      &:focus {
+        outline: none
       }
     }
   }
 }
 
+div#navbar .nav li a {
+  font-size: 105%;
+}
+
+div#share_controls {
+	position: absolute;
+	right: 20px;
+	top: (@navbarHeight - 22px) / 2;
+}

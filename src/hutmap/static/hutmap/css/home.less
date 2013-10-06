@@ -57,20 +57,40 @@
 
   .hut-carousel-caption {
     position: absolute;
-    right: 0px;
-    bottom: 60px;
-    background: none repeat scroll 0 0 fade(@grayDarker, 90%);
-    height: 95px;
-    padding: 15px;
+    right: 0;
+    bottom: 180px;
+    background-color: fade(#555, 85%);
+    padding: 15px 50px 15px 15px;
+    color: #EEE;
 
+    a, a:hover {
+      color: #1BB7FD;
+    }
+    
     table {
-      height: 95px;
-
+    
       .caption-image {
         padding-right: 15px;
+        vertical-align: top;
+        line-height: 75%;
 
         img {
-          height: 95px;
+          height: 100px;
+          border: 1px solid #DDD;
+        }
+        
+        .credit-thumbnail {
+          font-size: 50%;
+          color: #DDD;
+          text-shadow:
+          -1px -1px 0 fade(#333,50%),
+          1px -1px 0 fade(#333,50%),
+          -1px 1px 0 fade(#333,50%),
+          1px 1px 0 fade(#333,50%);
+          position: absolute;
+          bottom: 0px;
+          left: 4px;
+          z-index: 100;
         }
       }
 
@@ -86,7 +106,7 @@
         }
 
         h4 {
-          margin: 0 0 5px;
+          margin: 0 0 5px 0;
           font-weight: 600;
           font-size: 30px;
           line-height: 30px;
@@ -94,43 +114,48 @@
         }
 
         p {
-         line-height: 21px;
+         line-height: 125%;
+         margin-bottom: 0;
         }
       }
     }
   }
 
+  span.credit-slide {
+    position: absolute;
+    left: 10px;
+    bottom: 5px;
+    font-size: 80%;
+    color: #EEE;
+    text-shadow:
+    -1px -1px 0.3em fade(#333,50%),
+    1px -1px 0.3em fade(#333,50%),
+    -1px 1px 0.3em fade(#333,50%),
+    1px 1px 0.3em fade(#333,50%);
+  }
+  
   .hut-carousel-control {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
-    width: 20px;
-    height: 20px;
-    font-size: 15px;
-    font-weight: 100;
-    line-height: 15px;
-    color: @white;
+    bottom: 145px;
+    right: 0;
+    width: 25px;
+    height: 25px;
+    font-size: 20px;
+    display: inline-block;
+    line-height: 30px;
+    color: #FFF;
     text-align: center;
-    background: @grayDarker;
-    border: 3px solid @white;
+    background-color: fade(#555, 85%);
+    border: 2px solid @white;
     z-index: 10;
-    .border-radius(23px);
-    .opacity(70);
-
-    i {
-      padding-top: 2px;
-    }
-    &.info i {
-      padding-top: 0px;
-      padding-bottom: 2px;
-    }
-    
+    .border-radius(25px);
+        
     // Reposition
     &.left {
-      right: 140px;
+      right: 80px;
     }
     &.right {
-      right: 100px;
+      right: 40px;
     }
     &.pause, &.play {
       right: 60px;
@@ -142,13 +167,8 @@
 
     // Hover/focus state
     &:hover {
-      cursor: default;
-    }
-    &:hover,
-    &:focus {
-      color: @white;
+      cursor: pointer;
       text-decoration: none;
-      .opacity(90);
     }
   }
 
