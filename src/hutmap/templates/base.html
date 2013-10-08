@@ -124,13 +124,13 @@
         </form>
         
         <ul class="nav">
-          <li ng-class="{ active: ui.$route.current.active == '{% url 'hutmap_map' %}'}">
-            <a href="{% url 'hutmap_map' %}">
+          <li ng-class="{ active: ui.$route.current.active == '{% url 'huts:map' %}'}">
+            <a href="{% url 'huts:map' %}">
               Map
             </a>
           </li>
-          <li ng-class="{ active: ui.$route.current.active == '{% url 'hutmap_about' %}'}">
-            <a href="{% url 'hutmap_about' %}">
+          <li ng-class="{ active: ui.$route.current.active == '{% url 'huts:about' %}'}">
+            <a href="{% url 'huts:about' %}">
               About
             </a>
           </li>
