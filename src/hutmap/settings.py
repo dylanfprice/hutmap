@@ -36,7 +36,8 @@ DATABASES = {
         'PORT':     os.environ['HUTMAP_DB_PORT'],
         'OPTIONS': {
           'init_command': 'SET storage_engine=INNODB',
-        }
+        },
+        'TEST_CHARSET': 'utf8',
     }
 }
 
