@@ -3,7 +3,9 @@ from widgets import ListWidget
 
 class ListFormField(forms.Field):
   def __init__(self, *args, **kwargs):
-    defaults = {'widget': ListWidget}
+    defaults = {}
     defaults.update(kwargs)
-    return super(ListFormField, self).__init__(**defaults)
+    # something in kwargs was overriding, so fight back
+    defaults['widget'] = ListWidget
+    super(ListFormField, self).__init__(**defaults)
 

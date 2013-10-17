@@ -21,7 +21,7 @@ class PointWidget(widgets.TextInput):
 
     return value
 
-class ListWidget(widgets.TextInput):
+class ListWidget(widgets.Textarea):
   """ Widget that renders values from huts.model_fields.ListField """
 
   def render(self, name, value, attrs=None):

@@ -12,6 +12,10 @@ class HutCommonForm(NgModelFormMixin, forms.ModelForm):
     kwargs.update(scope_prefix='hut')
     super(HutCommonForm, self).__init__(*args, **kwargs)
 
+  class Media:
+    css = {
+      'all': ('hutmap/css/admin.css',),
+    }
   class Meta:
     widgets = {
       'region': forms.widgets.Select(attrs=SELECT_ATTRS),

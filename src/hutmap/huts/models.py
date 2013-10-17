@@ -148,11 +148,12 @@ class Hut(HutCommon):
 
 class HutSuggestion(HutCommon):
   '''User suggested hut'''
-  pass
+  objects = models.GeoManager()
 
 class HutEdit(HutCommon):
   '''User suggested hut edit'''
   hut = models.ForeignKey(Hut, related_name='+') # '+' disables backwards relation
+  objects = models.GeoManager()
 
 class Region(models.Model):
   region = models.CharField(max_length=50, unique=True)

@@ -8,22 +8,7 @@
 
 {% block footer %}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/bower_components/select2/select2.js" %}"></script>
-<script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/bower_components/angular-ui-select2/src/select2.js" %}"></script>
-<script>
-  angular.module('hutmap_admin', ['ui.select2']).
-  run(function($rootScope) {
-    $rootScope.select2Options = {
-      width: 'resolve',
-      placeholderOption: 'first',
-    };
-  });
-  angular.element(document).ready(function() {
-    angular.bootstrap(document, ['hutmap_admin']);
-  });
-</script>
 {% endblock %}
 
 {% block title %}{{ title }} | {% trans 'Hutmap Admin' %}{% endblock %}
