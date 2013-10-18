@@ -23,6 +23,7 @@ class HutSuggestionAdmin(HutCommonAdmin):
       for field_name in field_names:
         value = getattr(hut_suggestion, field_name)
         setattr(hut, field_name, value)
+      hut.published = True
       hut.save()
     num_huts = len(queryset)
     queryset.delete()
@@ -62,6 +63,7 @@ class HutEditAdmin(HutCommonAdmin):
       for field_name in field_names:
         value = getattr(hut_edit, field_name)
         setattr(hut, field_name, value)
+      hut.published = True
       hut.save()
     num_huts = len(queryset)
     queryset.delete()
