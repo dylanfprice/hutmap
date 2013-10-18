@@ -6,15 +6,3 @@
 {% endfor %}
 {% endblock %}
 
-{% block footer %}
-{{ block.super }}
-  <script>
-    $(function() {
-      $('select[ui-select2]').select2({
-        width: 'resolve',
-        placeholderOption: 'first'
-      });
-    });
-  </script>
-{% endblock %}
-
