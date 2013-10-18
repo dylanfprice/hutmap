@@ -39,14 +39,16 @@ class HutEditAdmin(HutCommonAdmin):
 
     hut = HutEdit.objects.get(pk=object_id)
     related_hut = hut.hut
-    related_hut_form = HutForm(instance=related_hut)
+    related_hut_form = HutForm(instance=related_hut, prefix='dontsave')
 
     field_names = set(hut._meta.get_all_field_names()) & set(related_hut_form.fields.iterkeys())
     for field_name in field_names:
+      field = related_hut_form.fields[field_name]
+      field.widget.attrs['disabled'] = ''
+
       hut_value = getattr(hut, field_name)
       related_value = getattr(related_hut, field_name)
       if hut_value != related_value:
-        field = related_hut_form.fields[field_name]
         field.widget.attrs['class'] = 'different-value'
 
     extra_context['related_hut'] = related_hut_form

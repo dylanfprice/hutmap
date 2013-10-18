@@ -26,9 +26,7 @@
                     <div style="float: right;">
                       {% for related_field in related_hut %}
                         {% if field.field.name == related_field.name %}
-                          <span class="{{ related_hut|css_classes:related_field.name }}">
-                            {{ related_field.value }}
-                          </span>
+                          {{ related_field }}
                         {% endif %}
                       {% endfor %}
                     </div>
