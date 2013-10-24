@@ -21,6 +21,7 @@ class HutCommonForm(NgModelFormMixin, forms.ModelForm):
       'region': forms.widgets.Select(attrs=SELECT_ATTRS),
       'country': forms.widgets.Select(attrs=SELECT_ATTRS),
       'agency': forms.widgets.Select(attrs=SELECT_ATTRS),
+      'photo': forms.widgets.FileInput(attrs={'ng-file-select': 'hut.photo = $files[0]'}),
     }
 
 class HutForm(HutCommonForm):

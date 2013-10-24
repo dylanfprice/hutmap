@@ -5,7 +5,7 @@
 {% endfor %}
 {# Include the visible fields #}
 {% for field in form.visible_fields %}
-  <div class="fieldWrapper">
+  <div class="form-field">
     {{ field.errors }}
     {{ field.label_tag }} {{ field }}
   </div>

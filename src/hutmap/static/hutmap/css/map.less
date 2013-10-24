@@ -313,13 +313,15 @@
       }
     }
 
-
-    .hut-info-right {
+    .hut-info-middle, .hut-info-right {
       position: absolute;
       top: @fontSizeLarge + 20px;
-      right: 0;
       height: auto;
-      width: 65%;
+    }
+
+    .hut-info-middle {
+      right: 35%;
+      width: 30%;
 
       .hut-detail-title {
         color: @sidebarLabelColor;
@@ -332,6 +334,17 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+    }
+
+    .hut-info-right {
+      right: 0;
+      width: 35%;
+
+      input.button {
+        padding: 10px;
+        margin: 10px;
+        text-align: center;
       }
     }
   }

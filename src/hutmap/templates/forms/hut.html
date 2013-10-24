@@ -1,4 +1,13 @@
-<form ng-controller="HutFormCtrl">
+
+<div class="modal-header">
+  <h3>I'm a modal!</h3>
+</div>
+
+<div class="modal-body">
   {% include "forms/form_snippet.html" with form=hut_form %}
-  <button ng-click="submit()">Submit</button>
-</form>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="submit()">Submit</button>
+  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>
