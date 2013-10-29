@@ -6,3 +6,4 @@ src/hutmap/scripts/
 *.vagrant
 *.swp
 *.pyc
+.DS_Store

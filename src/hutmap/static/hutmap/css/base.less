@@ -17,7 +17,7 @@ p {
 
 a {
   text-decoration: none;
-	color: #1BB7FD;
+	color: @linkColor;
 	cursor: pointer;
 }
 
@@ -77,31 +77,48 @@ label, input, button, select, textarea {
 	padding: .2em .2em 0 .2em;
 }
 
+/** CONTENT **/
+
+div#content-fixed {
+  position: absolute;
+  top: @navbarHeight;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+}
+
+div#content-page {
+  text-align: justify;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2em 1.5em 1em 1.5em; 
+}
+
 /** HEADER **/
 
 div#navbar {
   position: absolute;
   top: 0;
+  right: 0;
+  left: 0;
   height: @navbarHeight;
+  z-index: 1030;
   background-color: fade(#555, 85%);
+  
+  a:hover {
+    text-decoration: none;
+  }
 }
 
 div#brand {
   background-color: lighten(@gray, 10%);
   z-index: 10;
-  padding: 0px 10px 0px 20px;
+  padding: 0px 20px;
   float: left;
   font-family: "Cooper Medium";
   font-weight: 600;
   font-size: 110%;
-  
-  a, a:hover {
-    text-decoration: none;
-  }
-  
-  a:hover span {
-    color: #FFF;
-  }
   
   span {
     color: #EEE;
@@ -109,16 +126,24 @@ div#brand {
     vertical-align: middle;
   }
   
+  span:hover {
+    color: #FFF;
+  }
+  
   img {
     height: @logoHeight;
-    padding: unit((@navbarHeight - @logoHeight) / 2, px) 0;
+    padding: (@navbarHeight - @logoHeight)/2 0;
   }
 }
 
-img#triangle {
-  height: @navbarHeight;
+div#navtriangle {
   z-index: 10;
   float: left;
+  width: 0;
+  height: 0;
+	border-top: @navbarHeight/2 solid transparent;
+	border-bottom: @navbarHeight/2 solid transparent;
+	border-left: @navbarHeight/4 solid lighten(@gray, 10%);  
 }
 
 #navbar-search {
@@ -227,8 +252,36 @@ img#triangle {
   }
 }
 
-div#navbar .nav li a {
-  font-size: 105%;
+div#navbar #nav {
+  display: block;
+  float: left;
+  margin: 0 10px 0 0;
+  padding: 0;
+  list-style: none;
+  
+  li {
+    float: left;
+    
+    a {
+      line-height: @navbarHeight;
+      font-size: 105%;
+      display: block;
+      padding: 0 15px;
+      color: #EEE;
+    }
+    
+    a:hover {
+      color: #FFF;
+    }
+  }
+  
+  li.active {
+    background-color: #494c51;
+    
+    a {
+      color: #FFF;
+    }
+  }
 }
 
 div#share_controls {

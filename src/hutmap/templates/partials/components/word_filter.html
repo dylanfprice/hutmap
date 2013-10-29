@@ -2,11 +2,10 @@
 <div class="hut-filter-title">{{ filter | titleize }}</div>
 <ul class="hut-filter-list">
   <li ng-repeat="item in f.{{ filter }} | orderFilter" 
-      tooltip="[* item.$tooltip *]"
+      OFFtooltip="[* item.$tooltip *]"
       tooltip-placement="right"
       ng-class="{ selected: item.include }"
       ng-click="item.include = !item.include; including('{{ filter }}', item); filter();">
       <span class="hut-filter-item">[* item.$name *]</span>
   </li>
 </ul>
-

@@ -9,29 +9,33 @@
   <carousel interval="carouselInterval">
     <div class="carousel-loading muted" ng-show="carouselInterval < 0">Loading images...</div>
     <slide ng-repeat="slide in slides" active="slide.active">
-      <div class="hut-carousel-img" ng-style="imgStyle(slide.image)"></div>
+      <div class="hut-carousel-img" ng-style="imgStyle(slide.image.src)"></div>
       
       <div class="hut-carousel-caption">
         <table>
           <tr>
-            <td class="caption-image">
+            <td class="caption-image" ng-hide="!slide.thumbnail.src">    
               <div style="position:relative;">
-                <img ng-src="[*slide.thumbnail*]" />
-                <span class="credit-thumbnail">&copy; Thumbnail credit</span>
+                <img ng-src="[*slide.thumbnail.src*]" />
+                <span class="credit-thumbnail">[*slide.thumbnail.credit*]</span>
               </div>
             </td>
-            <td class="caption-details" style="vertical-align:top;">
+            <td class="caption-details">
               <h4>[*slide.title*]</h4><br />
-              [*slide.location*]<br />
-              <p><a ng-href="[*slide.hutLink*]">&gt;&gt; show on map</a><br/>
-              <a ng-href="[*slide.agency.url*]">&gt;&gt; [*slide.agency.name*] website</a></p>
+              [*slide.location*]<br />              
+              <p>
+                <span class="linkcolor">&lfloor;</span>&nbsp;<a ng-href="[*slide.hutLink*]">show on map</a><br/>
+                <span class="linkcolor" ng-hide="!slide.agency.name">&lfloor;</span>&nbsp;<a ng-href="[*slide.agency.url*]">[*slide.agency.name*]</a>
+              </p>
             </td>
           </tr>
         </table>
       </div>
       
+      <span class="credit-slide">[*slide.image.credit*]</span>
+      
     </slide>
   </carousel>
 </div>
 
-<span class="credit-slide">&copy; Slide credit</span>
+

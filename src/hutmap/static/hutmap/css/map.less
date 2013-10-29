@@ -8,7 +8,7 @@
 
 #alert-topbar {
   position: absolute;
-  top: @navbarHeight;
+  top: 0;
   left: 0px;
   right: 0px;
   z-index: 100000;
@@ -40,7 +40,7 @@
 
 #show-hide-filter-sidebar {
   position: absolute;
-  top: @navbarHeight + @hideFilterBarOffset;
+  top: @hideFilterBarOffset;
   left: @filterBarWidth;
   z-index: 101;
   width: @fontSizeSmall;
@@ -68,13 +68,14 @@
 
 #filter-sidebar {
   position: absolute;
-  top: @navbarHeight;
+  top: 0;
   left: 0px;
   bottom: 0px;
   width: @filterBarWidth;
   font-size: @fontSizeSmall;
   border-right: @borderColor solid @filterBarBorderWidth;
-
+  overflow-y: auto;
+  
   &.filter-sidebar-hidden {
     left: -@filterBarWidth;
   }
@@ -194,7 +195,7 @@
   position: absolute;
   right: 0px;
   left: @filterBarWidth + @filterBarBorderWidth;
-  top: @navbarHeight;
+  top: 0;
   bottom: @hutBarHeight + @filterBarBorderWidth;
   z-index: 100;
 

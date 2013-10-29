@@ -1,5 +1,5 @@
 #content {
-
+  
   .carousel-loading {
     position: absolute;
     top: 50%;
@@ -68,15 +68,15 @@
     }
     
     table {
-    
+      
       .caption-image {
-        padding-right: 15px;
         vertical-align: top;
         line-height: 75%;
 
         img {
-          height: 100px;
-          border: 1px solid #DDD;
+          max-height: 100px;
+          max-width: 200px;
+          border: 1px solid #999;
         }
         
         .credit-thumbnail {
@@ -96,7 +96,10 @@
 
       .caption-details {
         white-space: nowrap;
-
+        vertical-align: top;
+        padding-left: 15px;
+        min-width: 20em;
+        
         a:hover {
           .pointer;
         }
