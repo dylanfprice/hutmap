@@ -1,6 +1,6 @@
+(function () {
 'use strict';
 
-(function () {
   angular.module('hutmap.controllers').
 
   controller('BottomBarCtrl', ['$scope', function($scope) {

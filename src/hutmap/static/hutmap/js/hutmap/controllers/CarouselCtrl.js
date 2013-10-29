@@ -1,6 +1,6 @@
+(function () {
 'use strict';
 
-(function () {
   angular.module('hutmap.controllers').
 
   controller('CarouselCtrl', ['$scope', '$route', '$http', '$q', function($scope, $route, $http, $q) {

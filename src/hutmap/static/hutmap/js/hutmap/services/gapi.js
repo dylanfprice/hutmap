@@ -1,6 +1,6 @@
+(function () {
 'use strict';
 
-(function () {
   angular.module('hutmap.services').
 
   // access the gapi link shortener

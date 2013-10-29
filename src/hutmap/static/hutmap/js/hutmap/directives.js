@@ -1,6 +1,6 @@
+(function () {
 'use strict';
 
-(function () {
   angular.module('hutmap.directives', [])
 
   .directive('blur', ['$parse', function ($parse) {

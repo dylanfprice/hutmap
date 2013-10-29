@@ -1,6 +1,6 @@
+(function() {
 'use strict';
 
-(function() {
   angular.module('hutmap', ['hutmap.services', 'hutmap.directives',
     'hutmap.filters', 'hutmap.controllers', 'AngularGM', 'ngResource',
     'ngCookies', 'ui.bootstrap', 'ui.select2', 'angularFileUpload']).

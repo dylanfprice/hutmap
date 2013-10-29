@@ -82,7 +82,7 @@ angularFileUpload.XMLHttpRequest = function() {
 					file : formData.file
 				};
 				this.config.data = {}
-				for (key in formData) {
+				for (var key in formData) {
 					if (key != 'file' && key != 'append') {
 						this.config.data[key] = formData[key];
 					}

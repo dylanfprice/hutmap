@@ -1,6 +1,6 @@
+(function () {
 'use strict';
 
-(function () {
   angular.module('hutmap.controllers').
 
   controller('HutFormInstanceCtrl', 
@@ -55,7 +55,11 @@
     };
 
     $scope.submit = function() {
-      submitHut(hutFormUrl, $scope.hut);
+      if ($scope.hut != null) {
+        submitHut(hutFormUrl, $scope.hut);
+      } else {
+        $log.warn('$scope.hut was null', $scope.hut);
+      }
     };
 
     $scope.cancel = function() {

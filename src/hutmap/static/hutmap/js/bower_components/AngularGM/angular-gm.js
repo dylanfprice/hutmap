@@ -1,12 +1,10 @@
 /**
  * AngularGM - Google Maps Directives for AngularJS
- * @version v0.3.0 - 2013-09-19
+ * @version v0.3.1 - 2013-10-29
  * @link http://dylanfprice.github.com/angular-gm
  * @author Dylan Price <the.dylan.price@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
-'use strict';
-
 /**
  * @doc module
  * @name angulargm
@@ -22,6 +20,8 @@
  * Author: Dylan Price <the.dylan.price@gmail.com>
  */
 (function() {
+'use strict';
+
   angular.module('AngularGM', []).
 
   /**
@@ -49,20 +49,20 @@
    * });
    * ```
    */
-  value('angulargmDefaults', {
-    'precision': 3,
-    'markerConstructor': google.maps.Marker,
-    'polylineConstructor': google.maps.Polyline,
-    'mapOptions': {
-      zoom : 8,
-      center : new google.maps.LatLng(46, -120),
-      mapTypeId : google.maps.MapTypeId.ROADMAP
-    }
+  factory('angulargmDefaults', function() {
+    return {
+      'precision': 3,
+      'markerConstructor': google.maps.Marker,
+      'polylineConstructor': google.maps.Polyline,
+      'mapOptions': {
+        zoom : 8,
+        center : new google.maps.LatLng(46, -120),
+        mapTypeId : google.maps.MapTypeId.ROADMAP
+      }
+    };
   });
 
 })();
-
-'use strict';
 
 /**
  * @ngdoc directive
@@ -92,6 +92,7 @@
  * event.
  */
 (function () {
+'use strict';
 
   angular.module('AngularGM').
 
@@ -156,8 +157,6 @@
 
   }]);
 })();
-
-'use strict';
 
 /**
  * @ngdoc directive
@@ -232,6 +231,8 @@
  */
 
 (function () {
+'use strict';
+
   angular.module('AngularGM').
 
   directive('gmMap', ['$timeout', 'angulargmUtils', function ($timeout, angulargmUtils) {
@@ -405,8 +406,6 @@
   }]);
 })();
 
-'use strict';
-
 /**
  * @ngdoc directive
  * @name angulargm.directive:gmMarkers
@@ -531,6 +530,8 @@
  */
 
 (function () {
+'use strict';
+
   angular.module('AngularGM').
 
   directive('gmMarkers', ['$log', '$parse', '$timeout', 'angulargmUtils', 
@@ -669,8 +670,6 @@
   }]);
 })();
 
-'use strict';
-
 /**
  * @ngdoc directive
  * @name angulargm.directive:gmPolylines
@@ -762,6 +761,7 @@
  */
 
 (function () {
+'use strict';
 
   angular.module('AngularGM').
 
@@ -871,8 +871,6 @@
   }]);
 })();
 
-'use strict';
-
 /**
  * @ngdoc service
  * @name angulargm.service:angulargmContainer
@@ -897,6 +895,8 @@
  * ```
  */
 (function () {
+'use strict';
+
   angular.module('AngularGM').
 
   factory('angulargmContainer', ['$q', function($q) {
@@ -981,8 +981,6 @@
   }]);
 })();
 
-'use strict';
-
 /**
  * @ngdoc service
  * @name angulargm.service:angulargmUtils
@@ -991,6 +989,8 @@
  * Common utility functions.
  */
 (function () {
+'use strict';
+
   angular.module('AngularGM').
 
   factory('angulargmUtils', ['$parse', function($parse) {
@@ -1154,13 +1154,13 @@
   }]);
 })();
 
-'use strict';
-
 /**
  * Directive controller which is owned by the [gmMap]{@link module:gmMap}
  * directive and shared among all other angulargm directives.
  */
 (function () {
+'use strict';
+
   angular.module('AngularGM').
 
   controller('angulargmMapController',

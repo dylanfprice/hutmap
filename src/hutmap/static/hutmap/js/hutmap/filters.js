@@ -1,6 +1,6 @@
+(function () {
 'use strict';
 
-(function () {
   angular.module('hutmap.filters', []).
 
   filter('orderFilter', function() {
