@@ -4,35 +4,57 @@
   angular.module('hutmap.controllers').
 
   controller('HutFormCtrl', 
-    ['$scope', '$modal', '$log',
-    function($scope, $modal, $log) {
-    
+    ['$scope', '$modal', '$http', '$cookies', '$log',
+    function($scope, $modal, $http, $cookies, $log) {
+
     $scope.suggestHut = function() {
-      var modalInstance = $modal.open({
-        templateUrl: '/forms/hut/new/',
+
+      var modal = $modal.open({
+        templateUrl: 'hut_modal.html',
         controller: 'HutFormInstanceCtrl',
+        keyboard: false,
+        resolve: {
+          hutFormUrl: function() {
+            return '/forms/hut/new/';
+          },
+          header: function() {
+            return 'Suggest new hut';
+          }
+        }
       });
 
-      modalInstance.result.then(function (hut) {
+      modal.result.then(function (hut) {
         $log.info('suggestion', hut);
+        $scope.addAlert('info', "Created hut suggestion '" + hut.name + "'");
       }, function (reason) {
-        $log.info(reason, 'Modal dismissed at: ' + new Date());
+        $log.info(reason, 'suggestion dismissed at: ' + new Date());
       });
     };
 
     $scope.editHut = function (hut) {
-      var modalInstance = $modal.open({
-        templateUrl: '/forms/hut/' + hut.id + '/',
+
+      var modal = $modal.open({
+        templateUrl: 'hut_modal.html',
         controller: 'HutFormInstanceCtrl',
+        keyboard: false,
+        resolve: {
+          hutFormUrl: function() {
+            return '/forms/hut/' + hut.id + '/';
+          },
+          header: function() {
+            return 'Edit ' + hut.name;
+          }
+        }
       });
 
-      modalInstance.result.then(function (hut) {
+      modal.result.then(function (hut) {
         $log.info('edit', hut);
-      }, function () {
-        $log.info('Modal dismissed at: ' + new Date());
+        $scope.addAlert('info', "Edited hut '" + hut.name + "'");
+      }, function (reason) {
+        $log.info(reason, 'edit dismissed at: ' + new Date());
       });
-
     };
+
   }]);
 
 })();
