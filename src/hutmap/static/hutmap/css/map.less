@@ -2,6 +2,47 @@
  * Styles for map.html
  */
 
+@errorColor: darkred;
+@errorBackgroundColor: lighten(@errorColor, 50%);
+
+.form-errors {
+  color: @errorColor;
+  background-color: @errorBackgroundColor;
+  padding: .2em;
+  padding-left: .5em;
+  margin-bottom: .5em;
+}
+
+.form-field-errors {
+  background-color: fade(@errorBackgroundColor, 40%);
+  border: 1px solid fade(@errorBackgroundColor, 60%);
+}
+
+.form-field {
+  .clearfix;
+  padding-top: 1em;
+  padding-bottom: 1em;
+
+  label {
+    display: block;
+    padding: 3px 10px 0px 0px;
+    float: left;
+    width: 8em;
+  }
+
+  .help {
+    padding-left: 12em;
+    font-size: .75em;
+    color: rgb(153, 153, 153);
+  }
+
+  .errorlist {
+    font-size: .75em;
+    color: @errorColor;
+  }
+}
+
+
 #show-hide-filter-sidebar, #filter-sidebar, #map, #hut-bottombar {
   .transition(left 500ms cubic-bezier(0.445, 0.05, 0.55, 0.95) 20ms);
 }
@@ -344,7 +385,6 @@
       input.button {
         padding: 10px;
         margin: 10px;
-        text-align: center;
       }
     }
   }
