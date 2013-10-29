@@ -1,12 +1,12 @@
 from django import forms
 from djangular.forms.angular_model import NgModelFormMixin
 from huts.models import Hut, HutSuggestion, HutEdit
-from huts.widgets import PointWidget
+from huts.fields import PointFormField
 
 SELECT_ATTRS = {'ui-select2': 'select2Options'}
 
 class HutCommonForm(NgModelFormMixin, forms.ModelForm):
-  location = forms.CharField(widget=PointWidget, help_text="Format: 'latitude, longitude'")
+  location = PointFormField()
 
   def __init__(self, *args, **kwargs):
     kwargs.update(scope_prefix='hut')
