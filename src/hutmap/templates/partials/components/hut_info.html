@@ -6,7 +6,7 @@
       {% include "partials/components/hut_img.html" with hut_object_name="h.selectedHut" width="180" height="130" %}
     </div>
   </div>
-  <div class="hut-info-right">
+  <div class="hut-info-middle">
     <table ng-hide="h.selectedHut == null">
       <tr>
         <td class="hut-detail-title">Hut Url:</td>
@@ -44,7 +44,15 @@
           </span>
         </td>
       </tr>
-
     </table>
+  </div>
+  <div class="hut-info-right" ng-controller="HutFormCtrl">
+    <input class="button" 
+           ng-click="suggestHut()"
+           value="Suggest a new hut"/>
+    <input class="button" 
+           ng-click="editHut(h.selectedHut)"
+           ng-hide="h.selectedHut == null" 
+           value="Edit Hut" />
   </div>
 </div>

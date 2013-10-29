@@ -36,7 +36,6 @@ class ListField(models.TextField):
   def formfield(self, **kwargs):
     defaults = {
       'form_class': ListFormField,
-      'help_text': 'Enter a comma separated list of values or leave blank for null'
     }
     defaults.update(kwargs)
     return super(ListField, self).formfield(**defaults)

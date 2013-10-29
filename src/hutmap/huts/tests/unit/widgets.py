@@ -11,14 +11,7 @@ class PointWidgetTestCase(TestCase):
     location = GEOSGeometry('POINT(-120 45)')
     expected = '<input name="location" type="text" value="45.0, -120.0" />'
     actual = self.pw.render('location', location)
-    self.assert_equal(expected, actual)
-
-  def test_value_from_datadict(self):
-    data = { 'location': '45, -120' }
-    expected = GEOSGeometry('POINT(-120 45)')
-    actual = self.pw.value_from_datadict(data, None, 'location')
     self.assertEqual(expected, actual)
-
 
 class ListWidgetTestCase(TestCase):
 
@@ -26,12 +19,12 @@ class ListWidgetTestCase(TestCase):
     self.lw = ListWidget()
 
   def test_render_none(self):
-    expected = '<input name="list" type="text" />'
+    expected = '<textarea cols="40" name="list" rows="10">\r\n</textarea>'
     actual = self.lw.render('list', None)
     self.assertEqual(expected, actual)
 
   def test_render_list(self):
-    expected = '<input name="list" type="text" value="a, b, c" />'
+    expected = '<textarea cols="40" name="list" rows="10">\r\na, b, c</textarea>'
     actual = self.lw.render('list', ['a', 'b', 'c'])
     self.assertEqual(expected, actual)
 

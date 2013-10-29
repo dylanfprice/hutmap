@@ -1,25 +1,15 @@
 from django.contrib.gis.geos import GEOSGeometry
 from django.forms import widgets
+from huts.utils.display import point_display_value
 
 class PointWidget(widgets.TextInput):
   """ Widget that renders a django.contrib.gis.db.models.PointField """
 
   def render(self, name, value, attrs=None):
     if isinstance(value, GEOSGeometry):
-      value = "{}, {}".format(value.coords[1],
-                                value.coords[0])
+      value = point_display_value(value)
     
     return super(PointWidget, self).render(name, value, attrs)
-
-  def value_from_datadict(self, data, files, name):
-    value = data[name]
-    if ',' in value:
-      coords = value.split(',')
-      value = GEOSGeometry('POINT({} {})'.format(coords[1], coords[0]))
-    else:
-      value = None
-
-    return value
 
 class ListWidget(widgets.Textarea):
   """ Widget that renders values from huts.model_fields.ListField """
