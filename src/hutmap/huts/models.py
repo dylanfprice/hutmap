@@ -148,10 +148,14 @@ class Hut(HutCommon):
 
 class HutSuggestion(HutCommon):
   '''User suggested hut'''
+  user_email = models.EmailField('your email')
+  user_notes = models.TextField('notes for the Hutmap team')
   objects = models.GeoManager()
 
 class HutEdit(HutCommon):
   '''User suggested hut edit'''
+  user_email = models.EmailField('your email')
+  user_notes = models.TextField('notes for the Hutmap team')
   hut = models.ForeignKey(Hut, related_name='+') # '+' disables backwards relation
   objects = models.GeoManager()
 
