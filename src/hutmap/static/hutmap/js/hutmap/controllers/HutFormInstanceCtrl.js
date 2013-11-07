@@ -66,6 +66,23 @@
       $modalInstance.dismiss('cancel');
     };
 
+    // TODO: #31 get rid of dirty hack for select fields
+    $scope.$watch('hut', function(newVal) {
+      if (newVal) {
+        angular.forEach(newVal, function(value, field) {
+          if (typeof(value) === 'boolean') {
+            if (value === null) {
+              $scope.hut[field] = 1;
+            } else if (value) {
+              $scope.hut[field] = 2;
+            } else {
+              $scope.hut[field] = 3;
+            }
+          }
+        });
+      }
+    });
+
   }]);
 
 })();
