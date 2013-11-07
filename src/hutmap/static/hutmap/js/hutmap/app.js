@@ -98,28 +98,12 @@
       var getTile = {};
 
       /**
-       * Function for retrieving MSR USGS topo tiles. 
+       * Retrieves ArcGis USA topo tiles.
        *
        * @param {google.maps.Map} gmap the google map object
        * @param {google.maps.Point} point The tile coordinate.
        * @param {number} zoom The zoom level of the map.
        * @returns {string} The URL of the needed tile.
-       */
-      getTile.MSR_TOPO = function(point, zoom) {
-        var projection = gmap.getProjection();
-        var h = Math.pow(2, zoom);
-        var swPnt = new google.maps.Point(point.x * 256 / h, (point.y + 1) * 256 / h);
-        var nePnt = new google.maps.Point((point.x + 1) * 256 / h, (point.y) * 256 / h);
-        var sw = projection.fromPointToLatLng(swPnt);
-        var ne = projection.fromPointToLatLng(nePnt);
-        var bbox = [sw.lng(), sw.lat(), ne.lng(), ne.lat()];
-        var url = "http://msrmaps.com/ogcmap.ashx?version=1.1.1&request=GetMap&Layers=drg&Styles=default&SRS=EPSG:4326&BBOX=" +
-          bbox.join(',') + "&width=256&height=256&format=image/jpeg";
-        return url;
-      };
-
-      /**
-       * Retrieves ArcGis USA topo tiles.
        */
       getTile.ARC_GIS_USA = function(point, zoom) {
         var c = 1 << zoom,
@@ -142,16 +126,6 @@
 
 
       var mapTypes = {
-        MSR_TOPO: new google.maps.ImageMapType({
-          name: "MSR USGS",
-          alt: "USGS topos from Microsoft Research",
-          minZoom: 1,
-          maxZoom: 15,
-          tileSize: new google.maps.Size(256, 256),
-          isPng: false,
-          getTileUrl: getTile.MSR_TOPO
-        }),
-
         ARC_GIS_USA: new google.maps.ImageMapType({
           name: "ArcGIS USA",
           alt: "ArcGIS USA Topos",
@@ -183,7 +157,6 @@
                        google.maps.MapTypeId.SATELLITE,
                        google.maps.MapTypeId.HYBRID,
                        google.maps.MapTypeId.TERRAIN,
-                       mapTypes.MSR_TOPO.name,
                        mapTypes.ARC_GIS_USA.name,
                        mapTypes.ARC_GIS_WORLD.name]
         }
