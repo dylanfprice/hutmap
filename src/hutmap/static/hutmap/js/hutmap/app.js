@@ -85,6 +85,8 @@
   run(['hutmapMapId', 'angulargmContainer', 'mapOptions',
       function(hutmapMapId, angulargmContainer, mapOptions) {
 
+    google.maps.visualRefresh = true;
+
     var gmapPromise = angulargmContainer.getMapPromise(hutmapMapId);
 
     /**
