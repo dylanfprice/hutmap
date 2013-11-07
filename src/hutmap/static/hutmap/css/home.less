@@ -25,7 +25,7 @@
 
     > .item {
       height: 100%;
-      .transition(opacity 1s ease-in-out);
+      .transition(opacity 0.7s ease-in-out);
     }
 
     > .active {
@@ -167,11 +167,22 @@
     &.info {
       font-size: 18px;
     }
+    &.disabled {
+      opacity: .5;
+
+      &:hover, i::before {
+        cursor: default;
+      }
+    }
 
     // Hover/focus state
     &:hover {
       cursor: pointer;
       text-decoration: none;
+    }
+
+    i::before {
+      .pointer;
     }
   }
 

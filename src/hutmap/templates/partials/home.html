@@ -6,8 +6,8 @@
 </script>
 
 <div ng-controller="CarouselCtrl">
-  <carousel interval="carouselInterval">
-    <div class="carousel-loading muted" ng-show="carouselInterval < 0">Loading images...</div>
+  <carousel interval="carouselConfig.interval">
+    <div class="carousel-loading muted">Loading image...</div>
     <slide ng-repeat="slide in slides" active="slide.active">
       <div class="hut-carousel-img" ng-style="imgStyle(slide.image.src)"></div>
       
@@ -31,9 +31,9 @@
           </tr>
         </table>
       </div>
-      
+
       <span class="credit-slide">[*slide.image.credit*]</span>
-      
+
     </slide>
   </carousel>
 </div>

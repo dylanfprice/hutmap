@@ -26,7 +26,6 @@
       },
       */
       
-      
       {
         title: 'Three Fingers Lookout',
         location: 'North Cascade Range, Washington, USA',
@@ -208,18 +207,19 @@
       },
 
     ];
+
+    $scope.slides.reverse();
+
     $scope.imgStyle = function(imgUrl) {
       return {
         'background-image': 'url(\'' + imgUrl + '\')'
       }
     };
 
-    // pre-load images
-    $scope.carouselInterval = -1;
-    var imgsLoaded = [];
-    angular.forEach($scope.slides, function(slide, index) {
-      imgsLoaded.push($http.get(slide.image.src));
-    });
+    $scope.carouselConfig = {
+      interval: -1,
+    };
+
   }]);
 
 })();
