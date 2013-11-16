@@ -82,8 +82,8 @@ class HutCommon(models.Model):
   country = CountryField(null=False)
   state = models.CharField(max_length=50, blank=False)
   region = models.ForeignKey('Region', null=True, blank=True)
-  designations = UnhelpfulManyToManyField(Designation, null=True)
-  systems = UnhelpfulManyToManyField(System, null=True)
+  designations = UnhelpfulManyToManyField(Designation, null=True, blank=True)
+  systems = UnhelpfulManyToManyField(System, null=True, blank=True)
 
   agency = models.ForeignKey('Agency', null=True, blank=True)
 
@@ -110,7 +110,7 @@ class HutCommon(models.Model):
   # Backcountry options include Gated/Private (Paved/2WD/4WD/Unpaved) Road,
   # Boat, Helicopter, (Ski/Float) Plane, Trail.  If technical terrain, the
   # hardest terrain is listed (Off Trail, Scramble, Glacier Travel, etc).
-  access_no_snow = UnhelpfulManyToManyField(AccessType, null=True)
+  access_no_snow = UnhelpfulManyToManyField(AccessType, null=True, blank=True)
 
   no_snow_min_km = models.FloatField('minimum non-motorized kilometers when no snow is present', null=True, blank=True)
   is_snow_min_km = models.NullBooleanField('is there ever snow on access roads?')
@@ -139,8 +139,8 @@ class HutCommon(models.Model):
 
   has_services = models.NullBooleanField('are services included?')
   has_optional_services = models.NullBooleanField('optional services are available at further cost')
-  services = UnhelpfulManyToManyField(Service, null=True, related_name='%(app_label)s_%(class)s_set')
-  optional_services = UnhelpfulManyToManyField(Service, null=True, related_name='optional_%(app_label)s_%(class)s_set')
+  services = UnhelpfulManyToManyField(Service, null=True, blank=True, related_name='%(app_label)s_%(class)s_set')
+  optional_services = UnhelpfulManyToManyField(Service, null=True, blank=True, related_name='optional_%(app_label)s_%(class)s_set')
 
   is_restricted = models.NullBooleanField('is access restricted?')
   restriction = models.CharField(max_length=100, blank=True)
