@@ -24,8 +24,8 @@ class HutCommonForm(NgModelFormMixin, forms.ModelForm):
       'photo': forms.widgets.FileInput(attrs={'ng-file-select': 'hut.photo = $files[0]'}),
       'designations': forms.widgets.SelectMultiple(attrs=SELECT_ATTRS),
       'systems': forms.widgets.SelectMultiple(attrs=SELECT_ATTRS),
-      'types': forms.widgets.SelectMultiple(attrs=SELECT_ATTRS),
       'access_no_snow': forms.widgets.SelectMultiple(attrs=SELECT_ATTRS),
+      'types': forms.widgets.SelectMultiple(attrs=SELECT_ATTRS),
       'services': forms.widgets.SelectMultiple(attrs=SELECT_ATTRS),
       'optional_services': forms.widgets.SelectMultiple(attrs=SELECT_ATTRS),
     }
