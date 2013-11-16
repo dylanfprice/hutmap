@@ -1,6 +1,25 @@
 from django.contrib.gis import admin
-from huts.models import Hut, HutSuggestion, HutEdit, Region, Agency
+from huts.models import Hut, HutSuggestion, HutEdit, Agency, Region,\
+                        Designation, System, AccessType, HutType, Service
 from huts.forms import HutForm, HutSuggestionForm, HutEditForm
+
+class RegionAdmin(admin.ModelAdmin):
+  search_fields = ('region',)
+
+class DesignationAdmin(admin.ModelAdmin):
+  pass
+
+class SystemAdmin(admin.ModelAdmin):
+  pass
+
+class AccessTypeAdmin(admin.ModelAdmin):
+  pass
+
+class HutTypeAdmin(admin.ModelAdmin):
+  pass
+
+class ServiceAdmin(admin.ModelAdmin):
+  pass
 
 class HutCommonAdmin(admin.ModelAdmin):
   list_display = ('name', 'updated')
@@ -70,17 +89,19 @@ class HutEditAdmin(HutCommonAdmin):
     self.message_user(request, '{} hut edits successfully accepted.'.format(num_huts))
   accept.short_description = 'Accept selected hut edits'
 
-class RegionAdmin(admin.ModelAdmin):
-  search_fields = ('region',)
-
 class AgencyAdmin(admin.ModelAdmin):
   list_display = ('name', 'parent', 'updated')
   list_filter = ('updated',)
   search_fields = ('name', 'parent__name')
 
+admin.site.register(Region, RegionAdmin)
+admin.site.register(Designation, DesignationAdmin)
+admin.site.register(System, SystemAdmin)
+admin.site.register(AccessType, AccessTypeAdmin)
+admin.site.register(HutType, HutTypeAdmin)
+admin.site.register(Service, ServiceAdmin)
 admin.site.register(Hut, HutAdmin)
 admin.site.register(HutSuggestion, HutSuggestionAdmin)
 admin.site.register(HutEdit, HutEditAdmin)
-admin.site.register(Region, RegionAdmin)
 admin.site.register(Agency, AgencyAdmin)
 

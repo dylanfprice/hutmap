@@ -26,6 +26,9 @@ class Label(models.Model):
   )
   name = models.CharField(max_length=100, blank=False)
 
+  def __unicode__(self):
+    return u'{0}'.format(self.name)
+
   class Meta:
     abstract = True
 
