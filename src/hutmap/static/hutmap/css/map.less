@@ -4,6 +4,7 @@
 
 @errorColor: darkred;
 @errorBackgroundColor: lighten(@errorColor, 50%);
+@helpColor: rgb(153, 153, 153);
 
 .form-errors {
   color: @errorColor;
@@ -11,6 +12,11 @@
   padding: .2em;
   padding-left: .5em;
   margin-bottom: .5em;
+}
+
+.form-header {
+  font-size: 0.75em;
+  color: @helpColor;
 }
 
 .form-field-errors {
@@ -30,10 +36,14 @@
     width: 8em;
   }
 
+  .required label::after {
+    content: '*';
+  }
+
   .help {
     padding-left: 12em;
     font-size: .75em;
-    color: rgb(153, 153, 153);
+    color: @helpColor;
   }
 
   .errorlist {

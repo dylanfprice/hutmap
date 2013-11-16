@@ -1,6 +1,7 @@
 {% if form.errors %}
 <div class="form-errors">Please correct the errors below</div>
 {% endif %}
+<p class="form-header">* = Required Field</p>
 
 {% csrf_token %}
 {% for hidden in form.hidden_fields %}
@@ -9,7 +10,12 @@
 {% for field in form.visible_fields %}
 <div class="form-field {% if field.errors %}form-field-errors{% endif %}">
     {{ field.errors }}
-    {{ field.label_tag }} {{ field }}
+    {% if field.field.required %}
+      <span class="required">{{ field.label_tag }}</span>
+    {% else %}
+      {{ field.label_tag }}
+    {% endif %}
+    {{ field }}
 
     {% if field.help_text %}
       <p class="help">{{ field.help_text|safe }}</p>
