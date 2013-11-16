@@ -1,7 +1,7 @@
 from django.core.validators import RegexValidator
 from django.contrib.gis.db import models
 from django.core.files.base import ContentFile
-from huts.model_fields import CountryField, ListField
+from huts.model_fields import CountryField, ListField, UnhelpfulManyToManyField
 from huts.utils.image import retrieve_and_resize
 from os import path
 from urllib2 import HTTPError, URLError
@@ -82,8 +82,8 @@ class HutCommon(models.Model):
   country = CountryField(null=False)
   state = models.CharField(max_length=50, blank=False)
   region = models.ForeignKey('Region', null=True, blank=True)
-  designations = models.ManyToManyField(Designation, null=True)
-  systems = models.ManyToManyField(System, null=True)
+  designations = UnhelpfulManyToManyField(Designation, null=True)
+  systems = UnhelpfulManyToManyField(System, null=True)
 
   agency = models.ForeignKey('Agency', null=True, blank=True)
 
@@ -110,13 +110,13 @@ class HutCommon(models.Model):
   # Backcountry options include Gated/Private (Paved/2WD/4WD/Unpaved) Road,
   # Boat, Helicopter, (Ski/Float) Plane, Trail.  If technical terrain, the
   # hardest terrain is listed (Off Trail, Scramble, Glacier Travel, etc).
-  access_no_snow = models.ManyToManyField(AccessType, null=True)
+  access_no_snow = UnhelpfulManyToManyField(AccessType, null=True)
 
   no_snow_min_km = models.FloatField('minimum non-motorized kilometers when no snow is present', null=True, blank=True)
   is_snow_min_km = models.NullBooleanField('is there ever snow on access roads?')
   snow_min_km = models.FloatField('non-motorized kilometers to nearest trailhead on plowed road', null=True, blank=True)
 
-  types = models.ManyToManyField(HutType, null=True, blank=False)
+  types = UnhelpfulManyToManyField(HutType, null=True, blank=False)
   structures = models.IntegerField('number of structures', null=True, blank=True)
   overnight = models.NullBooleanField('available for overnight stays')
 
@@ -139,8 +139,8 @@ class HutCommon(models.Model):
 
   has_services = models.NullBooleanField('are services included?')
   has_optional_services = models.NullBooleanField('optional services are available at further cost')
-  services = models.ManyToManyField(Service, null=True, related_name='%(app_label)s_%(class)s_set')
-  optional_services = models.ManyToManyField(Service, null=True, related_name='optional_%(app_label)s_%(class)s_set')
+  services = UnhelpfulManyToManyField(Service, null=True, related_name='%(app_label)s_%(class)s_set')
+  optional_services = UnhelpfulManyToManyField(Service, null=True, related_name='optional_%(app_label)s_%(class)s_set')
 
   is_restricted = models.NullBooleanField('is access restricted?')
   restriction = models.CharField(max_length=100, blank=True)
