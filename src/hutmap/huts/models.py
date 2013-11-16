@@ -1,9 +1,48 @@
+from django.core.validators import RegexValidator
 from django.contrib.gis.db import models
 from django.core.files.base import ContentFile
 from huts.model_fields import CountryField, ListField
 from huts.utils.image import retrieve_and_resize
 from os import path
 from urllib2 import HTTPError, URLError
+
+class Region(models.Model):
+  region = models.CharField(max_length=50, unique=True)
+  created = models.DateField(auto_now_add=True)
+  updated = models.DateField(auto_now=True)
+  #parent = models.ForeignKey('Region')
+  #area = models.PolygonField(null=True, spatial_index=False)
+  objects = models.GeoManager()
+
+  def __unicode__(self):
+    return u'{0}'.format(self.region)
+
+class Label(models.Model):
+  identifier = models.CharField(
+    primary_key=True,
+    max_length=100, 
+    blank=False, 
+    validators=[RegexValidator(r'^[-a-zA-Z]+$', 'Must contain only letters and dashes')]
+  )
+  name = models.CharField(max_length=100, blank=False)
+
+  class Meta:
+    abstract = True
+
+class Designation(Label):
+  pass
+
+class System(Label):
+  pass
+
+class AccessType(Label):
+  pass
+
+class HutType(Label):
+  pass
+
+class Service(Label):
+  pass
 
 class HutCommon(models.Model):
   LOCATION_ACCURACY_CHOICES = (
@@ -35,13 +74,13 @@ class HutCommon(models.Model):
   show_topo = models.NullBooleanField()
 
   location_references = ListField(null=True, blank=True)
-
+  
   ## geopolitical ##
   country = CountryField(null=False)
   state = models.CharField(max_length=50, null=False)
   region = models.ForeignKey('Region', null=True, blank=True)
-  designations = ListField(null=True, blank=True)
-  systems = ListField(null=True, blank=True)
+  designations = models.ManyToManyField(Designation, null=True)
+  systems = models.ManyToManyField(System, null=True)
 
   agency = models.ForeignKey('Agency', null=True, blank=True)
 
@@ -68,13 +107,13 @@ class HutCommon(models.Model):
   # Backcountry options include Gated/Private (Paved/2WD/4WD/Unpaved) Road,
   # Boat, Helicopter, (Ski/Float) Plane, Trail.  If technical terrain, the
   # hardest terrain is listed (Off Trail, Scramble, Glacier Travel, etc).
-  access_no_snow = ListField(null=True, blank=True)
+  access_no_snow = models.ManyToManyField(AccessType, null=True)
 
   no_snow_min_km = models.FloatField('minimum non-motorized kilometers when no snow is present', null=True, blank=True)
   is_snow_min_km = models.NullBooleanField('is there ever snow on access roads?')
   snow_min_km = models.FloatField('non-motorized kilometers to nearest trailhead on plowed road', null=True, blank=True)
 
-  types = ListField()
+  types = models.ManyToManyField(HutType, null=True, blank=False)
   structures = models.IntegerField('number of structures', null=True, blank=True)
   overnight = models.NullBooleanField('available for overnight stays')
 
@@ -97,8 +136,8 @@ class HutCommon(models.Model):
 
   has_services = models.NullBooleanField('are services included?')
   has_optional_services = models.NullBooleanField('optional services are available at further cost')
-  services = ListField(null=True, blank=True)
-  optional_services = ListField(null=True, blank=True)
+  services = models.ManyToManyField(Service, null=True, related_name='%(app_label)s_%(class)s_set')
+  optional_services = models.ManyToManyField(Service, null=True, related_name='optional_%(app_label)s_%(class)s_set')
 
   is_restricted = models.NullBooleanField('is access restricted?')
   restriction = models.CharField(max_length=100, null=True, blank=True)
@@ -158,18 +197,6 @@ class HutEdit(HutCommon):
   user_notes = models.TextField('notes for the Hutmap team', blank=True)
   hut = models.ForeignKey(Hut, related_name='+') # '+' disables backwards relation
   objects = models.GeoManager()
-
-class Region(models.Model):
-  region = models.CharField(max_length=50, unique=True)
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
-  #parent = models.ForeignKey('Region')
-  #area = models.PolygonField(null=True, spatial_index=False)
-  objects = models.GeoManager()
-
-  def __unicode__(self):
-    return u'{0}'.format(self.region)
-
 
 class Agency(models.Model):
   name = models.CharField(max_length=100, unique=True)
