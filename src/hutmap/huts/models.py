@@ -77,7 +77,7 @@ class HutCommon(models.Model):
   
   ## geopolitical ##
   country = CountryField(null=False)
-  state = models.CharField(max_length=50, null=False)
+  state = models.CharField(max_length=50, blank=False)
   region = models.ForeignKey('Region', null=True, blank=True)
   designations = models.ManyToManyField(Designation, null=True)
   systems = models.ManyToManyField(System, null=True)
@@ -85,9 +85,9 @@ class HutCommon(models.Model):
   agency = models.ForeignKey('Agency', null=True, blank=True)
 
   ## hut details ##
-  name = models.CharField(max_length=100, null=True, blank=True)
+  name = models.CharField(max_length=100)
   alternate_names = ListField(null=True, blank=True)
-  hut_url = models.URLField(max_length=250, null=True, blank=True)
+  hut_url = models.URLField(max_length=250, blank=True)
   hut_references = ListField(null=True, blank=True)
 
   # returns path to save photo, relative to MEDIA_ROOT
@@ -96,7 +96,7 @@ class HutCommon(models.Model):
 
   photo = models.ImageField(upload_to=image_path, null=True, blank=True)
   photo_url = models.URLField(max_length=250, null=True, blank=True)
-  photo_credit_name = models.CharField(max_length=150, null=True, blank=True)
+  photo_credit_name = models.CharField(max_length=150, blank=True)
   photo_credit_url = models.URLField(max_length=250, null=True, blank=True)
   backcountry = models.IntegerField(choices=BACKCOUNTRY_CHOICES, null=True, blank=True)
   open_summer = models.NullBooleanField()
@@ -140,7 +140,7 @@ class HutCommon(models.Model):
   optional_services = models.ManyToManyField(Service, null=True, related_name='optional_%(app_label)s_%(class)s_set')
 
   is_restricted = models.NullBooleanField('is access restricted?')
-  restriction = models.CharField(max_length=100, null=True, blank=True)
+  restriction = models.CharField(max_length=100, blank=True)
 
   reservations = models.NullBooleanField('reservations accepted')
   locked = models.NullBooleanField()
@@ -210,7 +210,7 @@ class Agency(models.Model):
   # contact info
   url = models.URLField(max_length=250, null=True, blank=True)
   phone = models.BigIntegerField(null=True, blank=True)
-  email = models.CharField(max_length=100, null=True, blank=True)
+  email = models.CharField(max_length=100, blank=True)
 
   objects = models.GeoManager()
 

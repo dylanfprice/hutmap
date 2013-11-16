@@ -1,7 +1,8 @@
 from csv import DictReader
 from datetime import datetime
 from django.core.management.base import BaseCommand
-from huts.models import Hut, Region, Agency
+from huts.models import Hut, Agency, Region, Designation, System, AccessType,\
+                        HutType, Service
 from huts.model_fields import lookup_country_code
 from huts.utils.csv_consts import CSV_NULL, CSV_TRUE
 
@@ -53,6 +54,28 @@ def get_pos_float(values, key):
 
 def get_float(values, key):
   return get(values, key, lambda x: float(x))
+
+def get_hut_name(values):
+  name = get_string(values, 'name')
+  if name is None:
+    types = get_list(values, 'types')
+    if types:
+      name = 'Unknown {}'.format(types[0])
+    else:
+      name = 'Unknown'
+  return name
+
+def save_m2m(model_inst, m2m_model, values, key):
+  all_values = get_list(values, key)
+  if not all_values:
+    return None
+  for value in all_values:
+    identifier = value.replace(' ', '-').lower()
+    obj, created = m2m_model.objects.get_or_create(
+      name=value,
+      identifier=identifier,
+    )
+    getattr(model_inst, key).add(obj)
 
 def save_agency(values):
   agency_parent = get_string(values, 'agency_parent')
@@ -111,12 +134,12 @@ def save_hut(values):
       country = lookup_country_code(get_string(values, 'country')),
       state = get_string(values, 'state'),
       region = region,
-      designations = get_list(values, 'designations'),
-      systems = get_list(values, 'systems'),
+      # designations is m2m
+      # systems is m2m
 
       agency = agency,
 
-      name = get_string(values, 'name'),
+      name = get_hut_name(values),
       alternate_names = get_list(values, 'alternate_names'),
       hut_url = get_string(values, 'hut_url'),
       hut_references = get_list(values, 'hut_references'),
@@ -127,12 +150,12 @@ def save_hut(values):
       open_summer = get_bool(values, 'open_summer'),
       open_winter = get_bool(values, 'open_winter'),
 
-      access_no_snow = get_list(values, 'access_no_snow'),
+      # access_no_snow is m2m
       no_snow_min_km = get_pos_float(values, 'no_snow_min_km'),
       is_snow_min_km = get_bool(values, 'is_snow_min_km'),
       snow_min_km = get_pos_float(values, 'snow_min_km'),
 
-      types = get_list(values, 'types'),
+      # types is m2m
       structures = get_pos_int(values, 'structures'),
       overnight = get_bool(values, 'overnight'),
 
@@ -153,8 +176,8 @@ def save_hut(values):
 
       has_services = get_bool(values, 'has_services'),
       has_optional_services = get_bool(values, 'has_optional_services'),
-      services = get_list(values, 'services'),
-      optional_services = get_list(values, 'optional_services'),
+      # services is m2m
+      # optional_services is m2m
       is_restricted = get_bool(values, 'is_restricted'),
       restriction = get_string(values, 'restriction'),
       reservations = get_bool(values, 'reservations'),
@@ -162,6 +185,16 @@ def save_hut(values):
       private = get_bool(values, 'private'),
       published = get_bool(values, 'published'),
     )
+    if created:
+      save_m2m(hut, Designation, values, 'designations')
+      save_m2m(hut, System, values, 'systems')
+      save_m2m(hut, AccessType, values, 'access_no_snow')
+      save_m2m(hut, HutType, values, 'types')
+      save_m2m(hut, Service, values, 'services')
+      save_m2m(hut, Service, values, 'optional_services')
+
+      hut.save()
+
   except Exception as e:
     print('Failure!: {0}'.format(e.args))
     print('Failed row was: {0}'.format(values))
