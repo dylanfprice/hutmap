@@ -1,7 +1,7 @@
 {
   "name": "angularjs-file-upload",
   "main": "angular-file-upload.min.js",
-  "version": "1.0.2",
+  "version": "1.1.5",
   "homepage": "https://github.com/danialfarid/angular-file-upload",
   "authors": [
     "danialf <danial.farid@gmail.com>"
@@ -29,13 +29,13 @@
   "dependencies": {
     "angular": "~1.0.7"
   },
-  "_release": "1.0.2",
+  "_release": "1.1.5",
   "_resolution": {
     "type": "version",
-    "tag": "1.0.2",
-    "commit": "0a03ccc15f57157fd1a28748dc7f06901f80568f"
+    "tag": "1.1.5",
+    "commit": "9701590d1e0ad0030aebd99369450f371184b61c"
   },
   "_source": "git://github.com/danialfarid/angular-file-upload.git",
-  "_target": "1.0.2",
+  "_target": "1.1.5",
   "_originalSource": "angularjs-file-upload"
 }
