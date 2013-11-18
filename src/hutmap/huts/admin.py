@@ -1,4 +1,5 @@
 from django.contrib.gis import admin
+from django.db import models
 from huts.models import Hut, HutSuggestion, HutEdit, Agency, Region,\
                         Designation, System, AccessType, HutType, Service
 from huts.forms import HutForm, HutSuggestionForm, HutEditForm
@@ -62,14 +63,20 @@ class HutEditAdmin(HutCommonAdmin):
     related_hut_form = HutForm(instance=related_hut, prefix='dontsave')
 
     field_names = set(hut._meta.get_all_field_names()) & set(related_hut_form.fields.iterkeys())
+    extra_context['differing_fields'] = []
+    extra_context['test'] = []
     for field_name in field_names:
       field = related_hut_form.fields[field_name]
       field.widget.attrs['disabled'] = ''
 
       hut_value = getattr(hut, field_name)
       related_value = getattr(related_hut, field_name)
+      is_m2m = HutEdit._meta.get_field_by_name(field_name)[3]
+      if is_m2m:
+        hut_value = set(hut_value.all())
+        related_value = set(related_value.all())
       if hut_value != related_value:
-        field.widget.attrs['class'] = 'different-value'
+        extra_context['differing_fields'].append(field_name)
 
     extra_context['related_hut'] = related_hut_form
     return super(HutEditAdmin, self).change_view(request, object_id, 
