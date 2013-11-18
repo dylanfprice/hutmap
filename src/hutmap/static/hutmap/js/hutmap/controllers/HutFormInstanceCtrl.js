@@ -22,20 +22,16 @@
       });
     
     var submitHut = function(url, hut) {
-      angular.forEach(hut, function(val, key) {
-        if (val === null) {
-          hut[key] = '';
-        }
-      });
-
       $scope.submitting = true;
       $upload.upload({
         url: url, 
         headers: {'X-CSRFToken': $cookies.csrftoken},
         data: hut,
-        file: hut.photo,
+        file: hut.photo || '',
         formDataAppender: function(fd, key, val) {
-          if (angular.isArray(val)) {
+          if (val === null) {
+            fd.append(key, '');
+          } else if (angular.isArray(val)) {
             angular.forEach(val, function(v) {
               fd.append(key, v);
             });

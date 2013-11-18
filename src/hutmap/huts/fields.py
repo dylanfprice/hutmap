@@ -15,19 +15,17 @@ class PointFormField(forms.CharField):
     super(PointFormField, self).__init__(*args, **defaults)
 
   def to_python(self, value):
-    py_value = None
+    if value is None or value == '':
+      return None
     if ',' in value:
       coords = value.split(',')
       try:
         py_value = GEOSGeometry('POINT({} {})'.format(coords[1], coords[0]))
       except ValueError:
         raise ValidationError('Please use the {}'.format(self.help_text.lower()))
-    elif value == '':
-      py_value = None
+      return py_value
     else:
       raise ValidationError('Please use the {}'.format(self.help_text.lower()))
-
-    return py_value
 
 class ListFormField(forms.Field):
   help_text = 'Enter a comma separated list of values or leave blank'

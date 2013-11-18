@@ -1,5 +1,5 @@
 from django.forms.models import model_to_dict
-from django.http import HttpResponse
+from django.http import HttpResponse, QueryDict
 from django.views.generic import TemplateView, FormView
 from djangular.core.urlresolvers import urls_by_namespace
 from huts.forms import HutSuggestionForm, HutEditForm
@@ -27,17 +27,30 @@ class BaseView(TemplateView):
     context['hut_urls'] = urls_by_namespace('huts')
     return context
 
-class HutCommonMixin(object):
+class HutCommonView(FormView):
   template_name = 'forms/hut.html'
+
+  def get_form_kwargs(self):
+    form_kwargs = super(HutCommonView, self).get_form_kwargs()
+    # handle submissions of empty string on m2m fields
+    if isinstance(form_kwargs.get('data', None), QueryDict):
+      q = form_kwargs['data'].copy()
+      for field in self.get_form_class()._meta.model._meta.many_to_many:
+        if q[field.name] == '':
+          q.pop(field.name)
+
+      form_kwargs['data'] = q
+
+    return form_kwargs
 
   def form_valid(self, form):
     form.save()
     return HttpResponse(status=201)
 
-class HutSuggestionFormView(HutCommonMixin, FormView):
+class HutSuggestionFormView(HutCommonView):
   form_class = HutSuggestionForm
 
-class HutEditFormView(HutCommonMixin, FormView):
+class HutEditFormView(HutCommonView):
   form_class = HutEditForm
 
   def get_initial(self):
