@@ -4,8 +4,8 @@
   angular.module('hutmap.controllers').
 
   controller('HutFormInstanceCtrl', 
-    ['$scope', '$http', '$modalInstance', '$cookies', 'hutFormUrl', 'header', '$log',
-    function($scope, $http, $modalInstance, $cookies, hutFormUrl, header, $log) {
+    ['$scope', '$http', '$upload', '$modalInstance', '$cookies', 'hutFormUrl', 'header', '$log',
+    function($scope, $http, $upload, $modalInstance, $cookies, hutFormUrl, header, $log) {
     
     $scope.hut = null;
     $scope.header = header;
@@ -29,28 +29,33 @@
       });
 
       $scope.submitting = true;
-      $http.uploadFile({
+      $upload.upload({
         url: url, 
         headers: {'X-CSRFToken': $cookies.csrftoken},
         data: hut,
-        file: hut.photo
+        file: hut.photo,
+        formDataAppender: function(fd, key, val) {
+          if (angular.isArray(val)) {
+            angular.forEach(val, function(v) {
+              fd.append(key, v);
+            });
+          } else {
+            fd.append(key, val);
+          }
+        },
       }).progress(function(evt) {
         $log.info('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
       }).success(function(data, status, headers, config) {
-        $scope.$apply(function() {
-          if (status === 201) {
-            $modalInstance.close(hut);
-          } else {
-            $scope.hutForm = data;
-          }
-          $scope.submitting = false;
-        });
+        if (status === 201) {
+          $modalInstance.close(hut);
+        } else {
+          $scope.hutForm = data;
+        }
+        $scope.submitting = false;
       }).error(function(data, status, headers, config){
         $log.error('ERROR: ', status, data);
-        $scope.$apply(function() {
-          $modalInstance.dismiss('error');
-          $scope.submitting = false;
-        });
+        $modalInstance.dismiss('error');
+        $scope.submitting = false;
       });
     };
 

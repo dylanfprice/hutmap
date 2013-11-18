@@ -4,8 +4,8 @@
   angular.module('hutmap.controllers').
 
   controller('HutFormCtrl', 
-    ['$scope', '$modal', '$http', '$cookies', '$log',
-    function($scope, $modal, $http, $cookies, $log) {
+    ['$scope', '$modal', '$cookies', '$log',
+    function($scope, $modal, $cookies, $log) {
 
     $scope.suggestHut = function() {
 
