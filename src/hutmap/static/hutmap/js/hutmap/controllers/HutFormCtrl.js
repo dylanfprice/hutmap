@@ -24,8 +24,7 @@
       });
 
       modal.result.then(function (hut) {
-        $log.info('suggestion', hut);
-        $scope.addAlert('info', "Created hut suggestion '" + hut.name + "'");
+        $scope.addAlert('success', "Successfully submitted suggestion for " + hut.name + "!");
       }, function (reason) {
         $log.info(reason, 'suggestion dismissed at: ' + new Date());
       });
@@ -48,8 +47,7 @@
       });
 
       modal.result.then(function (hut) {
-        $log.info('edit', hut);
-        $scope.addAlert('info', "Edited hut '" + hut.name + "'");
+        $scope.addAlert('success', "Successfully submitted edit for " + hut.name + "!");
       }, function (reason) {
         $log.info(reason, 'edit dismissed at: ' + new Date());
       });

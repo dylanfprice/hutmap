@@ -4,13 +4,13 @@
   angular.module('hutmap.controllers').
 
   controller('AlertCtrl', ['$scope', '$timeout', function($scope, $timeout) {
-    // Of the form { type: 'error/warning/info', msg: 'message' }
+    // Of the form { type: 'error/warning/success/info', msg: 'message' }
     $scope.alerts = [
     ];
 
     $scope.addAlert = function(type, msg) {
       var length = $scope.alerts.push({type:type,msg:msg});
-      if (type === 'info') {
+      if (type === 'success') {
         $timeout(function() {
           // race condition!
           if ($scope.alerts.length === length) {
