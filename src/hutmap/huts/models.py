@@ -18,9 +18,8 @@ class Region(models.Model):
     return u'{0}'.format(self.region)
 
 class Label(models.Model):
-  identifier = models.CharField(
-    primary_key=True,
-    max_length=100, 
+  identifier = models.SlugField(
+    unique=True,
     blank=False, 
     validators=[RegexValidator(r'^[-a-zA-Z]+$', 'Must contain only letters and dashes')]
   )
@@ -211,9 +210,10 @@ class Agency(models.Model):
   # agency is a parent to other agencies)
   parent = models.ForeignKey('Agency', null=True, blank=True)
   # contact info
-  url = models.URLField(max_length=250, null=True, blank=True)
-  phone = models.BigIntegerField(null=True, blank=True)
+  url = models.URLField(max_length=250, blank=True)
   email = models.CharField(max_length=100, blank=True)
+  phone = models.BigIntegerField(null=True, blank=True)
+  address = models.TextField(blank=True)
 
   objects = models.GeoManager()
 
