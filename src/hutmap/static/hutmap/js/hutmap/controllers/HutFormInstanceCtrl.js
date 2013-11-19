@@ -13,7 +13,6 @@
 
     $scope.select2Options = {
       width: 'resolve',
-      placeholderOption: 'first',
     };
 
     $http.get(hutFormUrl).
