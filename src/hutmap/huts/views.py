@@ -36,9 +36,9 @@ class HutCommonView(FormView):
     if isinstance(form_kwargs.get('data', None), QueryDict):
       q = form_kwargs['data'].copy()
       for field in self.get_form_class()._meta.model._meta.many_to_many:
-        if q[field.name] == '':
+        if q.get(field.name, None) == '':
           q.pop(field.name)
-
+      
       form_kwargs['data'] = q
 
     return form_kwargs
