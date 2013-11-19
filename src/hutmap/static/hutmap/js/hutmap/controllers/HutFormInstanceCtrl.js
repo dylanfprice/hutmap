@@ -66,20 +66,6 @@
       $modalInstance.dismiss('cancel');
     };
 
-    /*
-    // TODO: #31 get rid of dirty hack for select fields
-    $scope.$watch('hut', function(newVal) {
-      if (newVal) {
-        $('select:not(select[multiple])').each(function(index, select) {
-          var name = $(select).attr('name');
-          var selectedOption = $(select).children('option[selected]').first();
-          var value = $(selectedOption).attr('value');
-          $scope.hut[name] = value;
-        });
-      }
-    });
-    */
-
   }]);
 
 })();
