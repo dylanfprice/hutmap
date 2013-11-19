@@ -38,23 +38,23 @@
         'caves': {
           include: false,
           $position: 1,
-          $keywords: ['Cave']
+          $keywords: ['cave']
         },
         'huts & yurts': {
           include: false,
           $position: 2,
-          $keywords: ['Hut', 'Yurt', 'Chickee', 'Lean-to', 'Wall Tent', 'Shelter'],
+          $keywords: ['hut', 'yurt', 'chickee', 'lean-to', 'wall-tent', 'shelter'],
           $tooltip: 'Hut, Yurt, Lean-to, Wall tent, etc'
         },
         'fire lookouts': {
           include: false,
           $position: 3,
-          $keywords: ['Fire Lookout']
+          $keywords: ['fire-lookout']
         },
         'compounds': {
           include: false,
           $position: 4,
-          $keywords: ['Compound', 'Hostel', 'Tea House', 'Lodge', 'Chalet', 'Ranch', 'Farm'],
+          $keywords: ['compound', 'hostel', 'tea-house', 'lodge', 'chalet', 'ranch', 'farm'],
           $tooltip: 'Lodge, Hostel, Ranch, Farm, etc'
         }
       };
@@ -95,8 +95,8 @@
           $match: function(hut) {
             var match = false;
             if (hut.backcountry >= 2) {
-              match = checkKeywords(hut.access_no_snow, 
-                  ['Off Trail', 'Bushwack', 'Scramble', 'Glacier']);
+              match = checkLabels(hut.access_no_snow, 
+                  ['off-trail', 'bushwack', 'scramble', 'glacier']);
             }
             return match;
           }
@@ -110,8 +110,8 @@
             if (hut.backcountry === 1 && $scope.f.season.winter.include) {
               match = true;
             } else if (hut.backcountry >= 2) {
-              match = checkKeywords(hut.access_no_snow, 
-                  ['Snowmobile', 'Cat']);
+              match = checkLabels(hut.access_no_snow, 
+                  ['snowmobile', 'cat']);
             }
             return match;
           }
@@ -123,8 +123,8 @@
           $match: function(hut) {
             var match = false;
             if (hut.backcountry >= 2) {
-              match = checkKeywords(hut.access_no_snow, 
-                  ['Boat']);
+              match = checkLabels(hut.access_no_snow, 
+                  ['boat']);
             }
             return match;
           }
@@ -136,8 +136,8 @@
           $match: function(hut) {
             var match = false;
             if (hut.backcountry >= 2) {
-              match = checkKeywords(hut.access_no_snow, 
-                  ['Plane']);
+              match = checkLabels(hut.access_no_snow, 
+                  ['plane']);
             }
             return match;
           }
@@ -155,18 +155,18 @@
           include: true,
           $position: 1,
           $tooltip: 'Helicopter, Snowcat, etc',
-          $keywords: ['Transportation (Helicopter)', 'Transportation (Snowcat)']
+          $keywords: ['transportation-(helicopter)', 'transportation-(snowcat)']
         },
         'food': {
           include: true,
           $position: 2,
           $tooltip: 'Cooked meals, Stocked food, etc',
-          $keywords: ['Half Board', 'Full Board', 'Stocked Food', 'Breakfast', 'Catering']
+          $keywords: ['half-board', 'full-board', 'stocked-food', 'breakfast', 'catering']
         },
         'guide': {
           include: true,
           $position: 3,
-          $keywords: ['Guide']
+          $keywords: ['guide']
         }
       };
 
@@ -285,10 +285,17 @@
       return keywords;
     };
 
-    function checkKeywords(values, keywords) {
+    /**
+     * @param labels a list of {'identifier': '<identifier>'} objects
+     * @param keywords a list of string identifiers
+     * @return true if any identifier in the labels is contained in the
+     *   keywords
+     */
+    function checkLabels(labels, keywords) {
       var match = false;
-      angular.forEach(keywords, function(keyword) {
-        if (values.indexOf(keyword) > -1) {
+      angular.forEach(labels, function(label) {
+        var identifier = label.identifier;
+        if (keywords.indexOf(identifier) > -1) {
           match = true;
           return;
         }
@@ -326,7 +333,8 @@
       if ($scope.f.shelterType.any.include) {
         return true;
       } else {
-        return checkKeywords(hut.types, keywords);
+        hut.types.reduce
+        return checkLabels(hut.types, keywords);
       }
     };
 
@@ -347,10 +355,10 @@
         return true;
       } else if (keywords.length > 0) {
         if (hut.has_services && hut.services != null) {
-          matchServices = checkKeywords(hut.services, keywords);
+          matchServices = checkLabels(hut.services, keywords);
         }
         if (!matchServices && hut.has_optional_services && hut.optional_services != null) {
-          matchServices = checkKeywords(hut.optional_services, keywords);
+          matchServices = checkLabels(hut.optional_services, keywords);
         }
       }
       return matchServices;
