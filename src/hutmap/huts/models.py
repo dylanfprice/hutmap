@@ -115,7 +115,7 @@ class HutCommon(models.Model):
   is_snow_min_km = models.NullBooleanField('is there ever snow on access roads?')
   snow_min_km = models.FloatField('non-motorized kilometers to nearest trailhead on plowed road', null=True, blank=True)
 
-  types = UnhelpfulManyToManyField(HutType, null=True, blank=False)
+  types = UnhelpfulManyToManyField(HutType, null=False, blank=False)
   structures = models.IntegerField('number of structures', null=True, blank=True)
   overnight = models.NullBooleanField('available for overnight stays')
 
