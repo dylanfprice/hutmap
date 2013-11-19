@@ -20,12 +20,10 @@
 
   filter('listifyObjects', function() {
     return function(objects, key) {
-      console.log(objects, key);
       var array = [];
       angular.forEach(objects, function(object) {
         array.push(object[key]);
       });
-      console.log(array);
       return array.join(', ');
     }
   });
