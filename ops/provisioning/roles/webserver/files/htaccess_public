@@ -1,23 +1,23 @@
-# Uncomment to turn maintenance mode on
-RewriteEngine On
-RewriteBase /
-# The next code line is currently commented out on purpose so it will be ignored.
-# It is only for testing the code when you don't really want to close the site.
-# It closes the site ONLY to you, but leaves it OPEN to everybody else.
-# When commented out, the site is closed to everyone, including yourself.
-# To enable the line, remove the # (pound sign) at the start of it.
-# You MUST first change the digits 111 222 333 444 to match YOUR IP address.
-RewriteCond %{REMOTE_ADDR} !^75\.172\.53\.96$
-# It is easy to modify the above line so it does the opposite:
-# close the site to everybody else, but leave it OPEN to only you.
-# Put an exclamation point ! in front of the ^ character, to make it: !^
-
-# The remaining two code lines close the site. They say:
-# If the request is NOT for /maintenance.php, send /maintenance.php instead.
-# Allowing maintenance.php to be served as-is prevents an endless redirect loop.
-RewriteCond %{REQUEST_URI} !^/maintenance\.php$
-# To allow another file, copy the line above to here and change the filename.
-
-# This line says: no matter what file was requested, serve maintenance.php.
-# This is a rewrite (not a redirect), so we use the local file path, no http://
-RewriteRule ^(.*)$ /maintenance.php [L]
+## Uncomment to turn maintenance mode on
+#RewriteEngine On
+#RewriteBase /
+## The next code line is currently commented out on purpose so it will be ignored.
+## It is only for testing the code when you don't really want to close the site.
+## It closes the site ONLY to you, but leaves it OPEN to everybody else.
+## When commented out, the site is closed to everyone, including yourself.
+## To enable the line, remove the # (pound sign) at the start of it.
+## You MUST first change the digits 111 222 333 444 to match YOUR IP address.
+#RewriteCond %{REMOTE_ADDR} !^75\.172\.53\.96$
+## It is easy to modify the above line so it does the opposite:
+## close the site to everybody else, but leave it OPEN to only you.
+## Put an exclamation point ! in front of the ^ character, to make it: !^
+#
+## The remaining two code lines close the site. They say:
+## If the request is NOT for /maintenance.php, send /maintenance.php instead.
+## Allowing maintenance.php to be served as-is prevents an endless redirect loop.
+#RewriteCond %{REQUEST_URI} !^/maintenance\.php$
+## To allow another file, copy the line above to here and change the filename.
+#
+## This line says: no matter what file was requested, serve maintenance.php.
+## This is a rewrite (not a redirect), so we use the local file path, no http://
+#RewriteRule ^(.*)$ /maintenance.php [L]
