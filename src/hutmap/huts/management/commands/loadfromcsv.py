@@ -33,7 +33,7 @@ def get(values, key, val_eval):
     return val_eval(value)
 
 def get_string(values, key):
-  return get(values, key, lambda x: x)
+  return get(values, key, lambda x: x) or ''
 
 def get_datetime(values, key):
   return get(values, key,
