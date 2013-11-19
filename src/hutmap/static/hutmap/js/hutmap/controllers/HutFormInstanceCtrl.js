@@ -67,6 +67,7 @@
       $modalInstance.dismiss('cancel');
     };
 
+    /*
     // TODO: #31 get rid of dirty hack for select fields
     $scope.$watch('hut', function(newVal) {
       if (newVal) {
@@ -78,6 +79,7 @@
         });
       }
     });
+    */
 
   }]);
 
