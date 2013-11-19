@@ -217,21 +217,26 @@
       };
     };
 
-    function setIncludes(filter, include) {
+    function setOtherIncludes(filter, include) {
       angular.forEach(filter, function(item, name) {
         if (name !== 'any') {
-          item.include = false;
+          item.include = include;
         }
       });
     }
 
-    $scope.including = function(filter, item) {
-      if (item.include) {
-        if (item.$name == 'any') {
-          setIncludes($scope.f[filter], false);
-        } else if ('any' in $scope.f[filter]) {
+    $scope.toggle = function(filter, item) {
+      item.include = !item.include;
+      var isIncluded = item.include;
+      var isAny = item.$name == 'any';
+      if (isAny && isIncluded) {
+          setOtherIncludes($scope.f[filter], false);
+      } else if (isAny && !isIncluded ) {
+          setOtherIncludes($scope.f[filter], true);
+      } else if (!isAny && isIncluded) {
+        if ('any' in $scope.f[filter]) {
           $scope.f[filter]['any'].include = false;    
-        }
+        } 
       }
     };
 

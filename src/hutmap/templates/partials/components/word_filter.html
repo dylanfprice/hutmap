@@ -5,7 +5,7 @@
       OFFtooltip="[* item.$tooltip *]"
       tooltip-placement="right"
       ng-class="{ selected: item.include }"
-      ng-click="item.include = !item.include; including('{{ filter }}', item); filter();">
+      ng-click="toggle('{{ filter }}', item); filter();">
       <span class="hut-filter-item">[* item.$name *]</span>
   </li>
 </ul>
