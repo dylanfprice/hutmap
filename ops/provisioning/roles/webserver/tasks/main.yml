@@ -23,6 +23,12 @@
 - name: copy static htaccess
   copy: src='htaccess_static' dest='$public_dir/static/.htaccess'
 
+- name: copy public htaccess
+  copy: src='htaccess_public' dest='$public_dir/.htaccess'
+
+- name: copy maintenance.php
+  copy: src='maintenance.php' dest='$public_dir/maintenance.php'
+
 # install requirements
 - name: copy requirements
   copy: src='requirements.txt' dest='$home/requirements.txt'
