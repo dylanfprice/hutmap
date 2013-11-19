@@ -212,7 +212,7 @@ class Agency(models.Model):
   # contact info
   url = models.URLField(max_length=250, blank=True)
   email = models.CharField(max_length=100, blank=True)
-  phone = models.BigIntegerField(null=True, blank=True)
+  phone = models.CharField(max_length=50, blank=True)
   address = models.TextField(blank=True)
 
   objects = models.GeoManager()
