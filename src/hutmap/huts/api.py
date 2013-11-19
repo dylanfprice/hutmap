@@ -15,7 +15,7 @@ class LabelResourceMixin(object):
   class Meta:
     allowed_methods = ['get']
     serializer = CSVSerializer(formats=['json', 'csv'])
-    fields = ['identifier']
+    fields = ['name', 'identifier']
     include_resource_uri = False
 
 class DesignationResource(ModelResource, LabelResourceMixin):
