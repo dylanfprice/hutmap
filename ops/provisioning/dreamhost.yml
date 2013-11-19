@@ -38,6 +38,16 @@
       tags:
         - partial
 
+    - name: migrate db
+      shell: . \$HOME/.bash_profile &&
+        workon_hutmap &&
+        python manage.py $item
+      with_items:
+        - syncdb --noinput
+        - migrate --noinput huts
+      tags:
+        - partial
+
   handlers:
     - name: restart webserver
       shell: /usr/bin/pkill -f phusion_passenger
