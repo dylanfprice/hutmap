@@ -91,6 +91,7 @@ $ cd ops/
 $ vagrant ssh
 $ workon_hutmap
 $ ./manage.py syncdb
+$ ./manage.py migrate
 $ ./manage.py loaddata init
 $ scripts/update_huts_json.sh
 ```
