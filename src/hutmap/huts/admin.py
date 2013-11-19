@@ -1,5 +1,4 @@
 from django.contrib.gis import admin
-from django.db import models
 from huts.models import Hut, HutSuggestion, HutEdit, Agency, Region,\
                         Designation, System, AccessType, HutType, Service
 from huts.forms import HutForm, HutSuggestionForm, HutEditForm
@@ -7,19 +6,22 @@ from huts.forms import HutForm, HutSuggestionForm, HutEditForm
 class RegionAdmin(admin.ModelAdmin):
   search_fields = ('region',)
 
-class DesignationAdmin(admin.ModelAdmin):
+class LabelAdmin(admin.ModelAdmin):
+  prepopulated_fields = {'identifier': ('name',)}
+
+class DesignationAdmin(LabelAdmin):
   pass
 
-class SystemAdmin(admin.ModelAdmin):
+class SystemAdmin(LabelAdmin):
   pass
 
-class AccessTypeAdmin(admin.ModelAdmin):
+class AccessTypeAdmin(LabelAdmin):
   pass
 
-class HutTypeAdmin(admin.ModelAdmin):
+class HutTypeAdmin(LabelAdmin):
   pass
 
-class ServiceAdmin(admin.ModelAdmin):
+class ServiceAdmin(LabelAdmin):
   pass
 
 class HutCommonAdmin(admin.ModelAdmin):
