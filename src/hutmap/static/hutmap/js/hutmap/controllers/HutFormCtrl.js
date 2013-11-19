@@ -26,7 +26,7 @@
       modal.result.then(function (hut) {
         $scope.addAlert('success', "Successfully submitted suggestion for " + hut.name + "!");
       }, function (reason) {
-        $log.info(reason, 'suggestion dismissed at: ' + new Date());
+        $log.info('suggestion dismissed, reason: ', reason);
       });
     };
 
@@ -49,7 +49,7 @@
       modal.result.then(function (hut) {
         $scope.addAlert('success', "Successfully submitted edit for " + hut.name + "!");
       }, function (reason) {
-        $log.info(reason, 'edit dismissed at: ' + new Date());
+        $log.info('edit dismissed, reason: ', reason);
       });
     };
 
