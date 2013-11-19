@@ -18,12 +18,12 @@ class Region(models.Model):
     return u'{0}'.format(self.region)
 
 class Label(models.Model):
+  name = models.CharField(max_length=100, blank=False)
   identifier = models.SlugField(
     unique=True,
     blank=False, 
     validators=[RegexValidator(r'^[-a-zA-Z]+$', 'Must contain only letters and dashes')]
   )
-  name = models.CharField(max_length=100, blank=False)
 
   def __unicode__(self):
     return u'{0}'.format(self.name)
