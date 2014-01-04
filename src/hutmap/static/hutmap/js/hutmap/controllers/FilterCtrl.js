@@ -270,7 +270,7 @@
       });
       $scope.h.filteredHuts = filteredHuts;
       $scope.h.filteredHutIds = filteredHutIds;
-      $scope.$broadcast('gmMarkersRedraw', 'h.huts');
+      $scope.$broadcast('gmMarkersUpdate', 'h.huts');
     };
 
     $scope.$watch('h.huts', function() {

@@ -3,7 +3,7 @@
     "name": "Dylan Price"
   },
   "name": "angular-gm",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "main": ["./angular-gm.js"],
   "dependencies": {
     "angular": ">=1"
