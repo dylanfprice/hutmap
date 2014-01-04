@@ -206,6 +206,7 @@ INSTALLED_APPS = (
     'south',
     'django_nose',
     'djangular',
+    'any_imagefield',
     'huts',
 )
 

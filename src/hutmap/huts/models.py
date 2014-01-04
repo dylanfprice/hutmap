@@ -1,6 +1,7 @@
 from django.core.validators import RegexValidator
 from django.contrib.gis.db import models
 from django.core.files.base import ContentFile
+from any_imagefield.models import AnyImageField
 from huts.model_fields import CountryField, ListField, UnhelpfulManyToManyField
 from huts.utils.image import retrieve_and_resize
 from os import path
@@ -96,7 +97,7 @@ class HutCommon(models.Model):
   def image_path(hut, filename):
     return path.join('huts', hut.country, hut.state, hut.name, filename)
 
-  photo = models.ImageField(upload_to=image_path, null=True, blank=True)
+  photo = AnyImageField(upload_to=image_path, null=True, blank=True)
   photo_url = models.URLField(max_length=250, null=True, blank=True)
   photo_credit_name = models.CharField(max_length=150, blank=True)
   photo_credit_url = models.URLField(max_length=250, null=True, blank=True)
