@@ -72,8 +72,9 @@
           $position: 1,
           $tooltip: 'Accessible by car',
           $match: function(hut) {
-            return hut.backcountry === 0 ||
-              (hut.backcountry === 1 && $scope.f.season.summer.include);
+            return hut.backcountry === 0 || hut.backcountry === 1 ||
+              checkLabels(hut.access_no_snow, 
+                  ['2wd-road', '4wd-road', 'dirt-road', 'paved-road', 'road']);
           }
         },
         'trail': {
@@ -83,7 +84,7 @@
           $match: function(hut) {
             var match = false;
             if (hut.backcountry >= 2) {
-              match = hut.access_no_snow.indexOf('Trail') !== -1;
+              match = checkLabels(hut.access_no_snow, ['trail', 'gated-']);
             }
             return match;
           }
@@ -106,14 +107,7 @@
           $position: 4,
           $tooltip: 'Ski, Snowmobile, etc',
           $match: function(hut) {
-            var match = false;
-            if (hut.backcountry === 1 && $scope.f.season.winter.include) {
-              match = true;
-            } else if (hut.backcountry >= 2) {
-              match = checkLabels(hut.access_no_snow, 
-                  ['snowmobile', 'cat']);
-            }
-            return match;
+            return hut.backcountry === 1 || hut.is_snow_min_km;
           }
         },
         'boat': {
