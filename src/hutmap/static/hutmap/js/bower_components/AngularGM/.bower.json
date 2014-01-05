@@ -3,7 +3,7 @@
     "name": "Dylan Price"
   },
   "name": "angular-gm",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "main": [
     "./angular-gm.js"
   ],
@@ -11,13 +11,13 @@
     "angular": ">=1"
   },
   "homepage": "https://github.com/dylanfprice/angular-gm-bower",
-  "_release": "0.3.0",
+  "_release": "1.0.0",
   "_resolution": {
     "type": "version",
-    "tag": "0.3.0",
-    "commit": "d7ad37b4844d5f374c6509375099c81f2cf535c0"
+    "tag": "1.0.0",
+    "commit": "a93bafed66ec57cfc7556bac188af7cb87f07938"
   },
   "_source": "git://github.com/dylanfprice/angular-gm-bower.git",
-  "_target": "0.3.0",
+  "_target": "1.0.0",
   "_originalSource": "AngularGM"
 }

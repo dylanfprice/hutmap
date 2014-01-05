@@ -55,8 +55,9 @@
                     gm-map-type-id="m.mapTypeId" 
                     gm-map-options="mc.mapOptions">
               <gm-markers gm-objects="h.huts" 
-                          gm-get-lat-lng="{lat:object.location.coordinates[1], lng:object.location.coordinates[0]}" 
-                          gm-get-marker-options="getMarkerOptions(object)"
+                          gm-id="object.id"
+                          gm-position="{lat:object.location.coordinates[1], lng:object.location.coordinates[0]}" 
+                          gm-marker-options="getMarkerOptions(object)"
                           gm-events="m.hutMarkerEvents"
                           gm-on-click="selectHut(marker, object)"
                           gm-on-mouseover="showMarkerTooltip(marker, object)"

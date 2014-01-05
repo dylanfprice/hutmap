@@ -94,6 +94,15 @@
     content: '*';
   }
 
+  .clearable-file-input label {
+    float: none;
+    display: inline;
+  }
+
+  .file-upload + p {
+    margin-left: 5em;
+  }
+
   .help {
     padding-left: 12em;
     font-size: .75em;
@@ -103,6 +112,21 @@
   .errorlist {
     font-size: .75em;
     color: @errorColor;
+  }
+}
+
+.hut-form-map {
+  width: 200px;
+  height: 200px;
+  float: right;
+  margin-right: 5em;
+
+  /* 
+  Fixes Bootstrap issues with Google Maps
+  see http://stackoverflow.com/a/9170756 
+  */
+  img { 
+      max-width: none;
   }
 }
 

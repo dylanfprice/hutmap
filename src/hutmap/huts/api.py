@@ -59,6 +59,7 @@ class HutResource(ModelResource):
   access_no_snow = fields.ToManyField(AccessTypeResource, 'access_no_snow', null=True, full=True)
   types = fields.ToManyField(HutTypeResource, 'types', null=True, full=True)
   services = fields.ToManyField(ServiceResource, 'services', null=True, full=True)
+  optional_services = fields.ToManyField(ServiceResource, 'optional_services', null=True, full=True)
 
   class Meta:
     max_limit = 0

@@ -1,6 +1,6 @@
 /**
  * AngularGM - Google Maps Directives for AngularJS
- * @version v0.3.1 - 2013-10-29
+ * @version v1.0.0 - 2014-01-01
  * @link http://dylanfprice.github.com/angular-gm
  * @author Dylan Price <the.dylan.price@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -131,19 +131,16 @@
         });
       });
 
-      /**
-       * The info window's contents dont' need to be on the dom anymore,
-       * google maps has them stored. So we just replace the infowindow
-       * element with an empty div. (we don't just straight remove it from
-       * the dom because straight removing things from the dom can mess up
-       * angular) 
-       */
+      /* The info window's contents dont' need to be on the dom anymore,
+       google maps has them stored. So we just replace the infowindow
+       element with an empty div. (we don't just straight remove it from
+       the dom because straight removing things from the dom can mess up
+       angular) */
       element.replaceWith('<div></div>');
 
       //Decorate infoWindow.open to $compile contents before opening
       var _open = infoWindow.open;
       infoWindow.open = function open(map, anchor) {
-        $compile(element.contents())(scope);
         _open.call(infoWindow, map, anchor);
       };
     }
@@ -223,10 +220,34 @@
  * @name angulargm.directive:gmMap#gmMapResize
  * @eventOf angulargm.directive:gmMap
  * @eventType listen on current gmMap scope
+ *
+ * @description Alias for google.maps.event.trigger(map, 'resize')
+ *
  * @param {string} mapId Required. The id of your map.
  * @example
  * ```js
  * $scope.$broadcast('gmMapResize', 'myMapId')
+ * ```
+ */
+
+/**
+ * @ngdoc event
+ * @name angulargm.directive:gmMap#gmMapIdle
+ * @eventOf angulargm.directive:gmMap
+ * @eventType emit on current gmMap scope
+ * 
+ * @description Emitted when the map is finished loading (when the map fires
+ * the 'idle' event).
+ *
+ * @param {string} mapId the id of the map which finished loading.
+ *
+ * @example
+ * ```js
+ * $scope.$on('gmMapIdle', function(event, mapId) {
+ *     if (mapId === 'myMapId') {
+ *       ...
+ *     }
+ * });
  * ```
  */
 
@@ -237,9 +258,10 @@
 
   directive('gmMap', ['$timeout', 'angulargmUtils', function ($timeout, angulargmUtils) {
   
-    /** link function **/
+    /** aliases **/
     var getEventHandlers = angulargmUtils.getEventHandlers;
 
+    /** link function **/
     function link(scope, element, attrs, controller) {
       // initialize scope
       if (!angular.isDefined(scope.gmCenter)) {
@@ -277,8 +299,6 @@
         hasMapTypeId = true;
       }
 
-      var handlers = getEventHandlers(attrs); // map events -> handlers
-
       var updateScope = function() {
         $timeout(function () {
           if (hasCenter || hasZoom || hasBounds || hasMapTypeId) {
@@ -314,6 +334,7 @@
 
       // Add user supplied callbacks
       var map = controller.getMap(attrs.gmMapId);
+      var handlers = getEventHandlers(attrs); // map events -> handlers
       angular.forEach(handlers, function(handler, event) {
         controller.addMapListener(event, function(ev) {
           // pass the map in
@@ -379,6 +400,9 @@
         }
       });
 
+      controller.addMapListenerOnce('idle', function() {
+        scope.$emit('gmMapIdle', scope.gmMapId());
+      });
       controller.mapTrigger('resize');
     }
 
@@ -415,18 +439,25 @@
  * A directive for adding markers to a `gmMap`. You may have multiple per `gmMap`.
  *
  * To use, you specify an array of custom objects and tell the directive how to
- * extract location data from them. A marker will be created for each of your
- * objects. If you assign a new array to your scope variable or change the
- * array's length, the markers will also update.
+ * extract an id and position from them. A marker will be created for each of
+ * your objects. If you assign a new array to your scope variable or change the
+ * array's length (i.e. add or remove an object), the markers will also update.
+ * The one case where `gmMarkers` can not automatically detect changes to your
+ * objects is when you mutate objects in the array. To inform the directive of
+ * such changes, see the `gmMarkersUpdate` event below.
  *
- * Only the `gm-objects` and `gm-get-lat-lng` attributes are required.
+ * Only the `gm-objects`, `gm-id` and `gm-position` attributes are required.
  *
  * @param {expression} gm-objects an array of objects in the current scope.
  * These can be any objects you wish to attach to markers, the only requirement
- * is that they have a uniform method of accessing a lat and lng.
+ * is that they have a uniform method of accessing an id and a position.
  *
+ * @param {expression} gm-id an angular expression that given an object from
+ * `gm-objects`, evaluates to a unique identifier for that object. Your object
+ * can be accessed through the variable `object`. See `gm-position` below for
+ * an example.
  *
- * @param {expression} gm-get-lat-lng an angular expression that given an object from
+ * @param {expression} gm-position an angular expression that given an object from
  * `gm-objects`, evaluates to an object with lat and lng properties. Your
  * object can be accessed through the variable `object`.  For example, if
  * your controller has
@@ -442,11 +473,13 @@
  * ```js
  * ...
  * gm-objects="myObjects"
- * gm-get-lat-lng="{ lat: object.location.lat, lng: object.location.lng }"
+ * gm-id="object.id"
+ * gm-position="{ lat: object.location.lat, lng: object.location.lng }"
  * ...
  * ```
  *
- * @param {expression} gm-get-marker-options an angular expression that given
+ *
+ * @param {expression} gm-marker-options an angular expression that given
  * an object from `gm-objects`, evaluates to a
  * [google.maps.MarkerOptions](https://developers.google.com/maps/documentation/javascript/reference#MarkerOptions)
  * object.  Your object can be accessed through the variable `object`. If
@@ -459,16 +492,16 @@
  *     [
  *       {
  *         event: 'click',
- *         locations: [new google.maps.LatLng(45, -120), ...]
+ *         ids: [id1, ...]
  *       },
  *       ...
  *     ]
  * ```
- * will generate the named events on the markers at the given locations, if a
- * marker at each location exists. Note: when setting the `gm-events` variable,
- * you must set it to a new object for the changes to be detected.  Code like
+ * will generate the named events on the markers with the given ids, if a
+ * marker with each id exists. Note: when setting the `gm-events` variable, you
+ * must set it to a new object for the changes to be detected.  Code like
  * ```js
- * myEvent[0]["locations"] = [new google.maps.LatLng(45,-120)]
+ * myEvents[0]["ids"] = [0]
  * ``` 
  * will not work.
  *                      
@@ -489,16 +522,38 @@
 
 /**
  * @ngdoc event
+ * @name angulargm.directive:gmMarkers#gmMarkersUpdate
+ * @eventOf angulargm.directive:gmMarkers
+ * @eventType listen on current gmMarkers scope
+ *
+ * @description Manually tell the `gmMarkers` directive to update the markers.
+ * This is useful to tell the directive when an object from `gm-objects` is
+ * mutated--`gmMarkers` can not pick up on such changes automatically.
+ *
+ * @param {string} objects Not required. The name of the scope variable which
+ * holds the objects to update markers for, i.e. what you set `gm-objects` to.
+ * It is useful because there may be multiple instances of the `gmMarkers`
+ * directive. If not specified, all instances of `gmMarkers` which are child
+ * scopes will update their markers.
+ *
+ * @example
+ * ```js
+ * $scope.$broadcast('gmMarkersUpdate', 'myObjects');
+ * ```
+ */
+ 
+/**
+ * @ngdoc event
  * @name angulargm.directive:gmMarkers#gmMarkersRedraw
  * @eventOf angulargm.directive:gmMarkers
  * @eventType listen on current gmMarkers scope
  *
- * @description Force the gmMarkers directive to clear and redraw all markers.
+ * @description Force the `gmMarkers` directive to clear and redraw all markers.
  *
  * @param {string} objects Not required. The name of the scope variable which
  * holds the objects to redraw markers for, i.e. what you set `gm-objects` to.
  * It is useful because there may be multiple instances of the `gmMarkers`
- * directive. If not specified, all instances of gmMarkers which are child
+ * directive. If not specified, all instances of `gmMarkers` which are child
  * scopes will redraw their markers.
  *
  * @example
@@ -516,7 +571,7 @@
  * @description Emitted when markers are updated.
  *
  * @param {string} objects the name of the scope variable which holds the
- * objects the gmMarkers directive was constructed with. This is what
+ * objects the `gmMarkers` directive was constructed with. This is what
  * `gm-objects` was set to.
  *
  * @example
@@ -534,134 +589,45 @@
 
   angular.module('AngularGM').
 
-  directive('gmMarkers', ['$log', '$parse', '$timeout', 'angulargmUtils', 
-    function($log, $parse, $timeout, angulargmUtils) {
+  directive('gmMarkers', 
+    ['$log', '$parse', '$timeout', 'angulargmUtils', 'angulargmShape',
+    function($log, $parse, $timeout, angulargmUtils, angulargmShape) {
 
     /** aliases */
-    var latLngEqual = angulargmUtils.latLngEqual;
     var objToLatLng = angulargmUtils.objToLatLng;
-    var getEventHandlers = angulargmUtils.getEventHandlers;
-    var createHash = angulargmUtils.createHash;
-
 
     function link(scope, element, attrs, controller) {
-      // check attrs
-      if (!('gmObjects' in attrs)) {
-        throw 'gmObjects attribute required';
-      } else if (!('gmGetLatLng' in attrs)) {
-        throw 'gmGetLatLng attribute required';
+      // check marker attrs
+      if (!('gmPosition' in attrs)) {
+        throw 'gmPosition attribute required';
       }
 
-      var handlers = getEventHandlers(attrs); // map events -> handlers
-
-      // fn for updating markers from objects
-      var updateMarkers = function(scope, objects) {
-
-        var objectHash = {};
-
-        angular.forEach(objects, function(object, i) {
-          var latLngObj = scope.gmGetLatLng({object: object});
-          var position = objToLatLng(latLngObj);
-          if (position == null) {
-            return;
-          }
-
-          var markerOptions = scope.gmGetMarkerOptions({object: object});
-
-          // hash objects for quick access
-          var hash = angulargmUtils.createHash(position, controller.precision);
-          objectHash[hash] = object;
-
-          // add marker
-          if (!controller.hasMarker(scope.$id, latLngObj.lat, latLngObj.lng)) {
-
-            var options = {};
-            angular.extend(options, markerOptions, {position: position});
-
-            controller.addMarker(scope.$id, options);
-            var marker = controller.getMarker(scope.$id, latLngObj.lat, latLngObj.lng);
-
-            // set up marker event handlers
-            angular.forEach(handlers, function(handler, event) {
-              controller.addListener(marker, event, function() {
-                $timeout(function() {
-                       // scope is this directive's isolate scope
-                       // scope.$parent is the scope of ng-transclude
-                       // scope.$parent.$parent is the one we want
-                  handler(scope.$parent.$parent, {
-                    object: object,
-                    marker: marker
-                  });
-                });
-              });
-            });
-          }
-        });
-
-        // remove 'orphaned' markers
-        var orphaned = [];
-        
-        controller.forEachMarkerInScope(scope.$id, function(marker, hash) {
-          if (!(hash in objectHash)) {
-            orphaned.push(hash);
-          }
-        });
-
-        angular.forEach(orphaned, function(markerHash, i) {
-          controller.removeMarkerByHash(scope.$id, markerHash);
-        });
-
-        scope.$emit('gmMarkersUpdated', attrs.gmObjects);
-      }; // end updateMarkers()
-
-      // watch objects
-      scope.$watch('gmObjects().length', function(newValue, oldValue) {
-        if (newValue != null && newValue !== oldValue) {
-          updateMarkers(scope, scope.gmObjects());
+      var markerOptions = function(object) {
+        var latLngObj = scope.gmPosition({object: object});
+        var position = objToLatLng(latLngObj);
+        if (position == null) {
+          return null;
         }
-      });
 
-      scope.$watch('gmObjects()', function(newValue, oldValue) {
-        if (newValue != null && newValue !== oldValue) {
-          updateMarkers(scope, scope.gmObjects());
-        }
-      });
+        var markerOptions = scope.gmMarkerOptions({object: object});
+        var options = {};
+        angular.extend(options, markerOptions, {position: position});
+        return options;
+      };
 
-      // watch gmEvents
-      scope.$watch('gmEvents()', function(newValue, oldValue) {
-        if (newValue != null && newValue !== oldValue) {
-          angular.forEach(newValue, function(eventObj) {
-            var event = eventObj.event;
-            var locations = eventObj.locations;
-            angular.forEach(locations, function(location) {
-              var marker = controller.getMarker(scope.$id, location.lat(), location.lng());
-              if (marker != null) {
-                $timeout(angular.bind(this, controller.trigger, marker, event));
-              }
-            });
-          });
-        }
-      });
-
-      scope.$on('gmMarkersRedraw', function(event, objectsName) {
-        if (objectsName == null || objectsName === attrs.gmObjects) {
-          updateMarkers(scope);
-          updateMarkers(scope, scope.gmObjects());
-        }
-      });
-
-      // initialize markers
-      $timeout(angular.bind(null, updateMarkers, scope, scope.gmObjects()));
+      angulargmShape.createShapeDirective(
+        'marker', scope, attrs, controller, markerOptions
+      );
     }
-
 
     return {
       restrict: 'AE',
       priority: 100,
       scope: {
         gmObjects: '&',
-        gmGetLatLng: '&',
-        gmGetMarkerOptions: '&',
+        gmId: '&',
+        gmPosition: '&',
+        gmMarkerOptions: '&',
         gmEvents: '&'
       },
       require: '^gmMap',
@@ -681,16 +647,18 @@
  * To use, you specify an array of custom objects and tell the directive how to
  * extract location data from them. A polyline will be created for each of your
  * objects. If you assign a new array to your scope variable or change the
- * array's length, the polylines will also update.
+ * array's length, the polylines will also update.  The one case where
+ * `gmPolylines` can not automatically detect changes to your objects is when
+ * you mutate objects in the array. To inform the directive of such changes,
+ * see the `gmPolylinesUpdate` event below.
  *
- * Only the `gm-objects` and `gm-get-path` attributes are required.
+ * Only the `gm-objects`, `gm-id` and `gm-path` attributes are required.
  *
  * @param {expression} gm-objects an array of objects in the current scope.
  * These can be any objects you wish to attach to polylines, the only requirement
- * is that they have a uniform method of accessing a lat and lng.
+ * is that they have a uniform method of accessing an id and a path.
  *
- *
- * @param {expression} gm-get-path an angular expression that given an object
+ * @param {expression} gm-path an angular expression that given an object
  * from `gm-objects`, evaluates to an array of objects with lat and lng
  * properties. Your object can be accessed through the variable `object`.  For
  * example, if your controller has
@@ -710,14 +678,68 @@
  * ...
  * ```
  *
- * @param {expression} gm-get-polyline-options an angular expression that given
+ * @param {expression} gm-polyline-options an angular expression that given
  * an object from `gm-objects`, evaluates to a
  * [google.maps.PolylineOptions](https://developers.google.com/maps/documentation/javascript/reference#PolylineOptions)
  * object.  Your object can be accessed through the variable `object`. If
  * unspecified, google maps api defaults will be used.
  *
+ * @param {expression} gm-events a variable in the current scope that is used to
+ * simulate events on polylines. Setting this variable to an object of the form 
+ * ```js
+ *     [
+ *       {
+ *         event: 'click',
+ *         ids: [id1, ...]
+ *       },
+ *       ...
+ *     ]
+ * ```
+ * will generate the named events on the polylines with the given ids, if a
+ * polyline with each id exists. Note: when setting the `gm-events` variable, you
+ * must set it to a new object for the changes to be detected.  Code like
+ * ```js
+ * myEvents[0]["ids"] = [0]
+ * ``` 
+ * will not work.
+ *                      
+ *
+ * @param {expression} gm-on-*event* an angular expression which evaluates to
+ * an event handler. This handler will be attached to each polyline's \*event\*
+ * event.  The variables 'object' and 'polyline' evaluate to your object and the
+ * [google.maps.Polyline](https://developers.google.com/maps/documentation/javascript/reference#Polyline),
+ * respectively. For example: 
+ * ```html
+ * gm-on-click="myClickFn(object, polyline)"
+ * ```
+ * will call your `myClickFn` whenever a polyline is clicked.  You may have
+ * multiple `gm-on-*event*` handlers, but only one for each type of event.
+ * For events that have an underscore in their name, such as
+ * 'position_changed', write it as 'gm-on-position-changed'.
  */
 
+/**
+ * @ngdoc event
+ * @name angulargm.directive:gmPolylines#gmPolylinesUpdate
+ * @eventOf angulargm.directive:gmPolylines
+ * @eventType listen on current gmPolylines scope
+ *
+ * @description Manually tell the `gmPolylines` directive to update the polylines.
+ * This is useful to tell the directive when an object from `gm-objects` is
+ * mutated--`gmPolylines` can not pick up on such changes automatically.
+ *
+ * @param {string} objects Not required. The name of the scope variable which
+ * holds the objects to update polylines for, i.e. what you set `gm-objects` to.
+ * It is useful because there may be multiple instances of the `gmPolylines`
+ * directive. If not specified, all instances of `gmPolylines` which are child
+ * scopes will update their polylines.
+ *
+ * @example
+ * ```js
+ * $scope.$broadcast('gmPolylinesUpdate', 'myObjects');
+ * ```
+ */
+ 
 /**
  * @ngdoc event
  * @name angulargm.directive:gmPolylines#gmPolylinesRedraw
@@ -765,96 +787,38 @@
 
   angular.module('AngularGM').
 
-  directive('gmPolylines', ['$parse', '$compile', '$timeout', '$log', 'angulargmUtils',
-    function ($parse, $compile, $timeout, $log, angulargmUtils) {
+  directive('gmPolylines', ['$parse', '$compile', '$timeout', '$log', 'angulargmUtils', 'angulargmShape',
+    function ($parse, $compile, $timeout, $log, angulargmUtils, angulargmShape) {
     /** aliases */
-    var latLngEqual = angulargmUtils.latLngEqual;
     var objToLatLng = angulargmUtils.objToLatLng;
-    var getEventHandlers = angulargmUtils.getEventHandlers;
 
     function link(scope, element, attrs, controller) {
-      // check attrs
-      if (!('gmObjects' in attrs)) {
-        throw 'gmObjects attribute required';
-      } else if (!('gmGetPath' in attrs)) {
-        throw 'gmGetPath attribute required';
+      if (!('gmPath' in attrs)) {
+        throw 'gmPath attribute required';
       }
 
-      var handlers = getEventHandlers(attrs); // map events -> handlers
+      var polylineOptions = function(object) {
+        var lineLatLngs = scope.gmPath({object: object});
+        var path = [];
 
-      // fn for updating polylines from objects
-      var updatePolylines = function(scope, objects) {
-        var objectHash = {};
-
-        angular.forEach(objects, function(object, i) {
-          var path = scope.gmGetPath({object: object});
-          var lineLatLngs = [];
-
-          angular.forEach(path, function(latlng, j) {
-            var position = objToLatLng(latlng);
-            if (null === position) {
-                $log.warn('Unable to generate lat/lng from ', latlng);
-                return;
-            }
-
-            lineLatLngs.push(position);
-          });
-
-          var hash = angulargmUtils.createHash(lineLatLngs, controller.precision);
-          var polylineOptions = scope.gmGetPolylineOptions({object: object});
-          objectHash[hash] = object;
-
-          // check if the polyline exists first (methods needs to be created)
-          if (!controller.hasPolyline(scope.$id, hash)) {
-            var options = {};
-            angular.extend(options, polylineOptions, {path: lineLatLngs});
-
-            controller.addPolyline(scope.$id, options);
-            var polyline = controller.getPolyline(scope.$id, hash);
-
-            angular.forEach(handlers, function(handler, event) {
-              controller.addListener(polyline, event, function() {
-                $timeout(function() {
-                  handler(scope.$parent.$parent, {
-                    object: object,
-                    polyline: polyline
-                  });
-                });
-              });
-            });
+        angular.forEach(lineLatLngs, function(latlng) {
+          var position = objToLatLng(latlng);
+          if (position == null) {
+              $log.warn('Unable to generate lat/lng from ', latlng);
+              return;
           }
+          path.push(position);
         });
 
-        // remove 'orphaned' polylines
-        controller.forEachPolylineInScope(scope.$id, function(polyline, hash) {
-          if (!(hash in objectHash)) {
-            controller.removePolylineByHash(scope.$id, hash);
-          }
-        });
+        var polylineOptions = scope.gmPolylineOptions({object: object});
+        var options = {};
+        angular.extend(options, polylineOptions, {path: path});
+        return options;
+      };
 
-        scope.$emit('gmPolylinesUpdated', attrs.gmObjects);
-      }; // end updatePolylines()
-
-      scope.$watch('gmObjects().length', function(newValue, oldValue) {
-        if (newValue != null && newValue !== oldValue) {
-            updatePolylines(scope, scope.gmObjects());
-        }
-      });
-
-      scope.$watch('gmObjects()', function(newValue, oldValue) {
-        if (undefined !== newValue && newValue !== oldValue) {
-            updatePolylines(scope, scope.gmObjects());
-        }
-      });
-
-      scope.$on('gmPolylinesRedraw', function(event, objectsName) {
-        if (undefined === objectsName || objectsName === attrs.gmObjects) {
-          updatePolylines(scope);
-          updatePolylines(scope, scope.gmObjects());
-        }
-      });
-
-      $timeout(angular.bind(null, updatePolylines, scope, scope.gmObjects()));
+      angulargmShape.createShapeDirective(
+        'polyline', scope, attrs, controller, polylineOptions
+      );
     }
 
     return {
@@ -862,8 +826,10 @@
       priority: 100,
       scope: {
         gmObjects: '&',
-        gmGetPath: '&',
-        gmGetPolylineOptions: '&',
+        gmId: '&',
+        gmPath: '&',
+        gmPolylineOptions: '&',
+        gmEvents: '&'
       },
       require: '^gmMap',
       link: link
@@ -977,6 +943,211 @@
       getMapPromise: getMapPromise,
       removeMap: removeMap,
       clear: clear
+    };
+  }]);
+})();
+
+/**
+ * @ngdoc service
+ * @name angulargm.service:angulargmShape
+ *
+ * @description
+ * Directive functions for map shapes (marker, polyline, etc.)
+ */
+(function () {
+'use strict';
+
+  angular.module('AngularGM').
+
+  factory('angulargmShape', 
+    ['$timeout', 'angulargmUtils', 
+    function($timeout, angulargmUtils) {
+
+    /**
+     * Check required attributes of a shape.
+     */
+    function checkRequiredAttributes(attrs) {
+      if (!('gmObjects' in attrs)) {
+        throw 'gmObjects attribute required';
+      } else if (!('gmId' in attrs)) {
+        throw 'gmId attribute required';
+      }
+    }
+
+    /**
+     * Create a mapping from object id -> object.
+     * The object id is retrieved using scope.gmId
+     */
+    function _generateObjectCache(scope, objects) {
+      var objectCache = {};
+      angular.forEach(objects, function(object) {
+        // cache objects for quick access
+        var id = scope.gmId({object: object});
+        objectCache[id] = object;
+      });
+      return objectCache;
+    }
+
+    /**
+     * Create new shapes and add them to the map for objects which are not
+     * currently on the map.
+     */
+    function _addNewElements(type, scope, controller, handlers, objectCache, optionsFn) {
+      angular.forEach(objectCache, function(object, id) {
+        var element = controller.getElement(type, scope.$id, id);
+
+        var options = optionsFn(object);
+        if (options == null) {
+          return;
+        }
+
+        if (element) {
+          controller.updateElement(type, scope.$id, id, options);
+        } else {
+          controller.addElement(type, scope.$id, id, options);
+          element = controller.getElement(type, scope.$id, id);
+
+          // set up element event handlers
+          angular.forEach(handlers, function(handler, event) {
+            controller.addListener(element, event, function() {
+              $timeout(function() {
+                var context = {object: object};
+                context[type] = element;
+                     // scope is this directive's isolate scope
+                     // scope.$parent is the scope of ng-transclude
+                     // scope.$parent.$parent is the one we want
+                handler(scope.$parent.$parent, context);
+              });
+            });
+          });
+        }
+      });
+    }
+
+    /**
+     * Remove shape elements from the map which are no longer in objects.
+     */
+    function _removeOrphanedElements(type, scope, controller, objectCache) {
+      var orphaned = [];
+      
+      controller.forEachElementInScope(type, scope.$id, function(element, id) {
+        if (!(id in objectCache)) {
+          orphaned.push(id);
+        }
+      });
+
+      angular.forEach(orphaned, function(id) {
+        controller.removeElement(type, scope.$id, id);
+      });
+    }
+
+    /**
+     * _formatEventName('gmShapesUpdated', 'marker') -> 'gmMarkersUpdated'
+     */
+    function _formatEventName(template, type) {
+      var uppercasePluralType = type.charAt(0).toUpperCase() + type.slice(1) + 's';
+      return template.replace('Shapes', uppercasePluralType);
+    }
+
+    /**
+     * Attach necessary watchers and listeners to scope to deal with:
+     * - updating objects
+     * - handling gmEvents
+     * - listening for events
+     */
+    function _attachEventListeners(type, scope, attrs, controller, updateElements) {
+ 
+      // watch objects
+      scope.$watch('gmObjects().length', function(newValue, oldValue) {
+        if (newValue != null && newValue !== oldValue) {
+          updateElements(scope, scope.gmObjects());
+        }
+      });
+
+      scope.$watch('gmObjects()', function(newValue, oldValue) {
+        if (newValue != null && newValue !== oldValue) {
+          updateElements(scope, scope.gmObjects());
+        }
+      });
+
+      // watch gmEvents
+      scope.$watch('gmEvents()', function(newValue, oldValue) {
+        if (newValue != null && newValue !== oldValue) {
+          angular.forEach(newValue, function(eventObj) {
+            var event = eventObj.event;
+            var ids = eventObj.ids;
+            angular.forEach(ids, function(id) {
+              var element = controller.getElement(type, scope.$id, id);
+              if (element != null) {
+                $timeout(angular.bind(this, controller.trigger, element, event));
+              }
+            });
+          });
+        }
+      });
+
+      scope.$on(_formatEventName('gmShapesRedraw', type), function(event, objectsName) {
+        if (objectsName == null || objectsName === attrs.gmObjects) {
+          updateElements(scope);
+          updateElements(scope, scope.gmObjects());
+        }
+      });
+
+      scope.$on(_formatEventName('gmShapesUpdate', type), function(event, objectsName) {
+        if (objectsName == null || objectsName === attrs.gmObjects) {
+          updateElements(scope, scope.gmObjects());
+        }
+      });
+    }
+
+    /**
+     * Takes care of setting up the directive for the given type of shape. 
+     * Assumes the following directive scope:
+     *   scope: {
+     *     gmId: '&',
+     *     gmObjects: '&',
+     *     gmEvents: '&'
+     *   },
+     *
+     * And the angulargmMapController:
+     *   require: '^gmMap',
+     *
+     * Also supports the following attributes:
+     *   gmOn* (though some of this knowledge is in angulargmUtils as well)
+     *
+     * As well as the following events
+     *   gmShapesUpdated
+     *   gmShapesRedraw
+     *
+     * (e.g. gmMarkersUpdated and gmMarkersRedraw)
+     *
+     * See gmMarkers for a complete example.
+     */
+    function createShapeDirective(type, scope, attrs, controller, elementOptions) {
+      checkRequiredAttributes(attrs);
+
+      var updateElements = function(scope, objects) {
+        var objectCache = _generateObjectCache(scope, objects);
+        var handlers = angulargmUtils.getEventHandlers(attrs); // map events -> handlers
+
+        _addNewElements(
+          type, scope, controller, handlers,
+          objectCache, elementOptions
+        );
+
+        _removeOrphanedElements(type, scope, controller, objectCache);
+
+        scope.$emit(_formatEventName('gmShapesUpdated', type), attrs.gmObjects);
+      };
+
+      _attachEventListeners(type, scope, attrs, controller, updateElements);
+
+      // initialize elements
+      $timeout(angular.bind(null, updateElements, scope, scope.gmObjects()));
+    }
+
+    return {
+      createShapeDirective: createShapeDirective
     };
   }]);
 })();
@@ -1128,18 +1299,14 @@
       return handlers;
     }
 
-    function createHash(object, precision) {
-      var hash = '';
- 
-      if ((object instanceof google.maps.LatLng)) {
-        return object.toUrlValue(precision);
-      } else {
-        angular.forEach(object, function(child) {
-          hash += createHash(child, precision);
-        });
+    function assertDefined(value, name) {
+      if (value === undefined || value === null) {
+        if (name) {
+          throw name + ' was: ' + value;
+        } else {
+          throw 'value was: ' + value;
+        }
       }
- 
-      return hash;
     }
 
     return {
@@ -1149,7 +1316,7 @@
       objToLatLng: objToLatLng,
       hasNaN: hasNaN,
       getEventHandlers: getEventHandlers,
-      createHash: createHash
+      assertDefined: assertDefined
     };
   }]);
 })();
@@ -1174,9 +1341,7 @@
     var latLngEqual = angulargmUtils.latLngEqual;
     var boundsEqual = angulargmUtils.boundsEqual;
     var hasNaN = angulargmUtils.hasNaN;
-    var gMDefaults = angulargmDefaults;
-    var gMContainer = angulargmContainer;
-
+    var assertDefined = angulargmUtils.assertDefined;
 
     /*
      * Construct a new controller for the gmMap directive.
@@ -1192,12 +1357,11 @@
       var mapDiv = angular.element($element[0].firstChild);
       mapDiv.attr('id', mapId);
 
-      var config = this._getConfig($scope, gMDefaults);
+      var config = this._getConfig($scope, angulargmDefaults);
 
       // 'private' properties
-      this._map = this._createMap(mapId, mapDiv, config, gMContainer, $scope);
-      this._markers = {};
-      this._polylines = {};
+      this._map = this._createMap(mapId, mapDiv, config, angulargmContainer, $scope);
+      this._elements = {};
       this._listeners = {};
 
       // 'public' properties
@@ -1205,7 +1369,7 @@
 
       Object.defineProperties(this, {
         'precision': {
-          value: gMDefaults.precision,
+          value: angulargmDefaults.precision,
           writeable: false
         },
 
@@ -1279,9 +1443,9 @@
 
 
     // Retrieve google.maps.MapOptions
-    this._getConfig = function($scope, gMDefaults) {
+    this._getConfig = function($scope, angulargmDefaults) {
       // Get config or defaults
-      var defaults = gMDefaults.mapOptions;
+      var defaults = angulargmDefaults.mapOptions;
       var config = {};
       angular.extend(config, defaults, $scope.gmMapOptions());
       return config;
@@ -1289,11 +1453,11 @@
 
 
     // Create the map and add to angulargmContainer
-    this._createMap = function(id, element, config, gMContainer) {
-      var map = gMContainer.getMap(id);
+    this._createMap = function(id, element, config, angulargmContainer) {
+      var map = angulargmContainer.getMap(id);
       if (!map) {
         map = new google.maps.Map(element[0], config);
-        gMContainer.addMap(id, map);
+        angulargmContainer.addMap(id, map);
       } else {
         var div = map.getDiv();
         element.replaceWith(div);
@@ -1330,11 +1494,14 @@
       });
       this._listeners = {};
 
-      var scopeIds = Object.keys(this._markers);
       var self = this;
-      angular.forEach(scopeIds, function(scopeId) {
-        self.forEachMarkerInScope(scopeId, function(marker, hash) {
-          self.removeMarkerByHash(scopeId, hash);
+      var types = Object.keys(this._elements);
+      angular.forEach(types, function(type) {
+        var scopeIds = Object.keys(self._getElements(type));
+        angular.forEach(scopeIds, function(scopeId) {
+          self.forEachElementInScope(type, scopeId, function(element, id) {
+            self.removeElement(type, scopeId, id);
+          });
         });
       });
     };
@@ -1344,7 +1511,6 @@
      * Alias for google.maps.event.addListener(map, event, handler)
      * @param {string} event an event defined on google.maps.Map
      * @param {Function} a handler for the event
-     * @ignore
      */
     this.addMapListener = function(event, handler) {
       var listener = google.maps.event.addListener(this._map, event, handler);
@@ -1361,7 +1527,6 @@
      * Alias for google.maps.event.addListenerOnce(map, event, handler)
      * @param {string} event an event defined on google.maps.Map
      * @param {Function} a handler for the event
-     * @ignore
      */
     this.addMapListenerOnce = function(event, handler) {
       google.maps.event.addListenerOnce(this._map,
@@ -1371,7 +1536,6 @@
 
     /**
      * Alias for google.maps.event.addListener(object, event, handler)
-     * @ignore
      */
     this.addListener = function(object, event, handler) {
       google.maps.event.addListener(object, event, handler);
@@ -1380,7 +1544,6 @@
 
     /**
      * Alias for google.maps.event.addListenerOnce(object, event, handler)
-     * @ignore
      */
     this.addListenerOnce = function(object, event, handler) {
       google.maps.event.addListenerOnce(object, event, handler);
@@ -1390,7 +1553,6 @@
     /**
      * Alias for google.maps.event.trigger(map, event)
      * @param {string} event an event defined on google.maps.Map
-     * @ignore
      */
     this.mapTrigger = function(event) {
       google.maps.event.trigger(this._map, event);
@@ -1399,247 +1561,184 @@
 
     /**
      * Alias for google.maps.event.trigger(object, event)
-     * @ignore
      */
     this.trigger = function(object, event) {
       google.maps.event.trigger(object, event);
     };
 
+    this._newElement = function(type, opts) {
+        if (type === 'marker') {
+            if (!(opts.position instanceof google.maps.LatLng)) {
+              throw 'markerOptions did not contain a position';
+            }
+            return new angulargmDefaults.markerConstructor(opts);
+        } else if (type === 'polyline') {
+            if (!(opts.path instanceof Array)) {
+                throw 'polylineOptions did not contain a path';
+            }
+            return new angulargmDefaults.polylineConstructor(opts);
+        } else {
+          throw 'unrecognized type ' + type;
+        }
+    };
+
+    this._getElements = function(type) {
+        if (!(type in this._elements)) {
+            this._elements[type] = {};
+        }
+        return this._elements[type];
+    };
 
     /**
-     * Adds a new marker to the map.
-     * @param {number} scope id
-     * @param {google.maps.MarkerOptions} markerOptions
-     * @return {boolean} true if a marker was added, false if there was already
-     *   a marker at this position. 'at this position' means delta_lat and
-     *   delta_lng are < 0.0005
-     * @throw if markerOptions does not have all required options (i.e. position)
-     * @ignore
+     * Adds a new element to the map.
+     * @return {boolean} true if an element was added, false if there was already
+     *   an element with the given id     
+     * @throw if any arguments are null/undefined or elementOptions does not
+     *   have all the required options (i.e. position)
      */
-    this.addMarker = function(scopeId, markerOptions) {
-      var opts = {};
-      angular.extend(opts, markerOptions);
+    this.addElement = function(type, scopeId, id, elementOptions) {
+        assertDefined(type, 'type');
+        assertDefined(scopeId, 'scopeId');
+        assertDefined(id, 'id');
+        assertDefined(elementOptions, 'elementOptions');
 
-      if (!(opts.position instanceof google.maps.LatLng)) {
-        throw 'markerOptions did not contain a position';
-      }
+        if (this.hasElement(type, scopeId, id)) {
+          return false;
+        }
 
-      var marker = new angulargmDefaults.markerConstructor(opts);
-      var position = marker.getPosition();
-      if (this.hasMarker(scopeId, position.lat(), position.lng())) {
+        var elements = this._getElements(type);
+        if (elements[scopeId] == null) {
+          elements[scopeId] = {};
+        }
+
+        // google maps munges passed in options, so copy it first
+        // extend instead of copy to preserve value objects
+        var opts = {};
+        angular.extend(opts, elementOptions);
+        var element = this._newElement(type, opts);
+        elements[scopeId][id] = element;
+        element.setMap(this._map);
+
+        return true;
+    };
+
+    /**
+     * Updates an element on the map with new options.
+     * @return {boolean} true if an element was updated, false if there was no
+     *   element with the given id to update
+     * @throw if any arguments are null/undefined or elementOptions does not
+     *   have all the required options (i.e. position)
+     */
+
+    this.updateElement = function(type, scopeId, id, elementOptions) {
+      assertDefined(type, 'type');
+      assertDefined(scopeId, 'scopeId');
+      assertDefined(id, 'id');
+      assertDefined(elementOptions, 'elementOptions');
+
+      var element = this.getElement(type, scopeId, id);
+      if (element) {
+        element.setOptions(elementOptions);
+        return true;
+      } else {
         return false;
       }
+    };
 
-      var hash = position.toUrlValue(this.precision);
-      if (this._markers[scopeId] == null) {
-          this._markers[scopeId] = {};
-      }
-      this._markers[scopeId][hash] = marker;
-      marker.setMap(this._map);
-      return true;
+    this.hasElement = function(type, scopeId, id) {
+      assertDefined(type, 'type');
+      assertDefined(scopeId, 'scopeId');
+      assertDefined(id, 'id');
+      return (this.getElement(type, scopeId, id) != null);
     };
 
     /**
-     * @param {number} scope id
-     * @param {number} lat
-     * @param {number} lng
-     * @return {boolean} true if there is a marker with the given lat and lng
-     * @ignore
+     * @return {google maps element} the element with the given id, or null if no
+     *   such element exists
      */
-    this.hasMarker = function(scopeId, lat, lng) {
-      return (this.getMarker(scopeId, lat, lng) instanceof google.maps.Marker);
-    };
+    this.getElement = function (type, scopeId, id) {
+      assertDefined(type, 'type');
+      assertDefined(scopeId, 'scopeId');
+      assertDefined(id, 'id');
 
-
-    /**
-     * @param {number} scope id
-     * @param {number} lat
-     * @param {number} lng
-     * @return {google.maps.Marker} the marker at given lat and lng, or null if
-     *   no such marker exists
-     * @ignore
-     */
-    this.getMarker = function (scopeId, lat, lng) {
-      if (lat == null || lng == null)
-        throw 'lat or lng was null';
-
-      var latLng = new google.maps.LatLng(lat, lng);
-      var hash = latLng.toUrlValue(this.precision);
-      if (this._markers[scopeId] != null && hash in this._markers[scopeId]) {
-        return this._markers[scopeId][hash];
+      var elements = this._getElements(type);
+      if (elements[scopeId] != null && id in elements[scopeId]) {
+        return elements[scopeId][id];
       } else {
         return null;
       }
     };
 
-
     /**
-     * @param {number} scope id
-     * @param {number} lat
-     * @param {number} lng
-     * @return {boolean} true if a marker was removed, false if nothing
+     * @return {boolean} true if an element was removed, false if nothing
      *   happened
-     * @ignore
      */
-    this.removeMarker = function(scopeId, lat, lng) {
-      if (lat == null || lng == null)
-        throw 'lat or lng was null';
+    this.removeElement = function(type, scopeId, id) {
+      assertDefined(type, 'type');
+      assertDefined(scopeId, 'scopeId');
+      assertDefined(id, 'id');
 
-      var latLng = new google.maps.LatLng(lat, lng);
-
-      var hash = latLng.toUrlValue(this.precision);
-      return this.removeMarkerByHash(scopeId, hash);
-    };
-
-    /**
-     *
-     * @param {number} scope id
-     * @param {string} hash
-     * @returns {boolean} true if a marker was removed, false if nothing
-     *   happened
-     * @ignore
-     */
-    this.removeMarkerByHash = function(scopeId, hash) {
-        var removed = false;
-        var marker = this._markers[scopeId][hash];
-        if (marker) {
-            marker.setMap(null);
-            removed = true;
-        }
-        this._markers[scopeId][hash] = null;
-        delete this._markers[scopeId][hash];
-        return removed;
-    };
-
-
-    /**
-     * Applies a function to each marker.
-     * @param {Function} fn will called with marker as first argument
-     * @throw if fn is null or undefined
-     * @ignore
-     */
-    this.forEachMarker = function(fn) {
-      if (fn == null) { throw 'fn was null or undefined'; }
-      var that = this;
-      var allMarkers = Object.keys(this._markers).reduce(function(markers, key){
-          angular.forEach(that._markers[key], function(marker){
-              markers.push(marker);
-          });
-          return markers;
-      }, []);
-      angular.forEach(allMarkers, function(marker, hash) {
-        if (marker != null) {
-          fn(marker, hash);
-        }
-      });
-    };
-
-
-    /**
-     * Applies a function to each marker.
-     * @param {number} scope id
-     * @param {Function} fn will called with marker as first argument
-     * @throw if fn is null or undefined
-     * @ignore
-     */
-    this.forEachMarkerInScope = function(scopeId, fn) {
-        if (fn == null) { throw 'fn was null or undefined'; }
-        angular.forEach(this._markers[scopeId], function(marker, hash) {
-            if (marker != null) {
-                fn(marker, hash);
-            }
-        });
-    };
-
-    this.addPolyline = function(scopeId, polylineOptions) {
-      var opts = angular.extend({}, polylineOptions);
-
-      if (!(opts.path) instanceof Array || opts.path.length < 2) {
-        return;
-      }
-
-      angular.forEach(opts.path, function(point) {
-        if (!(point instanceof google.maps.LatLng)) {
-          throw 'An element in polylineOptions was found to not be a valid position';
-        }
-      });
-
-      var hash = angulargmUtils.createHash(polylineOptions.path, this.precision);
-      if (this.hasPolyline(scopeId, hash)) {
-          return false;
-      }
-
-      var polyline = new angulargmDefaults.polylineConstructor(opts);
-      if (null == this._polylines[scopeId]) {
-        this._polylines[scopeId] = {};
-      }
-      this._polylines[scopeId][hash] = polyline;
-      polyline.setMap(this._map);
-      return true;
-    };
-
-    this.getPolyline = function (scopeId, hash) {
-      if (null == hash || '' === hash) {
-        throw 'no hash passed to lookup';
-      }
-
-      if (null != this._polylines[scopeId] && hash in this._polylines[scopeId]) {
-        return this._polylines[scopeId][hash];
-      } else {
-        return null;
-      }
-    };
-
-    this.hasPolyline = function (scopeId, hash) {
-      return (this.getPolyline(scopeId, hash) instanceof Object);
-    };
-
-    this.forEachPolylineInScope = function(scopeId, fn) {
-      if (null == fn) {
-        throw 'fn was null or undefined';
-      }
-
-      angular.forEach(this._polylines[scopeId], function(polyline, hash) {
-        if (null != polyline) {
-          fn(polyline, hash);
-        }
-      });
-    };
-
-    this.forEachPolyline = function(fn) {
-      if (null == fn) {
-        throw 'fn was null or undefined';
-      }
-
-      angular.forEach(this._polylines, function(polylines, scopeId) {
-        angular.forEach(polylines, function(polyline, hash) {
-          if (null != polyline) {
-            fn(polyline, hash);
-          }
-        });
-      });
-    };
-
-    this.removePolylineByHash = function(scopeId, hash) {
+      var elements = this._getElements(type);
       var removed = false;
-      var polyline = this._polylines[scopeId][hash];
-      if (polyline) {
-        polyline.setMap(null);
-        removed = true;
+      var element = elements[scopeId][id];
+      if (element) {
+          element.setMap(null);
+          removed = true;
       }
-
-      this._polylines[scopeId][hash] = null;
-      delete this._polylines[scopeId][hash];
+      elements[scopeId][id] = null;
+      delete elements[scopeId][id];
       return removed;
     };
 
     /**
-     * Get current map.
-     * @returns {object}
-     * @ignore
+     * Applies a function to each element on the map.
+     * @param {String} type of element, e.g. 'marker'
+     * @param {Function} fn will be called with element as first argument
+     * @throw if an argument is null or undefined
      */
+    this.forEachElement = function(type, fn) {
+      assertDefined(type, 'type');
+      assertDefined(fn, 'fn');
+
+      var elements = this._getElements(type);
+      var scopeIds = Object.keys(elements);
+      var allElements = scopeIds.reduce(function(accumulator, scopeId) {
+        angular.forEach(elements[scopeId], function(element) {
+          accumulator.push(element);
+        });
+        return accumulator;
+      }, []);
+
+      angular.forEach(allElements, function(element, id) {
+        if (element != null) {
+          fn(element, id);
+        }
+      });
+    };
+
+
+    /**
+     * Applies a function to each element in a scope.
+     * @param {String} type of element, e.g. 'marker'
+     * @param {number} scope id
+     * @param {Function} fn will called with marker as first argument
+     * @throw if an argument is null or undefined
+     */
+    this.forEachElementInScope = function(type, scopeId, fn) {
+      assertDefined(type, 'type');
+      assertDefined(scopeId, 'scopeId');
+      assertDefined(fn, 'fn');
+
+      var elements = this._getElements(type);
+      angular.forEach(elements[scopeId], function(element, id) {
+        if (element != null) {
+          fn(element, id);
+        }
+      });
+    };
+
     this.getMap = function() {
-        return this._map;
+      return this._map;
     };
 
     /** Instantiate controller */

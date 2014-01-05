@@ -45,10 +45,7 @@
   constant('hutmapMapId', 'map_canvas').
 
   factory('mapOptions', [function() {
-    return {
-      zoom : 3,
-      center : new google.maps.LatLng(46.87916, -120),
-      mapTypeId : "ArcGIS World",
+    var base = {
       streetViewControl: false,
       panControlOptions: {
         position: google.maps.ControlPosition.LEFT_CENTER
@@ -56,6 +53,28 @@
       zoomControlOptions: {
         position: google.maps.ControlPosition.LEFT_CENTER
       },
+    };
+
+    var main = angular.extend(
+      {
+        zoom : 3,
+        center : new google.maps.LatLng(46.87916, -120),
+        mapTypeId : "ArcGIS World",
+      },
+      angular.copy(base)
+    );
+
+    var modal = angular.extend(
+      {
+        zoom: 16,
+        mapTypeId: google.maps.MapTypeId.SATELLITE
+      }, 
+      angular.copy(base)
+    );
+
+    return {
+      main: main,
+      modal: modal
     };
   }]).
 
@@ -163,7 +182,7 @@
       });
 
       // in case mapOptions.mapTypeId didn't exist until now
-      gmap.setMapTypeId(mapOptions.mapTypeId);
+      gmap.setMapTypeId(mapOptions.main.mapTypeId);
 
       gmap.enableKeyDragZoom({
         key: 'alt',
