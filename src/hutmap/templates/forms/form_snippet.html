@@ -1,3 +1,6 @@
+{% block before_form %}
+{% endblock %}
+
 {% if form.errors %}
 <div class="form-errors">Please correct the errors below</div>
 {% endif %}
@@ -8,6 +11,10 @@
   {{ hidden }}
 {% endfor %}
 {% for field in form.visible_fields %}
+
+{% block before_field %}
+{% endblock %}
+
 <div class="form-field {% if field.errors %}form-field-errors{% endif %}">
     {{ field.errors }}
     {% if field.field.required %}
@@ -20,6 +27,7 @@
     {% if field.help_text %}
       <p class="help">{{ field.help_text|safe }}</p>
     {% endif %}
-  </div>
+
+</div>
+
 {% endfor %}
-</span>

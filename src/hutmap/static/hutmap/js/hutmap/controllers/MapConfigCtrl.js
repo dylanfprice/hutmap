@@ -21,7 +21,7 @@
 
     $scope.mc = {
       hutmapMapId: hutmapMapId,
-      mapOptions: mapOptions
+      mapOptions: mapOptions.main
     };
 
     // return proper google.maps.MapOptions for the given hut

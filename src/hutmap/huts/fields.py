@@ -8,9 +8,9 @@ class PointFormField(forms.CharField):
 
   def __init__(self, *args, **kwargs):
     defaults = {}
+    defaults['widget'] = PointWidget
     defaults.update(kwargs)
     # something in kwargs was overriding, so fight back
-    defaults['widget'] = PointWidget
     defaults['help_text'] = self.help_text
     super(PointFormField, self).__init__(*args, **defaults)
 
