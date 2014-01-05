@@ -149,7 +149,7 @@
           include: true,
           $position: 1,
           $tooltip: 'Helicopter, Snowcat, etc',
-          $keywords: ['transportation-(helicopter)', 'transportation-(snowcat)']
+          $keywords: ['transportation-', 'gear-shuttle']
         },
         'food': {
           include: true,
@@ -161,6 +161,11 @@
           include: true,
           $position: 3,
           $keywords: ['guide']
+        },
+        'other': {
+          include: true,
+          $position: 4,
+          $keywords: ['internet']
         }
       };
 
@@ -359,6 +364,9 @@
         if (!matchServices && hut.has_optional_services && hut.optional_services != null) {
           matchServices = checkLabels(hut.optional_services, keywords);
         }
+      }
+      if (!matchServices) {
+        console.log(hut, hut.has_services && hut.services != null, hut.has_optional_services && hut.optional_services != null);
       }
       return matchServices;
     };
