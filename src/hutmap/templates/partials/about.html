@@ -1,14 +1,19 @@
 {% load staticfiles %}
 
 <div id="content-fixed"><div id="content-page">
-  <h1>About Us</h1>
 
+  <div class="widewords" style="border: 1px dotted gray; padding: 10px; background: #f3f3f3;">
+    Hutmap is still in early stages of development. Although we have mapped 1,500 huts across the USA and Canada, only Washington and Colorado huts are  shown on the map. Remaining states and provinces will be phased in gradually as we validate our data. Visit our <a href="http://facebook.com/Hutmap">Facebook page</a> for the latest updates.
+  </div>
+  
+  <h2>About Us</h2>
+  
   <p>
   Hutmap was built by two ragtag mountain climbers as a gift to the independent-minded outdoor community. Cabins, yurts, lean-tos, lookouts, and lodges! Platforms on stilts, camperized railroad cars, natural caves! If it provides covered shelter in the backcountry, it belongs on Hutmap.
   </p>
 
 	<p>
-  For the time being, Hutmap is focused on the USA and Canada. If you would like to help us expand into new territories - say by providing local knowledge or language translation - please <a href="mailto:info@hutmap.com">contact us</a>. You can suggest new huts, or edit existing huts, by using our <a href="">hut submission form</a>. We do our best to hone in on hut locations, drawing on everything from hearsay to satellite photos and GPS waypoints. Nevertheless, many locations are approximate (and labeled as such) and should not be relied upon for navigation.
+  For the time being, Hutmap is focused on the USA and Canada. If you would like to help us expand into new territories - say by providing local knowledge or language translation - please <a href="mailto:info@hutmap.com">contact us</a>. You may also edit <a href="/map">existing huts</a>, or suggest new ones using our <a href="">hut submission form</a>. We do our best to hone in on hut locations, drawing on everything from hearsay to satellite photos and GPS waypoints. Nevertheless, many locations are approximate (and labeled as such) and should not be relied upon for navigation.
   </p>
   
   <p>
@@ -52,7 +57,7 @@
 			<input type="hidden" name="return" value="http://www.hutmap.com/about/">
 			<input type="hidden" name="item_name" value="Donation to Hutmap">
 			<input type="hidden" name="no_shipping" value="1">
-			$<input name="amount" style="text-align:right;margin-left:0.15em;" value="5.00" size="4">
+			$<input name="amount" style="text-align:right;margin-left:0.15em;" placeholder="0.00" size="4">
 			<input class="button" style="margin-left:0.25em;" type="submit" value="Donate via PayPal">
 		</form>
 	</blockquote>

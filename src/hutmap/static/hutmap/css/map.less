@@ -2,7 +2,6 @@
  * Styles for map.html
  */
 
-
 #show-hide-filter-sidebar, #filter-sidebar, #map, #hut-bottombar {
   .transition(left 500ms cubic-bezier(0.445, 0.05, 0.55, 0.95) 20ms);
 }
@@ -43,14 +42,16 @@
 }
 
 #show-hide-filter-sidebar {
+  @sidebarToggleHeight: 16px;
+  font-size: @sidebarToggleHeight;
+  height: @sidebarToggleHeight;
+  padding: 2px 1px 2px 2px;
   position: absolute;
   top: @hideFilterBarOffset;
   left: @filterBarWidth;
   z-index: 101;
-  width: @fontSizeSmall;
-  text-align: center;
-  .border-bottom-right-radius( 4px );
-  .border-top-right-radius( 4px );
+  .border-bottom-right-radius( 2px );
+  .border-top-right-radius( 2px );
   border-right: @borderColor solid @filterBarBorderWidth;
   border-top: @borderColor solid @filterBarBorderWidth;
   border-bottom: @borderColor solid @filterBarBorderWidth;
@@ -61,7 +62,7 @@
   }
 
   i {
-    .clickable-icon;
+    .pointer;
   }
 
   .tooltip {
@@ -82,6 +83,10 @@
   
   &.filter-sidebar-hidden {
     left: -@filterBarWidth;
+  }
+  
+  i.icon-refresh {
+    .pointer;
   }
 
   .tooltip {
@@ -129,7 +134,6 @@
     .hut-filter-list {
       list-style-type: none; 
       color: darken(@grayLight, 10%);
-      margin-left: 10px;
 
 			li.ng-scope {
 				font-size: 1em;
@@ -137,6 +141,7 @@
 				display: inline-block;
 				padding: 3px;
 				border: 1px solid #ddd;
+				.pointer;
 			}
 			
       li.selected {
@@ -152,16 +157,10 @@
         text-shadow: none;
       }
     }
-
-    .hut-filter-item:hover {
-      .pointer;
-      i::before {
-        .pointer;
-      }
-    }
-
-		.hut-filter-minmax {
-			margin-left: 10px;
+    
+    .hut-filter-list, 
+    .hut-filter-minmax {
+			margin: 0 0 10px 10px;
 		}
 		
 		.hut-filter-units {
@@ -179,10 +178,7 @@
       font-size: 1em;
 			width: 3.5em;
 			border: 1px solid #ddd;
-			padding: 0.1em;
 			text-align: right;
-			box-shadow: none;
-			border-radius: 0;
     }
 
     // special case since this is a different font from snow and sun icons
