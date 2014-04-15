@@ -7,7 +7,7 @@ admin.autodiscover()
 
 # main site
 urlpatterns = patterns('',
-  url(r'', include('huts.urls', namespace='huts')),
+  url(r'', include('huts.urls', app_name='huts')),
 )
 
 # admin
