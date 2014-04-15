@@ -2,12 +2,14 @@ from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.conf.urls.static import static
 from django.contrib.gis import admin
+from huts.urls import hut_patterns, api_patterns
 
 admin.autodiscover()
 
 # main site
 urlpatterns = patterns('',
-  url(r'', include('huts.urls', app_name='huts')),
+  url(r'', include((hut_patterns, 'huts', 'huts'))),
+  url(r'^api/', include((api_patterns, 'huts_api', 'huts_api'))),
 )
 
 # admin
