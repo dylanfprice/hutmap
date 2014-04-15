@@ -1,4 +1,196 @@
-<div class="hut-info">
+  <!-- Hut Image -->
+  <div ng-show="h.selectedHut.show_satellite">
+      <img src="[* getSatelliteImgUrl(h.selectedHut, 300, 250) *]" title="[* h.selectedHut.name *] as seen from space." />
+  </div>
+  <div ng-show="!h.selectedHut.show_satellite && getObliqueImgUrl(h.selectedHut) != ''">
+      <img src="[* getObliqueImgUrl(h.selectedHut) *]" title="[* h.selectedHut.name *]" />
+      <!--<span ng-show="h.selectedHut.photo_credit_name != ''" class="credit-thumbnail">
+        <a ng-show="h.selectedHut.photo_credit_url != ''" ng-href="[*h.selectedHut.photo_credit_url*]" target="_blank">[*h.selectedHut.photo_credit_name*]</a>
+        <span ng-show="h.selectedHut.photo_credit_url == ''">
+          [* h.selectedHut.photo_credit_name *]
+        </span>
+      </span>-->
+  </div>
+
+  <div id="hut-info">
+  
+  <!-- Agency -->
+  <span ng-show="h.selectedHutAgency != null">
+    <a ng-show="h.selectedHutAgency.url != null" href="[*h.selectedHutAgency.url*]" target="_blank" style="white-space:normal;">
+      <i>[* h.selectedHutAgency.name *]</i>
+    </a>
+    <span ng-show="h.selectedHutAgency.url == null">
+      <i>[* h.selectedHutAgency.name *]</i>
+    </span>
+    <br/>
+  </span>
+  
+  <!-- Name -->
+  <a ng-show="h.selectedHut.hut_references.concat(h.selectedHut.hut_url).length == 1" href="[*h.selectedHut.hut_references.concat(h.selectedHut.hut_url)[0]*]" target="_blank" style="white-space:normal;">
+    <span class="hutname">[* h.selectedHut.name *]</span>
+  </a>
+  <span ng-show="h.selectedHut.hut_references.concat(h.selectedHut.hut_url).length > 1" class="hutname">[* h.selectedHut.name *]</span>
+  <span ng-show="h.selectedHut.alternate_names.length > 0">
+    ([* h.selectedHut.alternate_names.join(', ') *])
+  </span>
+  <br/>
+  
+  <!-- Hut URL -->
+  <span ng-show="h.selectedHut.hut_references.concat(h.selectedHut.hut_url).length > 1">
+    <a ng-show="h.selectedHut.hut_url != null" href="[*h.selectedHut.hut_url*]" target="_blank">[* h.selectedHut.hut_url|urlDomain *]</a>
+    <span ng-show="h.selectedHut.hut_references.length > 0" ng-repeat="url in h.selectedHut.hut_references">
+      <span ng-show="$first && h.selectedHut.hut_url != null">&nbsp;&middot;&nbsp;</span>
+      <a ng-href="[*url*]" target="_blank">[* url|urlDomain *]</a>
+      <span ng-show="! $last">&nbsp;&middot;&nbsp;</span>
+    </span>
+    <br/>
+  </span>
+    
+  <!-- Location -->
+  <br>
+  <b class="category">Location</b><br/>
+  [*h.selectedHut.location.coordinates[1]|number:5*], [*h.selectedHut.location.coordinates[0]|number:5*]
+  <span ng-show="h.selectedHut.altitude_meters != null">&nbsp;/&nbsp; [*h.selectedHut.altitude_meters*] m</span>
+  <br/>
+  
+  <!-- Location accuracy -->
+  <i>[* accuracy_text[h.selectedHut.location_accuracy] *]</i>
+  <span ng-show="h.selectedHut.location_accuracy == null"><i>Unverified</i></span>
+  <span ng-show="h.selectedHut.location_accuracy < 3 && h.selectedHut.location_references.length > 0">
+    <span ng-show="h.selectedHut.location_references.length == 1">
+      (<a ng-href="[* h.selectedHut.location_references[0] *]" target="_blank">source</a>)
+    </span>
+    <span ng-show="h.selectedHut.location_references.length > 1">(source: </span>
+    <span ng-repeat="url in h.selectedHut.location_references">
+      <a ng-href="[*url*]" target="_blank">[* url|urlDomain *]</a><span ng-show="$last">)</span>
+      <span ng-show="!$last">, </span>
+    </span>
+  </span>
+  <br/>
+  
+  <!-- Access -->
+  <br/>
+  <b class="category">Access</b><br/>
+  [*h.selectedHut.access_no_snow|listifyObjects:'name'*]
+  <span ng-show="h.selectedHut.access_no_snow.length == 0">?</span>
+  <span ng-show="h.selectedHut.no_snow_min_km > 0">([*h.selectedHut.no_snow_min_km*] km)</span>
+  <span ng-show="h.selectedHut.is_snow_min_km">
+    &nbsp;/&nbsp;</span>
+    Snow <span ng-show="h.selectedHut.snow_min_km != null">([*h.selectedHut.snow_min_km*] km)</span>
+  </span>
+  <span ng-show="h.selectedHut.backcountry != null">
+    <br/>
+    <i>[* backcountry_text[h.selectedHut.backcountry] *]</i>
+  </span>
+  
+  <hr/>
+  
+  <!-- Type -->
+  <b class="category">Type</b>
+  [*h.selectedHut.types|listifyObjects:'name'*]
+  <span ng-show="h.selectedHut.structures > 1">([*h.selectedHut.structures*] structures)</span>
+  <br/>
+  
+  <!-- Capacity -->
+  <span ng-show="h.selectedHut.capacity_max != null">
+    <b class="category">Capacity</b>
+    [* h.selectedHut.capacity_hut_min *]<span ng-show="h.selectedHut.capacity_hut_min != h.selectedHut.capacity_hut_max">-[* h.selectedHut.capacity_hut_max *]
+    </span>
+    people
+    <span ng-show="h.selectedHut.structures > 1">
+      ([* h.selectedHut.capacity_max *] people total)
+    </span>
+    <br/>
+  </span>
+  
+  <!-- Cost -->
+  <span ng-show="h.selectedHut.is_fee_person || h.selectedHut.is_fee_hut">
+    <b class="category">Cost</b>
+    <span ng-show="h.selectedHut.is_fee_person">
+      $[* h.selectedHut.fee_person_min *]<span ng-show="h.selectedHut.fee_person_min != h.selectedHut.fee_person_max">-[* h.selectedHut.fee_person_max *]
+    </span>
+      per person
+    </span>
+    <span ng-show="h.selectedHut.is_fee_person && h.selectedHut.is_fee_hut">&nbsp;|&nbsp;</span>
+    <span ng-show="h.selectedHut.is_fee_hut">
+      $[* h.selectedHut.fee_hut_min *]<span ng-show="h.selectedHut.fee_hut_min != h.selectedHut.fee_hut_max">-[* h.selectedHut.fee_hut_max *]
+      </span>
+      <span ng-show="h.selectedHut.structures > 1">per structure</span>
+      <span ng-show="h.selectedHut.structures == 1">total</span>
+    </span>
+    <br/>
+  </span>
+  
+  <!-- Services -->
+  <span ng-show="h.selectedHut.has_services || h.selectedHut.has_optional_services">
+    <b class="category">Services</b>
+    [* h.selectedHut.services.concat(h.selectedHut.optional_services)|listifyObjects:'name' *]
+    <br/>
+  </span>
+  <br/>
+
+  <!- Operation -->
+  <div class="spanlist">
+  <span ng-show="!h.selectedHut.has_services && !h.selectedHut.has_optional_services">
+    Self-service
+  </span>
+  <span ng-show="h.selectedHut.locked != null">
+    <span ng-show="h.selectedHut.locked">
+      Locked
+    </span>
+    <span ng-show="!h.selectedHut.locked">
+      Unlocked
+    </span>
+  </span>
+  <span ng-show="h.selectedHut.reservations != null">
+    <span ng-show="h.selectedHut.reservations">
+      Reservations required
+    </span>
+    <span ng-show="!h.selectedHut.reservations">
+      First-come first-serve
+    </span>
+  </span>
+  <span ng-show="h.selectedHut.overnight != null">
+    <span ng-show="!h.selectedHut.overnight">
+      <i>Not currently available</i>
+    </span>
+    <span ng-show="h.selectedHut.overnight">
+      <span ng-show="!h.selectedHut.open_summer">
+        <i>CLOSED in Summer</i>
+      </span>
+      <span ng-show="!h.selectedHut.open_winter">
+        <i>CLOSED in Winter</i>
+      </span>
+    </span>
+  </span>
+  <span ng-show="h.selectedHut.overnight == null">
+    <i>Availability unknown</i>
+  </span>
+  </div>
+  
+  </div>
+  
+  <div class="obliques-gallery">
+    <div ng-show="h.selectedHut.show_satellite && getObliqueImgUrl(h.selectedHut) != ''" class="oblique-image">
+        <img src="[* getObliqueImgUrl(h.selectedHut) *]" title="[* h.selectedHut.name *]" /><br/>
+        <span ng-show="h.selectedHut.photo_credit_name != ''" class="credit-thumbnail">
+        <span ng-show="h.selectedHut.photo_credit_url != ''">
+          <a ng-href="[*h.selectedHut.photo_credit_url*]" target="_blank">[*h.selectedHut.photo_credit_name*]</a>
+        </span>
+        <span ng-show="h.selectedHut.photo_credit_url == ''">
+          [* h.selectedHut.photo_credit_name *]
+        </span>
+      </span>
+    </div>
+  </div>
+  
+  <!--
+  <i class="icon-sun" ng-show="h.selectedHut.open_summer"></i>
+  <i class="icon-snowflake" ng-show="h.selectedHut.open_winter"></i>
+  <span ng-show="h.selectedHut.open_summer == null && h.selectedHut.open_winter == null">Unknown</span>
+  -->
+          
+<!--  
   <div class="hut-info-left">
     <h4 class="hut-info-title muted" ng-show="h.selectedHut == null">Select a hut.</h4>
     <h4 class="hut-info-title">[*h.selectedHut.name*]</h4>
@@ -55,4 +247,5 @@
            ng-hide="h.selectedHut == null" 
            value="Edit Hut" />
   </div>
-</div>
+  
+  -->

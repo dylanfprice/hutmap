@@ -8,10 +8,18 @@
       'Unverified',
       'Wild guess',
       'Guess',
-      'Found on satellite or topo',
+      'Surveyed by satellite',
       'Surveyed by GPS',
-      'Surveyed by GPS and found on satellite or topo'  
+      'Surveyed by GPS'  
     ];
+    
+    $scope.backcountry_text = [
+      'Frontcountry',
+      'Backcountry in winter only',
+      'Backcountry',
+      'Rugged backcountry'
+    ];
+    
   }]);
   
 })();

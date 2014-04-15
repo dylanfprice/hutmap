@@ -31,16 +31,17 @@ a:hover {
 }
 
 /* external links */
-.hut-info,
+#hut-sidebar,
 #content-page {
   a[href^="//"], 
   a[href^="http://"], 
-  a[href^="https://"] {
+  a[href^="https://"],
+  a[href^="www."] {
     white-space: nowrap;
-    &:after {
+    &:not(.noicon):after {
       /*content: url(http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png);*/
       content: url(http://upload.wikimedia.org/wikipedia/commons/d/d9/VisualEditor_-_Icon_-_External-link.svg);
-      padding: 0 0 0 2px;
+      padding: 0 0 0 1px;
       display: inline-block;
     }
   }

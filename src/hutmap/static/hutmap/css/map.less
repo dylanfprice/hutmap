@@ -2,7 +2,7 @@
  * Styles for map.html
  */
 
-#show-hide-filter-sidebar, #filter-sidebar, #map, #hut-bottombar {
+#show-hide-filter-sidebar, #filter-sidebar, #hut-sidebar, #map {
   .transition(left 500ms cubic-bezier(0.445, 0.05, 0.55, 0.95) 20ms);
 }
 
@@ -193,14 +193,18 @@
 
 #map {
   position: absolute;
-  right: 0px;
+  right: @hutBarWidth + @filterBarBorderWidth;
   left: @filterBarWidth + @filterBarBorderWidth;
   top: 0;
-  bottom: @hutBarHeight + @filterBarBorderWidth;
+  bottom: 0;
   z-index: 100;
 
   &.filter-sidebar-hidden {
     left: 0px;
+  }
+  
+  &.hut-sidebar-hidden {
+    right: 0px;
   }
 
   .map {
@@ -225,7 +229,7 @@
   .link-button-icons {
     position: absolute;
     right: 30%;
-    bottom: @hutBarHeight;
+    bottom: 0;
     z-index: 101;
     padding: .25em;
     background-color: rgb(250,250,250);
@@ -270,83 +274,78 @@
 
 }
 
-#hut-bottombar {
+#hut-sidebar {
   position: absolute;
-  left: @filterBarWidth + @filterBarBorderWidth;
-  right: 0;
   bottom: 0;
-  height: @hutBarHeight;
+  right: 0;
+  top: 0;
+  width: @hutBarWidth;
   font-size: @fontSizeSmall;
-  border-top: @borderColor solid @filterBarBorderWidth;
+  border-left: @borderColor solid @filterBarBorderWidth;
+  overflow-y: auto;
+  
+  div {
+    vertical-align: top;
+  }
+  
+  img {
+    vertical-align: top;
+    width: 300px;
+    border: none;
+  }
 
   &.filter-sidebar-hidden {
     left: 0px;
   }
-
-  i {
-    font-size: 20px;
+  
+  #hut-info {
+    padding: 15px 10px 5px 12px;
+    border-top: @borderColor solid 1px;
+    text-align: center;
   }
-
-  .hut-info {
-    height: @hutBarHeight;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-
-    .hut-info-left {
-      width: 35%;
-      float: left;
-
-      .hut-info-title {
-        text-align: center;
-      }
-
-      .hut-detail-img {
-        .center;
-        width: 180px;
-        height: 130px;
-
-        img {
-          width: 180px;
-          height: 130px;
-        }
-      }
+  
+  hr {
+    margin: 1em 15% 1.25em 15%;
+  }
+  
+  .spanlist {
+    > span {
+      display: inline-block;
+      padding: 0.1em 0.4em 0 0.4em;
+      background-color: @altBgColor;
+      margin-bottom: 0.2em;
+      line-height: 125%;
     }
-
-    .hut-info-middle, .hut-info-right {
-      position: absolute;
-      top: @fontSizeLarge + 20px;
-      height: auto;
+  }
+  
+  .category {
+    margin-right: 0.25em;
+    
+    &:after {
+      content: &ndash;;
     }
-
-    .hut-info-middle {
-      right: 35%;
-      width: 30%;
-
-      .hut-detail-title {
-        color: @sidebarLabelColor;
-        padding-right: 20px;
-        vertical-align: top;
-      }
-
-      .hut-detail {
-        max-width: 200px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+  }
+  
+  a {
+    color: inherit;
+  }
+  
+  .hutname {
+    font-size: 140%;
+  }
+  
+  .obliques-gallery {
+    margin: 1.25em 0 0 0;
+    text-align: center;
+    img {
+      width: @hutBarWidth * 0.80;
     }
-
-    .hut-info-right {
-      right: 0;
-      width: 35%;
-
-      input.button {
-        padding: 10px;
-        margin: 10px;
-      }
-    }
+  }
+  
+  .credit-thumbnail {
+    font-size: 80%;
+    color: #666;
+    font-style: italic;
   }
 }
 
