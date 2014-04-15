@@ -1,0 +1,22 @@
+/* Navbar */
+#navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background-color: rgba(85, 85, 85, 0.85);
+}
+
+/* Content */
+#content {
+}
+
+/* Sidebar */
+#sidebar {
+  
+}
+
+/* Bottombar */
+#bottombar {
+}

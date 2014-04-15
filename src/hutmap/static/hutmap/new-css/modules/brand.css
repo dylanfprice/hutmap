@@ -1,0 +1,49 @@
+.brand {
+  height: 100%;
+  width: 160px;
+  font-family: "Cooper Medium";
+  font-weight: 600;
+  font-size: 110%;
+}
+
+.brand-inner {
+  height: 100%;
+  width: 110px;
+  background-color: rgb(128, 128, 128);
+  padding: 0px 20px;
+  display: inline-block;
+}
+
+  .brand-link {
+    display: block;
+    height: 100%;
+  }
+
+  .brand-link:hover {
+    text-decoration: none;
+  }
+
+    .brand-logo {
+      height: 22px;
+      padding: 7px 0;
+      vertical-align: middle;
+    }
+
+    .brand-text {
+      color: #EEE;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .brand-text:hover {
+      color: #FFF;
+    }
+
+.brand-triangle {
+  float: right;
+  width: 0px;
+  height: 0px;
+  border-left: 10px solid rgb(128, 128, 128);
+  border-bottom: 20px solid transparent;
+  border-top: 20px solid transparent;
+}

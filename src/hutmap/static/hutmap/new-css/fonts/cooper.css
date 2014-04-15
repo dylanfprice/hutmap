@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Cooper Black';
+    src: url('../../../hutmap/font/Cooper/CooperBlack.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cooper Medium';
+    src: url('../../../hutmap/font/Cooper/CooperMedium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}

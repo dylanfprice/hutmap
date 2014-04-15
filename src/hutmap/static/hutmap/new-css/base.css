@@ -1,0 +1,44 @@
+html, body {
+	background-color: rgb(250,250,250);
+  font-family: "Myriad Pro", Verdana, "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1em;
+	color: #333;
+}
+
+p {
+  line-height: 120%;
+}
+
+a {
+  text-decoration: none;
+	color: #1BB7FD;
+	cursor: pointer;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+h1, h2 {
+	font-weight: 500; /* semibold */
+	line-height: inherit;
+}
+
+h1 {
+	font-size: 145%;
+	margin-top: 0;
+}
+
+h2 {
+	font-size: 130%;
+	margin-top: 1em;
+}
+
+hr {
+	border: none;
+	border-bottom: 1px dotted #ccc;
+  height: 1px;
+  width: 70%;
+  margin: 2em 0 1.5em 15%;
+}
+
