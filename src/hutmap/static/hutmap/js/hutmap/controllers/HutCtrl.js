@@ -30,6 +30,8 @@
 
     $scope.$watch('h.selectedHut', function(hut) {
       if (hut) {
+        $scope.h.selectedHutAgency = null;
+        $scope.h.selectedHutRegion = null;
         Huts.agency(hut.agency).then(function(agency) {
           $scope.h.selectedHutAgency = agency;
         });
