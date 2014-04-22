@@ -68,7 +68,10 @@
           </div>
         </div>
       </div>
-      <div id="hut-sidebar" ng-controller="BottomBarCtrl" ng-class="{'hut-sidebar-hidden': h.selectedHut == null}">      
+      <div id="hut-sidebar" 
+          ng-controller="BottomBarCtrl" 
+          ng-class="{'hut-sidebar-hidden': h.selectedHut == null}"
+          ng-show="h.selectedHut != null">      
         {% include "partials/components/hut_info.html" %}
       </div>
     </div>
