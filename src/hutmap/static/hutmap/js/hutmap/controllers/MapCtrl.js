@@ -34,7 +34,7 @@
     $scope.$watch('m.center != null && m.zoom != null', function(v) { if (v) $scope.m.initialized.resolve(); });
 
     $scope.$watch('m.bounds', function(bounds) {
-      if (bounds && $scope.ui.loadNewHuts) {
+      if (bounds && $scope.mapPage.loadNewHuts) {
         $scope.h.query = { bounds: bounds };
       }
     });
