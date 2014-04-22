@@ -20,7 +20,9 @@
 
   filter('listifyObjects', function() {
     return function(objects, key, delimiter) {
-      delimiter = (typeof delimiter === "undefined") ? ', ' : delimiter;        
+      if (!delimiter) {
+        delimiter = ', ';
+      }
       var array = [];
       angular.forEach(objects, function(object) {
         if (object[key] != 0) {
@@ -33,7 +35,7 @@
   
   filter('urlDomain', function() {
     return function(url) {
-      if (url != null) {
+      if (url) {
         var matches = url.toLowerCase().match(
           /^(?:https?\:\/\/)?(?:www\.)?([^\/?#]+)(?:[\/?#]|$)/i
         )

@@ -26,28 +26,24 @@
   </span>
   
   <!-- Name -->
-  <a ng-show="h.selectedHut.hut_references.concat(h.selectedHut.hut_url).length == 1" href="[*h.selectedHut.hut_references.concat(h.selectedHut.hut_url)[0]*]" target="_blank" style="white-space:normal;">
+  <a ng-show="getHutUrls(h.selectedHut).length == 1" href="[* getHutUrls(h.selectedHut)[0] *]" target="_blank" style="white-space:normal;">
     <span class="hutname">[* h.selectedHut.name *]</span>
   </a>
-  <span ng-show="h.selectedHut.hut_references.concat(h.selectedHut.hut_url).length > 1" class="hutname">[* h.selectedHut.name *]</span>
+  <span ng-show="getHutUrls(h.selectedHut).length > 1" class="hutname">[* h.selectedHut.name *]</span>
   <span ng-show="h.selectedHut.alternate_names.length > 0">
     ([* h.selectedHut.alternate_names.join(', ') *])
   </span>
   <br/>
   
   <!-- Hut URL -->
-  <span ng-show="h.selectedHut.hut_references.concat(h.selectedHut.hut_url).length > 1">
-    <a ng-show="h.selectedHut.hut_url != null" href="[*h.selectedHut.hut_url*]" target="_blank">[* h.selectedHut.hut_url|urlDomain *]</a>
-    <span ng-show="h.selectedHut.hut_references.length > 0" ng-repeat="url in h.selectedHut.hut_references">
-      <span ng-show="$first && h.selectedHut.hut_url != null">&nbsp;&middot;&nbsp;</span>
-      <a ng-href="[*url*]" target="_blank">[* url|urlDomain *]</a>
-      <span ng-show="! $last">&nbsp;&middot;&nbsp;</span>
-    </span>
-    <br/>
+  <span ng-show="getHutUrls(h.selectedHut).length > 1" ng-repeat="url in getHutUrls(h.selectedHut)">
+    <a ng-href="[*url*]" target="_blank">[* url|urlDomain *]</a>
+    <span ng-show="!$last">&nbsp;&middot;&nbsp;</span>
+    <br ng-show="$last" />
   </span>
     
   <!-- Location -->
-  <br>
+  <br/>
   <b class="category">Location</b><br/>
   [*h.selectedHut.location.coordinates[1]|number:5*], [*h.selectedHut.location.coordinates[0]|number:5*]
   <span ng-show="h.selectedHut.altitude_meters != null">&nbsp;/&nbsp; [*h.selectedHut.altitude_meters*] m</span>
@@ -57,32 +53,37 @@
   <i>[* accuracy_text[h.selectedHut.location_accuracy] *]</i>
   <span ng-show="h.selectedHut.location_accuracy == null"><i>Unverified</i></span>
   <span ng-show="h.selectedHut.location_accuracy < 3 && h.selectedHut.location_references.length > 0">
-    <span ng-show="h.selectedHut.location_references.length == 1">
-      (<a ng-href="[* h.selectedHut.location_references[0] *]" target="_blank">source</a>)
+    <span ng-show="h.selectedHut.location_references.length == 1"> &ndash; 
+      <a ng-href="[* h.selectedHut.location_references[0] *]" target="_blank">source</a>
     </span>
-    <span ng-show="h.selectedHut.location_references.length > 1">(source: </span>
-    <span ng-repeat="url in h.selectedHut.location_references">
-      <a ng-href="[*url*]" target="_blank">[* url|urlDomain *]</a><span ng-show="$last">)</span>
-      <span ng-show="!$last">, </span>
+    <span ng-show="h.selectedHut.location_references.length > 1" ng-repeat="url in h.selectedHut.location_references">
+      <span ng-show="$first"> &ndash; sources </span>
+      <span ng-show="!$last">
+        <a ng-href="[*url*]" target="_blank" class="noicon">#[* $index+1 *]</a>, 
+      </span>
+      <span ng-show="$last">
+        <a ng-href="[*url*]" target="_blank">#[* $index+1 *]</a>
+      </span>
     </span>
   </span>
   <br/>
   
   <!-- Access -->
   <br/>
-  <b class="category">Access</b><br/>
-  [*h.selectedHut.access_no_snow|listifyObjects:'name'*]
-  <span ng-show="h.selectedHut.access_no_snow.length == 0">?</span>
-  <span ng-show="h.selectedHut.no_snow_min_km > 0">([*h.selectedHut.no_snow_min_km*] km)</span>
-  <span ng-show="h.selectedHut.is_snow_min_km">
-    &nbsp;/&nbsp;</span>
-    Snow <span ng-show="h.selectedHut.snow_min_km != null">([*h.selectedHut.snow_min_km*] km)</span>
-  </span>
-  <span ng-show="h.selectedHut.backcountry != null">
-    <br/>
-    <i>[* backcountry_text[h.selectedHut.backcountry] *]</i>
-  </span>
+  <b class="category">Easiest access</b><br/>
   
+  <i class="icon-sun"></i><i class="icon-snowflake" ng-show="h.selectedHut.backcountry == 0 || h.selectedHut.no_snow_min_km == h.selectedHut.snow_min_km"></i>
+  [*h.selectedHut.access_no_snow|listifyObjects:'name'*]
+  <span ng-show="h.selectedHut.access_no_snow.length == 0" class="italic">Unknown</span>
+  <span ng-show="h.selectedHut.no_snow_min_km > 0">([*h.selectedHut.no_snow_min_km*] km)</span>
+  
+  <span ng-show="h.selectedHut.snow_min_km > 0 && h.selectedHut.snow_min_km != h.selectedHut.no_snow_min_km">
+    <br/>
+    <i class="icon-snowflake"></i>
+    <!--&nbsp;/&nbsp;</span>-->
+    Snow ([*h.selectedHut.snow_min_km*] km)<br/>
+  </span>
+
   <hr/>
   
   <!-- Type -->

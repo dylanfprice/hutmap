@@ -56,7 +56,6 @@ class HutResource(NamespacedGeoModelResource):
   agency = fields.ForeignKey(AgencyResource, 'agency', full=False, null=True)
   # list fields
   location_references = fields.ListField(attribute='location_references', null=True)
-  hut_url = fields.ListField(attribute='hut_url', null=True)
   hut_references = fields.ListField(attribute='hut_references', null=True)
   alternate_names = fields.ListField(attribute='alternate_names', null=True)
   # m2m fields

@@ -20,6 +20,17 @@
       'Rugged backcountry'
     ];
     
+    $scope.getHutUrls = function(hut) {
+      var urls = [];
+      if (hut) {
+        if (hut.hut_url != "") {
+          urls[0] = hut.hut_url;
+        }
+        urls = urls.concat(hut.hut_references);
+      }
+      return urls;
+    };
+    
   }]);
   
 })();
