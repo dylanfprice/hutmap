@@ -132,9 +132,15 @@
       data_ga_property: hutmap.GOOGLE_ANALYTICS_KEY
     };
 
+    function angularDigest() {
+      if (angular) {
+        angular.element('body').scope().$digest();
+      }
+    }
+
   </script>
   <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51390d312330c4fe"></script>
-  <script src="//apis.google.com/js/client.js"></script>
+  <script src="//apis.google.com/js/client.js?onload=angularDigest"></script>
   <script src="//maps.googleapis.com/maps/api/js?v=3.12&sensor=false&libraries=places&key={{ GOOGLE_API_KEY }}"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>

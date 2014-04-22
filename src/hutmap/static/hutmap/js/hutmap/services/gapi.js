@@ -13,17 +13,25 @@
       apiKey = _apiKey;
     };
 
-    gapiProvider.$get = ['$rootScope', '$q', function($rootScope, $q) {
+    gapiProvider.$get = ['$rootScope', '$q', '$window', function($rootScope, $q, $window) {
 
       var gapiDeferred = $q.defer();
       var gapiLoaded = gapiDeferred.promise;
 
-      gapi.client.setApiKey(apiKey);
+      $rootScope.$watch(
+        function() {
+            return $window.gapi != null;
+        },
+        function(v) { 
+          if (v) {
+            gapi.client.setApiKey(apiKey);
 
-      gapi.client.load('urlshortener', 'v1', function() {
-        $rootScope.$apply(function() {
-          gapiDeferred.resolve()
-        });
+            gapi.client.load('urlshortener', 'v1', function() {
+              $rootScope.$apply(function() {
+                gapiDeferred.resolve()
+              });
+            });
+          }
       });
 
       var gapiFns = {};
