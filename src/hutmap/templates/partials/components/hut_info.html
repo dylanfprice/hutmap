@@ -29,7 +29,7 @@
   <a ng-show="getHutUrls(h.selectedHut).length == 1" href="[* getHutUrls(h.selectedHut)[0] *]" target="_blank" style="white-space:normal;">
     <span class="hutname">[* h.selectedHut.name *]</span>
   </a>
-  <span ng-show="getHutUrls(h.selectedHut).length > 1" class="hutname">[* h.selectedHut.name *]</span>
+  <span ng-show="getHutUrls(h.selectedHut).length != 1" class="hutname">[* h.selectedHut.name *]</span>
   <span ng-show="h.selectedHut.alternate_names.length > 0">
     ([* h.selectedHut.alternate_names.join(', ') *])
   </span>
@@ -72,16 +72,21 @@
   <br/>
   <b class="category">Easiest access</b><br/>
   
-  <i class="icon-sun"></i><i class="icon-snowflake" ng-show="h.selectedHut.backcountry == 0 || h.selectedHut.no_snow_min_km == h.selectedHut.snow_min_km"></i>
+  <i class="icon-sun"></i><i class="icon-snowflake" ng-show="(h.selectedHut.no_snow_min_km == h.selectedHut.snow_min_km) && (h.selectedHut.snow_min_km != null || h.selectedHut.backcountry > 1)"></i>
   [*h.selectedHut.access_no_snow|listifyObjects:'name'*]
   <span ng-show="h.selectedHut.access_no_snow.length == 0" class="italic">Unknown</span>
   <span ng-show="h.selectedHut.no_snow_min_km > 0">([*h.selectedHut.no_snow_min_km*] km)</span>
   
-  <span ng-show="h.selectedHut.snow_min_km > 0 && h.selectedHut.snow_min_km != h.selectedHut.no_snow_min_km">
+  <span ng-show="(h.selectedHut.snow_min_km == null && h.selectedHut.backcountry < 2) || (h.selectedHut.snow_min_km > 0 && h.selectedHut.snow_min_km != h.selectedHut.no_snow_min_km)">
     <br/>
     <i class="icon-snowflake"></i>
-    <!--&nbsp;/&nbsp;</span>-->
-    Snow ([*h.selectedHut.snow_min_km*] km)<br/>
+    <span ng-show="(h.selectedHut.snow_min_km == null && h.selectedHut.backcountry < 2)" class="italic">
+      Unknown
+    </span>
+    <span ng-show="(h.selectedHut.snow_min_km > 0 && h.selectedHut.snow_min_km != h.selectedHut.no_snow_min_km)">
+      Snow ([*h.selectedHut.snow_min_km*] km)
+    </span>
+    <br/>
   </span>
 
   <hr/>
@@ -117,7 +122,7 @@
       $[* h.selectedHut.fee_hut_min *]<span ng-show="h.selectedHut.fee_hut_min != h.selectedHut.fee_hut_max">-[* h.selectedHut.fee_hut_max *]
       </span>
       <span ng-show="h.selectedHut.structures > 1">per structure</span>
-      <span ng-show="h.selectedHut.structures == 1">total</span>
+      <span ng-show="h.selectedHut.structures == 1">whole hut</span>
     </span>
     <br/>
   </span>
@@ -145,10 +150,11 @@
   </span>
   <span ng-show="h.selectedHut.reservations != null">
     <span ng-show="h.selectedHut.reservations">
-      Reservations required
+      Reservations 
+      (<span ng-show="h.selectedHut.is_fee_person">shared<span ng-show="h.selectedHut.is_fee_hut"> & </span></span><span ng-show="h.selectedHut.is_fee_hut">private</span>)
     </span>
     <span ng-show="!h.selectedHut.reservations">
-      First-come first-serve
+      First-come, first-serve
     </span>
   </span>
   <span ng-show="h.selectedHut.overnight != null">
@@ -184,69 +190,3 @@
       </span>
     </div>
   </div>
-  
-  <!--
-  <i class="icon-sun" ng-show="h.selectedHut.open_summer"></i>
-  <i class="icon-snowflake" ng-show="h.selectedHut.open_winter"></i>
-  <span ng-show="h.selectedHut.open_summer == null && h.selectedHut.open_winter == null">Unknown</span>
-  -->
-          
-<!--  
-  <div class="hut-info-left">
-    <h4 class="hut-info-title muted" ng-show="h.selectedHut == null">Select a hut.</h4>
-    <h4 class="hut-info-title">[*h.selectedHut.name*]</h4>
-    <div class="hut-detail-img" ng-hide="h.selectedHut == null">
-      {% include "partials/components/hut_img.html" with hut_object_name="h.selectedHut" width="180" height="130" %}
-    </div>
-  </div>
-  <div class="hut-info-middle">
-    <table ng-hide="h.selectedHut == null">
-      <tr>
-        <td class="hut-detail-title">Hut Url:</td>
-        <td class="hut-detail">
-          <a ng-href="[*h.selectedHut.hut_url*]" target="_blank">[*h.selectedHut.hut_url*]</a>
-        </td>
-      </tr>
-      <tr>
-        <td class="hut-detail-title">Types:</td>
-        <td class="hut-detail">[*h.selectedHut.types|listifyObjects:'name'*]</td>
-      </tr>
-      <tr>
-        <td class="hut-detail-title">Seasons:</td>
-        <td class="hut-detail">
-          <i class="icon-sun" ng-show="h.selectedHut.open_summer"></i>
-          <i class="icon-snowflake" ng-show="h.selectedHut.open_winter"></i>
-          <span ng-show="h.selectedHut.open_summer == null && h.selectedHut.open_winter == null">Unknown</span>
-        </td>
-      </tr>
-      <tr>
-        <td class="hut-detail-title">Location:</td>
-        <td class="hut-detail">[*h.selectedHut.location.coordinates[1]|number:5*], [*h.selectedHut.location.coordinates[0]|number:5*]</td>
-      </tr>
-      <tr>
-        <td class="hut-detail-title">Accuracy:</td>
-        <td>
-          [*accuracy_text[h.selectedHut.location_accuracy]*]
-          <span ng-show="h.selectedHut.location_accuracy < 3 && h.selectedHut.location_references.length > 0">
-            &mdash; references: 
-            <ul>
-              <li class="hut-detail" ng-repeat="ref in h.selectedHut.location_references">
-              <a ng-href="[*ref*]" target="_blank">[*ref*]</a>
-              </li>
-            </ul>
-          </span>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div class="hut-info-right" ng-controller="HutFormCtrl">
-    <input class="button" 
-           ng-click="suggestHut()"
-           value="Suggest a new hut"/>
-    <input class="button" 
-           ng-click="editHut(h.selectedHut)"
-           ng-hide="h.selectedHut == null" 
-           value="Edit Hut" />
-  </div>
-  
-  -->
