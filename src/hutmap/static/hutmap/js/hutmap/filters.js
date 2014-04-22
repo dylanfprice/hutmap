@@ -33,7 +33,14 @@
   
   filter('urlDomain', function() {
     return function(url) {
-      return url.toLowerCase().match(/^(?:https?\:\/\/)?(?:www\.)?([^\/?#]+)(?:[\/?#]|$)/i)[1];
+      if (url != null) {
+        var matches = url.toLowerCase().match(
+          /^(?:https?\:\/\/)?(?:www\.)?([^\/?#]+)(?:[\/?#]|$)/i
+        )
+        if (matches != null) {
+          return matches[1];
+        }
+      }
     }
   });
 
