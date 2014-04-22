@@ -8,8 +8,8 @@
   file: path={{ home }}/tmp mode=0755 state=directory
 
 - name: install python
-  command: '{{ home }}/.pyenv/bin/pyenv install {{ python_version }}'
-    creates={{ home }}/.pyenv/versions/{{ python_version }} 
+  command: '{{ home }}/.pyenv/bin/pyenv install {{ python_version }}
+    creates={{ home }}/.pyenv/versions/{{ python_version }}'
   environment:
     TMPDIR: '{{ home }}/tmp'
 
@@ -24,6 +24,6 @@
     - rehash
 
 - name: setup virtualenv
-  command: '{{ home }}/.pyenv/bin/pyenv exec virtualenv {{ virtualenv }}'
-    creates={{ virtualenv }}
+  command: '{{ home }}/.pyenv/bin/pyenv exec virtualenv {{ virtualenv }}
+    creates={{ virtualenv }}'
 
