@@ -25,7 +25,7 @@
         if ($scope.h.selectedHut) {
           $scope.m.hutMarkerEvents = [{
             event: 'click',
-            locations: [utils.latLngFromHut($scope.h.selectedHut)]
+            ids: [$scope.h.selectedHut.id]
           }];
         }
       });
