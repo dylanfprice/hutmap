@@ -33,12 +33,6 @@
 
     $scope.$watch('m.center != null && m.zoom != null', function(v) { if (v) $scope.m.initialized.resolve(); });
 
-    $scope.$watch('m.bounds', function(bounds) {
-      if (bounds && $scope.mapPage.loadNewHuts) {
-        $scope.h.query = { bounds: bounds };
-      }
-    });
-
     $scope.$on('gmMarkersUpdated', function(event, objects) {
       if (objects === 'h.huts') {
         clickSelected();
@@ -48,6 +42,12 @@
     $scope.$on('clickSelected', function() {
       clickSelected();
     });
+
+    $scope.updateHuts = function(bounds) {
+        if (bounds && $scope.mapPage.loadNewHuts) {
+            $scope.h.query = { bounds: bounds };
+        }
+    };
 
     $scope.showMarkerTooltip = function(marker, hut) {
       var tooltip = markerTooltips[marker.getPosition().toUrlValue()];
