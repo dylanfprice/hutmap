@@ -1,4 +1,4 @@
-  <!-- Hut Image -->
+  <!-- Primary image (satellite, then ground photo) -->
   <div ng-show="h.selectedHut.show_satellite">
       <img src="[* getSatelliteImgUrl(h.selectedHut, 300, 250) *]" title="[* h.selectedHut.name *] as seen from space." />
   </div>
@@ -11,8 +11,18 @@
         </span>
       </span>-->
   </div>
-
+  
   <div id="hut-info">
+  
+  <div style="position:absolute;top:5px;right:5px;"">
+    <a class="button" href="/">zoom</a>
+    <a class="button" href="/">edit</a>
+  </div>
+  
+  <div id="hut-buttons" style="padding-bottom:10px;">
+    <a class="button" href="/">zoom</a>
+    <a class="button" href="/">edit</a>
+  </div>
   
   <!-- Agency -->
   <span ng-show="h.selectedHutAgency != null">
@@ -157,7 +167,7 @@
       First-come, first-serve
     </span>
   </span>
-  <span ng-show="h.selectedHut.overnight != null">
+  <span ng-show="!isOpenAlways(h.selectedHut)">
     <span ng-show="!h.selectedHut.overnight">
       <i>Not currently available</i>
     </span>
@@ -175,8 +185,9 @@
   </span>
   </div>
   
-  </div>
+  </div> <!- close hut-info -->
   
+  <!- Secondary images -->
   <div class="obliques-gallery">
     <div ng-show="h.selectedHut.show_satellite && getObliqueImgUrl(h.selectedHut) != ''" class="oblique-image">
         <img src="[* getObliqueImgUrl(h.selectedHut) *]" title="[* h.selectedHut.name *]" /><br/>

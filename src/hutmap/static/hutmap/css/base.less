@@ -78,19 +78,23 @@ hr {
 	font-size: 95%;
 }
 
-input.button {
+.button {
   background-color: #EEE;
-  border: 1px solid #CCC;
   text-align: center;
+  display: inline-block;
+}
+
+.button:hover {
+  background-color: #E5E5E5;
+  cursor: pointer;
+}
+
+input.button {
+  border: 1px solid #CCC;
 }
 
 input.button.submitting {
   opacity: 0.4;
-}
-
-input.button:hover {
-  background-color: #DDD;
-  cursor: pointer;
 }
 
 /** OVERRIDE BOOTSTRAP **/

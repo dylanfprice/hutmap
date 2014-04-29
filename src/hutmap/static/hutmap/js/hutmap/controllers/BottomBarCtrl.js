@@ -31,6 +31,14 @@
       return urls;
     };
     
+    $scope.isOpenAlways = function(hut) {
+      var open = null;
+      if (hut) {
+        open = hut.overnight && hut.open_summer && hut.open_winter;
+      }
+      return open;
+    };
+    
   }]);
   
 })();
