@@ -3,7 +3,7 @@
       <img src="[* getSatelliteImgUrl(h.selectedHut, 300, 250) *]" title="[* h.selectedHut.name *] as seen from space." id="hut-topimg" />
   </div>
   <div ng-show="!h.selectedHut.show_satellite && getObliqueImgUrl(h.selectedHut) != ''">
-      <img src="[* getObliqueImgUrl(h.selectedHut) *]" title="[* h.selectedHut.name *]" id="topimg" />
+      <img src="[* getObliqueImgUrl(h.selectedHut) *]" title="[* h.selectedHut.name *]" id="hut-topimg" />
       <!--<span ng-show="h.selectedHut.photo_credit_name != ''" class="credit-thumbnail">
         <a ng-show="h.selectedHut.photo_credit_url != ''" ng-href="[*h.selectedHut.photo_credit_url*]" target="_blank">[*h.selectedHut.photo_credit_name*]</a>
         <span ng-show="h.selectedHut.photo_credit_url == ''">
@@ -13,7 +13,7 @@
   </div>
   
   <div id="hut-buttons">
-    <a class="button" href="/">zoom</a>
+    <a class="button" href="#" ng-click="zoomToHut(h.selectedHut);">zoom</a>
     <a class="button" href="/">edit</a>
   </div>
   
