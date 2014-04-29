@@ -288,23 +288,33 @@
   border-left: @borderColor solid @filterBarBorderWidth;
   overflow-y: auto;
   
-  div {
-    vertical-align: top;
-  }
-  
   img {
     vertical-align: top;
     width: 300px;
     border: none;
+  }
+  
+  img#hut-topimg {
+    border-bottom: @borderColor solid 1px;
   }
 
   &.filter-sidebar-hidden {
     left: 0px;
   }
   
+  #hut-buttons {
+    
+    a.button {
+      text-decoration: none;
+      padding: 2px 2px 0px 2px;
+      line-height: 100%;
+      font-size: 90%;
+      border-bottom: 1px solid #CCC;
+    }
+  }
+    
   #hut-info {
-    padding: 15px 10px 5px 12px;
-    border-top: @borderColor solid 1px;
+    padding: 5px 8px 0px 10px;
     text-align: center;
   }
   
@@ -339,7 +349,7 @@
   }
   
   .obliques-gallery {
-    margin: 1.25em 0 0 0;
+    margin-top: 10px;
     text-align: center;
     img {
       width: @hutBarWidth * 0.80;

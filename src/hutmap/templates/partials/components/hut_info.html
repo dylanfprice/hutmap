@@ -8,7 +8,12 @@
         </span>
       </span>-->
   </div>
-
+  
+  <div id="hut-buttons">
+    <a class="button" href="/">zoom</a>
+    <a class="button" href="/">edit</a>
+  </div>
+  
   <div id="hut-info">
   
   <!-- Agency -->
@@ -154,7 +159,7 @@
       First-come, first-serve
     </span>
   </span>
-  <span ng-show="h.selectedHut.overnight != null">
+  <span ng-show="!isOpenAlways(h.selectedHut)">
     <span ng-show="!h.selectedHut.overnight">
       <i>Not currently available</i>
     </span>
@@ -172,8 +177,9 @@
   </span>
   </div>
   
-  </div>
+  </div> <!- close hut-info -->
   
+  <!- Secondary images -->
   <div class="obliques-gallery">
     <div ng-repeat="oblique in h.selectedHutObliques" class="oblique-image">
         <img ng-src="[* oblique.url *]" title="[* h.selectedHut.name *]" /><br/>
