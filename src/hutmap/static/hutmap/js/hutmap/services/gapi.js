@@ -20,7 +20,7 @@
 
       $rootScope.$watch(
         function() {
-            return $window.gapi != null;
+            return $window.gapi != null && $window.gapi.client != null;
         },
         function(v) { 
           if (v) {

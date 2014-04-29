@@ -1,9 +1,9 @@
   <!-- Primary image (satellite, then ground photo) -->
   <div ng-show="h.selectedHut.show_satellite">
-      <img src="[* getSatelliteImgUrl(h.selectedHut, 300, 250) *]" title="[* h.selectedHut.name *] as seen from space." id="hut-topimg" />
+      <img ng-src="[* h.selectedHutImgUrl *]" title="[* h.selectedHut.name *] as seen from space." id="hut-topimg" />
   </div>
   <div ng-show="!h.selectedHut.show_satellite && getObliqueImgUrl(h.selectedHut) != ''">
-      <img src="[* getObliqueImgUrl(h.selectedHut) *]" title="[* h.selectedHut.name *]" id="hut-topimg" />
+      <img ng-src="[* h.selectedHutImgUrl *]" title="[* h.selectedHut.name *]" id="hut-topimg" />
       <!--<span ng-show="h.selectedHut.photo_credit_name != ''" class="credit-thumbnail">
         <a ng-show="h.selectedHut.photo_credit_url != ''" ng-href="[*h.selectedHut.photo_credit_url*]" target="_blank">[*h.selectedHut.photo_credit_name*]</a>
         <span ng-show="h.selectedHut.photo_credit_url == ''">
@@ -184,14 +184,14 @@
   
   <!- Secondary images -->
   <div class="obliques-gallery">
-    <div ng-show="h.selectedHut.show_satellite && getObliqueImgUrl(h.selectedHut) != ''" class="oblique-image">
-        <img src="[* getObliqueImgUrl(h.selectedHut) *]" title="[* h.selectedHut.name *]" /><br/>
-        <span ng-show="h.selectedHut.photo_credit_name != ''" class="credit-thumbnail">
-        <span ng-show="h.selectedHut.photo_credit_url != ''">
-          <a ng-href="[*h.selectedHut.photo_credit_url*]" target="_blank">[*h.selectedHut.photo_credit_name*]</a>
+    <div ng-repeat="oblique in h.selectedHutObliques" class="oblique-image">
+        <img ng-src="[* oblique.url *]" title="[* h.selectedHut.name *]" /><br/>
+        <span ng-show="oblique.name != ''" class="credit-thumbnail">
+        <span ng-show="oblique.creditUrl != ''">
+          <a ng-href="[* oblique.creditUrl *]" target="_blank">[* oblique.name *]</a>
         </span>
-        <span ng-show="h.selectedHut.photo_credit_url == ''">
-          [* h.selectedHut.photo_credit_name *]
+        <span ng-show="oblique.creditUrl == ''">
+          [* oblique.name *]
         </span>
       </span>
     </div>
