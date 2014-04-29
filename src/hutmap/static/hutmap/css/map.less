@@ -288,24 +288,21 @@
   border-left: @borderColor solid @filterBarBorderWidth;
   overflow-y: auto;
   
-  div {
-    vertical-align: top;
-  }
-  
   img {
     vertical-align: top;
     width: 300px;
     border: none;
+  }
+  
+  img#hut-topimg {
+    border-bottom: @borderColor solid 1px;
   }
 
   &.filter-sidebar-hidden {
     left: 0px;
   }
   
-  #hut-info {
-    padding: 5px 10px 0px 12px;
-    border-top: @borderColor solid 1px;
-    text-align: center;
+  #hut-buttons {
     
     a.button {
       text-decoration: none;
@@ -314,6 +311,11 @@
       font-size: 90%;
       border-bottom: 1px solid #CCC;
     }
+  }
+    
+  #hut-info {
+    padding: 5px 8px 0px 10px;
+    text-align: center;
   }
   
   hr {
