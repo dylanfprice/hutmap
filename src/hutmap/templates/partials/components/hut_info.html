@@ -4,7 +4,10 @@
 <div ng-show="h.selectedHut != null">
   <!-- Hut Image -->
   <div>
-      <img ng-src="[* h.selectedHutImgUrl *]" title="[* h.selectedHut.name *] as seen from space." />
+      <img class="main-hut-img"
+           src="http://placehold.it/250x200&text=Loading%20image..."
+           ng-src="[* h.selectedHutImgUrl *]" 
+           title="[* h.selectedHut.name *] as seen from space.">
       <!--<span ng-show="h.selectedHut.photo_credit_name != ''" class="credit-thumbnail">
         <a ng-show="h.selectedHut.photo_credit_url != ''" ng-href="[*h.selectedHut.photo_credit_url*]" target="_blank">[*h.selectedHut.photo_credit_name*]</a>
         <span ng-show="h.selectedHut.photo_credit_url == ''">
@@ -197,4 +200,5 @@
       </span>
     </div>
   </div>
+
 </div>
