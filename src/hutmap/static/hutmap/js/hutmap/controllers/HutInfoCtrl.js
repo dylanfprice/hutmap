@@ -3,7 +3,7 @@
 
   angular.module('hutmap.controllers').
 
-  controller('BottomBarCtrl', ['$scope', function($scope) {
+  controller('HutInfoCtrl', ['$scope', function($scope) {
     $scope.accuracy_text = [
       'Unverified',
       'Wild guess',
@@ -46,7 +46,13 @@
       }
       return services;
     };
-    
+
+    $scope.$watch('h.selectedHut', function(newVal, oldVal) {
+      if (oldVal == null && newVal != null) {
+        $scope.mapPage.showHutSidebar = true;
+      }
+    });
+
   }]);
   
 })();

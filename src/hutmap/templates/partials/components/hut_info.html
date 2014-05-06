@@ -1,9 +1,10 @@
-  <!-- Primary image (satellite, then ground photo) -->
-  <div ng-show="h.selectedHut.show_satellite">
-      <img ng-src="[* h.selectedHutImgUrl *]" title="[* h.selectedHut.name *] as seen from space." id="hut-topimg" />
-  </div>
-  <div ng-show="!h.selectedHut.show_satellite && getObliqueImgUrl(h.selectedHut) != ''">
-      <img ng-src="[* h.selectedHutImgUrl *]" title="[* h.selectedHut.name *]" id="hut-topimg" />
+<div ng-show="h.selectedHut == null">
+  Select a hut to see more info.
+</div>
+<div ng-show="h.selectedHut != null">
+  <!-- Hut Image -->
+  <div>
+      <img ng-src="[* h.selectedHutImgUrl *]" title="[* h.selectedHut.name *] as seen from space." />
       <!--<span ng-show="h.selectedHut.photo_credit_name != ''" class="credit-thumbnail">
         <a ng-show="h.selectedHut.photo_credit_url != ''" ng-href="[*h.selectedHut.photo_credit_url*]" target="_blank">[*h.selectedHut.photo_credit_name*]</a>
         <span ng-show="h.selectedHut.photo_credit_url == ''">
@@ -196,3 +197,4 @@
       </span>
     </div>
   </div>
+</div>

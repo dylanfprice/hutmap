@@ -28,7 +28,8 @@
 
 #map {
   .transition(
-    left @transition-duration @transition-function @transition-delay
+    left @transition-duration @transition-function @transition-delay,
+    right @transition-duration @transition-function @transition-delay;
   );
 }
 
@@ -203,7 +204,7 @@
 
 #map {
   position: absolute;
-  right: 0;
+  right: @hutBarWidth + @barBorderWidth;
   left: @filterBarWidth + @barBorderWidth;
   top: 0;
   bottom: 0;
