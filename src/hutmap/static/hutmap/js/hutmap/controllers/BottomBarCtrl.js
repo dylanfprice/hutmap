@@ -39,6 +39,14 @@
       return open;
     };
     
+    $scope.getServices = function(hut) {
+      var services = [];
+      if (hut) {
+        services = hut.services.concat(hut.optional_services);
+      }
+      return services;
+    };
+    
   }]);
   
 })();

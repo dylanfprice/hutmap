@@ -75,13 +75,11 @@
   
   <!-- Access -->
   <br/>
-  <b class="category">Easiest access</b><br/>
-  
+  <b class="category">Easiest access</b><br/>  
   <i class="icon-sun"></i><i class="icon-snowflake" ng-show="(h.selectedHut.no_snow_min_km == h.selectedHut.snow_min_km) && (h.selectedHut.snow_min_km != null || h.selectedHut.backcountry > 1)"></i>
   [*h.selectedHut.access_no_snow|listifyObjects:'name'*]
   <span ng-show="h.selectedHut.access_no_snow.length == 0" class="italic">Unknown</span>
   <span ng-show="h.selectedHut.no_snow_min_km > 0">([*h.selectedHut.no_snow_min_km*] km)</span>
-  
   <span ng-show="(h.selectedHut.snow_min_km == null && h.selectedHut.backcountry < 2) || (h.selectedHut.snow_min_km > 0 && h.selectedHut.snow_min_km != h.selectedHut.no_snow_min_km)">
     <br/>
     <i class="icon-snowflake"></i>
@@ -105,8 +103,7 @@
   <!-- Capacity -->
   <span ng-show="h.selectedHut.capacity_max != null">
     <b class="category">Capacity</b>
-    [* h.selectedHut.capacity_hut_min *]<span ng-show="h.selectedHut.capacity_hut_min != h.selectedHut.capacity_hut_max">-[* h.selectedHut.capacity_hut_max *]
-    </span>
+    [* h.selectedHut.capacity_hut_min *]<span ng-show="h.selectedHut.capacity_hut_min != h.selectedHut.capacity_hut_max">-[* h.selectedHut.capacity_hut_max *]</span>
     people
     <span ng-show="h.selectedHut.structures > 1">
       ([* h.selectedHut.capacity_max *] people total)
@@ -115,32 +112,35 @@
   </span>
   
   <!-- Cost -->
-  <span ng-show="h.selectedHut.is_fee_person || h.selectedHut.is_fee_hut">
+  <span ng-show="h.selectedHut.is_fee_person == true || h.selectedHut.is_fee_hut == true">
     <b class="category">Cost</b>
     <span ng-show="h.selectedHut.is_fee_person">
-      $[* h.selectedHut.fee_person_min *]<span ng-show="h.selectedHut.fee_person_min != h.selectedHut.fee_person_max">-[* h.selectedHut.fee_person_max *]
-    </span>
+      $[* h.selectedHut.fee_person_min *]<span ng-show="h.selectedHut.fee_person_min != h.selectedHut.fee_person_max">-[* h.selectedHut.fee_person_max *]</span>
       per person
     </span>
     <span ng-show="h.selectedHut.is_fee_person && h.selectedHut.is_fee_hut">&nbsp;|&nbsp;</span>
     <span ng-show="h.selectedHut.is_fee_hut">
-      $[* h.selectedHut.fee_hut_min *]<span ng-show="h.selectedHut.fee_hut_min != h.selectedHut.fee_hut_max">-[* h.selectedHut.fee_hut_max *]
-      </span>
+      $[* h.selectedHut.fee_hut_min *]<span ng-show="h.selectedHut.fee_hut_min != h.selectedHut.fee_hut_max">-[* h.selectedHut.fee_hut_max *]</span>
       <span ng-show="h.selectedHut.structures > 1">per structure</span>
       <span ng-show="h.selectedHut.structures == 1">whole hut</span>
     </span>
     <br/>
   </span>
-  
-  <!-- Services -->
-  <span ng-show="h.selectedHut.has_services || h.selectedHut.has_optional_services">
-    <b class="category">Services</b>
-    [* h.selectedHut.services.concat(h.selectedHut.optional_services)|listifyObjects:'name' *]
+  <span ng-show="h.selectedHut.is_fee_person == null && h.selectedHut.is_fee_hut == null">
+    <b class="category">Cost</b> <i>Unknown</i>
     <br/>
   </span>
-  <br/>
+  
+  <span>.</span>
+  <!-- Services -->
+  <span ng-show="getServices(h.selectedHut).length > 0">
+    <b class="category">Services</b>
+    [* getServices(h.selectedHut)|listifyObjects:'name' *]
+    <br/>
+  </span>
 
   <!- Operation -->
+  <br/>
   <div class="spanlist">
   <span ng-show="!h.selectedHut.has_services && !h.selectedHut.has_optional_services">
     Self-service
@@ -183,16 +183,17 @@
   </div> <!- close hut-info -->
   
   <!- Secondary images -->
+  
   <div class="obliques-gallery">
-    <div ng-repeat="oblique in h.selectedHutObliques" class="oblique-image">
+    <div ng-repeat="oblique in h.selectedHutObliques.splice(0,+(!h.selectedHut.show_satellite))" class="oblique-image">
         <img ng-src="[* oblique.url *]" title="[* h.selectedHut.name *]" /><br/>
         <span ng-show="oblique.name != ''" class="credit-thumbnail">
-        <span ng-show="oblique.creditUrl != ''">
-          <a ng-href="[* oblique.creditUrl *]" target="_blank">[* oblique.name *]</a>
-        </span>
-        <span ng-show="oblique.creditUrl == ''">
-          [* oblique.name *]
-        </span>
+          <span ng-show="oblique.creditUrl != ''">
+            <a ng-href="[* oblique.creditUrl *]" target="_blank">[* oblique.name *]</a>
+          </span>
+          <span ng-show="oblique.creditUrl == ''">
+            [* oblique.name *]
+          </span>
       </span>
     </div>
   </div>
