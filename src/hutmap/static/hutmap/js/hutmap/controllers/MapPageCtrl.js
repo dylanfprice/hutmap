@@ -13,6 +13,7 @@
 
     $scope.mapPage = {
       showFilterSidebar: true,
+      showHutSidebar: false,
       loadNewHuts: true
     };
 

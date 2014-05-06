@@ -2,9 +2,39 @@
  * Styles for map.html
  */
 
-#show-hide-filter-sidebar, #filter-sidebar, #hut-sidebar, #map {
-  .transition(left 500ms cubic-bezier(0.445, 0.05, 0.55, 0.95) 20ms);
+/* states */
+.is-filter-sidebar-hidden {
+    left: 0px !important;
 }
+
+.is-hut-sidebar-hidden {
+    right: 0px !important;
+}
+
+
+/* transitions */
+
+@transition-duration: 500ms;
+@transition-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+@transition-delay: 20ms;
+
+#show-hide-filter-sidebar, #filter-sidebar {
+  .transition(left @transition-duration @transition-function @transition-delay);
+}
+
+#show-hide-hut-sidebar, #hut-sidebar {
+  .transition(right @transition-duration @transition-function @transition-delay);
+}
+
+#map {
+  .transition(
+    left @transition-duration @transition-function @transition-delay,
+    right @transition-duration @transition-function @transition-delay;
+  );
+}
+
+
+/* layouts */
 
 #alert-topbar {
   position: absolute;
@@ -42,33 +72,10 @@
 }
 
 #show-hide-filter-sidebar {
-  @sidebarToggleHeight: 16px;
-  font-size: @sidebarToggleHeight;
-  height: @sidebarToggleHeight;
-  padding: 2px 1px 2px 2px;
   position: absolute;
   top: @hideFilterBarOffset;
   left: @filterBarWidth;
   z-index: 101;
-  .border-bottom-right-radius( 2px );
-  .border-top-right-radius( 2px );
-  border-right: @borderColor solid @filterBarBorderWidth;
-  border-top: @borderColor solid @filterBarBorderWidth;
-  border-bottom: @borderColor solid @filterBarBorderWidth;
-  background-color: @altBgColor;
-
-  &.filter-sidebar-hidden {
-    left: 0px;
-  }
-
-  i {
-    .pointer;
-  }
-
-  .tooltip {
-    width: 100px;
-    z-index: 101;
-  }
 }
 
 #filter-sidebar {
@@ -78,15 +85,15 @@
   bottom: 0px;
   width: @filterBarWidth;
   font-size: @fontSizeSmall;
-  border-right: @borderColor solid @filterBarBorderWidth;
+  border-right: @barBorderColor solid @barBorderWidth;
   overflow-y: auto;
   
   .hut-filter-item {
     .pointer;
   }
   
-  &.filter-sidebar-hidden {
-    left: -@filterBarWidth;
+  &.is-filter-sidebar-hidden {
+    left: -@filterBarWidth !important;
   }
   
   i.icon-refresh {
@@ -103,7 +110,7 @@
 
   .summary-info {
     background-color: @altBgColor;
-    border-bottom: 1px dotted @borderColor;
+    border-bottom: 1px dotted @barBorderColor;
 
     i {
       text-align: center;
@@ -197,19 +204,11 @@
 
 #map {
   position: absolute;
-  right: @hutBarWidth + @filterBarBorderWidth;
-  left: @filterBarWidth + @filterBarBorderWidth;
+  right: @hutBarWidth + @barBorderWidth;
+  left: @filterBarWidth + @barBorderWidth;
   top: 0;
   bottom: 0;
   z-index: 100;
-
-  &.filter-sidebar-hidden {
-    left: 0px;
-  }
-  
-  &.hut-sidebar-hidden {
-    right: 0px;
-  }
 
   .map {
     width: 100%;
@@ -239,9 +238,9 @@
     background-color: rgb(250,250,250);
     .border-top-left-radius( 4px );
     .border-top-right-radius( 4px );
-    border-left: @borderColor solid @filterBarBorderWidth;
-    border-top: @borderColor solid @filterBarBorderWidth;
-    border-right: @borderColor solid @filterBarBorderWidth;
+    border-left: @barBorderColor solid @barBorderWidth;
+    border-top: @barBorderColor solid @barBorderWidth;
+    border-right: @barBorderColor solid @barBorderWidth;
 
     i {
       padding: .15em;
@@ -278,6 +277,13 @@
 
 }
 
+#show-hide-hut-sidebar {
+  position: absolute;
+  top: @hideFilterBarOffset;
+  right: @hutBarWidth;
+  z-index: 101;
+}
+
 #hut-sidebar {
   position: absolute;
   bottom: 0;
@@ -285,8 +291,16 @@
   top: 0;
   width: @hutBarWidth;
   font-size: @fontSizeSmall;
-  border-left: @borderColor solid @filterBarBorderWidth;
+  border-left: @barBorderColor solid @barBorderWidth;
   overflow-y: auto;
+  
+  &.is-hut-sidebar-hidden {
+    right: -@hutBarWidth !important;
+  }
+
+  div {
+    vertical-align: top;
+  }
   
   img {
     vertical-align: top;
@@ -294,8 +308,9 @@
     border: none;
   }
   
-  img#hut-topimg {
+  .main-hut-img {
     border-bottom: @borderColor solid 0px;
+    height: 250px;
   }
 
   &.filter-sidebar-hidden {

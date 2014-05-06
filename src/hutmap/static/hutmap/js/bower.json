@@ -3,7 +3,7 @@
   "dependencies": {
     "angularjs-file-upload": "1.1.5",
     "angular-ui-select2": "0.0.2",
-    "angular-ui-bootstrap-bower": "0.6.0",
+    "angular-bootstrap": "0.11.0",
     "AngularGM": "1.0.0"
   }
 }

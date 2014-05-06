@@ -1,26 +1,15 @@
 <div class="carousel">
     <div class="carousel-inner" ng-transclude></div>
-    <!--
-    <ol class="carousel-indicators" ng-show="slides().length > 1">
-        <li ng-repeat="slide in slides()" ng-class="{active: isActive(slide)}" ng-click="select(slide)"></li>
-    </ol>
-    -->
-    <a ng-click="!isActive(slides()[slides().length - 1]) && next()" 
+    <a ng-click="!isActive(slides[slides.length - 1]) && next()" 
        class="hut-carousel-control left" 
-       ng-show="slides().length > 1"
-       ng-class="{disabled: isActive(slides()[slides().length - 1])}">
+       ng-show="slides.length > 1"
+       ng-class="{disabled: isActive(slides[slides.length - 1])}">
        <i class="icon-chevron-left"></i>
     </a>
-    <a ng-click="!isActive(slides()[0]) && prev()" 
+    <a ng-click="!isActive(slides[0]) && prev()" 
        class="hut-carousel-control right" 
-       ng-show="slides().length > 1"
-       ng-class="{disabled: isActive(slides()[0])}">
+       ng-show="slides.length > 1"
+       ng-class="{disabled: isActive(slides[0])}">
       <i class="icon-chevron-right"></i>
     </a>
-
-    <!--
-    <a ng-click="" class="hut-carousel-control info" ng-show="slides().length > 1"><i class="icon-info-sign"></i></a>
-    <a ng-click="pause(); paused = true;" class="hut-carousel-control pause" ng-show="!paused && slides().length > 1"><i class="icon-pause"></i></a>
-    <a ng-click="play(); paused = false;" class="hut-carousel-control play" ng-show="paused && slides().length > 1"><i class="icon-play"></i></a>
-    -->
 </div>
