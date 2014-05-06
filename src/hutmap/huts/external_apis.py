@@ -1,5 +1,5 @@
 
-class GoogleElevation:
+class GoogleElevation(object):
 
   def __init__(self, api_key=None):
     pass
@@ -8,7 +8,7 @@ class GoogleElevation:
     pass
 
 
-class GoogleGeocode:
+class GoogleGeocode(object):
 
   def __init__(self, api_key=None):
     pass
