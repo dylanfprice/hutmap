@@ -113,6 +113,33 @@
     $scope.$on('writeLocation', writeLocation);
 
     readLocation();
+    
+    var maxZoomService = new google.maps.MaxZoomService();
+    $scope.getMaxZoom = function(latlng) {
+      var deferred = $q.defer();
+      maxZoomService.getMaxZoomAtLatLng(latlng, function(response) {
+        if (response.status != google.maps.MaxZoomStatus.OK) {
+          deferred.resolve(14);
+        } else {
+          deferred.resolve(response.zoom);
+        }
+      });
+      return deferred.promise;
+    };
+    
+    $scope.zoomToHut = function(hut) {
+      var latlng = new google.maps.LatLng(hut.location.coordinates[1], hut.location.coordinates[0]);
+      $scope.m.center = latlng;
+      var zoom = 19;
+      if ($scope.m.mapTypeId == google.maps.MapTypeId.HYBRID) {
+        var zoomPromise = $scope.getMaxZoom(latlng);
+        zoomPromise.then(function(maxZoom) {
+          $scope.m.zoom = Math.min(zoom, maxZoom);
+        });
+      } else {
+        $scope.m.zoom = zoom;
+      }
+    };
 
   }]);
 })();
