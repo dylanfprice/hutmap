@@ -11,13 +11,27 @@
     right: 0px !important;
 }
 
-#show-hide-filter-sidebar, #filter-sidebar, #map {
-  .transition(left 500ms cubic-bezier(0.445, 0.05, 0.55, 0.95) 20ms);
+
+/* transitions */
+
+@transition-duration: 500ms;
+@transition-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+@transition-delay: 20ms;
+
+#show-hide-filter-sidebar, #filter-sidebar {
+  .transition(left @transition-duration @transition-function @transition-delay);
 }
 
-#show-hide-hut-sidebar, #hut-sidebar, #map {
-  .transition(right 500ms cubic-bezier(0.445, 0.05, 0.55, 0.95) 20ms);
+#show-hide-hut-sidebar, #hut-sidebar {
+  .transition(right @transition-duration @transition-function @transition-delay);
 }
+
+#map {
+  .transition(
+    left @transition-duration @transition-function @transition-delay
+  );
+}
+
 
 /* layouts */
 
