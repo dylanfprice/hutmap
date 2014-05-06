@@ -1,9 +1,12 @@
 (function() {
 'use strict';
 
-  angular.module('hutmap', ['hutmap.services', 'hutmap.directives',
-    'hutmap.filters', 'hutmap.controllers', 'AngularGM', 'ngResource',
-    'ngCookies', 'ui.bootstrap', 'ui.select2', 'angularFileUpload']).
+  angular.module('hutmap', [
+      'hutmap.services', 'hutmap.directives', 'hutmap.filters', 'hutmap.controllers', 
+      'ngRoute', 'ngResource', 'ngCookies',
+      'AngularGM', 'ui.bootstrap', 'ui.select2', 'angularFileUpload',
+    ]).
+    
 
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.

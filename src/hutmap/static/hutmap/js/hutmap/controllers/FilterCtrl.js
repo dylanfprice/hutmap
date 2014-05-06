@@ -365,9 +365,6 @@
           matchServices = checkLabels(hut.optional_services, keywords);
         }
       }
-      if (!matchServices) {
-        console.log(hut, hut.has_services && hut.services != null, hut.has_optional_services && hut.optional_services != null);
-      }
       return matchServices;
     };
 

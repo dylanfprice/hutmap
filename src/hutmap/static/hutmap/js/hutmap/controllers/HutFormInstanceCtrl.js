@@ -13,7 +13,6 @@
     $scope.submitting = false;
 
     $scope.setLocation = function(location) {
-      console.log('here');
       $scope.hut.location = location;
     }
 
