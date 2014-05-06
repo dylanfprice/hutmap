@@ -34,7 +34,7 @@
         maxZoomPromise.then(function(maxZoom) {
           var url = 'http://maps.googleapis.com/maps/api/staticmap' + 
                     '?center=' + latLng.lat() + '%2C' + latLng.lng() +
-                    '&zoom=' + maxZoom +
+                    '&zoom=' + Math.min(maxZoom, 19) +
                     '&size=' + width + 'x' + height +
                     '&maptype=satellite' +
                     '&sensor=false' +

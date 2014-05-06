@@ -132,7 +132,7 @@
       $scope.m.center = latlng;
       var zoom = 19;
       if ($scope.m.mapTypeId == google.maps.MapTypeId.HYBRID) {
-        var zoomPromise = $scope.getMaxZoom(latlng);
+        var zoomPromise = MaxZoom.getMaxZoom(latlng);
         zoomPromise.then(function(maxZoom) {
           $scope.m.zoom = Math.min(zoom, maxZoom);
         });
