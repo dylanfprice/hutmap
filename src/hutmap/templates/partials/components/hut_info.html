@@ -124,14 +124,12 @@
       <span ng-show="h.selectedHut.structures > 1">per structure</span>
       <span ng-show="h.selectedHut.structures == 1">whole hut</span>
     </span>
-    <br/>
   </span>
   <span ng-show="h.selectedHut.is_fee_person == null && h.selectedHut.is_fee_hut == null">
     <b class="category">Cost</b> <i>Unknown</i>
-    <br/>
   </span>
+  <br ng-show="h.selectedHut.is_fee_person == true || h.selectedHut.is_fee_hut == true || (h.selectedHut.is_fee_person == null && h.selectedHut.is_fee_hut == null)"/>
   
-  <span>.</span>
   <!-- Services -->
   <span ng-show="getServices(h.selectedHut).length > 0">
     <b class="category">Services</b>
@@ -185,7 +183,7 @@
   <!- Secondary images -->
   
   <div class="obliques-gallery">
-    <div ng-repeat="oblique in h.selectedHutObliques.splice(0,+(!h.selectedHut.show_satellite))" class="oblique-image">
+    <div ng-repeat="oblique in h.selectedHutObliques" class="oblique-image">
         <img ng-src="[* oblique.url *]" title="[* h.selectedHut.name *]" /><br/>
         <span ng-show="oblique.name != ''" class="credit-thumbnail">
           <span ng-show="oblique.creditUrl != ''">

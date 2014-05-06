@@ -44,7 +44,8 @@
           $scope.h.selectedHutImgUrl = url;
         });
         HutImg.getObliques(hut).then(function(obliques) {
-          $scope.h.selectedHutObliques = obliques;
+          // Remove first image if showing first image up top (ie. not showing static map)
+          $scope.h.selectedHutObliques = obliques.splice(0,+(hut.show_satellite));
         });
       }
     });

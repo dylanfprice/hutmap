@@ -25,9 +25,7 @@
       }
       var array = [];
       angular.forEach(objects, function(object) {
-        if (object[key] != 0) {
-          array.push(object[key]);
-        }
+        array.push(object[key]);
       });
       return array.join(delimiter);
     }
