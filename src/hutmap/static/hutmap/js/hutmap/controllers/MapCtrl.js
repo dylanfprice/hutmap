@@ -25,19 +25,13 @@
         if ($scope.h.selectedHut) {
           $scope.m.hutMarkerEvents = [{
             event: 'click',
-            locations: [utils.latLngFromHut($scope.h.selectedHut)]
+            ids: [$scope.h.selectedHut.id]
           }];
         }
       });
     };
 
     $scope.$watch('m.center != null && m.zoom != null', function(v) { if (v) $scope.m.initialized.resolve(); });
-
-    $scope.$watch('m.bounds', function(bounds) {
-      if (bounds && $scope.ui.loadNewHuts) {
-        $scope.h.query = { bounds: bounds };
-      }
-    });
 
     $scope.$on('gmMarkersUpdated', function(event, objects) {
       if (objects === 'h.huts') {
@@ -48,6 +42,12 @@
     $scope.$on('clickSelected', function() {
       clickSelected();
     });
+
+    $scope.updateHuts = function(bounds) {
+        if (bounds && $scope.mapPage.loadNewHuts) {
+            $scope.h.query = { bounds: bounds };
+        }
+    };
 
     $scope.showMarkerTooltip = function(marker, hut) {
       var tooltip = markerTooltips[marker.getPosition().toUrlValue()];
@@ -113,6 +113,33 @@
     $scope.$on('writeLocation', writeLocation);
 
     readLocation();
+    
+    var maxZoomService = new google.maps.MaxZoomService();
+    $scope.getMaxZoom = function(latlng) {
+      var deferred = $q.defer();
+      maxZoomService.getMaxZoomAtLatLng(latlng, function(response) {
+        if (response.status != google.maps.MaxZoomStatus.OK) {
+          deferred.resolve(14);
+        } else {
+          deferred.resolve(response.zoom);
+        }
+      });
+      return deferred.promise;
+    };
+    
+    $scope.zoomToHut = function(hut) {
+      var latlng = new google.maps.LatLng(hut.location.coordinates[1], hut.location.coordinates[0]);
+      $scope.m.center = latlng;
+      var zoom = 19;
+      if ($scope.m.mapTypeId == google.maps.MapTypeId.HYBRID) {
+        var zoomPromise = MaxZoom.getMaxZoom(latlng);
+        zoomPromise.then(function(maxZoom) {
+          $scope.m.zoom = Math.min(zoom, maxZoom);
+        });
+      } else {
+        $scope.m.zoom = zoom;
+      }
+    };
 
   }]);
 })();

@@ -53,7 +53,6 @@
       // We'll add this overlay to the floatPane pane.
       var panes = this.getPanes();
       panes.floatPane.appendChild(this.div_);
-    
     }
 
     // Here we implement draw

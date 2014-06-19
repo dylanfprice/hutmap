@@ -1,18 +1,22 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 from huts.views import DynamicTemplateView, BaseView, HutSuggestionFormView, HutEditFormView
-#from huts.api import HutSearchResource, HutResource, AgencyResource, RegionResource
-#from tastypie.api import Api
+from huts.api import HutResource, AgencyResource, RegionResource
+from tastypie.api import NamespacedApi
 
-urlpatterns = patterns('',
+hut_patterns = patterns('',
 
-  url(r'^$',       BaseView.as_view(), name='home'),
+  url(r'^$', BaseView.as_view(), name='home'),
 
-  url(r'^map/$',   BaseView.as_view(metadata='metadata/map.html'), 
-    name='map'),
+  url(r'^map/$', BaseView.as_view(
+      metadata='metadata/map.html'),
+      name='map'
+  ),
 
-  url(r'^about/$', BaseView.as_view(metadata='metadata/about.html'),
-    name='about'),
-  
+  url(r'^about/$', BaseView.as_view(
+      metadata='metadata/about.html'),
+      name='about'
+  ),
+
   url(r'^forms/hut/new/$', HutSuggestionFormView.as_view()),
   url(r'^forms/hut/(?P<pk>\d+)/$', HutEditFormView.as_view()),
 
@@ -20,13 +24,11 @@ urlpatterns = patterns('',
 )
 
 # api
-#api = Api(api_name='v1')
-#api.register(HutSearchResource())
-#api.register(HutResource())
-#api.register(AgencyResource())
-#api.register(RegionResource())
-#
-#urlpatterns += patterns('',
-#  (r'^api/', include(api.urls)),
-#)
+v1_api = NamespacedApi(api_name='v1', urlconf_namespace='huts_api')
+v1_api.register(HutResource())
+v1_api.register(AgencyResource())
+v1_api.register(RegionResource())
 
+api_patterns = patterns('',
+  url(r'', include(v1_api.urls)),
+)

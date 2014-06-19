@@ -1,6 +1,6 @@
 ---
 - name: generate ssh key
-  user: name=$user generate_ssh_key=yes
+  user: name={{ user }} generate_ssh_key=yes
 
 - name: setup django development server as a service
   template: src='django-devserver.conf.j2' dest='/etc/init/django-devserver.conf'
@@ -8,14 +8,14 @@
     restart webserver
 
 - name: install deploy_dreamhost
-  template: src='deploy_dreamhost.sh.j2' dest='$scripts_dir/deploy_dreamhost.sh' mode=0755
+  template: src='deploy_dreamhost.sh.j2' dest='{{ scripts_dir }}/deploy_dreamhost.sh' mode=0755
 
 - name: copy dev_requirements
-  copy: src='dev_requirements.txt' dest='$home/dev_requirements.txt'
+  copy: src='dev_requirements.txt' dest='{{ home }}/dev_requirements.txt'
 
 - name: install dev_requirements
   sudo: no
-  pip: requirements='$home/dev_requirements.txt' virtualenv=$virtualenv state=latest
+  pip: requirements='{{ home }}/dev_requirements.txt' virtualenv={{ virtualenv }} state=latest
 
 - name: install libfontconfig which is needed by phantomjs
   apt: pkg=libfontconfig1 state=latest
@@ -30,7 +30,7 @@
   apt: pkg=nodejs state=latest update_cache=yes
 
 - name: install development tools
-  npm: name=$item global=yes state=present
+  npm: name={{ item }} global=yes state=present
   with_items:
     - less
     - phantomjs

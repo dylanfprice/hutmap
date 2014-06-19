@@ -19,12 +19,28 @@
   }).
 
   filter('listifyObjects', function() {
-    return function(objects, key) {
+    return function(objects, key, delimiter) {
+      if (!delimiter) {
+        delimiter = ', ';
+      }
       var array = [];
       angular.forEach(objects, function(object) {
         array.push(object[key]);
       });
-      return array.join(', ');
+      return array.join(delimiter);
+    }
+  }).
+  
+  filter('urlDomain', function() {
+    return function(url) {
+      if (url) {
+        var matches = url.toLowerCase().match(
+          /^(?:https?\:\/\/)?(?:www\.)?([^\/?#]+)(?:[\/?#]|$)/i
+        )
+        if (matches != null) {
+          return matches[1];
+        }
+      }
     }
   });
 

@@ -20,9 +20,9 @@
   {% include "partials/components/hut_modal.html" %}
 </script>
 
+<div ng-controller="MapPageCtrl">
 <div ng-controller="LinkCtrl">
 <div ng-controller="HutCtrl">
-  <div ng-controller="HutImgCtrl">
   <div ng-controller="AlertCtrl">
     <div id="alert-topbar" ng-show="alerts.length">
       <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">[*alert.msg*]</alert>
@@ -31,28 +31,35 @@
       <i class="img-loading"></i> 
     </div>
     <div id="show-hide-filter-sidebar"
-         ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
-      <i ng-class="{
-          'icon-chevron-right': !ui.showFilterSidebar,
-          'icon-chevron-left':  ui.showFilterSidebar
-         }"
-         ng-click="ui.showFilterSidebar = !ui.showFilterSidebar" ></i>
+         class="show-hide-slider show-hide-slider-left-facing"
+         ng-class="{'is-filter-sidebar-hidden': !mapPage.showFilterSidebar}">
+         <i  class="show-hide-slider-icon icon-chevron-left"
+             ng-class="{
+               'icon-chevron-left': mapPage.showFilterSidebar,
+               'icon-chevron-right': !mapPage.showFilterSidebar
+             }"
+             ng-click="mapPage.showFilterSidebar = !mapPage.showFilterSidebar;" ></i>
     </div>
-    {% include "partials/components/link_button.html" %}
+      {% include "partials/components/link_button.html" %}
     <div ng-controller="FilterCtrl">
-      <div id="filter-sidebar" ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
+      <div id="filter-sidebar" ng-class="{'is-filter-sidebar-hidden': !mapPage.showFilterSidebar}">
         {% include "partials/components/summary_info.html" %}
         {% include "partials/components/filters.html" %}
       </div>
       <div ng-controller="MapConfigCtrl">
         <div ng-controller="MapCtrl">
-          <div id="map" ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
+          <div id="map" 
+               ng-class="{
+                 'is-filter-sidebar-hidden': !mapPage.showFilterSidebar, 
+                 'is-hut-sidebar-hidden': !mapPage.showHutSidebar
+               }">
             <gm-map class="map" 
                     gm-map-id="mc.hutmapMapId" 
                     gm-center="m.center" 
                     gm-zoom="m.zoom" 
                     gm-bounds="m.bounds" 
                     gm-map-type-id="m.mapTypeId" 
+                    gm-on-idle="updateHuts(m.bounds)"
                     gm-map-options="mc.mapOptions">
               <gm-markers gm-objects="h.huts" 
                           gm-id="object.id"
@@ -65,14 +72,28 @@
               </gm-markers>
             </gm-map>
           </div>
-          <div id="hut-bottombar" ng-controller="BottomBarCtrl" ng-class="{'filter-sidebar-hidden': !ui.showFilterSidebar}">
+        </div>
+        <div ng-controller="HutInfoCtrl">
+          <div id="show-hide-hut-sidebar" 
+               class="show-hide-slider show-hide-slider-right-facing is-hut-sidebar-hidden"
+               ng-class="{'is-hut-sidebar-hidden': !mapPage.showHutSidebar}">
+               <i  class="show-hide-slider-icon"
+                   ng-class="{
+                     'icon-chevron-left': !mapPage.showHutSidebar,
+                     'icon-chevron-right': mapPage.showHutSidebar
+                   }"
+                   ng-click="mapPage.showHutSidebar = !mapPage.showHutSidebar;"></i>
+          </div>
+          <div id="hut-sidebar" 
+               class="is-hut-sidebar-hidden"
+               ng-class="{'is-hut-sidebar-hidden': !mapPage.showHutSidebar}">
             {% include "partials/components/hut_info.html" %}
           </div>
         </div>
       </div>
     </div>
   </div>
-  </div>
+</div>
 </div>
 </div>
 

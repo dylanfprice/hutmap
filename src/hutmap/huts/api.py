@@ -3,9 +3,13 @@ from huts.models import Hut, Region, Agency, Designation, System, AccessType,\
 from huts.utils.csv_serializer import CSVSerializer
 from huts.utils.csv_consts import CSV_NULL, CSV_TRUE, CSV_FALSE
 from tastypie.contrib.gis.resources import ModelResource
+from tastypie.resources import NamespacedModelResource
 from tastypie import fields
 
-class RegionResource(ModelResource):
+class NamespacedGeoModelResource(NamespacedModelResource, ModelResource):
+    pass
+
+class RegionResource(NamespacedGeoModelResource):
   class Meta:
     queryset = Region.objects.all()
     allowed_methods = ['get']
@@ -18,27 +22,27 @@ class LabelResourceMixin(object):
     fields = ['name', 'identifier']
     include_resource_uri = False
 
-class DesignationResource(ModelResource, LabelResourceMixin):
+class DesignationResource(NamespacedGeoModelResource, LabelResourceMixin):
   class Meta(LabelResourceMixin.Meta):
     queryset = Designation.objects.all()
 
-class SystemResource(ModelResource, LabelResourceMixin):
+class SystemResource(NamespacedGeoModelResource, LabelResourceMixin):
   class Meta(LabelResourceMixin.Meta):
     queryset = System.objects.all()
 
-class AccessTypeResource(ModelResource, LabelResourceMixin):
+class AccessTypeResource(NamespacedGeoModelResource, LabelResourceMixin):
   class Meta(LabelResourceMixin.Meta):
     queryset = AccessType.objects.all()
 
-class HutTypeResource(ModelResource, LabelResourceMixin):
+class HutTypeResource(NamespacedGeoModelResource, LabelResourceMixin):
   class Meta(LabelResourceMixin.Meta):
     queryset = HutType.objects.all()
 
-class ServiceResource(ModelResource, LabelResourceMixin):
+class ServiceResource(NamespacedGeoModelResource, LabelResourceMixin):
   class Meta(LabelResourceMixin.Meta):
     queryset = Service.objects.all()
 
-class AgencyResource(ModelResource):
+class AgencyResource(NamespacedGeoModelResource):
   parent = fields.ForeignKey('AgencyResource', 'agency', full=False, null=True)
 
   class Meta:
@@ -47,11 +51,12 @@ class AgencyResource(ModelResource):
     allowed_methods = ['get']
     serializer = CSVSerializer(formats=['json', 'csv'])
 
-class HutResource(ModelResource):
+class HutResource(NamespacedGeoModelResource):
   region = fields.ForeignKey(RegionResource, 'region', full=False, null=True)
   agency = fields.ForeignKey(AgencyResource, 'agency', full=False, null=True)
   # list fields
   location_references = fields.ListField(attribute='location_references', null=True)
+  hut_references = fields.ListField(attribute='hut_references', null=True)
   alternate_names = fields.ListField(attribute='alternate_names', null=True)
   # m2m fields
   designations = fields.ToManyField(DesignationResource, 'designations', null=True, full=True)

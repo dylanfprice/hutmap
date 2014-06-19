@@ -7,3 +7,4 @@ src/hutmap/scripts/
 *.swp
 *.pyc
 .DS_Store
+.ropeproject/

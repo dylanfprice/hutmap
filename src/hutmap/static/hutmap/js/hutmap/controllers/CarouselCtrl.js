@@ -205,6 +205,54 @@
           credit: 'Google'
         }
       },
+      
+      /* OLD
+       {
+        title: 'Plummer Hut', 
+        location: 'Waddington Range, British Columbia, Canada',
+        hutLink: '/map/?h_selected=357&m_center=51.388403,-125.062053&m_zoom=9',
+        agency: {
+          name: 'BC Mountaineering Club',
+          url:  ''
+        },
+        thumbnail: {
+          src: hutmap.STATIC_URL + 'hutmap/img/no-image-available.gif',
+          credit: 'Obadiah Reid'
+        },
+        image: {
+          src: hutmap.STATIC_URL + 'hutmap/img/carousel/plummer-hut-hires.jpg',
+          credit: 'Google Earth'
+        }
+      }
+      
+      {
+        title: 'Joe River Chickee', 
+        location: 'lorem ipsum dolor',
+        hutLink: '',
+        agency: {
+          name: 'lorem ipsum dolor',
+          url:  ''
+        },
+        thumbnail: hutmap.STATIC_URL + 'hutmap/img/no-image-available.gif',
+        thumbnail_credit: '',
+        image: hutmap.STATIC_URL + 'hutmap/img/carousel/joe-river-chickee-hires.jpg',
+        image_credit: '&copy; Google Earth'
+      },
+      {
+        title: 'John Muir Shelter', 
+        location: 'lorem ipsum dolor',
+        hutLink: '',
+        agency: {
+          name: 'lorem ipsum dolor',
+          url:  ''
+        },
+        thumbnail: hutmap.STATIC_URL + 'hutmap/img/no-image-available.gif',
+        thumbnail_credit: '',
+        image: hutmap.STATIC_URL + 'hutmap/img/carousel/john-muir-shelter-hires.jpg',
+        image_credit: '&copy; Google Earth'
+      }
+    
+    */
 
     ];
 

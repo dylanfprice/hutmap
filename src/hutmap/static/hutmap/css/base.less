@@ -6,12 +6,16 @@ html, body {
 	background-color: @bodyColor;
   font-family: "Myriad Pro", Verdana, "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1em;
-	color: #333;
+	color: @textColor;
 }
 
 p {
   line-height: 120%;
   margin: 1em 0; /* anti bootstrap */
+  word-spacing: +0.1em; /* anti bootstrap */
+}
+
+.widewords {
   word-spacing: +0.1em; /* anti bootstrap */
 }
 
@@ -23,6 +27,24 @@ a {
 
 a:hover {
   text-decoration: underline;
+  color: @linkColorHover;
+}
+
+/* external links */
+#hut-sidebar,
+#content-page {
+  a[href^="//"], 
+  a[href^="http://"], 
+  a[href^="https://"],
+  a[href^="www."] {
+    white-space: nowrap;
+    &:not(.noicon):after {
+      /*content: url(http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png);*/
+      content: url(http://upload.wikimedia.org/wikipedia/commons/d/d9/VisualEditor_-_Icon_-_External-link.svg);
+      padding: 0 0 0 1px;
+      display: inline-block;
+    }
+  }
 }
 
 h1, h2 {
@@ -56,19 +78,23 @@ hr {
 	font-size: 95%;
 }
 
-input.button {
+.button {
   background-color: #EEE;
-  border: 1px solid #CCC;
   text-align: center;
+  display: inline-block;
+}
+
+.button:hover {
+  background-color: #E5E5E5;
+  cursor: pointer;
+}
+
+input.button {
+  border: 1px solid #CCC;
 }
 
 input.button.submitting {
   opacity: 0.4;
-}
-
-input.button:hover {
-  background-color: #DDD;
-  cursor: pointer;
 }
 
 /** OVERRIDE BOOTSTRAP **/
@@ -110,7 +136,7 @@ div#navbar {
   left: 0;
   height: @navbarHeight;
   z-index: 1030;
-  background-color: fade(#555, 85%);
+  background-color: @navbarBackground;
   
   a:hover {
     text-decoration: none;
@@ -118,27 +144,28 @@ div#navbar {
 }
 
 div#brand {
-  background-color: lighten(@gray, 10%);
+  background-color: @logoBackground;
   z-index: 10;
-  padding: 0px 20px;
+  padding: 0px 18px 0px 13px;
   float: left;
-  font-family: "Cooper Medium";
+  font-family: @logoFont;
   font-weight: 600;
-  font-size: 110%;
+  font-size: @logoFontSize;
   
   span {
-    color: #EEE;
+    color: @logoColor;
     display: inline-block;
-    vertical-align: middle;
   }
   
   span:hover {
-    color: #FFF;
+    /*color: @navbarActiveText;*/
   }
   
   img {
     height: @logoHeight;
-    padding: (@navbarHeight - @logoHeight)/2 0;
+    padding: ((@navbarHeight - @logoHeight)/2) 0;
+    position: relative;
+    top: -1px; /* alignment with logo text */
   }
 }
 
@@ -149,27 +176,26 @@ div#navtriangle {
   height: 0;
 	border-top: @navbarHeight/2 solid transparent;
 	border-bottom: @navbarHeight/2 solid transparent;
-	border-left: @navbarHeight/4 solid lighten(@gray, 10%);  
+	border-left: @navbarHeight/4 solid @logoBackground;  
 }
 
 #navbar-search {
 
+  @searchInputHeight: 0.615 * @navbarHeight;
   @searchPaddingLeft: 25px;
   @searchPaddingRight: 30px;
-  @searchPaddingTop: 4px;
-  @searchPaddingBottom: 1px;
+  @searchPaddingTop: 0;
+  @searchPaddingBottom: 0;
   @searchBorder: 1px;
-  @searchPadding: 4px;
   @searchBarShift: 20px;
-  @placeholderColor: @gray;
+  @placeholderColor: #777;
   @searchInputStartingWidth: 250px; /* animation currently disabled */
   @searchInputExpandedWidth: 250px;
-  @searchFontSize: 0.9 * @baseFontSize;
+  @searchFontSize: 0.6 * (@searchInputHeight - (@searchPaddingTop + @searchPaddingBottom));
 
   position: relative;
   right: @searchBarShift;
   z-index: -10;
-  margin: 0;
   margin: unit((@navbarHeight - @searchInputHeight - (2*@searchBorder) - (@searchPaddingTop + @searchPaddingBottom)) / 2, px) 0;
   
   .search-query {
@@ -178,10 +204,11 @@ div#navtriangle {
     border-radius: 8px;
     font-size: @searchFontSize;
     height: @searchInputHeight;
+    line-height: @searchInputHeight;
     width: @searchInputStartingWidth;
     color: @placeholderColor;
-    background-color: #E6E6E6;
-    .transition(background-color 0.2s ease-out .05s);
+    background-color: @altBgColor;
+    .transition(background-color 0.1s ease-out .05s);
     text-shadow: none;
   
     &:focus {
@@ -204,7 +231,7 @@ div#navtriangle {
   }
   
   .dropdown-menu {
-    width: @searchInputExpandedWidth + 55px;
+    width: @searchInputExpandedWidth + @searchPaddingLeft + @searchPaddingRight;
     font-size: @searchFontSize;
     background-color: @bodyColor;
     position: absolute;
@@ -259,39 +286,35 @@ div#navtriangle {
 }
 
 div#navbar #nav {
-  display: block;
   float: left;
-  margin: 0 10px 0 0;
-  padding: 0;
-  list-style: none;
   
-  li {
-    float: left;
-    
     a {
+      display: inline-block;
       line-height: @navbarHeight;
-      font-size: 105%;
-      display: block;
+      font-size: @navbarHeight * 0.45;
       padding: 0 15px;
-      color: #EEE;
+      color: @navbarInactiveText;
     }
     
     a:hover {
-      color: #FFF;
+      color: @navbarActiveText;
     }
-  }
   
-  li.active {
-    background-color: #494c51;
-    
-    a {
-      color: #FFF;
+  
+  a.active {
+    background-color: @navbarActiveBackground;
+      color: @navbarActiveText;
     }
-  }
+  
 }
 
-div#share_controls {
+div#social_controls {
 	position: absolute;
-	right: 20px;
-	top: (@navbarHeight - 22px) / 2;
+	right: 8px;
+	height: @socialControlsHeight;
+	top: (@navbarHeight - @socialControlsHeight) / 2;
+	
+	img {
+	  height: 100%;
+	}
 }

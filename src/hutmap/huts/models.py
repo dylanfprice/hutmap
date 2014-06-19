@@ -22,8 +22,8 @@ class Label(models.Model):
   name = models.CharField(max_length=100, blank=False)
   identifier = models.SlugField(
     unique=True,
-    blank=False, 
-    validators=[RegexValidator(r'^[-a-zA-Z]+$', 'Must contain only letters and dashes')]
+    blank=False,
+    validators=[RegexValidator(r'^[-a-zA-Z0-9]+$', 'Must contain only letters, numbers, and dashes')]
   )
 
   def __unicode__(self):
@@ -50,11 +50,11 @@ class Service(Label):
 class HutCommon(models.Model):
   LOCATION_ACCURACY_CHOICES = (
     (None, 'coordinates provided but unverified'),
-    (1, 'wild guess'), 
-    (2, 'guess'), 
+    (1, 'wild guess'),
+    (2, 'guess'),
     (3, 'found on satellite or topo'),
-    (4, 'surveyed by GPS'), 
-    (5, 'surveyed by GPS and found on satellite or topo'), 
+    (4, 'surveyed by GPS'),
+    (5, 'surveyed by GPS and found on satellite or topo'),
   )
 
   BACKCOUNTRY_CHOICES = (
@@ -70,14 +70,14 @@ class HutCommon(models.Model):
 
   ## location ##
   # NOTE: change this to true if we ever do spatial queries (and mysql engine to MyISAM)
-  location = models.PointField(spatial_index=False) 
+  location = models.PointField(spatial_index=False)
   altitude_meters = models.IntegerField('altitude (m)', null=True, blank=True)
   location_accuracy = models.IntegerField(choices=LOCATION_ACCURACY_CHOICES, null=True, blank=True)
   show_satellite = models.NullBooleanField()
   show_topo = models.NullBooleanField()
 
   location_references = ListField(null=True, blank=True)
-  
+
   ## geopolitical ##
   country = CountryField(null=False)
   state = models.CharField(max_length=50, blank=False)
@@ -182,7 +182,7 @@ class Hut(HutCommon):
         self.save()
       except:
         pass #TODO: log this
-        
+
 
   def save(self, *args, **kwargs):
     super(Hut, self).save(*args, **kwargs) # Call the "real" save() method.

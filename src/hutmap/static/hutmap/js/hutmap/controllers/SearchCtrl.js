@@ -47,7 +47,8 @@
     var onError = function(status) {
       $scope.submitting = false;
       $log.error(status);
-      $scope.addAlert('error', 'There was an error retrieving search results. TODO: better messages');
+      // TODO: Better error messages.
+      $scope.addAlert('error', 'There was an error retrieving search results.');
     };
 
     // given PlaceResult (https://developers.google.com/maps/documentation/javascript/places#place_details_responses)
@@ -58,7 +59,7 @@
       $location.
         path(hutmap.url.map).
         search({}).
-        search('m_zoom', 8);
+        search('m_zoom', 17); // Why 17? Because it looks good.
 
       if (place.geometry.location) {
         $location.search('m_center', place.geometry.location.toUrlValue());

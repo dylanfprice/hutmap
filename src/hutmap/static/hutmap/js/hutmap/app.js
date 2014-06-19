@@ -1,9 +1,12 @@
 (function() {
 'use strict';
 
-  angular.module('hutmap', ['hutmap.services', 'hutmap.directives',
-    'hutmap.filters', 'hutmap.controllers', 'AngularGM', 'ngResource',
-    'ngCookies', 'ui.bootstrap', 'ui.select2', 'angularFileUpload']).
+  angular.module('hutmap', [
+      'hutmap.services', 'hutmap.directives', 'hutmap.filters', 'hutmap.controllers', 
+      'ngRoute', 'ngResource', 'ngCookies',
+      'AngularGM', 'ui.bootstrap', 'ui.select2', 'angularFileUpload',
+    ]).
+    
 
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.
@@ -59,7 +62,7 @@
       {
         zoom : 3,
         center : new google.maps.LatLng(46.87916, -120),
-        mapTypeId : "ArcGIS World",
+        mapTypeId : "World Topo",
       },
       angular.copy(base)
     );
@@ -146,7 +149,7 @@
 
       var mapTypes = {
         ARC_GIS_USA: new google.maps.ImageMapType({
-          name: "ArcGIS USA",
+          name: "US Topo",
           alt: "ArcGIS USA Topos",
           minZoom: 1,
           maxZoom: 15,
@@ -156,7 +159,7 @@
         }),
 
         ARC_GIS_WORLD: new google.maps.ImageMapType({
-          name: "ArcGIS World",
+          name: "World Topo",
           alt: "ArcGIS World Topos",
           minZoom: 1,
           maxZoom: 15,
@@ -173,9 +176,9 @@
       gmap.setOptions({
         mapTypeControlOptions: {
           mapTypeIds: [google.maps.MapTypeId.ROADMAP,
+                       google.maps.MapTypeId.TERRAIN,
                        google.maps.MapTypeId.SATELLITE,
                        google.maps.MapTypeId.HYBRID,
-                       google.maps.MapTypeId.TERRAIN,
                        mapTypes.ARC_GIS_USA.name,
                        mapTypes.ARC_GIS_WORLD.name]
         }
@@ -183,10 +186,11 @@
 
       // in case mapOptions.mapTypeId didn't exist until now
       gmap.setMapTypeId(mapOptions.main.mapTypeId);
-
+      
       gmap.enableKeyDragZoom({
-        key: 'alt',
-        veilStyle: {backgroundColor: "gray", opacity: 0, cursor: "crosshair"},
+        key: 'shift',
+        boxStyle: {border: "2px solid grey", backgroundColor: "transparent", opacity: 0.8},
+        veilStyle: {backgroundColor: "transparent", opacity: 1, cursor: "crosshair"},
         visualEnabled: true,
         visualPosition: google.maps.ControlPosition.LEFT_CENTER
       });

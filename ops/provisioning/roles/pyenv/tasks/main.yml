@@ -1,29 +1,29 @@
 ---
 - name: checkout pyenv
   git: repo=git://github.com/yyuu/pyenv.git
-       dest=$home/.pyenv
+       dest={{ home }}/.pyenv
        update=yes
 
 - name: make tmp dir
-  file: path=$home/tmp mode=0755 state=directory
+  file: path={{ home }}/tmp mode=0755 state=directory
 
 - name: install python
-  command: $home/.pyenv/bin/pyenv install $python_version
-    creates=$home/.pyenv/versions/$python_version 
+  command: '{{ home }}/.pyenv/bin/pyenv install {{ python_version }}
+    creates={{ home }}/.pyenv/versions/{{ python_version }}'
   environment:
-    TMPDIR: $home/tmp
+    TMPDIR: '{{ home }}/tmp'
 
 - name: remove tmp dir
-  file: path=$home/tmp state=absent
+  file: path={{ home }}/tmp state=absent
 
 - name: set python version, install virtualenv, rehash
-  command: $home/.pyenv/bin/pyenv $item
+  command: '{{ home }}/.pyenv/bin/pyenv {{ item }}'
   with_items:
-    - global $python_version
+    - global {{ python_version }}
     - exec pip install virtualenv
     - rehash
 
 - name: setup virtualenv
-  command: $home/.pyenv/bin/pyenv exec virtualenv $virtualenv
-    creates=$virtualenv
+  command: '{{ home }}/.pyenv/bin/pyenv exec virtualenv {{ virtualenv }}
+    creates={{ virtualenv }}'
 

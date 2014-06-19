@@ -4,8 +4,8 @@
   angular.module('hutmap.controllers').
 
   controller('HutCtrl', 
-    ['$scope', '$location', '$timeout', '$q', 'Huts',
-    function($scope, $location, $timeout, $q, Huts) {
+    ['$scope', '$location', '$timeout', '$q', 'Huts', 'HutImg',
+    function($scope, $location, $timeout, $q, Huts, HutImg) {
 
     var curQuery = 0; // incremented every time there's a new hut query
 
@@ -16,6 +16,8 @@
       filteredHutIds: null,  // sparse array of hut ids, each id is in filteredHutIds[id]
       query: null,           // current query for the Huts service
       selectedHut: null, 
+      selectedHutImgUrl: null,
+      selectedHutObliques: [],
       selectedHutRegion: null,
       selectedHutAgency: null,
       initialized: $q.defer()
@@ -30,11 +32,20 @@
 
     $scope.$watch('h.selectedHut', function(hut) {
       if (hut) {
+        $scope.h.selectedHutAgency = null;
+        $scope.h.selectedHutRegion = null;
         Huts.agency(hut.agency).then(function(agency) {
           $scope.h.selectedHutAgency = agency;
         });
         Huts.region(hut.region).then(function(region) {
           $scope.h.selectedHutRegion = region;
+        });
+        HutImg.getHutImgUrl(hut).then(function(url) {
+          $scope.h.selectedHutImgUrl = url;
+        });
+        HutImg.getObliques(hut).then(function(obliques) {
+          // Remove first image if showing first image up top (ie. not showing static map)
+          $scope.h.selectedHutObliques = obliques.splice(0,+(hut.show_satellite));
         });
       }
     });
