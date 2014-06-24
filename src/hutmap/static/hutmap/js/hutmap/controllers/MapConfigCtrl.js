@@ -27,7 +27,9 @@
     // return proper google.maps.MapOptions for the given hut
     $scope.getMarkerOptions = function(hut) {
       var opts = {};
-      if ($scope.h.filteredHuts && hut.id in $scope.h.filteredHutIds) {
+      if ($scope.h.selectedHut !== null && $scope.h.selectedHut.id === hut.id) {
+          return angular.extend(opts, markerOptions.huts, markerOptions.selected);
+      } if ($scope.h.filteredHuts && hut.id in $scope.h.filteredHutIds) {
         return angular.extend(opts, markerOptions.filteredHuts);
       } else {
         return angular.extend(opts, markerOptions.huts);
