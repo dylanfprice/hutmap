@@ -33,7 +33,7 @@
     <div id="show-hide-filter-sidebar"
          class="show-hide-slider show-hide-slider-left-facing"
          ng-class="{'is-filter-sidebar-hidden': !mapPage.showFilterSidebar}">
-         <i  class="show-hide-slider-icon icon-chevron-left"
+         <i  class="show-hide-slider-icon"
              ng-class="{
                'icon-chevron-left': mapPage.showFilterSidebar,
                'icon-chevron-right': !mapPage.showFilterSidebar
@@ -60,7 +60,8 @@
                     gm-bounds="m.bounds" 
                     gm-map-type-id="m.mapTypeId" 
                     gm-on-idle="updateHuts(m.bounds)"
-                    gm-map-options="mc.mapOptions">
+                    gm-map-options="mc.mapOptions"
+                    gm-on-click="deselectHut()">
               <gm-markers gm-objects="h.huts" 
                           gm-id="object.id"
                           gm-position="{lat:object.location.coordinates[1], lng:object.location.coordinates[0]}" 

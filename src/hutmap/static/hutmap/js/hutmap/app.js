@@ -180,7 +180,8 @@
                        google.maps.MapTypeId.SATELLITE,
                        google.maps.MapTypeId.HYBRID,
                        mapTypes.ARC_GIS_USA.name,
-                       mapTypes.ARC_GIS_WORLD.name]
+                       mapTypes.ARC_GIS_WORLD.name],
+          position: google.maps.ControlPosition.TOP_CENTER
         }
       });
 

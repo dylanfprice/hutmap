@@ -22,7 +22,15 @@
       // map.less
       $timeout(function() {
         $scope.$broadcast('gmMapResize', hutmapMapId);
-      }, 600);
+      }, 400);
+    });
+    
+    $scope.$watch('mapPage.showHutSidebar', function() {
+      // make sure the timeout is greater than the css transition time, see
+      // map.less
+      $timeout(function() {
+        $scope.$broadcast('gmMapResize', hutmapMapId);
+      }, 400);
     });
 
   }]);

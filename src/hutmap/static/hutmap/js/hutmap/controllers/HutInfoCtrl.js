@@ -47,12 +47,6 @@
       return services;
     };
 
-    $scope.$watch('h.selectedHut', function(newVal, oldVal) {
-      if (oldVal == null && newVal != null) {
-        $scope.mapPage.showHutSidebar = true;
-      }
-    });
-
   }]);
   
 })();
