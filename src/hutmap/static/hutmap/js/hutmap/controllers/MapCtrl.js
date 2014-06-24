@@ -33,12 +33,6 @@
 
     $scope.$watch('m.center != null && m.zoom != null', function(v) { if (v) $scope.m.initialized.resolve(); });
 
-    $scope.$on('gmMarkersUpdated', function(event, objects) {
-      if (objects === 'h.huts') {
-        clickSelected();
-      }
-    });
-
     $scope.$on('clickSelected', function() {
       clickSelected();
     });
