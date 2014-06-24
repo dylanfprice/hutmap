@@ -6,8 +6,8 @@
 .is-filter-sidebar-hidden {
     left: 0px !important;
 }
-.is-hut-sidebar-hidden {
-    right: 0px !important;
+.is-hut-sidebar-visible {
+    right: @hutBarWidth + @barBorderWidth !important;
 }
 
 
@@ -77,10 +77,6 @@
   z-index: 101;
 }
 
-.show-hide-slider {
-  cursor: pointer;
-}
-
 #filter-sidebar {
   position: absolute;
   top: 0;
@@ -101,10 +97,6 @@
   
   i.icon-refresh {
     .pointer;
-  }
-
-  .tooltip {
-    width: 200px;
   }
 
   .summary-info, .hut-filter-table {
@@ -166,10 +158,6 @@
 				 color: @grayDark;
 				 text-shadow: 1px 1px 1px @white;
       }
-
-      .tooltip {
-        text-shadow: none;
-      }
     }
     
     .hut-filter-list, 
@@ -207,7 +195,7 @@
 
 #map {
   position: absolute;
-  right: @hutBarWidth + @barBorderWidth;
+  right: 0;
   left: @filterBarWidth + @barBorderWidth;
   top: 0;
   bottom: 0;
@@ -227,6 +215,7 @@
 
     .tooltip {
       min-width: 100px;
+      margin-left: 20px;
     }
   }
 }
@@ -283,22 +272,22 @@
 #show-hide-hut-sidebar {
   position: absolute;
   top: @hideFilterBarOffset;
-  right: @hutBarWidth;
+  right: 0;
   z-index: 101;
 }
 
 #hut-sidebar {
   position: absolute;
   bottom: 0;
-  right: 0;
+  right: -@hutBarWidth;
   top: 0;
   width: @hutBarWidth;
   font-size: @fontSizeSmall;
   border-left: @barBorderColor solid @barBorderWidth;
   overflow-y: auto;
   
-  &.is-hut-sidebar-hidden {
-    right: -@hutBarWidth !important;
+  &.is-hut-sidebar-visible {
+    right: 0 !important;
   }
 
   &.filter-sidebar-hidden {
