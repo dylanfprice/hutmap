@@ -37,9 +37,16 @@
       clickSelected();
     });
 
+    // HACK: Load all huts, then turn off hut loading.
+    var loadedHuts = false;
     $scope.updateHuts = function(bounds) {
-        if (bounds && $scope.mapPage.loadNewHuts) {
-            $scope.h.query = { bounds: bounds };
+        //if (bounds && $scope.mapPage.loadNewHuts) {
+        //    $scope.h.query = { bounds: bounds };
+        //}
+        if (!loadedHuts) {
+          bounds = google.maps.LatLngBounds(google.maps.LatLng(-90,-180), google.maps.LatLng(90,180));
+          $scope.h.query = { bounds: bounds };
+          loadedHuts = true;
         }
     };
 
