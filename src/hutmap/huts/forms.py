@@ -38,6 +38,13 @@ class HutForm(HutCommonForm):
 class HutSuggestionForm(HutCommonForm):
   class Meta(HutCommonForm.Meta):
     model = HutSuggestion
+    fields = (
+        'location',
+        'country',
+        'state',
+        'name',
+        'types',
+    )
 
 class HutEditForm(HutCommonForm):
   class Meta(HutCommonForm.Meta):

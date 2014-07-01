@@ -23,6 +23,10 @@
       when(hutmap.url.about, {
         templateUrl: '/partials/about.html',
         active: hutmap.url.about,
+      }).
+      when(hutmap.url.hut_new, {
+        templateUrl: '/partials/hut_new.html',
+        active: hutmap.url.hut_new,
       });
   }]).
 

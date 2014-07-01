@@ -1,9 +1,13 @@
 {% extends "forms/form_snippet.html" %}
 {% load huts_extras %}
 
+{% block form_ctrl %}ng-controller="HutFormInstanceCtrl"{% endblock %}
+
+{% comment %}
 {% block before_form %}
 <span ng-init='hut = {{ form.get_initial_data|js|safe }}'></span>
 {% endblock %}
+{% endcomment %}
 
 {% block before_field %}
 {% if field.name == 'location' %}
@@ -18,4 +22,10 @@
     </gm-markers>
 </gm-map>
 {% endif %}
+{% endblock %}
+
+{% block form_footer %}
+<div>
+  <input class="button" ng-class="{'submitting': submitting}" ng-click="submit()" value="Submit"/>
+</div>
 {% endblock %}

@@ -4,54 +4,13 @@
   angular.module('hutmap.controllers').
 
   controller('HutFormCtrl', 
-    ['$scope', '$modal', '$cookies', '$log',
-    function($scope, $modal, $cookies, $log) {
+    ['$scope', '$cookies', '$http', 'forms',
+    function($scope, $cookies, $http, forms) {
 
-    $scope.suggestHut = function() {
-
-      var modal = $modal.open({
-        templateUrl: 'hut_modal.html',
-        controller: 'HutFormInstanceCtrl',
-        keyboard: false,
-        resolve: {
-          hutFormUrl: function() {
-            return '/forms/hut/new/';
-          },
-          header: function() {
-            return 'Suggest new hut';
-          }
-        }
+    $http.get(forms.getFormUrl()).
+      success(function(data, status, headers, config) {
+        $scope.hutForm = data;
       });
-
-      modal.result.then(function (hut) {
-        $scope.addAlert('success', "Successfully submitted suggestion for " + hut.name + "!");
-      }, function (reason) {
-        $log.info('suggestion dismissed, reason: ', reason);
-      });
-    };
-
-    $scope.editHut = function (hut) {
-
-      var modal = $modal.open({
-        templateUrl: 'hut_modal.html',
-        controller: 'HutFormInstanceCtrl',
-        keyboard: false,
-        resolve: {
-          hutFormUrl: function() {
-            return '/forms/hut/' + hut.id + '/';
-          },
-          header: function() {
-            return 'Edit ' + hut.name;
-          }
-        }
-      });
-
-      modal.result.then(function (hut) {
-        $scope.addAlert('success', "Successfully submitted edit for " + hut.name + "!");
-      }, function (reason) {
-        $log.info('edit dismissed, reason: ', reason);
-      });
-    };
 
   }]);
 

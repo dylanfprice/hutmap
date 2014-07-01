@@ -319,3 +319,19 @@ div#social_controls {
 	  height: 100%;
 	}
 }
+
+#alert-topbar {
+  position: absolute;
+  top: @navbarHeight;
+  left: 0px;
+  right: 0px;
+  margin-top: 10px;
+  z-index: 1000;
+
+  .alert {
+    width: 50%;
+    border-color: @successText;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

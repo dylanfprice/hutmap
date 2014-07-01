@@ -54,6 +54,9 @@
     <script type="text/ng-template" id="template/tooltip/tooltip-popup.html">
       {% include "partials/components/tooltip-popup.html" %}
     </script>
+    <script type="text/ng-template" id="template/alert/alert.html">
+      {% include "partials/components/alert.html" %}
+    </script>
     </span>
 
     <div id="navbar">
@@ -91,7 +94,7 @@
           <a ng-class="{ active: ui.$route.current.active == '{% url 'huts:about' %}'}" href="{% url 'huts:about' %}">
             About
           </a>
-          <a>
+          <a ng-class="{ active: ui.$route.current.active == '{% url 'huts:hut_new' %}'}" href="{% url 'huts:hut_new' %}">
             Add a Hut
           </a>
         </div>
@@ -117,7 +120,12 @@
     </div>
 
     <div id="content" ng-cloak>
-      <ng-view></ng-view>
+      <div ng-controller="AlertCtrl">
+        <div id="alert-topbar" ng-show="alerts.length">
+          <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">[*alert.msg*]</alert>
+        </div> 
+        <ng-view></ng-view>
+      </div>
     </div>
 
   </div>
@@ -128,7 +136,7 @@
     hutmap.STATIC_URL = '{{ STATIC_URL }}';
     hutmap.GOOGLE_API_KEY = '{{ GOOGLE_API_KEY }}';
     hutmap.url = {{ hut_urls|safe }};
-
+    
     var addthis_config = {
       data_track_addressbar: false,
       data_track_clickback: false,
@@ -138,7 +146,6 @@
     function angularDigest() {
       if(document.readyState === 'complete') {
         if ('angular' in window) {
-          console.log('here');
           angular.element('body').scope().$digest();
         }
       }
@@ -175,6 +182,7 @@
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/MaxZoom.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/gapi.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/utils.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/forms.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/HutmapCtrl.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/CarouselCtrl.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/AlertCtrl.js" %}"></script>

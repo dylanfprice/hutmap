@@ -4,12 +4,13 @@
   angular.module('hutmap.controllers').
 
   controller('HutFormInstanceCtrl', 
-    ['$scope', '$http', '$upload', '$modalInstance', '$cookies', 'hutFormUrl', 'header', '$log', 'markerOptions', 'mapOptions',
-    function($scope, $http, $upload, $modalInstance, $cookies, hutFormUrl, header, $log, markerOptions, mapOptions) {
-    
+    ['$scope', '$http', '$upload', '$cookies', '$log', '$route',
+     'markerOptions', 'mapOptions', 'forms', 
+    function($scope, $http, $upload, $cookies, $log, $route,
+             markerOptions, mapOptions, forms) {
+
     $scope.hut = null;
     $scope.huts = [null];
-    $scope.header = header;
     $scope.submitting = false;
 
     $scope.setLocation = function(location) {
@@ -49,19 +50,14 @@
         $scope.huts = [$scope.hut];
       }
     });
- 
-    $http.get(hutFormUrl).
-      success(function(data, status, headers, config) {
-        $scope.hutForm = data;
-      });
-    
+
     var submitHut = function(url, hut) {
       $scope.submitting = true;
       $upload.upload({
         url: url, 
         headers: {'X-CSRFToken': $cookies.csrftoken},
         data: hut,
-        file: hut.photo || '',
+        file: hut.photo || null,
         formDataAppender: function(fd, key, val) {
           if (val === null) {
             fd.append(key, '');
@@ -77,28 +73,24 @@
         $log.info('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
       }).success(function(data, status, headers, config) {
         if (status === 201) {
-          $modalInstance.close(hut);
+          $scope.addAlert('success', "Successfully submitted suggestion for " + hut.name + "!");
+          $route.reload();
         } else {
           $scope.hutForm = data;
         }
         $scope.submitting = false;
       }).error(function(data, status, headers, config){
         $log.error('ERROR: ', status, data);
-        $modalInstance.dismiss('error');
         $scope.submitting = false;
       });
     };
 
     $scope.submit = function() {
       if ($scope.hut != null) {
-        submitHut(hutFormUrl, $scope.hut);
+        submitHut(forms.getFormUrl(), $scope.hut);
       } else {
         $log.warn('$scope.hut was null', $scope.hut);
       }
-    };
-
-    $scope.cancel = function() {
-      $modalInstance.dismiss('cancel');
     };
 
   }]);

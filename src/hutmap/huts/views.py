@@ -38,7 +38,7 @@ class HutCommonView(FormView):
       for field in self.get_form_class()._meta.model._meta.many_to_many:
         if q.get(field.name, None) == '':
           q.pop(field.name)
-      
+
       form_kwargs['data'] = q
 
     return form_kwargs
@@ -54,7 +54,7 @@ class HutEditFormView(HutCommonView):
   form_class = HutEditForm
 
   def get_initial(self):
-    pk = self.kwargs['pk']  
+    pk = self.kwargs['pk']
     hut = Hut.objects.get(pk=pk)
     initial = model_to_dict(hut)
     initial['hut'] = pk

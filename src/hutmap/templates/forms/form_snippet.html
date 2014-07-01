@@ -1,33 +1,32 @@
-{% block before_form %}
-{% endblock %}
+<form {% block form_ctrl %}{% endblock %}>
+    <p class="form-header">* = Required Field</p>
 
-{% if form.errors %}
-<div class="form-errors">Please correct the errors below</div>
-{% endif %}
-<p class="form-header">* = Required Field</p>
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+    {% endfor %}
+    {% for field in form.visible_fields %}
 
-{% csrf_token %}
-{% for hidden in form.hidden_fields %}
-  {{ hidden }}
-{% endfor %}
-{% for field in form.visible_fields %}
+    {% block before_field %}
+    {% endblock %}
 
-{% block before_field %}
-{% endblock %}
+    <div class="form-field ">
+        {{ field.errors|safe }}
+        {% if field.field.required %}
+          <span class="required">{{ field.label_tag }}</span>
+        {% else %}
+          {{ field.label_tag }}
+        {% endif %}
+        {{ field }}
 
-<div class="form-field {% if field.errors %}form-field-errors{% endif %}">
-    {{ field.errors }}
-    {% if field.field.required %}
-      <span class="required">{{ field.label_tag }}</span>
-    {% else %}
-      {{ field.label_tag }}
-    {% endif %}
-    {{ field }}
+        {% if field.help_text %}
+          <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
 
-    {% if field.help_text %}
-      <p class="help">{{ field.help_text|safe }}</p>
-    {% endif %}
+    </div>
 
+    {% endfor %}
+
+    {% block form_footer %}
+    {% endblock %}
 </div>
-
-{% endfor %}

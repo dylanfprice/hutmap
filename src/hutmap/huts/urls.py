@@ -17,6 +17,11 @@ hut_patterns = patterns('',
       name='about'
   ),
 
+  url(r'^hut/new/$', BaseView.as_view(
+      metadata='metadata/hut_new.html'),
+      name='hut_new'
+  ),
+
   url(r'^forms/hut/new/$', HutSuggestionFormView.as_view()),
   url(r'^forms/hut/(?P<pk>\d+)/$', HutEditFormView.as_view()),
 
