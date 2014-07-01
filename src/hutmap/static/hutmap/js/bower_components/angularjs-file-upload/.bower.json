@@ -1,41 +1,20 @@
 {
-  "name": "angularjs-file-upload",
-  "main": "angular-file-upload.min.js",
-  "version": "1.1.5",
+  "name": "angular-file-upload",
+  "main": "angular-file-upload.js",
+  "version": "1.4.0",
   "homepage": "https://github.com/danialfarid/angular-file-upload",
   "authors": [
     "danialf <danial.farid@gmail.com>"
   ],
-  "description": "An AngularJS directive for file upload using HTML5 with FileAPI polyfill for unsupported browsers",
-  "keywords": [
-    "AngularJS.",
-    "angular",
-    "angular-js",
-    "file-upload",
-    "upload",
-    "FileAPI",
-    "ajax-file-upload"
-  ],
+  "description": "Lightweight Angular JS directive to upload files. Support drag&drop, progress and abort",
   "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests",
-    "src",
-    "war"
-  ],
-  "dependencies": {
-    "angular": "~1.0.7"
-  },
-  "_release": "1.1.5",
+  "_release": "1.4.0",
   "_resolution": {
     "type": "version",
-    "tag": "1.1.5",
-    "commit": "9701590d1e0ad0030aebd99369450f371184b61c"
+    "tag": "1.4.0",
+    "commit": "d9cf4cd571ed5205b95578d17250332429645709"
   },
-  "_source": "git://github.com/danialfarid/angular-file-upload.git",
-  "_target": "1.1.5",
+  "_source": "git://github.com/danialfarid/angular-file-upload-bower.git",
+  "_target": "1.4.0",
   "_originalSource": "angularjs-file-upload"
 }
