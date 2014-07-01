@@ -13,7 +13,7 @@
 
 	<!-- CSS -->	
   {% compress css %}
-  <link rel="stylesheet" type="text/less" charset="utf-8" href="{% static "hutmap/css/hutmap.less" %}">
+  <link rel="stylesheet" type="text/less" charset="utf-8" href="{% static "hutmap/css/new/hutmap.less" %}">
   <link rel="stylesheet" type="text/css"  charset="utf-8" href="{% static "hutmap/js/bower_components/select2/select2.css" %}">
   {% endcompress %}
   
@@ -57,13 +57,13 @@
     </span>
 
     <div id="navbar">
-      <div id="brand">
-        <a id="logo" href="/" title="">
+      <div class="brand">
+        <a class="brand-logo" href="/" title="">
           <img src="{% static "hutmap/img/logo-icon-light.svg" %}" />
-          <span>Hutmap</span>
+          <span class="brand-logo-text">Hutmap</span>
         </a>
       </div>
-      <div id="navtriangle" /></div>
+      <div class="brandtriangle" /></div>
       
       <form id="navbar-search" class="navbar-search" ng-controller="SearchCtrl" ng-submit="search(selected)">
           <input type="text" 

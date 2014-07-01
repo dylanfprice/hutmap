@@ -3,10 +3,10 @@
  */
 
 html, body {
-	background-color: @bodyColor;
+  background-color: @bodyColor;
   font-family: "Myriad Pro", Verdana, "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1em;
-	color: @textColor;
+  color: @textColor;
 }
 
 p {
@@ -21,8 +21,8 @@ p {
 
 a {
   text-decoration: none;
-	color: @linkColor;
-	cursor: pointer;
+  color: @linkColor;
+  cursor: pointer;
 }
 
 a:hover {
@@ -31,7 +31,6 @@ a:hover {
 }
 
 /* external links */
-#hut-sidebar,
 #content-page {
   a[href^="//"], 
   a[href^="http://"], 
@@ -48,34 +47,34 @@ a:hover {
 }
 
 h1, h2 {
-	font-weight: 500; /* semibold */
-	line-height: inherit;
+  font-weight: 500; /* semibold */
+  line-height: inherit;
 }
 
 h1 {
-	font-size: 145%;
-	margin-top: 0;
+  font-size: 145%;
+  margin-top: 0;
 }
 
 h2 {
-	font-size: 130%;
-	margin-top: 1em;
+  font-size: 130%;
+  margin-top: 1em;
 }
 
 hr {
-	border: none;
-	border-bottom: 1px dotted #ccc;
+  border: none;
+  border-bottom: 1px dotted #ccc;
   height: 1px;
   width: 70%;
   margin: 2em 0 1.5em 15%;
 }
 
 .larger {
-	font-size: 105%;
+  font-size: 105%;
 }
 
 .smaller {
-	font-size: 95%;
+  font-size: 95%;
 }
 
 .button {
@@ -100,18 +99,18 @@ input.button.submitting {
 /** OVERRIDE BOOTSTRAP **/
 
 blockquote {
-	border: none;
+  border: none;
 }
 
 label, input, button, select, textarea {
-	font-size: inherit;
-	font-family: inherit;
-	padding: .2em .2em 0 .2em;
+  font-size: inherit;
+  font-family: inherit;
+  padding: .2em .2em 0 .2em;
 }
 
 /** CONTENT **/
 
-div#content-fixed {
+#content-fixed {
   position: absolute;
   top: @navbarHeight;
   bottom: 0;
@@ -120,7 +119,7 @@ div#content-fixed {
   overflow-y: auto;
 }
 
-div#content-page {
+#content-page {
   text-align: justify;
   max-width: 1080px;
   margin: 0 auto;
@@ -129,7 +128,7 @@ div#content-page {
 
 /** HEADER **/
 
-div#navbar {
+#navbar {
   position: absolute;
   top: 0;
   right: 0;
@@ -143,7 +142,7 @@ div#navbar {
   }
 }
 
-div#brand {
+#brand {
   background-color: @logoBackground;
   z-index: 10;
   padding: 0px 18px 0px 13px;
@@ -169,14 +168,14 @@ div#brand {
   }
 }
 
-div#navtriangle {
+#navtriangle {
   z-index: 10;
   float: left;
   width: 0;
   height: 0;
-	border-top: @navbarHeight/2 solid transparent;
-	border-bottom: @navbarHeight/2 solid transparent;
-	border-left: @navbarHeight/4 solid @logoBackground;  
+  border-top: @navbarHeight/2 solid transparent;
+  border-bottom: @navbarHeight/2 solid transparent;
+  border-left: @navbarHeight/4 solid @logoBackground;  
 }
 
 #navbar-search {
@@ -285,36 +284,34 @@ div#navtriangle {
   }
 }
 
-div#navbar #nav {
+#navbar #nav {
   float: left;
   
-    a {
-      display: inline-block;
-      line-height: @navbarHeight;
-      font-size: @navbarHeight * 0.45;
-      padding: 0 15px;
-      color: @navbarInactiveText;
-    }
-    
-    a:hover {
-      color: @navbarActiveText;
-    }
+  a {
+    display: inline-block;
+    line-height: @navbarHeight;
+    font-size: @navbarHeight * 0.45;
+    padding: 0 15px;
+    color: @navbarInactiveText;
+  }
   
+  a:hover {
+    color: @navbarActiveText;
+  }
   
   a.active {
     background-color: @navbarActiveBackground;
-      color: @navbarActiveText;
-    }
-  
+    color: @navbarActiveText;
+  }
 }
 
-div#social_controls {
-	position: absolute;
-	right: 8px;
-	height: @socialControlsHeight;
-	top: (@navbarHeight - @socialControlsHeight) / 2;
-	
-	img {
-	  height: 100%;
-	}
+#social_controls {
+  position: absolute;
+  right: 8px;
+  height: @socialControlsHeight;
+  top: (@navbarHeight - @socialControlsHeight) / 2;
+  
+  img {
+    height: 100%;
+  }
 }
