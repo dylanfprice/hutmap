@@ -1,4 +1,4 @@
-<form {% block form_ctrl %}{% endblock %}>
+<form name="{{ form.form_name }}" {% block form_ctrl %}{% endblock %}>
     <p class="form-header">* = Required Field</p>
 
     {% csrf_token %}

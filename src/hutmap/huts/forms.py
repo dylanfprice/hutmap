@@ -1,7 +1,9 @@
 from django import forms
-from djangular.forms.angular_model import NgModelFormMixin
-from huts.models import Hut, HutSuggestion, HutEdit
+
+from djangular.forms import NgModelFormMixin
+
 from huts.fields import PointFormField
+from huts.models import Hut, HutEdit, HutSuggestion
 from huts.widgets import PointWidget
 
 SELECT_ATTRS = {'ui-select2': 'select2Options'}
@@ -53,4 +55,3 @@ class HutEditForm(HutCommonForm):
       [('hut', forms.widgets.Select(attrs=SELECT_ATTRS))] +
       HutCommonForm.Meta.widgets.items()
     )
-

@@ -76,7 +76,7 @@
           $scope.addAlert('success', "Successfully submitted suggestion for " + hut.name + "!");
           $route.reload();
         } else {
-          $scope.hutForm = data;
+          $scope.hutForm.form = data;
         }
         $scope.submitting = false;
       }).error(function(data, status, headers, config){
