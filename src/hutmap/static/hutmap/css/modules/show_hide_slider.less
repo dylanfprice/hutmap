@@ -1,24 +1,23 @@
-  @sidebarToggleHeight: 16px;
+@sidebarToggleHeight: 16px;
+
 .show-hide-slider {
   height: 16px;
   font-size: 16px;
-  padding: 2px 1px 2px 2px;
   background-color: @altBgColor;
   border-top: @barBorderColor solid @barBorderWidth;
   border-bottom: @barBorderColor solid @barBorderWidth;
-
-  .show-hide-slider-icon:before {
-    .pointer;
-  }
+  cursor: pointer;
 }
 
 .show-hide-slider.show-hide-slider-left-facing {
+  padding: 2px 1px 2px 3px;
   .border-bottom-right-radius( 2px );
   .border-top-right-radius( 2px );
   border-right: @barBorderColor solid @barBorderWidth;
 }
 
 .show-hide-slider.show-hide-slider-right-facing {
+  padding: 2px 3px 2px 1px;
   .border-bottom-left-radius( 2px );
   .border-top-left-radius( 2px );
   border-left: @barBorderColor solid @barBorderWidth;

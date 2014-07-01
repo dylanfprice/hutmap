@@ -1,6 +1,12 @@
 (function() {
 'use strict';
-
+  
+  // marker dimensions
+  // (broke the site if placed just above the 'markerOptions' code block?)
+  var w = 17;
+  var h = 17;
+  var pts = [2,7,7,2,12,7,7,12,2,7];
+  
   angular.module('hutmap', [
       'hutmap.services', 'hutmap.directives', 'hutmap.filters', 'hutmap.controllers', 
       'ngRoute', 'ngResource', 'ngCookies',
@@ -83,23 +89,42 @@
 
   value('markerOptions', {
     huts: {
-      icon: hutmap.STATIC_URL + 'hutmap/img/marker_gray_small.png',
+      icon: {
+        url: hutmap.STATIC_URL + 'hutmap/img/markers/smdot_t1_gray_dark.png',
+				size: new google.maps.Size(w, h),
+				origin: new google.maps.Point(0, 0),
+				anchor: new google.maps.Point(w*0.4,h*0.4)
+      },
       shape: {
-        coord: [6, 0, 2, 2, 0, 6, 6, 13, 12, 6, 10, 2, 6, 0],
+        coords: pts,
         type: 'poly'
       },
       zIndex: 0
     },
     filteredHuts: {
-      icon: hutmap.STATIC_URL + 'hutmap/img/marker_red_small.png',
+      icon: {
+        url: hutmap.STATIC_URL + 'hutmap/img/markers/smdot_t1_red.png',
+				size: new google.maps.Size(w, h),
+				origin: new google.maps.Point(0, 0),
+				anchor: new google.maps.Point(w*0.4,h*0.4)
+      },
       shape: {
-        coord: [6, 0, 2, 2, 0, 6, 6, 13, 12, 6, 10, 2, 6, 0],
+        coords: pts,
         type: 'poly'
       },
       zIndex: 1
     },
     selected: {
-      icon: hutmap.STATIC_URL + 'hutmap/img/marker_yellow_small.png',
+      icon: {
+        url: hutmap.STATIC_URL + 'hutmap/img/markers/smdot_t1_yellow.png',
+				size: new google.maps.Size(w, h),
+				origin: new google.maps.Point(0, 0),
+				anchor: new google.maps.Point(w*0.4,h*0.4)
+      },
+      shape: {
+        coords: pts,
+        type: 'poly'
+      },
       zIndex: 2
     }
   }).
@@ -180,7 +205,8 @@
                        google.maps.MapTypeId.SATELLITE,
                        google.maps.MapTypeId.HYBRID,
                        mapTypes.ARC_GIS_USA.name,
-                       mapTypes.ARC_GIS_WORLD.name]
+                       mapTypes.ARC_GIS_WORLD.name],
+          position: google.maps.ControlPosition.TOP_CENTER
         }
       });
 

@@ -1,19 +1,25 @@
 <div ng-show="h.selectedHut == null">
-  Select a hut to see more info.
+  <div style="padding: 13.6px;font-size: 115%;background:#e6e6e6;">Select a hut for more info.</div>
 </div>
 <div ng-show="h.selectedHut != null">
   <!-- Hut Image -->
-  <div>
-      <img class="main-hut-img"
+  <div class="image">
+      <img ng-if="h.selectedHut.show_satellite" class="main-hut-img"
            src="http://placehold.it/250x200&text=Loading%20image..."
-           ng-src="[* h.selectedHutImgUrl *]" 
+           ng-src="[* h.selectedHutImgUrl *]"
            title="[* h.selectedHut.name *] as seen from space.">
-      <!--<span ng-show="h.selectedHut.photo_credit_name != ''" class="credit-thumbnail">
-        <a ng-show="h.selectedHut.photo_credit_url != ''" ng-href="[*h.selectedHut.photo_credit_url*]" target="_blank">[*h.selectedHut.photo_credit_name*]</a>
+      <img ng-if="!h.selectedHut.show_satellite" class="main-hut-img"
+           src="http://placehold.it/250x200&text=Loading%20image..."
+           ng-src="[* h.selectedHutImgUrl *]"
+           title="[* h.selectedHut.name *] as seen from Earth.">
+      <div ng-if="!h.selectedHut.show_satellite && h.selectedHut.photo_credit_name != ''" class="credit">
+        <span ng-show="h.selectedHut.photo_credit_url != ''">
+          <a ng-href="[*h.selectedHut.photo_credit_url*]" target="_blank">[*h.selectedHut.photo_credit_name*]</a>
+        </span>
         <span ng-show="h.selectedHut.photo_credit_url == ''">
           [* h.selectedHut.photo_credit_name *]
         </span>
-      </span>-->
+      </div>  
   </div>
   
   <div id="hut-buttons">
@@ -187,16 +193,16 @@
   <!- Secondary images -->
   
   <div class="obliques-gallery">
-    <div ng-repeat="oblique in h.selectedHutObliques" class="oblique-image">
-        <img ng-src="[* oblique.url *]" title="[* h.selectedHut.name *]" /><br/>
-        <span ng-show="oblique.name != ''" class="credit-thumbnail">
-          <span ng-show="oblique.creditUrl != ''">
-            <a ng-href="[* oblique.creditUrl *]" target="_blank">[* oblique.name *]</a>
-          </span>
-          <span ng-show="oblique.creditUrl == ''">
-            [* oblique.name *]
-          </span>
-      </span>
+    <div ng-repeat="oblique in h.selectedHutObliques" class="image">
+      <img ng-src="[* oblique.url *]" title="[* h.selectedHut.name *]" />
+      <div ng-show="oblique.name != ''" class="credit">
+        <span ng-show="oblique.creditUrl != ''">
+          <a ng-href="[* oblique.creditUrl *]" target="_blank">[* oblique.name *]</a>
+        </span>
+        <span ng-show="oblique.creditUrl == ''">
+          [* oblique.name *]
+        </span>
+      </div>
     </div>
   </div>
 

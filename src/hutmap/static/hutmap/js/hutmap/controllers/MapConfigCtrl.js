@@ -34,7 +34,7 @@
       }
     };
 
-    // called when marker is clicked or hut is otherwise selected
+    // called when hut marker is clicked or hut is otherwise selected
     $scope.selectHut = function(marker, hut) {
       if (prevSelectedMarker) {
         var opts = angular.extend({}, markerOptions.huts, {icon: prevIcon});
@@ -44,6 +44,22 @@
       prevIcon = marker.getIcon();
       marker.setOptions(markerOptions.selected);
       $scope.h.selectedHut = hut;
+      if (!$scope.mapPage.showHutSidebar) {
+        $scope.mapPage.showHutSidebar = true;
+      }
+      $scope.mapPage.loadNewHuts = false;
     };
+    
+    // called when map is clicked
+    $scope.deselectHut = function() {
+      if (prevSelectedMarker) {
+        var opts = angular.extend({}, markerOptions.huts, {icon: prevIcon});
+        prevSelectedMarker.setOptions(opts);
+        if ($scope.mapPage.showHutSidebar) {
+          $scope.mapPage.showHutSidebar = false;
+        }
+      }
+    };
+    
   }]);
 })();

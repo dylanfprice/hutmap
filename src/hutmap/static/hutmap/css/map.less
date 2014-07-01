@@ -6,15 +6,14 @@
 .is-filter-sidebar-hidden {
     left: 0px !important;
 }
-
-.is-hut-sidebar-hidden {
-    right: 0px !important;
+.is-hut-sidebar-visible {
+    right: @hutBarWidth + @barBorderWidth !important;
 }
 
 
 /* transitions */
 
-@transition-duration: 500ms;
+@transition-duration: 300ms;
 @transition-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
 @transition-delay: 20ms;
 
@@ -100,10 +99,6 @@
     .pointer;
   }
 
-  .tooltip {
-    width: 200px;
-  }
-
   .summary-info, .hut-filter-table {
     padding: @fontSizeSmall;
   }
@@ -163,10 +158,6 @@
 				 color: @grayDark;
 				 text-shadow: 1px 1px 1px @white;
       }
-
-      .tooltip {
-        text-shadow: none;
-      }
     }
     
     .hut-filter-list, 
@@ -204,7 +195,7 @@
 
 #map {
   position: absolute;
-  right: @hutBarWidth + @barBorderWidth;
+  right: 0;
   left: @filterBarWidth + @barBorderWidth;
   top: 0;
   bottom: 0;
@@ -224,6 +215,7 @@
 
     .tooltip {
       min-width: 100px;
+      margin-left: 20px;
     }
   }
 }
@@ -231,7 +223,7 @@
 #link-button {
   .link-button-icons {
     position: absolute;
-    right: 30%;
+    left: 30%;
     bottom: 0;
     z-index: 101;
     padding: .25em;
@@ -280,37 +272,22 @@
 #show-hide-hut-sidebar {
   position: absolute;
   top: @hideFilterBarOffset;
-  right: @hutBarWidth;
+  right: 0;
   z-index: 101;
 }
 
 #hut-sidebar {
   position: absolute;
   bottom: 0;
-  right: 0;
+  right: -@hutBarWidth;
   top: 0;
   width: @hutBarWidth;
   font-size: @fontSizeSmall;
   border-left: @barBorderColor solid @barBorderWidth;
   overflow-y: auto;
   
-  &.is-hut-sidebar-hidden {
-    right: -@hutBarWidth !important;
-  }
-
-  div {
-    vertical-align: top;
-  }
-  
-  img {
-    vertical-align: top;
-    width: 300px;
-    border: none;
-  }
-  
-  .main-hut-img {
-    border-bottom: @borderColor solid 0px;
-    height: 250px;
+  &.is-hut-sidebar-visible {
+    right: 0 !important;
   }
 
   &.filter-sidebar-hidden {
@@ -363,18 +340,36 @@
     font-size: 140%;
   }
   
-  .obliques-gallery {
-    margin-top: 15px;
-    text-align: center;
+  div.image {
+    position: relative;
     img {
-      width: @hutBarWidth * 0.80;
+      width: 100%;
+    }
+    div.credit {
+      position: absolute; 
+      bottom: 0; 
+      left: 0; 
+      span {
+        font-size: 80%;
+        color: white;
+        padding: 5px;
+        color: white;
+        text-shadow:
+        -1px -1px 0 fade(#333,50%),
+        1px -1px 0 fade(#333,50%),
+        -1px 1px 0 fade(#333,50%),
+        1px 1px 0 fade(#333,50%);
+      }
     }
   }
   
-  .credit-thumbnail {
-    font-size: 80%;
-    color: #666;
-    font-style: italic;
+  .main-hut-img {
+    border-bottom: @borderColor solid 0px;
+  }
+  
+  .obliques-gallery {
+    margin: 15px auto 0 auto;
+    width: @hutBarWidth * 0.85;
   }
 }
 
