@@ -2,7 +2,7 @@ from django.core.validators import RegexValidator
 from django.contrib.gis.db import models
 from django.core.files.base import ContentFile
 from any_imagefield.models import AnyImageField
-from huts.model_fields import CountryField, ListField, UnhelpfulManyToManyField
+from huts.model_fields import CountryField, ListField
 from huts.utils.image import retrieve_and_resize
 from os import path
 from urllib2 import HTTPError, URLError
@@ -82,8 +82,8 @@ class HutCommon(models.Model):
   country = CountryField(null=False)
   state = models.CharField(max_length=50, blank=False)
   region = models.ForeignKey('Region', null=True, blank=True)
-  designations = UnhelpfulManyToManyField(Designation, null=True, blank=True)
-  systems = UnhelpfulManyToManyField(System, null=True, blank=True)
+  designations = models.ManyToManyField(Designation, null=True, blank=True)
+  systems = models.ManyToManyField(System, null=True, blank=True)
 
   agency = models.ForeignKey('Agency', null=True, blank=True)
 
@@ -110,13 +110,13 @@ class HutCommon(models.Model):
   # Backcountry options include Gated/Private (Paved/2WD/4WD/Unpaved) Road,
   # Boat, Helicopter, (Ski/Float) Plane, Trail.  If technical terrain, the
   # hardest terrain is listed (Off Trail, Scramble, Glacier Travel, etc).
-  access_no_snow = UnhelpfulManyToManyField(AccessType, null=True, blank=True)
+  access_no_snow = models.ManyToManyField(AccessType, null=True, blank=True)
 
   no_snow_min_km = models.FloatField('minimum non-motorized kilometers when no snow is present', null=True, blank=True)
   is_snow_min_km = models.NullBooleanField('is there ever snow on access roads?')
   snow_min_km = models.FloatField('non-motorized kilometers to nearest trailhead on plowed road', null=True, blank=True)
 
-  types = UnhelpfulManyToManyField(HutType, null=False, blank=False)
+  types = models.ManyToManyField(HutType, null=False, blank=False)
   structures = models.IntegerField('number of structures', null=True, blank=True)
   overnight = models.NullBooleanField('available for overnight stays')
 
@@ -139,8 +139,8 @@ class HutCommon(models.Model):
 
   has_services = models.NullBooleanField('are services included?')
   has_optional_services = models.NullBooleanField('optional services are available at further cost')
-  services = UnhelpfulManyToManyField(Service, null=True, blank=True, related_name='%(app_label)s_%(class)s_set')
-  optional_services = UnhelpfulManyToManyField(Service, null=True, blank=True, related_name='optional_%(app_label)s_%(class)s_set')
+  services = models.ManyToManyField(Service, null=True, blank=True, related_name='%(app_label)s_%(class)s_set')
+  optional_services = models.ManyToManyField(Service, null=True, blank=True, related_name='optional_%(app_label)s_%(class)s_set')
 
   is_restricted = models.NullBooleanField('is access restricted?')
   restriction = models.CharField(max_length=100, blank=True)
@@ -192,14 +192,14 @@ class HutSuggestion(HutCommon):
   '''User suggested hut'''
   user_email = models.EmailField('your email', blank=True)
   user_notes = models.TextField('notes for the Hutmap team', blank=True)
-  objects = models.GeoManager()
+  objects = HutManager()
 
 class HutEdit(HutCommon):
   '''User suggested hut edit'''
   user_email = models.EmailField('your email', blank=True)
   user_notes = models.TextField('notes for the Hutmap team', blank=True)
   hut = models.ForeignKey(Hut, related_name='+') # '+' disables backwards relation
-  objects = models.GeoManager()
+  objects = HutManager()
 
 class Agency(models.Model):
   name = models.CharField(max_length=100, unique=True)

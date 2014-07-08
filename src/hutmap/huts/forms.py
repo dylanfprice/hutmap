@@ -14,6 +14,12 @@ class HutCommonForm(NgModelFormMixin, forms.ModelForm):
   def __init__(self, *args, **kwargs):
     kwargs.update(scope_prefix='hut')
     super(HutCommonForm, self).__init__(*args, **kwargs)
+    for field in self.fields.values():
+      if isinstance(field, forms.ModelMultipleChoiceField):
+        field.help_text = unicode(field.help_text).replace(
+          'Hold down "Control", or "Command" on a Mac, to select more than one.',
+          ''
+        )
 
   class Media:
     css = {

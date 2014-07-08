@@ -4,18 +4,25 @@
   angular.module('hutmap.controllers').
 
   controller('HutFormCtrl', 
-    ['$scope', '$cookies', '$http', 'forms',
-    function($scope, $cookies, $http, forms) {
+    ['$scope', '$http', 'mapOptions', 'markerOptions',
+    function($scope, $http, mapOptions, markerOptions) {
 
-    $scope.hutForm = {
-        form: null,
+    $scope.form = {}
+    $scope.hut = {};
+
+    $scope.form.schema = null;
+
+    $scope.form.select2Options = {
+      dropdownAutoWidth: true,
     };
 
-    $http.get(forms.getFormUrl()).
+    $http.get('/api/v1/hutsuggestion/schema/').
       success(function(data, status, headers, config) {
-        $scope.hutForm.form = data;
+          $scope.form.schema = data;
+      }).
+      error(function(data, status, headers, config) {
       });
-
+  
   }]);
 
 })();

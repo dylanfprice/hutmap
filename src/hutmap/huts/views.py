@@ -46,18 +46,3 @@ class HutCommonView(FormView):
   def form_valid(self, form):
     form.save()
     return HttpResponse(status=201)
-
-class HutSuggestionFormView(HutCommonView):
-  form_class = HutSuggestionForm
-
-class HutEditFormView(HutCommonView):
-  form_class = HutEditForm
-
-  def get_initial(self):
-    pk = self.kwargs['pk']
-    hut = Hut.objects.get(pk=pk)
-    initial = model_to_dict(hut)
-    initial['hut'] = pk
-    return initial
-
-

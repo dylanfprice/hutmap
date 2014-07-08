@@ -3,9 +3,55 @@
         <div>
           <h3>Suggest new hut</h3>
         </div>
+        
+        <h4>Names</h4>
+        <label for="hut.name">Name</label>
+        <input type="text" name="hut.name" ng-model="hut.name" />
+        <br/>
 
-        <div hut-form="hutForm.form">
-          <span class="img-spinner"></span>
+        <div ng-controller="HutFormMapCtrl">
+            <label for="hut.location">Location</label>
+            <input type="text" name="hut.location" ng-model="hut.location" ng-change="updateMarker()"/>
+            <br/>
+
+            <gm-map class="hut-form-map" gm-map-id="'hut-form-map'" 
+                                         gm-map-options="mapOptions" 
+                                         gm-center="mapCenter">
+                <gm-markers gm-objects="huts" 
+                            gm-id="object && object.id || null"
+                            gm-position="positionFromHut(object)"
+                            gm-marker-options="markerOptions"
+                            gm-on-dragend="positionFromMarker(marker, object)">
+                </gm-markers>
+            </gm-map>
         </div>
+
+        <label for="hut.country">Country</label>
+        <select name="hut.country" 
+                ui-select2="form.select2Options"
+                ng-model="hut.country">
+
+            <option value="">----------</option>
+            <option ng-repeat="(choice, label) in form.schema.fields.country.choices"
+                    value="choice">
+                    [* label *]
+            </option>
+
+        </select>
+        <br/>
+
+        <label for="hut.state">State</label>
+        <input type="text" name="hut.state" ng-model="hut.state" />
+        <br/>
+
+        <label for="hut.types">Types</label>
+        <select name="hut.types"
+                multiple
+                ui-select2="form.select2Options"
+                ng-model="hut.types"
+                ng-options="choice as label for (choice, label)
+                            in form.schema.fields.types.choices">
+        </select>
+        <br/>
     </div>
 </div>

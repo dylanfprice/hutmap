@@ -1,10 +1,14 @@
+from django.db.models.fields.related import RelatedField
 from huts.models import Hut, Region, Agency, Designation, System, AccessType,\
-                        HutType, Service
+                        HutType, Service, HutSuggestion
 from huts.utils.csv_serializer import CSVSerializer
 from huts.utils.csv_consts import CSV_NULL, CSV_TRUE, CSV_FALSE
 from tastypie.contrib.gis.resources import ModelResource
 from tastypie.resources import NamespacedModelResource
+from tastypie.authorization import Authorization
+from tastypie.validation import FormValidation
 from tastypie import fields
+from huts.forms import HutSuggestionForm
 
 class NamespacedGeoModelResource(NamespacedModelResource, ModelResource):
     pass
@@ -77,6 +81,28 @@ class HutResource(NamespacedGeoModelResource):
       'name': ['startswith'],
     }
 
+  def _add_choices(self, base_schema, field):
+    base_schema['fields'][field.name].update({
+      'choices': {
+          choice: label
+          for choice, label in field.get_choices()
+      }
+    })
+
+  def build_schema(self):
+    base_schema = super(HutResource, self).build_schema()
+    object_class = self._meta.object_class
+
+    for field in object_class._meta.fields:
+      if field.name in base_schema['fields'] and field.choices:
+          self._add_choices(base_schema, field)
+
+    for field in object_class._meta.many_to_many:
+      if field.name in base_schema['fields']:
+          self._add_choices(base_schema, field)
+
+    return base_schema
+
   def dehydrate(self, bundle):
     format = self.determine_format(bundle.request)
     if format == 'text/csv':
@@ -96,3 +122,11 @@ class HutResource(NamespacedGeoModelResource):
 
     return bundle
 
+class HutSuggestionResource(HutResource):
+
+   class Meta:
+     queryset = HutSuggestion.objects.all()
+     list_allowed_methods = ['post']
+     detail_allowed_methods = []
+     authorization = Authorization()
+     validation = FormValidation(form_class=HutSuggestionForm)

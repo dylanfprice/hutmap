@@ -72,7 +72,7 @@
       angular.copy(base)
     );
 
-    var modal = angular.extend(
+    var form = angular.extend(
       {
         zoom: 16,
         mapTypeId: google.maps.MapTypeId.SATELLITE
@@ -82,7 +82,7 @@
 
     return {
       main: main,
-      modal: modal
+      form: form,
     };
   }]).
 

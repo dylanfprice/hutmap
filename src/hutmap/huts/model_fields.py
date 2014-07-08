@@ -6,7 +6,6 @@ import ast
 
 add_introspection_rules([], ["^huts\.model_fields\.ListField"])
 add_introspection_rules([], ["^huts\.model_fields\.CountryField"])
-add_introspection_rules([], ["^huts\.model_fields\.UnhelpfulManyToManyField"])
 
 class ListField(models.TextField):
   __metaclass__ = models.SubfieldBase
@@ -54,8 +53,4 @@ class CountryField(models.CharField):
     def get_internal_type(self):
         return "CharField"
 
-class UnhelpfulManyToManyField(models.ManyToManyField):
-  def __init__(self, *args, **kwargs):
-    orig_help_text = getattr(self, 'help_text', '')
-    super(UnhelpfulManyToManyField, self).__init__(*args, **kwargs)
-    self.help_text = orig_help_text
+
