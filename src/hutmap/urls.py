@@ -22,4 +22,3 @@ urlpatterns += patterns('',
 urlpatterns += static('{}/hutmap/data/'.format(settings.STATIC_URL),
     document_root='{}/hutmap/data/'.format(settings.STATIC_ROOT))
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
