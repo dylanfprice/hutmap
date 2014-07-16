@@ -1,14 +1,18 @@
-from django.db.models.fields.related import RelatedField
-from huts.models import Hut, Region, Agency, Designation, System, AccessType,\
-                        HutType, Service, HutSuggestion
+import itertools
+
+from django.db.models import ManyToManyField
+
+from huts.forms import HutSuggestionForm
+from huts.models import (AccessType, Agency, Designation, Hut, HutSuggestion,
+                         HutType, Region, Service, System)
+from huts.utils.csv_consts import CSV_FALSE, CSV_NULL, CSV_TRUE
 from huts.utils.csv_serializer import CSVSerializer
-from huts.utils.csv_consts import CSV_NULL, CSV_TRUE, CSV_FALSE
+from tastypie import fields
+from tastypie.authorization import Authorization
 from tastypie.contrib.gis.resources import ModelResource
 from tastypie.resources import NamespacedModelResource
-from tastypie.authorization import Authorization
 from tastypie.validation import FormValidation
-from tastypie import fields
-from huts.forms import HutSuggestionForm
+
 
 class NamespacedGeoModelResource(NamespacedModelResource, ModelResource):
     pass
@@ -93,13 +97,19 @@ class HutResource(NamespacedGeoModelResource):
         base_schema = super(HutResource, self).build_schema()
         object_class = self._meta.object_class
 
-        for field in object_class._meta.fields:
-            if field.name in base_schema['fields'] and field.choices:
-                self._add_choices(base_schema, field)
+        for field in itertools.chain(
+            object_class._meta.fields,
+            object_class._meta.many_to_many
+        ):
+            included = field.name in base_schema['fields']
+            if included:
+                is_many_to_many = isinstance(field, ManyToManyField)
+                has_choices = bool(field.choices)
+                if is_many_to_many or has_choices:
+                    self._add_choices(base_schema, field)
 
-        for field in object_class._meta.many_to_many:
-            if field.name in base_schema['fields']:
-                self._add_choices(base_schema, field)
+                for attr in ['blank', 'verbose_name', 'help_text']:
+                    base_schema['fields'][field.name][attr] = getattr(field, attr)
 
         return base_schema
 
