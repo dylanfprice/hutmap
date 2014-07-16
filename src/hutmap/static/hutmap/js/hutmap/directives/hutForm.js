@@ -1,7 +1,7 @@
 (function () {
 'use strict';
 
-  angular.module('hutmap.directives', []).
+  angular.module('hutmap.directives').
 
   directive('hutForm', ['$compile', function ($compile) {
     return {

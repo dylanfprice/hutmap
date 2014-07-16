@@ -11,7 +11,7 @@ from tastypie import fields
 from tastypie.authorization import Authorization
 from tastypie.contrib.gis.resources import ModelResource
 from tastypie.resources import NamespacedModelResource
-from tastypie.validation import FormValidation
+from tastypie.validation import CleanedDataFormValidation
 
 
 class NamespacedGeoModelResource(NamespacedModelResource, ModelResource):
@@ -133,10 +133,9 @@ class HutResource(NamespacedGeoModelResource):
         return bundle
 
 class HutSuggestionResource(HutResource):
-
     class Meta:
         queryset = HutSuggestion.objects.all()
         list_allowed_methods = ['post']
         detail_allowed_methods = []
         authorization = Authorization()
-        validation = FormValidation(form_class=HutSuggestionForm)
+        validation = CleanedDataFormValidation(form_class=HutSuggestionForm)

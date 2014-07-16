@@ -1,57 +1,65 @@
 <div id="content-fixed">
-    <div ng-controller="HutFormCtrl">
-        <div>
-          <h3>Suggest new hut</h3>
-        </div>
-        
-        <h4>Names</h4>
-        <label for="hut.name">Name</label>
-        <input type="text" name="hut.name" ng-model="hut.name" />
+
+    <script type="text/ng-template" id="hm-fields/label.html">
+        <span ng-class="{required: !blank}">
+            <label for="[* tagName *]">[* verbose_name|capfirst *]</label>
+        </span>
+    </script>
+
+    <script type="text/ng-template" id="hm-fields/errors.html">
+        <ul ng-repeat="error in fieldErrors">
+            <li>[* error *]</li>
+        </ul>
+    </script>
+
+    <script type="text/ng-template" id="hm-fields/input.html">
+        <ng-include src="'hm-fields/label.html'"></ng-include>
+        <input type="[* inputType *]" name="[* tagName *]" />
+        <ng-include src="'hm-fields/errors.html'"></ng-include>
         <br/>
+    </script>
 
-        <div ng-controller="HutFormMapCtrl">
-            <label for="hut.location">Location</label>
-            <input type="text" name="hut.location" ng-model="hut.location" ng-change="updateMarker()"/>
-            <br/>
-
-            <gm-map class="hut-form-map" gm-map-id="'hut-form-map'" 
-                                         gm-map-options="mapOptions" 
-                                         gm-center="mapCenter">
-                <gm-markers gm-objects="huts" 
-                            gm-id="object && object.id || null"
-                            gm-position="positionFromHut(object)"
-                            gm-marker-options="markerOptions"
-                            gm-on-dragend="positionFromMarker(marker, object)">
-                </gm-markers>
-            </gm-map>
-        </div>
-
-        <label for="hut.country">Country</label>
-        <select name="hut.country" 
-                ui-select2="form.select2Options"
-                ng-model="hut.country">
-
-            <option value="">----------</option>
-            <option ng-repeat="(choice, label) in form.schema.fields.country.choices"
+    <script type="text/ng-template" id="hm-fields/select.html">
+        <ng-include src="'hm-fields/label.html'"></ng-include>
+        <select name="[* tagName *]"
+                ui-select2="{dropdownAutoWidth: true}"
+                ng-model="field">
+            <option ng-repeat="(choice, choiceLabel) in choices"
                     value="choice">
-                    [* label *]
+                    [* choiceLabel *]
             </option>
-
         </select>
+        <ng-include src="'hm-fields/errors.html'"></ng-include>
         <br/>
+    </script>
+    
+    <div ng-controller="HutFormCtrl">
+        <hm-form model="hut" schema="form.schema" errors="form.errors">
+            <div>
+              <h3>Suggest new hut</h3>
+            </div>
+            
+            <hm-text-field ng-model="model.name"></hm-text-field>
 
-        <label for="hut.state">State</label>
-        <input type="text" name="hut.state" ng-model="hut.state" />
-        <br/>
+            <div ng-controller="HutFormMapCtrl">
+                <hm-text-field ng-model="model.location" ng-change="updateMarker()"></hm-text-field>
 
-        <label for="hut.types">Types</label>
-        <select name="hut.types"
-                multiple
-                ui-select2="form.select2Options"
-                ng-model="hut.types"
-                ng-options="choice as label for (choice, label)
-                            in form.schema.fields.types.choices">
-        </select>
-        <br/>
+                <gm-map class="hut-form-map" gm-map-id="'hut-form-map'" 
+                                             gm-map-options="mapOptions" 
+                                             gm-center="mapCenter">
+                    <gm-markers gm-objects="huts" 
+                                gm-id="object && object.id || null"
+                                gm-position="positionFromHut(object)"
+                                gm-marker-options="markerOptions"
+                                gm-on-dragend="positionFromMarker(marker, object)">
+                    </gm-markers>
+                </gm-map>
+            </div>
+
+            <hm-select-field ng-model="model.country"></hm-select-field>
+            <hm-text-field ng-model="model.state"></hm-text-field>
+            <hm-select-field ng-model="model.types" multiple></hm-select-field>
+            <input class="button" ng-click="submit(hut)" value="Submit" />
+        </hm-form>
     </div>
 </div>
