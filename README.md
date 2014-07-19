@@ -45,6 +45,7 @@ Create the file `ops/provisioning/group_vars/vagrant` with the following in it:
 ```yaml
 ---
 user: 'vagrant'
+virtualenv: '{{ repo_dir }}/ops/venvs/hutmap/'
 mysql_root_password: 'vagrant'
 
 hutmap:
