@@ -1,7 +1,7 @@
 (function () {
 'use strict';
 
-  angular.module('hutmap.directives', []).
+  angular.module('hutmap.directives').
 
   directive('hutForm', ['$compile', function ($compile) {
     return {
@@ -10,8 +10,7 @@
       link: function (scope, ele, attrs) {
         scope.$watch(attrs.hutForm, function(html) {
           ele.html(html);
-          $compile(ele.contents())(scope.$parent);
-          ele.closest('.modal-wrapper').scrollTop(0);
+          $compile(ele.contents())(scope);
         });
 
         scope.$watch('hut', function(newVal) {

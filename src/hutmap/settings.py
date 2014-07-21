@@ -5,18 +5,18 @@ import subprocess
 
 ### Special settings for dreamhost account ###
 if node() == 'fulton':
-  GEOS_LIBRARY_PATH = '/home/hutmap/hutmap.com/deps/geos-3.3.0/lib/libgeos_c.so'
-  GDAL_LIBRARY_PATH = '/home/hutmap/hutmap.com/deps/gdal-1.8.0/lib/libgdal.so'
+    GEOS_LIBRARY_PATH = '/home/hutmap/hutmap.com/deps/geos-3.3.0/lib/libgeos_c.so'
+    GDAL_LIBRARY_PATH = '/home/hutmap/hutmap.com/deps/gdal-1.8.0/lib/libgdal.so'
 
-  command = ['bash', '-c', 'source /home/hutmap/.bash_profile && env']
+    command = ['bash', '-c', 'source /home/hutmap/.bash_profile && env']
 
-  proc = subprocess.Popen(command, stdout = subprocess.PIPE)
-  stdoutdata, stderrdata = proc.communicate()
+    proc = subprocess.Popen(command, stdout = subprocess.PIPE)
+    stdoutdata, stderrdata = proc.communicate()
 
-  for line in stdoutdata.splitlines():
-    (key, _, value) = line.partition("=")
-    if key.startswith('HUTMAP'):
-      os.environ[key] = value.rstrip()
+    for line in stdoutdata.splitlines():
+        (key, _, value) = line.partition("=")
+        if key.startswith('HUTMAP'):
+            os.environ[key] = value.rstrip()
 
 
 ### Version ###
@@ -30,7 +30,7 @@ DATABASES = {
     'default': {
         'ENGINE':   'django.contrib.gis.db.backends.mysql',
         'NAME':     os.environ['HUTMAP_DB_NAME'],
-        'USER':     os.environ['HUTMAP_DB_USER'], 
+        'USER':     os.environ['HUTMAP_DB_USER'],
         'PASSWORD': os.environ['HUTMAP_DB_PASSWORD'],
         'HOST':     os.environ['HUTMAP_DB_HOST'],
         'PORT':     os.environ['HUTMAP_DB_PORT'],
@@ -105,9 +105,9 @@ MEDIA_ROOT = join(LOCAL_PATH, '..', '..', 'public', 'media')
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 if DEBUG:
-  MEDIA_URL = '/media/'
+    MEDIA_URL = '/media/'
 else:
-  MEDIA_URL = 'http://www.hutmap.com/media/'
+    MEDIA_URL = 'http://www.hutmap.com/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -119,9 +119,9 @@ STATIC_ROOT = join(LOCAL_PATH, '..', '..', 'public', 'static')
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 if DEBUG:
-  STATIC_URL = '/static/'
+    STATIC_URL = '/static/'
 else:
-  STATIC_URL = 'http://www.hutmap.com/static/'
+    STATIC_URL = 'http://www.hutmap.com/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -213,19 +213,19 @@ INSTALLED_APPS = (
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 if DEBUG:
-  CACHES = {
-    'default': { 
-      'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    CACHES = {
+      'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+      }
     }
-  }
 else:
-  CACHES = {
-    'default': {
-      'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-      'LOCATION': '/var/tmp/hutmap-django-cache',
-      'VERSION': HUTMAP_VERSION,
+    CACHES = {
+      'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/hutmap-django-cache',
+        'VERSION': HUTMAP_VERSION,
+      }
     }
-  }
 
 LOGGING = {
   'version': 1,

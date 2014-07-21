@@ -2,6 +2,7 @@ coverage/
 logs/
 public/
 src/hutmap/scripts/
+ops/venvs/
 
 *.vagrant
 *.swp

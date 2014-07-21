@@ -1,16 +1,11 @@
 (function() {
 'use strict';
   
-  // marker dimensions
-  // (broke the site if placed just above the 'markerOptions' code block?)
-  var w = 17;
-  var h = 17;
-  var pts = [2,7,7,2,12,7,7,12,2,7];
   
   angular.module('hutmap', [
       'hutmap.services', 'hutmap.directives', 'hutmap.filters', 'hutmap.controllers', 
       'ngRoute', 'ngResource', 'ngCookies',
-      'AngularGM', 'ui.bootstrap', 'ui.select2', 'angularFileUpload',
+      'AngularGM', 'ui.bootstrap', 'ui.select2', 'angularFileUpload', 'ng.django.forms',
     ]).
     
 
@@ -28,6 +23,10 @@
       when(hutmap.url.about, {
         templateUrl: '/partials/about.html',
         active: hutmap.url.about,
+      }).
+      when(hutmap.url.hut_new, {
+        templateUrl: '/partials/hut_new.html',
+        active: hutmap.url.hut_new,
       });
   }]).
 
@@ -73,7 +72,7 @@
       angular.copy(base)
     );
 
-    var modal = angular.extend(
+    var form = angular.extend(
       {
         zoom: 16,
         mapTypeId: google.maps.MapTypeId.SATELLITE
@@ -83,51 +82,58 @@
 
     return {
       main: main,
-      modal: modal
+      form: form,
     };
   }]).
 
-  value('markerOptions', {
-    huts: {
-      icon: {
-        url: hutmap.STATIC_URL + 'hutmap/img/markers/smdot_t1_gray_dark.png',
-				size: new google.maps.Size(w, h),
-				origin: new google.maps.Point(0, 0),
-				anchor: new google.maps.Point(w*0.4,h*0.4)
-      },
-      shape: {
-        coords: pts,
-        type: 'poly'
-      },
-      zIndex: 0
-    },
-    filteredHuts: {
-      icon: {
-        url: hutmap.STATIC_URL + 'hutmap/img/markers/smdot_t1_red.png',
-				size: new google.maps.Size(w, h),
-				origin: new google.maps.Point(0, 0),
-				anchor: new google.maps.Point(w*0.4,h*0.4)
-      },
-      shape: {
-        coords: pts,
-        type: 'poly'
-      },
-      zIndex: 1
-    },
-    selected: {
-      icon: {
-        url: hutmap.STATIC_URL + 'hutmap/img/markers/smdot_t1_yellow.png',
-				size: new google.maps.Size(w, h),
-				origin: new google.maps.Point(0, 0),
-				anchor: new google.maps.Point(w*0.4,h*0.4)
-      },
-      shape: {
-        coords: pts,
-        type: 'poly'
-      },
-      zIndex: 2
-    }
-  }).
+  factory('markerOptions', [function() {
+      // marker dimensions
+      var w = 17;
+      var h = 17;
+      var pts = [2,7,7,2,12,7,7,12,2,7];
+
+      return {
+        huts: {
+          icon: {
+            url: hutmap.STATIC_URL + 'hutmap/img/markers/smdot_t1_gray_dark.png',
+                    size: new google.maps.Size(w, h),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(w*0.4,h*0.4)
+          },
+          shape: {
+            coords: pts,
+            type: 'poly'
+          },
+          zIndex: 0
+        },
+        filteredHuts: {
+          icon: {
+            url: hutmap.STATIC_URL + 'hutmap/img/markers/smdot_t1_red.png',
+                    size: new google.maps.Size(w, h),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(w*0.4,h*0.4)
+          },
+          shape: {
+            coords: pts,
+            type: 'poly'
+          },
+          zIndex: 1
+        },
+        selected: {
+          icon: {
+            url: hutmap.STATIC_URL + 'hutmap/img/markers/smdot_t1_yellow.png',
+                    size: new google.maps.Size(w, h),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(w*0.4,h*0.4)
+          },
+          shape: {
+            coords: pts,
+            type: 'poly'
+          },
+          zIndex: 2
+        }
+      };
+  }]).
 
   run(['hutmapMapId', 'angulargmContainer', 'mapOptions',
       function(hutmapMapId, angulargmContainer, mapOptions) {

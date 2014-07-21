@@ -54,6 +54,9 @@
     <script type="text/ng-template" id="template/tooltip/tooltip-popup.html">
       {% include "partials/components/tooltip-popup.html" %}
     </script>
+    <script type="text/ng-template" id="template/alert/alert.html">
+      {% include "partials/components/alert.html" %}
+    </script>
     </span>
 
     <div id="navbar">
@@ -91,7 +94,7 @@
           <a ng-class="{ active: ui.$route.current.active == '{% url 'huts:about' %}'}" href="{% url 'huts:about' %}">
             About
           </a>
-          <a>
+          <a ng-class="{ active: ui.$route.current.active == '{% url 'huts:hut_new' %}'}" href="{% url 'huts:hut_new' %}">
             Add a Hut
           </a>
         </div>
@@ -117,7 +120,12 @@
     </div>
 
     <div id="content" ng-cloak>
-      <ng-view></ng-view>
+      <div ng-controller="AlertCtrl">
+        <div id="alert-topbar" ng-show="alerts.length">
+          <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">[*alert.msg*]</alert>
+        </div> 
+        <ng-view></ng-view>
+      </div>
     </div>
 
   </div>
@@ -128,7 +136,7 @@
     hutmap.STATIC_URL = '{{ STATIC_URL }}';
     hutmap.GOOGLE_API_KEY = '{{ GOOGLE_API_KEY }}';
     hutmap.url = {{ hut_urls|safe }};
-
+    
     var addthis_config = {
       data_track_addressbar: false,
       data_track_clickback: false,
@@ -138,7 +146,6 @@
     function angularDigest() {
       if(document.readyState === 'complete') {
         if ('angular' in window) {
-          console.log('here');
           angular.element('body').scope().$digest();
         }
       }
@@ -163,11 +170,14 @@
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/bower_components/select2/select2.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/bower_components/angular-ui-select2/src/select2.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/bower_components/angularjs-file-upload/angular-file-upload.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "djangular/js/django-angular.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/app.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/module.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/module.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/filters.js" %}"></script>
-  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/directives.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/directives/module.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/directives/hutForm.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/directives/fields.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/Huts.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/HutImg.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/Places.js" %}"></script>
@@ -175,6 +185,7 @@
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/MaxZoom.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/gapi.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/utils.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/services/forms.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/HutmapCtrl.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/CarouselCtrl.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/AlertCtrl.js" %}"></script>
@@ -187,7 +198,7 @@
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/FilterCtrl.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/LinkCtrl.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/HutFormCtrl.js" %}"></script>
-  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/HutFormInstanceCtrl.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/hutmap/controllers/HutFormMapCtrl.js" %}"></script>
   {% endcompress %}
 
 </body>

@@ -1,7 +1,7 @@
 {
   "name": "hutmap",
   "dependencies": {
-    "angularjs-file-upload": "1.1.5",
+    "angularjs-file-upload": "1.4.0",
     "angular-ui-select2": "0.0.2",
     "angular-bootstrap": "0.11.0",
     "AngularGM": "1.0.0"

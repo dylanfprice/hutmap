@@ -8,21 +8,21 @@ register = template.Library()
 
 @register.filter
 def css_classes(form, field_name):
-  field = form.fields.get(field_name, None)
-  if field is not None:
-    return field.widget.attrs.get('class', '')
-  return ''
+    field = form.fields.get(field_name, None)
+    if field is not None:
+        return field.widget.attrs.get('class', '')
+    return ''
 
 class Encoder(JSONEncoder):
-  def default(self, o):
-    if isinstance(o, (forms.FileField, FieldFile)):
-      return o.url
-    elif isinstance(o, Point):
-      return point_display_value(o)
-    return super(Encoder, self).default(o)
+    def default(self, o):
+        if isinstance(o, (forms.FileField, FieldFile)):
+            return o.url
+        elif isinstance(o, Point):
+            return point_display_value(o)
+        return super(Encoder, self).default(o)
 
 encoder = Encoder()
 
 @register.filter
 def js(value):
-  return encoder.encode(value)
+    return encoder.encode(value)

@@ -1,58 +1,37 @@
 (function () {
 'use strict';
 
-  angular.module('hutmap.controllers').
+    angular.module('hutmap.controllers').
 
-  controller('HutFormCtrl', 
-    ['$scope', '$modal', '$cookies', '$log',
-    function($scope, $modal, $cookies, $log) {
+    controller('HutFormCtrl', 
+        ['$scope', '$http', 'mapOptions', 'markerOptions',
+        function($scope, $http, mapOptions, markerOptions) {
 
-    $scope.suggestHut = function() {
+        $scope.form = {}
+        $scope.hut = {};
 
-      var modal = $modal.open({
-        templateUrl: 'hut_modal.html',
-        controller: 'HutFormInstanceCtrl',
-        keyboard: false,
-        resolve: {
-          hutFormUrl: function() {
-            return '/forms/hut/new/';
-          },
-          header: function() {
-            return 'Suggest new hut';
-          }
+        $scope.form.schema = null;
+        $scope.form.errors = null;
+
+        $http.get('/api/v1/hutsuggestion/schema/').
+            success(function(data, status, headers, config) {
+                  $scope.form.schema = data;
+            }).
+            error(function(data, status, headers, config) {
+            });
+
+        $scope.submit = function(hut) {
+            $scope.form.errors = {};
+            $http.post('/api/v1/hutsuggestion/', hut).
+                success(function(data, status, headers, config) {
+                    console.log('success', data, status);
+                }).
+                error(function(data, status, headers, config) {
+                    console.log('error', data, status);
+                    $scope.form.errors = data.hutsuggestion;
+                });
         }
-      });
-
-      modal.result.then(function (hut) {
-        $scope.addAlert('success', "Successfully submitted suggestion for " + hut.name + "!");
-      }, function (reason) {
-        $log.info('suggestion dismissed, reason: ', reason);
-      });
-    };
-
-    $scope.editHut = function (hut) {
-
-      var modal = $modal.open({
-        templateUrl: 'hut_modal.html',
-        controller: 'HutFormInstanceCtrl',
-        keyboard: false,
-        resolve: {
-          hutFormUrl: function() {
-            return '/forms/hut/' + hut.id + '/';
-          },
-          header: function() {
-            return 'Edit ' + hut.name;
-          }
-        }
-      });
-
-      modal.result.then(function (hut) {
-        $scope.addAlert('success', "Successfully submitted edit for " + hut.name + "!");
-      }, function (reason) {
-        $log.info('edit dismissed, reason: ', reason);
-      });
-    };
-
-  }]);
+      
+    }]);
 
 })();
