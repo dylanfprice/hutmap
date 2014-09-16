@@ -68,9 +68,9 @@
         var obliqueUrl = getObliqueImgUrl(hut);
         if (obliqueUrl) {
             obliques.push({
-              url: obliqueUrl,
-              creditUrl: hut.photo_credit_url,
+              src: obliqueUrl,
               name: hut.photo_credit_name,
+              url: hut.photo_credit_url
             });
         }
         obliquesDeferred.resolve(obliques);

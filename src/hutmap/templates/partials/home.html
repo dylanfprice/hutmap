@@ -25,14 +25,19 @@
               [*slide.location*]<br />              
               <p>
                 <span class="linkcolor">&lfloor;</span>&nbsp;<a ng-href="[*slide.hutLink*]">show on map</a><br/>
-                <span class="linkcolor" ng-hide="!slide.agency.name">&lfloor;</span>&nbsp;<a ng-href="[*slide.agency.url*]">[*slide.agency.name*]</a>
+                <span class="linkcolor" ng-if="slide.agency.name">&lfloor;</span>&nbsp;<a ng-href="[*slide.agency.url*]">[*slide.agency.name*]</a>
               </p>
             </td>
           </tr>
         </table>
       </div>
 
-      <span class="credit-slide">[*slide.image.credit*]</span>
+      <span ng-if="!slide.image.url" class="credit-slide">
+        [*slide.image.credit*]
+      </span>
+      <span ng-if="slide.image.url" class="credit-slide">
+        <a href="[*slide.image.url*]">[*slide.image.credit*]</a>
+      </span>
 
     </slide>
   </carousel>

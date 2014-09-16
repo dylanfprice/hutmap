@@ -17,11 +17,13 @@
         },
         thumbnail: {
           src: hutmap.STATIC_URL + 'hutmap/img/carousel/th/.jpg',
-          credit: ''
+          credit: '',
+          url: ''
         },
         image: {
           src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/.jpg',
-          credit: ''
+          credit: '',
+          url: ''
         }
       },
       */
@@ -34,16 +36,14 @@
           name: 'Mount Baker-Snoqualmie National Forest website',
           url: 'http://www.fs.usda.gov/recarea/mbs/recreation/recarea/?recid=17850'
         },
-        thumbnail: {
-          src: '',
-          credit: ''
-        },
         image: {
-          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/130804_4124.JPG',
-          credit: 'Ethan Welty'
+          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/130804_4124.jpg',
+          credit: 'Ethan Welty',
+          url: 'http://weltyphotography.com'
         }
       },
      
+     /* PENDING
      {
         title: 'Agnes Vaille Memorial Shelter',
         location: 'Rocky Mountain National Park, Colorado, USA',
@@ -52,13 +52,10 @@
           name: '',
           url: ''
         },
-        thumbnail: {
-          src: '',
-          credit: ''
-        },
         image: {
-          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/110719_9094.JPG',
-          credit: 'Ethan Welty'
+          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/110719_9094.jpg',
+          credit: 'Ethan Welty',
+          url: 'http://weltyphotography.com'
         }
       },
       
@@ -70,13 +67,10 @@
           name: 'San Juan Hut Systems website',
           url: 'http://www.sanjuanhuts.com/ski-nordic-adventures/north-pole/'
         },
-        thumbnail: {
-          src: '',
-          credit: ''
-        },
         image: {
-          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/110326_1519.JPG',
-          credit: 'Ethan Welty'
+          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/110326_1519.jpg',
+          credit: 'Ethan Welty',
+          url: 'http://weltyphotography.com'
         }
       },
       
@@ -88,13 +82,10 @@
           name: 'Mount Baker-Snoqualmie National Forest website',
           url: 'http://www.fs.usda.gov/recarea/mbs/recreation/recarea/?recid=17672'
         },
-        thumbnail: {
-          src: '',
-          credit: ''
-        },
         image: {
-          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/100724_5566_pan.JPG',
-          credit: 'Ethan Welty'
+          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/100724_5566_pan.jpg',
+          credit: 'Ethan Welty',
+          url: 'http://weltyphotography.com'
         }
       },
       
@@ -106,13 +97,10 @@
           name: '',
           url: ''
         },
-        thumbnail: {
-          src: '',
-          credit: ''
-        },
         image: {
-          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/110405_1067.JPG',
-          credit: 'Ethan Welty'
+          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/110405_1067.jpg',
+          credit: 'Ethan Welty',
+          url: 'http://weltyphotography.com'
         }
       },
       
@@ -124,13 +112,10 @@
           name: 'Mount Baker-Snoqualmie National Forest website',
           url: 'http://www.fs.usda.gov/recarea/mbs/recreation/recarea/?recid=17674'
         },
-        thumbnail: {
-          src: '',
-          credit: ''
-        },
         image: {
-          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/100725_5644.JPG',
-          credit: 'Ethan Welty'
+          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/100725_5644.jpg',
+          credit: 'Ethan Welty',
+          url: 'http://weltyphotography.com'
         }
       },
       
@@ -142,13 +127,10 @@
           name: 'Never Summer Nordic website',
           url: 'http://neversummernordic.com/MontgomeryPass.htm'
         },
-        thumbnail: {
-          src: '',
-          credit: ''
-        },
         image: {
-          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/110318_0356.JPG',
-          credit: 'Ethan Welty'
+          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/110318_0356.jpg',
+          credit: 'Ethan Welty',
+          url: 'http://weltyphotography.com'
         }
       },
       
@@ -160,12 +142,8 @@
           name: '10th Mountain Division Hut Association website',
           url: 'http://www.huts.org/The_Huts/mcnamara.html'
         },
-        thumbnail: {
-          src: '', //'http://www.hutmap.com/media/huts/US/Colorado/McNamara%20Hut/photo_200x200_2.jpeg',
-          credit: ''
-        },
         image: {
-          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/mcnamara-hut.JPG',
+          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/mcnamara-hut.jpg',
           credit: 'Google'
         }
       },
@@ -178,12 +156,8 @@
           name: '',
           url: ''
         },
-        thumbnail: {
-          src: '',
-          credit: ''
-        },
         image: {
-          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/notch-mountain-shelter-01.JPG',
+          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/notch-mountain-shelter-01.jpg',
           credit: 'Google'
         }
       },
@@ -196,60 +170,52 @@
           name: 'Mount Rainier National Park website',
           url: 'http://www.nps.gov/mora/planyourvisit/climbing.htm'
         },
-        thumbnail: {
-          src: '', //http://hutmap.com/media/huts/US/Washington/Camp%20Muir%20Shelter/photo_200x200_2.jpeg',
-          credit: '' //'Mitch Barrie'
-        },
         image: {
-          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/camp-muir-03.JPG',
+          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/camp-muir-03.jpg',
           credit: 'Google'
         }
       },
       
-      /* OLD
        {
         title: 'Plummer Hut', 
         location: 'Waddington Range, British Columbia, Canada',
         hutLink: '/map/?h_selected=357&m_center=51.388403,-125.062053&m_zoom=9',
         agency: {
-          name: 'BC Mountaineering Club',
+          name: 'BC Mountaineering Club website',
           url:  ''
         },
-        thumbnail: {
-          src: hutmap.STATIC_URL + 'hutmap/img/no-image-available.gif',
-          credit: 'Obadiah Reid'
-        },
         image: {
-          src: hutmap.STATIC_URL + 'hutmap/img/carousel/plummer-hut-hires.jpg',
-          credit: 'Google Earth'
+          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/plummer-hut.jpg',
+          credit: 'Google'
         }
-      }
+      },
       
       {
         title: 'Joe River Chickee', 
-        location: 'lorem ipsum dolor',
+        location: '',
         hutLink: '',
         agency: {
-          name: 'lorem ipsum dolor',
+          name: '',
           url:  ''
         },
-        thumbnail: hutmap.STATIC_URL + 'hutmap/img/no-image-available.gif',
-        thumbnail_credit: '',
-        image: hutmap.STATIC_URL + 'hutmap/img/carousel/joe-river-chickee-hires.jpg',
-        image_credit: '&copy; Google Earth'
+        image: {
+          src: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/joe-river-chickee.jpg',
+          credit: 'Google'
+        }
       },
+      
       {
         title: 'John Muir Shelter', 
-        location: 'lorem ipsum dolor',
+        location: '',
         hutLink: '',
         agency: {
-          name: 'lorem ipsum dolor',
+          name: '',
           url:  ''
         },
-        thumbnail: hutmap.STATIC_URL + 'hutmap/img/no-image-available.gif',
-        thumbnail_credit: '',
-        image: hutmap.STATIC_URL + 'hutmap/img/carousel/john-muir-shelter-hires.jpg',
-        image_credit: '&copy; Google Earth'
+        image: {
+          image: hutmap.STATIC_URL + 'hutmap/img/carousel/hires/john-muir-shelter.jpg',
+          image_credit: 'Google'
+        }
       }
     
     */

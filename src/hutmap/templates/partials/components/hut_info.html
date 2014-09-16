@@ -12,11 +12,11 @@
            src="http://placehold.it/250x200&text=Loading%20image..."
            ng-src="[* h.selectedHutImgUrl *]"
            title="[* h.selectedHut.name *] as seen from Earth.">
-      <div ng-if="!h.selectedHut.show_satellite && h.selectedHut.photo_credit_name != ''" class="credit">
-        <span ng-show="h.selectedHut.photo_credit_url != ''">
-          <a ng-href="[*h.selectedHut.photo_credit_url*]" target="_blank">[*h.selectedHut.photo_credit_name*]</a>
+      <div ng-if="!h.selectedHut.show_satellite && h.selectedHut.photo_credit_name" class="credit">
+        <span ng-if="h.selectedHut.photo_credit_url">
+          <a class="noicon" ng-href="[*h.selectedHut.photo_credit_url*]" target="_blank">[*h.selectedHut.photo_credit_name*]</a>
         </span>
-        <span ng-show="h.selectedHut.photo_credit_url == ''">
+        <span ng-if="!h.selectedHut.photo_credit_url">
           [* h.selectedHut.photo_credit_name *]
         </span>
       </div>  
@@ -41,42 +41,45 @@
   </span>
   
   <!-- Name -->
-  <a ng-show="getHutUrls(h.selectedHut).length == 1" href="[* getHutUrls(h.selectedHut)[0] *]" target="_blank" style="white-space:normal;">
+  <a ng-if="getHutUrls(h.selectedHut).length == 1" href="[* getHutUrls(h.selectedHut)[0] *]" target="_blank" style="white-space:normal;">
     <span class="hutname">[* h.selectedHut.name *]</span>
   </a>
-  <span ng-show="getHutUrls(h.selectedHut).length != 1" class="hutname">[* h.selectedHut.name *]</span>
-  <span ng-show="h.selectedHut.alternate_names.length > 0">
+  <span ng-if="getHutUrls(h.selectedHut).length != 1" class="hutname">[* h.selectedHut.name *]</span>
+  <span ng-if="h.selectedHut.alternate_names.length > 0">
     ([* h.selectedHut.alternate_names.join(', ') *])
   </span>
   <br/>
   
   <!-- Hut URL -->
-  <span ng-show="getHutUrls(h.selectedHut).length > 1" ng-repeat="url in getHutUrls(h.selectedHut)">
+  <span ng-if="getHutUrls(h.selectedHut).length > 1" ng-repeat="url in getHutUrls(h.selectedHut)">
     <a ng-href="[*url*]" target="_blank">[* url|urlDomain *]</a>
-    <span ng-show="!$last">&nbsp;&middot;&nbsp;</span>
-    <br ng-show="$last" />
+    <span ng-if="!$last">&nbsp;&middot;&nbsp;</span>
+    <br ng-if="$last" />
   </span>
     
   <!-- Location -->
   <br/>
   <b class="category">Location</b><br/>
   [*h.selectedHut.location.coordinates[1]|number:5*], [*h.selectedHut.location.coordinates[0]|number:5*]
-  <span ng-show="h.selectedHut.altitude_meters != null">&nbsp;/&nbsp; [*h.selectedHut.altitude_meters*] m</span>
+  <span ng-if="h.selectedHut.altitude_meters != null">&nbsp;/&nbsp; [*h.selectedHut.altitude_meters*] m</span>
   <br/>
   
   <!-- Location accuracy -->
-  <i>[* accuracy_text[h.selectedHut.location_accuracy] *]</i>
-  <span ng-show="h.selectedHut.location_accuracy == null"><i>Unverified</i></span>
-  <span ng-show="h.selectedHut.location_accuracy < 3 && h.selectedHut.location_references.length > 0">
-    <span ng-show="h.selectedHut.location_references.length == 1"> &ndash; 
+  <i>
+    [* accuracy_text[h.selectedHut.location_accuracy] *]</i>
+    <span ng-if="h.selectedHut.location_accuracy == null">Unverified</span>
+    <span ng-if="h.selectedHut.location_accuracy == 3 && !h.selectedHut.show_satellite && h.selectedHut.show_topo">or topo map</span>
+  </i>
+  <span ng-if="h.selectedHut.location_accuracy < 3 && h.selectedHut.location_references.length > 0">
+    <span ng-if="h.selectedHut.location_references.length == 1"> &ndash; 
       <a ng-href="[* h.selectedHut.location_references[0] *]" target="_blank">source</a>
     </span>
-    <span ng-show="h.selectedHut.location_references.length > 1" ng-repeat="url in h.selectedHut.location_references">
-      <span ng-show="$first"> &ndash; sources </span>
-      <span ng-show="!$last">
+    <span ng-if="h.selectedHut.location_references.length > 1" ng-repeat="url in h.selectedHut.location_references">
+      <span ng-if="$first"> &ndash; sources </span>
+      <span ng-if="!$last">
         <a ng-href="[*url*]" target="_blank" class="noicon">#[* $index+1 *]</a>, 
       </span>
-      <span ng-show="$last">
+      <span ng-if="$last">
         <a ng-href="[*url*]" target="_blank">#[* $index+1 *]</a>
       </span>
     </span>
@@ -86,17 +89,17 @@
   <!-- Access -->
   <br/>
   <b class="category">Easiest access</b><br/>  
-  <i class="icon-sun"></i><i class="icon-snowflake" ng-show="(h.selectedHut.no_snow_min_km == h.selectedHut.snow_min_km) && (h.selectedHut.snow_min_km != null || h.selectedHut.backcountry > 1)"></i>
+  <i class="icon-sun"></i><i class="icon-snowflake" ng-if="(h.selectedHut.no_snow_min_km == h.selectedHut.snow_min_km) && (h.selectedHut.snow_min_km != null || h.selectedHut.backcountry > 1)"></i>
   [*h.selectedHut.access_no_snow|listifyObjects:'name'*]
-  <span ng-show="h.selectedHut.access_no_snow.length == 0" class="italic">Unknown</span>
-  <span ng-show="h.selectedHut.no_snow_min_km > 0">([*h.selectedHut.no_snow_min_km*] km)</span>
-  <span ng-show="(h.selectedHut.snow_min_km == null && h.selectedHut.backcountry < 2) || (h.selectedHut.snow_min_km > 0 && h.selectedHut.snow_min_km != h.selectedHut.no_snow_min_km)">
+  <span ng-if="h.selectedHut.access_no_snow.length == 0" class="italic">Unknown</span>
+  <span ng-if="h.selectedHut.no_snow_min_km > 0">([*h.selectedHut.no_snow_min_km*] km)</span>
+  <span ng-if="(h.selectedHut.snow_min_km == null && h.selectedHut.backcountry < 2) || (h.selectedHut.snow_min_km > 0 && h.selectedHut.snow_min_km != h.selectedHut.no_snow_min_km)">
     <br/>
     <i class="icon-snowflake"></i>
-    <span ng-show="(h.selectedHut.snow_min_km == null && h.selectedHut.backcountry < 2)" class="italic">
+    <span ng-if="(h.selectedHut.snow_min_km == null && h.selectedHut.backcountry < 2)" class="italic">
       Unknown
     </span>
-    <span ng-show="(h.selectedHut.snow_min_km > 0 && h.selectedHut.snow_min_km != h.selectedHut.no_snow_min_km)">
+    <span ng-if="(h.selectedHut.snow_min_km > 0 && h.selectedHut.snow_min_km != h.selectedHut.no_snow_min_km)">
       Snow ([*h.selectedHut.snow_min_km*] km)
     </span>
     <br/>
@@ -107,41 +110,41 @@
   <!-- Type -->
   <b class="category">Type</b>
   [*h.selectedHut.types|listifyObjects:'name'*]
-  <span ng-show="h.selectedHut.structures > 1">([*h.selectedHut.structures*] structures)</span>
+  <span ng-if="h.selectedHut.structures > 1">([*h.selectedHut.structures*] structures)</span>
   <br/>
   
   <!-- Capacity -->
-  <span ng-show="h.selectedHut.capacity_max != null">
+  <span ng-if="h.selectedHut.capacity_max != null">
     <b class="category">Capacity</b>
     [* h.selectedHut.capacity_hut_min *]<span ng-show="h.selectedHut.capacity_hut_min != h.selectedHut.capacity_hut_max">-[* h.selectedHut.capacity_hut_max *]</span>
     people
-    <span ng-show="h.selectedHut.structures > 1">
+    <span ng-if="h.selectedHut.structures > 1">
       ([* h.selectedHut.capacity_max *] people total)
     </span>
     <br/>
   </span>
   
   <!-- Cost -->
-  <span ng-show="h.selectedHut.is_fee_person == true || h.selectedHut.is_fee_hut == true">
+  <span ng-if="h.selectedHut.is_fee_person == true || h.selectedHut.is_fee_hut == true">
     <b class="category">Cost</b>
-    <span ng-show="h.selectedHut.is_fee_person">
+    <span ng-if="h.selectedHut.is_fee_person">
       $[* h.selectedHut.fee_person_min *]<span ng-show="h.selectedHut.fee_person_min != h.selectedHut.fee_person_max">-[* h.selectedHut.fee_person_max *]</span>
       per person
     </span>
-    <span ng-show="h.selectedHut.is_fee_person && h.selectedHut.is_fee_hut">&nbsp;|&nbsp;</span>
-    <span ng-show="h.selectedHut.is_fee_hut">
+    <span ng-if="h.selectedHut.is_fee_person && h.selectedHut.is_fee_hut">&nbsp;|&nbsp;</span>
+    <span ng-if="h.selectedHut.is_fee_hut">
       $[* h.selectedHut.fee_hut_min *]<span ng-show="h.selectedHut.fee_hut_min != h.selectedHut.fee_hut_max">-[* h.selectedHut.fee_hut_max *]</span>
-      <span ng-show="h.selectedHut.structures > 1">per structure</span>
-      <span ng-show="h.selectedHut.structures == 1">whole hut</span>
+      <span ng-if="h.selectedHut.structures > 1">per structure</span>
+      <span ng-if="h.selectedHut.structures == 1">whole hut</span>
     </span>
   </span>
-  <span ng-show="h.selectedHut.is_fee_person == null && h.selectedHut.is_fee_hut == null">
+  <span ng-if="h.selectedHut.is_fee_person == null && h.selectedHut.is_fee_hut == null">
     <b class="category">Cost</b> <i>Unknown</i>
   </span>
-  <br ng-show="h.selectedHut.is_fee_person == true || h.selectedHut.is_fee_hut == true || (h.selectedHut.is_fee_person == null && h.selectedHut.is_fee_hut == null)"/>
+  <br ng-if="h.selectedHut.is_fee_person == true || h.selectedHut.is_fee_hut == true || (h.selectedHut.is_fee_person == null && h.selectedHut.is_fee_hut == null)" />
   
   <!-- Services -->
-  <span ng-show="getServices(h.selectedHut).length > 0">
+  <span ng-if="getServices(h.selectedHut).length > 0">
     <b class="category">Services</b>
     [* getServices(h.selectedHut)|listifyObjects:'name' *]
     <br/>
@@ -150,40 +153,40 @@
   <!- Operation -->
   <br/>
   <div class="spanlist">
-  <span ng-show="!h.selectedHut.has_services && !h.selectedHut.has_optional_services">
+  <span ng-if="!h.selectedHut.has_services && !h.selectedHut.has_optional_services">
     Self-service
   </span>
-  <span ng-show="h.selectedHut.locked != null">
-    <span ng-show="h.selectedHut.locked">
+  <span ng-if="h.selectedHut.locked != null">
+    <span ng-if="h.selectedHut.locked">
       Locked
     </span>
-    <span ng-show="!h.selectedHut.locked">
+    <span ng-if="!h.selectedHut.locked">
       Unlocked
     </span>
   </span>
-  <span ng-show="h.selectedHut.reservations != null">
-    <span ng-show="h.selectedHut.reservations">
+  <span ng-if="h.selectedHut.reservations != null">
+    <span ng-if="h.selectedHut.reservations">
       Reservations 
-      (<span ng-show="h.selectedHut.is_fee_person">shared<span ng-show="h.selectedHut.is_fee_hut"> & </span></span><span ng-show="h.selectedHut.is_fee_hut">private</span>)
+      (<span ng-if="h.selectedHut.is_fee_person">shared<span ng-show="h.selectedHut.is_fee_hut"> & </span></span><span ng-show="h.selectedHut.is_fee_hut">private</span>)
     </span>
-    <span ng-show="!h.selectedHut.reservations">
+    <span ng-if="!h.selectedHut.reservations">
       First-come, first-serve
     </span>
   </span>
-  <span ng-show="!isOpenAlways(h.selectedHut)">
-    <span ng-show="!h.selectedHut.overnight">
+  <span ng-if="!isOpenAlways(h.selectedHut)">
+    <span ng-if="!h.selectedHut.overnight">
       <i>Not currently available</i>
     </span>
-    <span ng-show="h.selectedHut.overnight">
-      <span ng-show="!h.selectedHut.open_summer">
+    <span ng-if="h.selectedHut.overnight">
+      <span ng-if="!h.selectedHut.open_summer">
         <i>CLOSED in Summer</i>
       </span>
-      <span ng-show="!h.selectedHut.open_winter">
+      <span ng-if="!h.selectedHut.open_winter">
         <i>CLOSED in Winter</i>
       </span>
     </span>
   </span>
-  <span ng-show="h.selectedHut.overnight == null">
+  <span ng-if="h.selectedHut.overnight == null">
     <i>Availability unknown</i>
   </span>
   </div>
@@ -192,18 +195,18 @@
   
   <!- Secondary images -->
   
-  <div class="obliques-gallery">
+  <div class="obliques-gallery" ng-if="h.selectedHutObliques.length > 0">
     <div ng-repeat="oblique in h.selectedHutObliques" class="image">
-      <img ng-src="[* oblique.url *]" title="[* h.selectedHut.name *]" />
-      <div ng-show="oblique.name != ''" class="credit">
-        <span ng-show="oblique.creditUrl != ''">
-          <a ng-href="[* oblique.creditUrl *]" target="_blank">[* oblique.name *]</a>
+      <img ng-src="[* oblique.src *]" title="[* h.selectedHut.name *]" />
+      <div ng-if="oblique.name" class="credit">
+        <span ng-if="oblique.url">
+          <a class="noicon" ng-href="[* oblique.url *]" target="_blank">[* oblique.name *]</a>
         </span>
-        <span ng-show="oblique.creditUrl == ''">
+        <span ng-if="!oblique.url">
           [* oblique.name *]
         </span>
       </div>
     </div>
   </div>
-
+      
 </div>
