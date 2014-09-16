@@ -1,17 +1,20 @@
 import itertools
 
+from django.core.exceptions import ValidationError
 from django.db.models import ManyToManyField
 
+from huts.api_validation import HutValidation
 from huts.forms import HutSuggestionForm
 from huts.models import (AccessType, Agency, Designation, Hut, HutSuggestion,
                          HutType, Region, Service, System)
 from huts.utils.csv_consts import CSV_FALSE, CSV_NULL, CSV_TRUE
 from huts.utils.csv_serializer import CSVSerializer
 from tastypie import fields
+from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
 from tastypie.contrib.gis.resources import ModelResource
 from tastypie.resources import NamespacedModelResource
-from tastypie.validation import CleanedDataFormValidation
+from tastypie.validation import FormValidation
 
 
 class NamespacedGeoModelResource(NamespacedModelResource, ModelResource):
@@ -135,7 +138,8 @@ class HutResource(NamespacedGeoModelResource):
 class HutSuggestionResource(HutResource):
     class Meta:
         queryset = HutSuggestion.objects.all()
-        list_allowed_methods = ['post']
-        detail_allowed_methods = []
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get']
+        authentication = Authentication()
         authorization = Authorization()
-        validation = CleanedDataFormValidation(form_class=HutSuggestionForm)
+        validation = FormValidation(form_class=HutSuggestionForm)
