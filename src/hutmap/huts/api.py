@@ -3,7 +3,6 @@ import itertools
 from django.core.exceptions import ValidationError
 from django.db.models import ManyToManyField
 
-from huts.api_validation import HutValidation
 from huts.forms import HutSuggestionForm
 from huts.models import (AccessType, Agency, Designation, Hut, HutSuggestion,
                          HutType, Region, Service, System)
