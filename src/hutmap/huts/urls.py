@@ -1,6 +1,9 @@
-from django.conf.urls import patterns, url, include
-from huts.views import DynamicTemplateView, BaseView
-from huts.api import HutResource, AgencyResource, RegionResource, HutSuggestionResource
+from django.conf.urls import include, patterns, url
+
+from huts.api import (AccessTypeResource, AgencyResource, DesignationResource,
+                      HutResource, HutSuggestionResource, HutTypeResource,
+                      RegionResource, ServiceResource, SystemResource)
+from huts.views import BaseView, DynamicTemplateView
 from tastypie.api import NamespacedApi
 
 hut_patterns = patterns('',
@@ -27,10 +30,15 @@ hut_patterns = patterns('',
 
 # api
 v1_api = NamespacedApi(api_name='v1', urlconf_namespace='huts_api')
+v1_api.register(RegionResource())
+v1_api.register(DesignationResource())
+v1_api.register(SystemResource())
+v1_api.register(AccessTypeResource())
+v1_api.register(HutTypeResource())
+v1_api.register(ServiceResource())
+v1_api.register(AgencyResource())
 v1_api.register(HutResource())
 v1_api.register(HutSuggestionResource())
-v1_api.register(AgencyResource())
-v1_api.register(RegionResource())
 
 api_patterns = patterns('',
   url(r'', include(v1_api.urls)),
