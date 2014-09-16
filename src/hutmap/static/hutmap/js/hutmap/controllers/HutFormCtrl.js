@@ -13,6 +13,12 @@
         $scope.form.schema = null;
         $scope.form.errors = null;
 
+//        $scope.$watch('hut.types', function(val) {
+//            if (val) {
+//                console.log(val);
+//            }
+//        });
+
         $http.get('/api/v1/hutsuggestion/schema/').
             success(function(data, status, headers, config) {
                   $scope.form.schema = data;
