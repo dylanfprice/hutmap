@@ -3,22 +3,6 @@ from platform import node
 import os
 import subprocess
 
-### Special settings for dreamhost account ###
-if node() == 'fulton':
-    GEOS_LIBRARY_PATH = '/home/hutmap/hutmap.com/deps/geos-3.3.0/lib/libgeos_c.so'
-    GDAL_LIBRARY_PATH = '/home/hutmap/hutmap.com/deps/gdal-1.8.0/lib/libgdal.so'
-
-    command = ['bash', '-c', 'source /home/hutmap/.bash_profile && env']
-
-    proc = subprocess.Popen(command, stdout = subprocess.PIPE)
-    stdoutdata, stderrdata = proc.communicate()
-
-    for line in stdoutdata.splitlines():
-        (key, _, value) = line.partition("=")
-        if key.startswith('HUTMAP'):
-            os.environ[key] = value.rstrip()
-
-
 ### Version ###
 
 HUTMAP_VERSION = os.environ['HUTMAP_VERSION']
@@ -28,16 +12,8 @@ HUTMAP_VERSION = os.environ['HUTMAP_VERSION']
 
 DATABASES = {
     'default': {
-        'ENGINE':   'django.contrib.gis.db.backends.mysql',
+        'ENGINE':   'django.contrib.gis.db.backends.spatialite',
         'NAME':     os.environ['HUTMAP_DB_NAME'],
-        'USER':     os.environ['HUTMAP_DB_USER'],
-        'PASSWORD': os.environ['HUTMAP_DB_PASSWORD'],
-        'HOST':     os.environ['HUTMAP_DB_HOST'],
-        'PORT':     os.environ['HUTMAP_DB_PORT'],
-        'OPTIONS': {
-          'init_command': 'SET storage_engine=INNODB',
-        },
-        'TEST_CHARSET': 'utf8',
     }
 }
 
