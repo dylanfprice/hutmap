@@ -49,19 +49,19 @@ class Service(Label):
 
 class HutCommon(models.Model):
     LOCATION_ACCURACY_CHOICES = (
-      (None, 'coordinates provided but unverified'),
-      (1, 'wild guess'),
-      (2, 'guess'),
-      (3, 'found on satellite or topo'),
-      (4, 'surveyed by GPS'),
-      (5, 'surveyed by GPS and found on satellite or topo'),
+      (None, 'Provided by 3rd party'),
+      (1, 'Wild guess (> 1 km)'),
+      (2, 'Guess (< 1 km)'),
+      (3, 'Found on photo or topo map'),
+      (4, 'Surveyed by GPS'),
+      (5, 'Surveyed by GPS and found on map'),
     )
 
     BACKCOUNTRY_CHOICES = (
       (0, 'frontcountry'),
       (1, 'backcountry in snow'),
       (2, 'backcountry year-round'),
-      (3, 'backcountry year-round and accessible by trail or more rugged terrain only'),
+      (3, 'backcountry year-round and accessible only by trail or rugged terrain'),
     )
 
     ## metadata ##

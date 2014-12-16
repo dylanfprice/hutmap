@@ -97,10 +97,24 @@
     directive('hmTextField', 
         ['createHmField',
         function (createHmField) {
-            var extraLinkFn = function(scope) {
+            var extraLinkFn = function(scope, element, attrs) {
                 scope.inputType = 'text';
+                if (attrs.help !== undefined) {
+                    scope.help = attrs.help;
+                }
             }
             return createHmField('input', 'hm-fields/input.html', extraLinkFn);
+    }]).
+    
+    directive('hmTextareaField', 
+        ['createHmField',
+        function (createHmField) {
+            var extraLinkFn = function(scope, element, attrs) {
+                if (attrs.help !== undefined) {
+                    scope.help = attrs.help;
+                }
+            }
+            return createHmField('input', 'hm-fields/textarea.html', extraLinkFn);
     }]).
 
     directive('hmSelectField', 
@@ -109,6 +123,9 @@
             var extraLinkFn = function(scope, element, attrs) {
                 if (attrs.multiple !== undefined) {
                     element.find('select').attr('multiple', 'multiple');
+                }
+                if (attrs.help !== undefined) {
+                    scope.help = attrs.help;
                 }
             }
             return createHmField('select', 'hm-fields/select.html', extraLinkFn);

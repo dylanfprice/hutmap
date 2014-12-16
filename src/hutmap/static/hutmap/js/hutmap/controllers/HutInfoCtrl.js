@@ -10,7 +10,7 @@
       'Guess',
       'Surveyed by satellite',
       'Surveyed by GPS',
-      'Surveyed by GPS'  
+      'Surveyed by GPS'
     ];
     
     $scope.backcountry_text = [

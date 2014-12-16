@@ -1,65 +1,190 @@
+<script type="text/ng-template" id="hm-fields/input.html">
+  <div class="field">
+    <ng-include src="'hm-fields/label.html'"></ng-include>
+    <input type="[* inputType *]" name="[* tagName *]" />
+    <ng-include src="'hm-fields/errors.html'"></ng-include>
+  </div>
+</script>
+
+<script type="text/ng-template" id="hm-fields/textarea.html">
+  <div class="field">
+    <ng-include src="'hm-fields/label.html'"></ng-include>
+    <textarea name="[* tagName *]" />
+    <ng-include src="'hm-fields/errors.html'"></ng-include>
+  </div>
+</script>
+
+<script type="text/ng-template" id="hm-fields/select.html">
+  <div class="field">
+    <ng-include src="'hm-fields/label.html'"></ng-include>
+    <select name="[* tagName *]"
+            ui-select2="{dropdownAutoWidth: true}"
+            ng-model="field">
+        <option ng-repeat="(choice, choiceLabel) in choices"
+                value="[* choice *]">
+                [* choiceLabel *]
+        </option>
+    </select>
+    <ng-include src="'hm-fields/errors.html'"></ng-include>
+  </div>
+</script>
+
+<script type="text/ng-template" id="hm-fields/label.html">
+    <span ng-class="{required: !blank}">
+        <label for="[* tagName *]">[* verbose_name|capfirst *]</label>
+    </span>
+    <span class="sublabel" ng-if="help">[* help *]</span>
+</script>
+
+<script type="text/ng-template" id="hm-fields/errors.html">
+    <ul ng-repeat="error in fieldErrors">
+        <li>[* error *]</li>
+    </ul>
+</script>
+
 <div id="content-fixed">
+  <div id="content-page">
 
-    <script type="text/ng-template" id="hm-fields/label.html">
-        <span ng-class="{required: !blank}">
-            <label for="[* tagName *]">[* verbose_name|capfirst *]</label>
-        </span>
-    </script>
-
-    <script type="text/ng-template" id="hm-fields/errors.html">
-        <ul ng-repeat="error in fieldErrors">
-            <li>[* error *]</li>
-        </ul>
-    </script>
-
-    <script type="text/ng-template" id="hm-fields/input.html">
-        <ng-include src="'hm-fields/label.html'"></ng-include>
-        <input type="[* inputType *]" name="[* tagName *]" />
-        <ng-include src="'hm-fields/errors.html'"></ng-include>
-        <br/>
-    </script>
-
-    <script type="text/ng-template" id="hm-fields/select.html">
-        <ng-include src="'hm-fields/label.html'"></ng-include>
-        <select name="[* tagName *]"
-                ui-select2="{dropdownAutoWidth: true}"
-                ng-model="field">
-            <option ng-repeat="(choice, choiceLabel) in choices"
-                    value="[* choice *]">
-                    [* choiceLabel *]
-            </option>
-        </select>
-        <ng-include src="'hm-fields/errors.html'"></ng-include>
-        <br/>
-    </script>
+    
+    
+    <h3>Suggest new hut</h3>
     
     <div ng-controller="HutFormCtrl">
         <hm-form model="hut" schema="form.schema" errors="form.errors">
-            <div>
-              <h3>Suggest new hut</h3>
-            </div>
             
-            <hm-text-field ng-model="model.name"></hm-text-field>
+            
+<!-- Names -->
+<h2>Names</h2>
+<hm-text-field ng-model="model.name"></hm-text-field>
+<hm-textarea-field ng-model="model.alternate_names" help="Additional names for this hut (one per line)."></hm-textarea-field>
+<hr/>
 
-            <div ng-controller="HutFormMapCtrl">
-                <hm-text-field ng-model="model.location" ng-change="updateMarker()"></hm-text-field>
+<!-- Location -->
+<h2>Location</h2>
+<div ng-controller="HutFormMapCtrl">
+  <hm-text-field ng-model="model.location" ng-change="updateMarker()" help="The latitude and longitude of the hut (WGS84 decimal degrees). Fine tune the location by moving the map marker."></hm-text-field>
+    <gm-map class="hut-form-map" gm-map-id="'hut-form-map'" 
+                                 gm-map-options="mapOptions" 
+                                 gm-center="mapCenter">
+        <gm-markers gm-objects="huts" 
+                    gm-id="object && object.id || null"
+                    gm-position="positionFromHut(object)"
+                    gm-marker-options="markerOptions"
+                    gm-on-dragend="positionFromMarker(marker, object)">
+        </gm-markers>
+    </gm-map>
+</div>
+<hm-select-field ng-model="model.location_accuracy" help="Specify the accuracy of the location you've provided."></hm-select-field>
+<hm-textarea-field ng-model="model.location_references" help="Links to pages and documents used to determine the location of the hut (one per line)."></hm-textarea-field>
+<hr/>
 
-                <gm-map class="hut-form-map" gm-map-id="'hut-form-map'" 
-                                             gm-map-options="mapOptions" 
-                                             gm-center="mapCenter">
-                    <gm-markers gm-objects="huts" 
-                                gm-id="object && object.id || null"
-                                gm-position="positionFromHut(object)"
-                                gm-marker-options="markerOptions"
-                                gm-on-dragend="positionFromMarker(marker, object)">
-                    </gm-markers>
-                </gm-map>
-            </div>
+<!-- References -->
+<h2>References</h2>
+<hm-text-field ng-model="model.hut_url" help="The hut's 'homepage' (if such a page exists), typically found on the website of the agency that maintains the hut."></hm-text-field>
+<hm-textarea-field ng-model="model.hut_references" help="Additional links to useful information about the hut (one per line)."></hm-textarea-field>
+<hr>
 
-            <hm-select-field ng-model="model.country"></hm-select-field>
-            <hm-text-field ng-model="model.state"></hm-text-field>
-            <hm-select-field ng-model="model.types" multiple></hm-select-field>
+<!-- Photo -->
+<h2>Photo</h2>
+<!-- TODO -->
+<div class="field">
+  <label for="model.photo">Photo</label>
+  <span class="sublabel">Upload a photo of the hut. If it is someone else's photo, please ensure that you have the necessary permissions and credit the photographer below.</span> 
+  <input ng-model="model.photo" ng-file-select="model.photo = $files[0]" type="file">   
+</div>
+<hm-text-field ng-model="model.photo_credit_name"></hm-text-field>
+<hm-text-field ng-model="model.photo_credit_url" help="For example, your photography website or a link to the image's page on Flickr or Wikimedia Commons."></hm-text-field>
+<hr>
+
+<!-- Access -->
+<h2>Access</h2>
+<!--<hm-select-field ng-model="model.backcountry" help="Backcountry access for the location."></hm-select-field>-->
+<hm-select-field ng-model="model.access_no_snow" multiple help="Specify the easiest method(s) required to access the hut when no snow is present. Roads except 'Gated road' suggest the hut is accessible by car."></hm-text-field>
+<hm-text-field ng-model="model.no_snow_min_km" help="Distance (in km) from nearest drievable road (when snow is absent)."></hm-text-field>
+<!-- TODO -->
+<div class="form-field  ng-scope">
+  <label for="id_is_snow_min_km">Is snow ever present on the approach?</label>
+  <select id="id_is_snow_min_km" name="is_snow_min_km" ng-model="hut.is_snow_min_km" class="ng-pristine ng-valid">
+    <option value="1" selected="selected"></option>
+    <option value="2">Yes</option>
+    <option value="3">No</option>
+  </select>  
+</div>
+<hm-text-field ng-model="model.snow_min_km" help="Distance (in km) from nearest driveable road (when snow is present)."></hm-text-field>
+<hr>
+
+<!-- Type, Capacity, Cost, Services -->
+<h2>Details</h2>
+<hm-select-field ng-model="model.types" multiple help="Structure type(s). Select all that apply."></hm-select-field>
+<hm-text-field ng-model="model.structures" help="Number of building structures at the location with overnight accomodations."></hm-text-field>
+<hm-text-field ng-model="model.capacity_max" help="Total overnight capacity of all structures."></hm-text-field>
+<h2>Availability</h2>
+<hm-select-field ng-model="model.overnight" help="Is the location currently available for overnight stays?"></hm-select-field>
+<hm-select-field ng-model="model.open_summer" help="Is the location open in the summer/snow-free season?"></hm-select-field>
+<hm-select-field ng-model="model.open_winter" help="Is the location open in the winter/snow season?"></hm-select-field>
+<hm-select-field ng-model="model.locked" help="Is the location kept locked?"></hm-select-field>
+
+<h2>Cost & Services</h2>
+
+<div class="form-field  ng-scope">
+  <label for="id_reservations">Reservations</label>
+  <select id="id_reservations" name="reservations" ng-model="hut.reservations" class="ng-pristine ng-valid">
+    <option value=""></option>
+    <option value="1">none</option>
+    <option value="2">per person</option>
+    <option value="3">per hut</option>
+    <option value="4">per person or hut</option>
+  </select>
+</div>
+
+<div class="form-field  ng-scope">
+  <label for="id_fee_person_min">Minimum cost per adult per night</label>
+  <input id="id_fee_person_min" name="fee_person_min" ng-model="hut.fee_person_min" type="text" class="ng-pristine ng-valid"> $USD
+  <p class="help">Prices are complicated, so we use this metric to compare prices across all huts. Give us your best estimate. If only the whole hut can be reserved, divide the cheapest price for the hut by the maximum number of people (and nights) for which the fee applies.</p>
+</div>
+
+<div class="form-field  ng-scope">    
+  <label for="s2id_autogen8">Services available</label>
+  <select multiple="multiple" id="id_services" name="services" ng-model="hut.services" ui-select2="select2Options" class="ng-pristine ng-valid select2-offscreen" tabindex="-1">
+    <option value="2">Internet</option>
+    <option value="3">Transportation (Snowmobile)</option>
+    <option value="4">Gear shuttle</option>
+    <option value="5">Catering</option>
+    <option value="6">Guide</option>
+    <option value="7">Half Board</option>
+    <option value="8">Staffed</option>
+    <option value="9">Full Board</option>
+    <option value="10">Stocked Food</option>
+    <option value="11">Transportation (Snowcat)</option>
+    <option value="12">Snowcat</option>
+    <option value="13">Transportation (Helicopter)</option>
+    <option value="14">Transportation</option>
+    <option value="15">Ski Pass</option>
+  </select>
+  <p class="help">Select all that apply. By "services", we mean any amenities and services that go above and beyond a nicer self-service backcountry hut.</p>
+</div>
+
+<hr>
+
+<!-- User -->
+<h2>User info</h2>
+<div class="form-field  ng-scope">
+  <label for="id_user_email">Your email</label><br/>    
+  <input id="id_user_email" maxlength="75" name="user_email" ng-model="hut.user_email" type="text" class="ng-pristine ng-valid"><br />
+  <input id="id_user_email" maxlength="75" name="user_email" ng-model="hut.user_email" type="text" class="ng-pristine ng-valid" placeholder="Again to confirm"> 
+  <p class="help">In case we need to contact you with questions.</p>
+</div>
+<div class="form-field  ng-scope">
+  <label for="id_user_notes">Notes for the Hutmap team</label>    
+  <textarea cols="40" id="id_user_notes" name="user_notes" ng-model="hut.user_notes" rows="10" class="ng-pristine ng-valid"></textarea>
+</div>
+
+
+
+
+            
             <input class="button" ng-click="submit(hut)" value="Submit" />
         </hm-form>
+      </div>
     </div>
 </div>
