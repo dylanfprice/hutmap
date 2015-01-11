@@ -28,6 +28,6 @@ class Command(BaseCommand):
             out = open(tmp_file, 'w')
             out.write(huts_json)
 
-            os.replace(tmp_file, json_file)
+            os.rename(tmp_file, json_file)
         else:
             self.stdout.write(huts_json)
