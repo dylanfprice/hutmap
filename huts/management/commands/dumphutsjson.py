@@ -19,7 +19,7 @@ class Command(BaseCommand):
     help = 'Dumps the huts, agencies, and regions in the json api format.'
 
     def handle(self, *args, **options):
-        huts_json = export.db_as_json().encode('utf-8'))
+        huts_json = export.db_as_json().encode('utf-8')
         if options['update']:
             path = os.path.join(settings.STATIC_ROOT, 'data')
             json_file = os.path.join(path, 'huts.json')
