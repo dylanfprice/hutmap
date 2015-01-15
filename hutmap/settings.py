@@ -5,7 +5,7 @@ import subprocess
 
 ### Version ###
 
-HUTMAP_VERSION = os.environ['HUTMAP_VERSION']
+HUTMAP_VERSION = os.environ['VERSION']
 
 
 ### Per machine settings ###
@@ -13,13 +13,13 @@ HUTMAP_VERSION = os.environ['HUTMAP_VERSION']
 DATABASES = {
     'default': {
         'ENGINE':   'django.contrib.gis.db.backends.spatialite',
-        'NAME':     os.environ['HUTMAP_DB_NAME'],
+        'NAME':     os.environ['DB_NAME'],
     }
 }
 
-SECRET_KEY = os.environ['HUTMAP_SECRET_KEY']
+SECRET_KEY = os.environ['SECRET_KEY']
 
-GOOGLE_API_KEY = os.environ['HUTMAP_GOOGLE_API_KEY']
+GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY']
 
 DEBUG = os.getenv('HUTMAP_DEBUG', 'false').lower() != 'false'
 TEMPLATE_DEBUG = DEBUG
@@ -27,8 +27,8 @@ TEMPLATE_DEBUG = DEBUG
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ['HUTMAP_EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['HUTMAP_EMAIL_HOST_PASSWORD']
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_SUBJECT_PREFIX = '[Django@{node}] '.format(node=node())
 
 
@@ -75,7 +75,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.environ['HUTMAP_MEDIA_ROOT']
+MEDIA_ROOT = os.environ['MEDIA_ROOT']
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -86,7 +86,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = os.environ['HUTMAP_STATIC_ROOT']
+STATIC_ROOT = os.environ['STATIC_ROOT']
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
