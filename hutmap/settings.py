@@ -21,7 +21,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY']
 
-DEBUG = os.getenv('HUTMAP_DEBUG', 'false').lower() != 'false'
+DEBUG = os.getenv('DEBUG', 'false').lower() != 'false'
 TEMPLATE_DEBUG = DEBUG
 
 EMAIL_HOST = 'smtp.gmail.com'
