@@ -22,6 +22,10 @@ class Command(BaseCommand):
         huts_json = export.db_as_json().encode('utf-8')
         if options['update']:
             path = os.path.join(settings.STATIC_ROOT, 'hutmap', 'data')
+            try:
+                os.makedirs(path)
+            except OSError:
+                pass
             json_file = os.path.join(path, 'huts.json')
             tmp_file = os.path.join(path, 'huts.new.json')
 
