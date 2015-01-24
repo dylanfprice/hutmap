@@ -1,4 +1,3 @@
-from huts.management.commands.mysqldistfn import add_distance_fn
 from tastypie.test import ResourceTestCase
 from unittest import skip
 
@@ -16,10 +15,6 @@ class HutResourceTestCase(ResourceTestCase):
 class HutSearchResourceTestCase(ResourceTestCase):
     fixtures = ['test_data.json']
     url = '/huts/api/v1/hutsearch/'
-
-    @classmethod
-    def setUpClass(cls):
-        add_distance_fn()
 
     def test_query_bounds(self):
         response = self.client.get(self.url, data={'bounds':  '47.05814,-122.79683,49.05814,-120.79683'})
