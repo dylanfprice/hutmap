@@ -1,7 +1,10 @@
-import urllib2
+from contextlib import closing
 from csv import DictReader
 from datetime import datetime
+import urllib2
+
 from django.core.management.base import BaseCommand
+
 from huts.models import Hut, Agency, Region, Designation, System, AccessType,\
                         HutType, Service
 from huts.model_fields import lookup_country_code
@@ -23,12 +26,12 @@ class Command(BaseCommand):
         else:
             open_fn = open
 
-        with open_fn(args[0]) as csvfile:
+        with closing(open_fn(args[0])) as csvfile:
             reader = DictReader(csvfile)
             for values in reader:
                 save_agency(values)
 
-        with open_fn(args[0]) as csvfile:
+        with closing(open_fn(args[0])) as csvfile:
             reader = DictReader(csvfile)
             for values in reader:
                 save_hut(values)
