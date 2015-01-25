@@ -1,3 +1,4 @@
+import urllib2
 from csv import DictReader
 from datetime import datetime
 from django.core.management.base import BaseCommand
@@ -12,17 +13,25 @@ class Command(BaseCommand):
     help = 'Imports the given csvfile into the database.'
 
     def handle(self, *args, **options):
-        if len(args) == 1:
+        if len(args) != 1:
+            return
 
-            with open(args[0], 'r') as csvfile:
-                reader = DictReader(csvfile)
-                for values in reader:
-                    save_agency(values)
+        file_name = args[0]
 
-            with open(args[0], 'r') as csvfile:
-                reader = DictReader(csvfile)
-                for values in reader:
-                    save_hut(values)
+        if file_name.startswith('http'):
+            open_fn = urllib2.urlopen
+        else:
+            open_fn = open
+
+        with open_fn(args[0]) as csvfile:
+            reader = DictReader(csvfile)
+            for values in reader:
+                save_agency(values)
+
+        with open_fn(args[0]) as csvfile:
+            reader = DictReader(csvfile)
+            for values in reader:
+                save_hut(values)
 
 
 def get(values, key, val_eval):
