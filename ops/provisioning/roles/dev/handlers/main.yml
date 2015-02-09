@@ -1,3 +1,0 @@
----
-- name: restart webserver
-  service: name=django-devserver state=restarted

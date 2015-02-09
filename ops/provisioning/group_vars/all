@@ -1,9 +1,0 @@
----
-home: '/home/{{ user }}'
-virtualenv: '{{ home }}/.venvs/hutmap/'
-profile: '{{ home }}/.bash_profile'
-app_dir: '{{ repo_dir }}/src/hutmap'
-public_dir: '{{ repo_dir }}/public'
-scripts_dir: '{{ app_dir }}/scripts'
-
-python_version: '2.7.5'
