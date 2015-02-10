@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% comment %}
+This template gets pre-rendered and stuck in static files so nginx can serve
+it--see the generate_500_page management command.
+{% endcomment %}
+{% block content %}
+Downtime
+{% endblock %}
