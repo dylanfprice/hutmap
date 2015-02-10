@@ -5,5 +5,7 @@ This template gets pre-rendered and stuck in static files so nginx can serve
 it--see the generate_500_page management command.
 {% endcomment %}
 {% block content %}
-Downtime
+<div id="content-fixed">
+    <h1>Downtime</h1>
+</div>
 {% endblock %}
