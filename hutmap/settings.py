@@ -45,7 +45,8 @@ MANAGERS = ADMINS
 
 SERVER_EMAIL = 'django@hutmap.com'
 
-ALLOWED_HOSTS = ['.hutmap.com', '104.236.170.208', '104.236.174.214']
+# host checking is done by nginx
+ALLOWED_HOSTS = ['*']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
