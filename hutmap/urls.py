@@ -18,7 +18,6 @@ urlpatterns += patterns('',
   url(r'^admin/',      include(admin.site.urls)),
 )
 
-# serve data and media files during development
-urlpatterns += static('{}/hutmap/data/'.format(settings.STATIC_URL),
-    document_root='{}/hutmap/data/'.format(settings.STATIC_ROOT))
+# serve static and media files during development
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
