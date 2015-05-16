@@ -13,6 +13,7 @@ class HutCommonForm(forms.ModelForm):
 class HutForm(HutCommonForm):
     class Meta(HutCommonForm.Meta):
         model = Hut
+        fields = '__all__'
 
 
 class HutSuggestionForm(HutCommonForm):
@@ -30,3 +31,4 @@ class HutSuggestionForm(HutCommonForm):
 class HutEditForm(HutCommonForm):
     class Meta(HutCommonForm.Meta):
         model = HutEdit
+        fields = '__all__'

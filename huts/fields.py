@@ -27,7 +27,7 @@ class PointFormField(forms.CharField):
         else:
             raise ValidationError('Please use the {}'.format(self.help_text.lower()))
 
-class ListFormField(forms.Field):
+class ListFormField(forms.CharField):
     help_text = 'Enter a comma separated list of values or leave blank'
 
     def __init__(self, *args, **kwargs):

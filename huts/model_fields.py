@@ -1,11 +1,7 @@
 from django.contrib.gis.db import models
 from huts.fields import ListFormField
 from huts.constants import COUNTRIES_DICT, COUNTRIES
-from south.modelsinspector import add_introspection_rules
 import ast
-
-add_introspection_rules([], ["^huts\.model_fields\.ListField"])
-add_introspection_rules([], ["^huts\.model_fields\.CountryField"])
 
 class ListField(models.TextField):
     __metaclass__ = models.SubfieldBase
