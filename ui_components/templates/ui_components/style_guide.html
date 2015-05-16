@@ -1,0 +1,18 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html ng-app="style_guide">
+
+<head>
+</head>
+
+<body>
+
+<ng-include src="'{% static "ui_components/html/button_group.html" %}'"></ng-include>
+
+{% include "js_deps/angular.html" %}
+<script src="{% static "ui_components/js/style_guide.js" %}"></script>
+<script src="{% static "ui_components/js/ui_components.js" %}"></script>
+<script src="{% static "ui_components/js/demos/button_group.js" %}"></script>
+</body>
+</html>
