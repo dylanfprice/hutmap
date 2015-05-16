@@ -5,7 +5,7 @@
   angular.module('hutmap', [
       'hutmap.services', 'hutmap.directives', 'hutmap.filters', 'hutmap.controllers', 
       'ngRoute', 'ngResource', 'ngCookies',
-      'AngularGM', 'ui.bootstrap', 'ui.select2', 'angularFileUpload', 'ng.django.forms',
+      'AngularGM', 'ui.bootstrap', 'ui.select2', 'angularFileUpload',
     ]).
     
 

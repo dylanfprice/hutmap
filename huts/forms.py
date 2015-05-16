@@ -1,7 +1,5 @@
 from django import forms
 
-from djangular.forms import NgModelFormMixin
-
 from huts.fields import PointFormField
 from huts.models import Hut, HutEdit, HutSuggestion
 from huts.widgets import PointWidget
