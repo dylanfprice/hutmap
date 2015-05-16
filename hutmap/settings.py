@@ -160,7 +160,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'hutmap.urls'
 
 TEMPLATE_DIRS = (
-  join(LOCAL_PATH, 'templates')
+  join(LOCAL_PATH, 'templates'),
 )
 
 INSTALLED_APPS = (
@@ -173,11 +173,11 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'django.contrib.staticfiles',
     'compressor',
-    'south',
     'django_nose',
     'djangular',
     'any_imagefield',
     'huts',
+    'ui_components',
 )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
