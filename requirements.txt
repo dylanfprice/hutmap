@@ -1,7 +1,7 @@
 django==1.8
 django-angular==0.7.3
 django-any-imagefield==0.8.1
-django_compressor==1.3
+django_compressor==1.5
 django-nose==1.4
 -e git+https://github.com/django-tastypie/django-tastypie#egg=TastyPie
 ipdb==0.8

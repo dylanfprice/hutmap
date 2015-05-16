@@ -159,7 +159,7 @@ class HutCommon(models.Model):
 
 class HutManager(models.GeoManager):
     def published(self):
-        return super(HutManager, self).get_query_set().filter(published=True)
+        return super(HutManager, self).get_queryset().filter(published=True)
 
 class Hut(HutCommon):
     # true if we should display this hut on the site
