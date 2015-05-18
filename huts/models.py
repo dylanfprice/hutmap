@@ -47,6 +47,10 @@ class HutType(Label):
 class Service(Label):
     pass
 
+# returns path to save photo, relative to MEDIA_ROOT
+def image_path(hut, filename):
+    return path.join('huts', hut.country, hut.state, hut.name, filename)
+
 class HutCommon(models.Model):
     LOCATION_ACCURACY_CHOICES = (
       (None, 'Provided by 3rd party'),
@@ -69,8 +73,7 @@ class HutCommon(models.Model):
     updated = models.DateField(auto_now=True)
 
     ## location ##
-    # NOTE: change this to true if we ever do spatial queries (and mysql engine to MyISAM)
-    location = models.PointField(spatial_index=False)
+    location = models.PointField()
     altitude_meters = models.IntegerField('altitude (m)', null=True, blank=True)
     location_accuracy = models.IntegerField(choices=LOCATION_ACCURACY_CHOICES, null=True, blank=True)
     show_satellite = models.NullBooleanField()
@@ -92,10 +95,6 @@ class HutCommon(models.Model):
     alternate_names = ListField(null=True, blank=True)
     hut_url = models.URLField(max_length=250, blank=True)
     hut_references = ListField(null=True, blank=True)
-
-    # returns path to save photo, relative to MEDIA_ROOT
-    def image_path(hut, filename):
-        return path.join('huts', hut.country, hut.state, hut.name, filename)
 
     photo = AnyImageField(upload_to=image_path, null=True, blank=True)
     photo_url = models.URLField(max_length=250, null=True, blank=True)
