@@ -1,19 +1,18 @@
-(function() {
+(function(ng) {
 'use strict';
-    angular.module('ui_components').
+    ng.module('ui_components').
 
-    directive('buttonGroup', ['$compile', function ($compile) {
+    directive('buttonGroup', [function () {
         return {
             restrict: 'E',
             scope: {
                 'labels': '=' 
             },
             link: function (scope, ele, attrs) {
-                console.log('here', scope.labels);
                 angular.forEach(scope.labels, function(value, index) {
                     ele.append('<div>' + value + '</div>');
                 })
             }
         };
     }]);
-})();
+})(angular);
