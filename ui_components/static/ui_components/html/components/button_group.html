@@ -1,0 +1,14 @@
+<ul class="btn-grp">
+    <li class="btn-grp-item"
+        ng-if="anyIncluded"
+        ng-class="{ 'is-btn-grp-item-selected': isAnySelected() }"
+        ng-click="toggleAny()">
+        any
+    </li>
+    <li class="btn-grp-item" 
+        ng-repeat="item in items"
+        ng-class="{ 'is-btn-grp-item-selected': isSelected(item) }"
+        ng-click="toggle(item)">
+        {{ getLabel(item) }}
+    </li>
+</ul>

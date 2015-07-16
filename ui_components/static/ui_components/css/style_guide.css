@@ -1,0 +1,39 @@
+body {
+    padding: 20px;
+}
+
+.column {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #777;
+    padding: 5px;
+    min-height: 30px;
+    text-align: center;
+}
+
+.row {
+    margin-bottom: 10px;
+}
+
+.row:last-child {
+    margin-bottom: 0;
+}
+
+.column .column {
+    color: #eee;
+    background: #333;
+    border-color: #000;
+}
+
+@media only screen and (max-width: 550px) {
+    .row {
+        margin-bottom: 0;
+    }
+    .column {
+        margin-bottom: 10px;
+    }
+    .row:last-child .column:last-child {
+        margin-bottom: 0;
+    }
+}

@@ -1,0 +1,19 @@
+.btn-grp {
+    list-style-type: none; 
+}
+
+.btn-grp-item {
+    color: #A2A2A2;
+    font-size: 1em;
+    display: inline;
+    padding: 3px;
+    border: 1px solid #ddd;
+    cursor: hand;
+    cursor: pointer;
+}
+
+.is-btn-grp-item-selected {
+    background-color: #EEE;
+    color: #434848;
+    text-shadow: 1px 1px 1px #FFF;
+}

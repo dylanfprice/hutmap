@@ -4,18 +4,27 @@
 <html>
 
 <head>
-<link rel="stylesheet" href="{% static "ui_components/css/demos/button_group.css" %}" type="text/css" />
-</head>
-
-<body ng-app="style_guide">
-
-<ng-include src="'{% static "ui_components/html/demos/button_group.html" %}'"></ng-include>
+<link rel="stylesheet" href="{% static "ui_components/css/grid.css" %}" type="text/css" />
+<link rel="stylesheet" href="{% static "ui_components/css/style_guide.css" %}" type="text/css" />
+<link rel="stylesheet" href="{% static "ui_components/css/components/button_group.css" %}" type="text/css" />
 
 {% include "js_deps/angular.html" %}
 <script src="{% static "ui_components/js/style_guide.js" %}"></script>
 <script src="{% static "ui_components/js/ui_components.js" %}"></script>
-
 <script src="{% static "ui_components/js/components/button_group.js" %}"></script>
-<script src="{% static "ui_components/js/demos/button_group.js" %}"></script>
+</head>
+
+<body ng-app="style_guide">
+
+<div class="row">
+    <div class="column column-10">
+        <ng-include src="'{% static "ui_components/html/demos/button_group.html" %}'"></ng-include>
+        <script src="{% static "ui_components/js/demos/button_group.js" %}"></script>
+    </div>
+    <div class="column column-2">
+        <p>hello</p>
+    </div>
+</div>
+
 </body>
 </html>

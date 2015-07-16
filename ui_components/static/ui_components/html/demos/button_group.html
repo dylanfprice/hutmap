@@ -1,3 +1,9 @@
-<div class="button-group-demo" ng-controller="ButtonGroupDemo">
-    <button-group labels="buttons"></button-group>
+<div ng-controller="ButtonGroupDemo">
+    <button-group 
+        items="buttons" 
+        label-attr="label" 
+        selected-attr="selected" 
+        any="true">
+    </button-group>
+    {{ buttons }}
 </div>
