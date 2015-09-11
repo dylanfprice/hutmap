@@ -89,13 +89,13 @@
   <!-- Access -->
   <br/>
   <b class="category">Easiest access</b><br/>  
-  <i class="fa fa-sun"></i><i class="fa fa-snowflake" ng-if="(h.selectedHut.no_snow_min_km == h.selectedHut.snow_min_km) && (h.selectedHut.snow_min_km != null || h.selectedHut.backcountry > 1)"></i>
+  <i class="typcn typcn-weather-sunny"></i><i class="typcn typcn-weather-snow" ng-if="(h.selectedHut.no_snow_min_km == h.selectedHut.snow_min_km) && (h.selectedHut.snow_min_km != null || h.selectedHut.backcountry > 1)"></i>
   [*h.selectedHut.access_no_snow|listifyObjects:'name'*]
   <span ng-if="h.selectedHut.access_no_snow.length == 0" class="italic">Unknown</span>
   <span ng-if="h.selectedHut.no_snow_min_km > 0">([*h.selectedHut.no_snow_min_km*] km)</span>
   <span ng-if="(h.selectedHut.snow_min_km == null && h.selectedHut.backcountry < 2) || (h.selectedHut.snow_min_km > 0 && h.selectedHut.snow_min_km != h.selectedHut.no_snow_min_km)">
     <br/>
-    <i class="fa fa-snowflake"></i>
+    <i class="typcn typcn-weather-snow"></i>
     <span ng-if="(h.selectedHut.snow_min_km == null && h.selectedHut.backcountry < 2)" class="italic">
       Unknown
     </span>

@@ -3,12 +3,12 @@
 {% load i18n %}
 
 {% block extrastyle %}
-<link rel="stylesheet" type="text/css"  charset="utf-8" href="{% static "hutmap/js/bower_components/select2/select2.css" %}">
+<link rel="stylesheet" type="text/css"  charset="utf-8" href="{% static "lib/select2/select2.css" %}">
 {% endblock %}
 
 {% block footer %}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="{% static "hutmap/js/bower_components/select2/select2.js" %}"></script>
+<script type="text/javascript" charset="utf-8" src="{% static "lib/select2/select2.js" %}"></script>
 <script>
   $(function() {
     $('select[ui-select2]').select2({

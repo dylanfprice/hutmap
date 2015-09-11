@@ -1,0 +1,101 @@
+/**
+ * Reusable mixins and classes.
+ */
+
+// Patch for Bootstrap-2.3.2
+#grid {
+  .core  {
+    .span(@gridColumns) {
+      width: (@gridColumnWidth * @gridColumns) + (@gridGutterWidth * (@gridColumns - 1));
+    }
+  }
+}
+
+// For AngularJS
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.transparent {
+  color: transparent; 
+  background-color: transparent; 
+  border-color: transparent;
+}
+
+.visuallyhidden {
+  border: 0 none;
+  clip: rect(0px, 0px, 0px, 0px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.pointer {
+  cursor: hand;
+  cursor: pointer;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.italic {
+  font-style: italic;
+}
+
+
+.floatright {
+  float: right !important;
+}
+
+.up1 {
+  position: relative;
+  top: -1px;
+}
+
+.up2 {
+  position: relative;
+  top: -2px;
+}
+
+.center {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.grayjean {
+  background-image: url('@{imgPath}/gray-jean.png');
+}
+
+.grid {
+  background-image: url('@{imgPath}/grid.png');
+}
+
+.clickable-icon {
+  text-shadow: 1px 1px 1px @grayLighter;
+  margin-right: 2px;
+  .pointer;
+}
+
+.img-rounded {
+  .border-radius(6px);
+}
+
+.linkcolor {
+  color: @linkColor;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+div.inline {
+  display: inline-block;
+}

@@ -8,21 +8,29 @@ This is the code that powers [hutmap.com](http://www.hutmap.com).
 
 This section describes how to set up and run hutmap as a developer.
 
-I am assuming a working knowledge of Linux, Bash, Python, and Django. You may
+We assume a working knowledge of Linux, Bash, Python, and Django. You may
 not know Vagrant, so walk through the
 [tutorial](http://docs.vagrantup.com/v2/getting-started/) before setting
 everything up.
 
-It should work on Mac or Windows but I've only ever used Linux so no guarantees.
+It should work on Windows but we've only ever used Linux and Mac so no guarantees.
 
 ## Clone the Repo ##
 
-Get the code, and repos the project depends on:
+Download the project code and its submodules:
 
 ```bash
-$ git clone git@github.com:dylanfprice/hutmap.git
-$ git submodule init
-$ git submodule update
+git clone https://github.com/dylanfprice/hutmap.git
+git submodule init
+git submodule update
+```
+
+The project uses [bower](http://bower.io/) to manage front-end dependencies. 
+Install it with [npm](https://www.npmjs.com/):
+
+```bash
+npm install -g bower
+bower install
 ```
 
 ## Install Dependencies ##
@@ -122,8 +130,8 @@ $ sudo restart django-devserver
 
 ## Developing Javascript (AngularJS) ##
 
-Edit the js files in `src/hutmap/static/hutmap/js/` and add tests in
-`src/hutmap/static/hutmap/js-test/`. Changes will show up when you reload the
+Edit the js files in `hutmap/static/js/` and add tests in
+`src/hutmap/static/js-test/`. Changes will show up when you reload the
 page. Note that Angular expressions are wrapped in [* *] instead of the default
 {{ }}, so as not to conflict with Django.
 
@@ -131,12 +139,12 @@ Run the tests by logging into the vm and starting a karma server:
 ```bash
 $ cd ops/
 $ vagrant ssh
-$ karma start /vagrant/src/hutmap/static/hutmap/js-test/hutmap/config/karma.conf.js
+$ karma start /vagrant/hutmap/static/js-test/config/karma.conf.js
 ```
 
 ## Developing CSS ##
 
-The css is located at `src/hutmap/static/hutmap/css/`. It is written in
+The css is located at `hutmap/static/css/`. It is written in
 [less](http://lesscss.org/). The less is automatically compiled to css using
 [django_compressor](http://django-compressor.readthedocs.org/en/latest/) so you
 just need to reload the page.
