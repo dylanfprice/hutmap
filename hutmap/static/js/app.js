@@ -1,34 +1,58 @@
 (function() {
 'use strict';
   
-  
   angular.module('hutmap', [
       'hutmap.services', 'hutmap.directives', 'hutmap.filters', 'hutmap.controllers', 
-      'ngRoute', 'ngResource', 'ngCookies',
+      'ngResource', 'ngCookies', 'ui.router', 'ct.ui.router.extras.sticky',
       'AngularGM', 'ui.bootstrap', 'ui.select2', 'angularFileUpload',
     ]).
-    
-
-  config(['$routeProvider', function($routeProvider) {
-    $routeProvider.
-      when(hutmap.url.home, {
-        templateUrl: '/partials/home.html',
-        active: hutmap.url.home,
+  
+  run(function($state, $rootScope) {
+    $rootScope.$state = $state;
+  }).
+  
+  config(function($stateProvider, $stickyStateProvider, $urlRouterProvider) {
+    // Redirect any unmatched url to homepage
+    $urlRouterProvider.otherwise(hutmap.url.home);
+    // Define states
+    $stateProvider.
+      state('home', {
+        url: hutmap.url.home,
+        sticky: true,
+        views: {
+          'pages': {
+            templateUrl: '/partials/home.html'
+          }
+        }
       }).
-      when(hutmap.url.map, {
-        templateUrl: '/partials/map.html',
-        active: hutmap.url.map,
-        reloadOnSearch: false,
+      state('about', {
+        url: hutmap.url.about,
+        sticky: true,
+        views: {
+          'pages': {
+            templateUrl: '/partials/about.html'
+          }
+        }
       }).
-      when(hutmap.url.about, {
-        templateUrl: '/partials/about.html',
-        active: hutmap.url.about,
+      state('hut_new', {
+        url: hutmap.url.hut_new,
+        views: {
+          'pages': {
+            templateUrl: '/partials/hut_new.html'
+          }
+        }
       }).
-      when(hutmap.url.hut_new, {
-        templateUrl: '/partials/hut_new.html',
-        active: hutmap.url.hut_new,
+      state('map', {
+        url: hutmap.url.map + '?h_selected&m_zoom&m_center&m_bounds&m_maptypeid',
+        sticky: true,
+        views: {
+          'map': {
+            templateUrl: '/partials/map.html'
+          }
+        },
+        controller: 'HutmapCtrl'
       });
-  }]).
+  }).
 
   config(['$locationProvider', function($locationProvider) {
     $locationProvider.html5Mode(true);
@@ -37,7 +61,7 @@
   config(['PlacesProvider', function(PlacesProvider) {
     // suggest bounds for our search results
     PlacesProvider.bounds(new google.maps.LatLngBounds(
-        new google.maps.LatLng(30, -130),
+      new google.maps.LatLng(30, -130),
         new google.maps.LatLng(65, -80)));
   }]).
 
@@ -177,7 +201,6 @@
         return url + (parseInt(zoom)) + "/" + point.y + "/" + column
       };
 
-
       var mapTypes = {
         ARC_GIS_USA: new google.maps.ImageMapType({
           name: "US Topo",
@@ -215,7 +238,7 @@
           position: google.maps.ControlPosition.TOP_CENTER
         }
       });
-
+      
       // in case mapOptions.mapTypeId didn't exist until now
       gmap.setMapTypeId(mapOptions.main.mapTypeId);
       
@@ -228,5 +251,5 @@
       });
     });
   }]);
-
+  
 })();

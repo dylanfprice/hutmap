@@ -3,7 +3,7 @@
 
   angular.module('hutmap.controllers').
 
-  controller('CarouselCtrl', ['$scope', '$route', '$http', '$q', function($scope, $route, $http, $q) {
+  controller('CarouselCtrl', ['$scope', '$http', '$q', function($scope, $http, $q) {
     $scope.slides = [
     
     /* TEMPLATE
@@ -31,7 +31,8 @@
       {
         title: 'Three Fingers Lookout',
         location: 'North Cascade Range, Washington, USA',
-        hutLink: '',
+        hutLink: 'map/?h_selected=148&m_center=48.169777,-121.687827&m_zoom=17&m_maptypeid=hybrid',
+        hutId: 148,
         agency: {
           name: 'Mount Baker-Snoqualmie National Forest website',
           url: 'http://www.fs.usda.gov/recarea/mbs/recreation/recarea/?recid=17850'

@@ -4,8 +4,8 @@
   angular.module('hutmap.controllers').
 
   controller('SearchCtrl', 
-    ['$scope', '$location', '$route', '$log', '$q', '$document', 'Places', 
-    function($scope, $location, $route, $log, $q, $document, Places) {
+    ['$scope', '$state', '$location', '$log', '$q', '$document', 'Places', 
+    function($scope, $state, $location, $log, $q, $document, Places) {
 
     $scope.submitting = false;
     $scope.autocompleting = 0;
@@ -55,18 +55,8 @@
     // send us to that place 
     var selectPlace = function(place) {
       $scope.submitting = false;
-      $route.reload();
-      $location.
-        path(hutmap.url.map).
-        search({}).
-        search('m_zoom', 17); // Why 17? Because it looks good.
-
-      if (place.geometry.location) {
-        $location.search('m_center', place.geometry.location.toUrlValue());
-      }
-      if (place.geometry.viewport) {
-        $location.search('m_bounds', place.geometry.viewport.toUrlValue());
-      }
+      $state.go('map');
+      $scope.setMap(place.geometry.location, 17, place.geometry.viewport);
     };
 
     // when user selects an autocomplete suggestion, this gets triggered

@@ -3,17 +3,16 @@
   "version": "0.0.1",
   "dependencies": {
     "AngularGM": "1.0.0",
-    "angular": "1.0.8",
+    "angular": "~1.2.0",
     "angular-bootstrap": "0.11.0",
+    "angular-ui-router": "~0.2.15",
+    "ui-router-extras": "~0.0.14",
     "angular-ui-select2": "0.0.2",
     "angularjs-file-upload": "1.4.0",
+    "bootstrap": "~2.3.2",
     "font-awesome": "~4.4.0",
-    "jquery": "2.1.4",
+    "jquery": "~2.1.4",
     "select2": "3.4.5",
-    "typicons.font": "typicons#~2.0.7",
-    "bootstrap": "~2.3.2"
-  },
-  "resolutions": {
-    "jquery": "2.1.4"
+    "typicons.font": "typicons#~2.0.7"
   }
 }

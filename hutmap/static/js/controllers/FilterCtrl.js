@@ -40,11 +40,11 @@
           $position: 1,
           $keywords: ['cave']
         },
-        'huts & yurts': {
+        'cabins & yurts': {
           include: false,
           $position: 2,
-          $keywords: ['hut', 'yurt', 'chickee', 'lean-to', 'wall-tent', 'shelter'],
-          $tooltip: 'Hut, Yurt, Lean-to, Wall tent, etc'
+          $keywords: ['cabin', 'yurt', 'lean-to', 'chickee', 'wall-tent'],
+          $tooltip: 'Cabins, yurts, lean-tos, chickees, wall tents, ...'
         },
         'fire lookouts': {
           include: false,
@@ -55,7 +55,7 @@
           include: false,
           $position: 4,
           $keywords: ['compound', 'hostel', 'tea-house', 'lodge', 'chalet', 'ranch', 'farm'],
-          $tooltip: 'Lodge, Hostel, Ranch, Farm, etc'
+          $tooltip: 'Lodges, hostels, tea houses, ranches, ...'
         }
       };
 
@@ -74,7 +74,7 @@
           $match: function(hut) {
             return hut.backcountry === 0 || hut.backcountry === 1 ||
               checkLabels(hut.access_no_snow, 
-                  ['2wd-road', '4wd-road', 'dirt-road', 'paved-road', 'road']);
+                  ['road', '2wd-road', '4wd-road']);
           }
         },
         'trail': {
@@ -84,7 +84,8 @@
           $match: function(hut) {
             var match = false;
             if (hut.backcountry >= 2) {
-              match = checkLabels(hut.access_no_snow, ['trail', 'gated-']);
+              match = checkLabels(hut.access_no_snow,
+                ['trail', 'closed-road']);
             }
             return match;
           }
@@ -92,12 +93,12 @@
         'off-trail': {
           include: false,
           $position: 3,
-          $tooltip: 'Bushwack, Scramble, Glacier travel, etc',
+          $tooltip: 'Access includes off-trail travel',
           $match: function(hut) {
             var match = false;
             if (hut.backcountry >= 2) {
               match = checkLabels(hut.access_no_snow, 
-                  ['off-trail', 'bushwack', 'scramble', 'glacier']);
+                  ['off-trail', 'scramble', 'glacier']);
             }
             return match;
           }
@@ -105,7 +106,7 @@
         'snow': {
           include: false,
           $position: 4,
-          $tooltip: 'Ski, Snowmobile, etc',
+          $tooltip: 'Access may require snow travel',
           $match: function(hut) {
             return hut.backcountry === 1 || hut.is_snow_min_km;
           }
@@ -113,12 +114,12 @@
         'boat': {
           include: false,
           $position: 5,
-          $tooltip: 'Motor Boat, Canoe, etc',
+          $tooltip: 'Access may require a boat',
           $match: function(hut) {
             var match = false;
             if (hut.backcountry >= 2) {
               match = checkLabels(hut.access_no_snow, 
-                  ['boat']);
+                  ['boat', 'nonmotor-boat']);
             }
             return match;
           }
@@ -126,12 +127,12 @@
         'aircraft': {
           include: false,
           $position: 6,
-          $tooltip: 'Helicopter, Plane, etc',
+          $tooltip: 'Access may require an aircraft',
           $match: function(hut) {
             var match = false;
             if (hut.backcountry >= 2) {
               match = checkLabels(hut.access_no_snow, 
-                  ['plane']);
+                  ['plane', 'wheel-plane', 'float-plane', 'ski-plane', 'helicopter']);
             }
             return match;
           }
@@ -145,35 +146,41 @@
           $tooltip: 'Self-service only',
           $keywords: []
         },
-        'transportation': {
-          include: true,
-          $position: 1,
-          $tooltip: 'Helicopter, Snowcat, etc',
-          $keywords: ['transportation-', 'gear-shuttle']
-        },
         'food': {
           include: true,
+          $position: 1,
+          $tooltip: 'Stocked foods, cooked meals, ...',
+          $keywords: ['stocked-food', 'catering']
+        },
+        'transportation': {
+          include: true,
           $position: 2,
-          $tooltip: 'Cooked meals, Stocked food, etc',
-          $keywords: ['half-board', 'full-board', 'stocked-food', 'breakfast', 'catering']
+          $tooltip: 'Transportation to hut',
+          $keywords: ['transportation-to-hut', 'gear-shuttle']
         },
         'guide': {
           include: true,
           $position: 3,
           $keywords: ['guide']
         },
-        'other': {
+        'charters': {
           include: true,
           $position: 4,
-          $keywords: ['internet']
-        }
+          $tooltip: 'Helicopters, snowcats, boats, etc',
+          $keywords: ['snowcat-charter', 'boat-charter', 'plane-charter', 'helicopter-charter']
+        },
+//         'internet': {
+//           include: true,
+//           $position: 5,
+//           $keywords: ['internet']
+//         }
       };
 
       $scope.f.reservations = {
         'none': {
           include: true,
           $position: 0,
-          $tooltip: 'The hut can not be reserved',
+          $tooltip: 'The hut cannot be reserved',
           $match: function(hut) {
             return hut.reservations === false;
           }
@@ -215,7 +222,22 @@
         max: 5000
       };
     };
-
+    
+    $scope.toggleMetersToFeet = function() {
+      if ($scope.f.altitude.meters) {
+        $scope.f.altitude.min = Math.round(metersToFeet($scope.f.altitude.min));
+        $scope.f.altitude.max = Math.round(metersToFeet($scope.f.altitude.max));
+        $scope.f.altitude.meters = false;
+      }
+    };
+    $scope.toggleFeetToMeters = function() {
+      if (!$scope.f.altitude.meters) {
+        $scope.f.altitude.min = Math.round(feetToMeters($scope.f.altitude.min));
+        $scope.f.altitude.max = Math.round(feetToMeters($scope.f.altitude.max));
+        $scope.f.altitude.meters = true;
+      }
+    };
+    
     function setOtherIncludes(filter, include) {
       angular.forEach(filter, function(item, name) {
         if (name !== 'any') {
@@ -317,10 +339,12 @@
       return minInRange || maxInRange || contains;
     };
 
+    function metersToFeet(value) {
+      return value * 3.28084;
+    };
     function feetToMeters(value) {
       return value / 3.28084;
     };
-
 
     // matchers
    
@@ -400,7 +424,8 @@
         $location.search('f', angular.toJson($scope.f));
       }
     };
-
+    $scope.$on('writeLocation', writeLocation);
+    
     var readLocation = function() {
       $scope.resetFilters();
       var f = $location.search().f;
@@ -410,9 +435,6 @@
       }
       $scope.filter();
     };
-
-    $scope.$on('writeLocation', writeLocation);
-
     readLocation();
 
   }]);

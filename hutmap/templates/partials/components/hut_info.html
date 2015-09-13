@@ -24,7 +24,7 @@
   
   <div id="hut-buttons">
     <a class="button" href="#" ng-click="zoomToHut(h.selectedHut);">zoom</a>
-    <a class="button" href="/">edit</a>
+    <!--<a class="button" href="/">edit</a>-->
   </div>
   
   <div id="hut-info">
@@ -61,7 +61,8 @@
   <br/>
   <b class="category">Location</b><br/>
   [*h.selectedHut.location.coordinates[1]|number:5*], [*h.selectedHut.location.coordinates[0]|number:5*]
-  <span ng-if="h.selectedHut.altitude_meters != null">&nbsp;/&nbsp; [*h.selectedHut.altitude_meters*] m</span>
+  <span ng-if="h.selectedHut.altitude_meters != null && f.altitude.meters">&nbsp;/&nbsp; [* h.selectedHut.altitude_meters|number:0 *] m</span>
+  <span ng-if="h.selectedHut.altitude_meters != null && !f.altitude.meters">&nbsp;/&nbsp; [* (h.selectedHut.altitude_meters*3.28)|number:0 *] ft</span>
   <br/>
   
   <!-- Location accuracy -->

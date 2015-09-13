@@ -7,21 +7,8 @@
     ['$scope', '$location', '$timeout', '$q', 'Huts', 'HutImg',
     function($scope, $location, $timeout, $q, Huts, HutImg) {
 
+    window.$scope = $scope;
     var curQuery = 0; // incremented every time there's a new hut query
-
-    $scope.h = {
-      loading: 0,            // truthy if huts are being queried/loaded
-      huts: null,            // array of hut objects in current viewport
-      filteredHuts: null,    // array of hut objects corresp. to those matching the filters
-      filteredHutIds: null,  // sparse array of hut ids, each id is in filteredHutIds[id]
-      query: null,           // current query for the Huts service
-      selectedHut: null, 
-      selectedHutImgUrl: null,
-      selectedHutObliques: [],
-      selectedHutRegion: null,
-      selectedHutAgency: null,
-      initialized: $q.defer()
-    };
     
     // fns for dealing with loading variable
     $scope.resetLoading = function() { $scope.h.loading = 0; };
@@ -90,21 +77,8 @@
         $location.search('h_selected', $scope.h.selectedHut.id);
       }
     };
-
-    var readLocation = function() {
-      var id = $location.search().h_selected;
-      $location.search('h_selected', null);
-      if (id) {
-        Huts.hut(id).then(function(hut) {
-          $scope.h.selectedHut = hut;
-          $scope.$broadcast('clickSelected');
-        });
-      }
-    };
-
+    
     $scope.$on('writeLocation', writeLocation);
-
-    readLocation();
 
   }]);
 })();

@@ -48,23 +48,23 @@
   <div ng-controller="HutmapCtrl">
 
     <span ng-cloak>
-    <script type="text/ng-template" id="template/typeahead/typeahead-popup.html">
-      {% include "partials/components/typeahead-popup.html" %}
-    </script>
-    <script type="text/ng-template" id="template/typeahead/typeahead-match.html">
-      {% include "partials/components/typeahead-match.html" %}
-    </script>
-    <script type="text/ng-template" id="template/tooltip/tooltip-popup.html">
-      {% include "partials/components/tooltip-popup.html" %}
-    </script>
-    <script type="text/ng-template" id="template/alert/alert.html">
-      {% include "partials/components/alert.html" %}
-    </script>
+      <script type="text/ng-template" id="template/typeahead/typeahead-popup.html">
+        {% include "partials/components/typeahead-popup.html" %}
+      </script>
+      <script type="text/ng-template" id="template/typeahead/typeahead-match.html">
+        {% include "partials/components/typeahead-match.html" %}
+      </script>
+      <script type="text/ng-template" id="template/tooltip/tooltip-popup.html">
+        {% include "partials/components/tooltip-popup.html" %}
+      </script>
+      <script type="text/ng-template" id="template/alert/alert.html">
+        {% include "partials/components/alert.html" %}
+      </script>
     </span>
 
     <div id="navbar">
       <div id="brand">
-        <a id="logo" href="/" title="">
+        <a id="logo" ui-sref="home">
           <img src="{% static "img/logo-icon-light.svg" %}" />
           <span>Hutmap</span>
         </a>
@@ -72,36 +72,30 @@
       <div id="navtriangle" /></div>
       
       <form id="navbar-search" class="navbar-search" ng-controller="SearchCtrl" ng-submit="search(selected)">
-          <input type="text" 
-                 class="search-query" 
-                 placeholder="Find backcountry huts" 
-                 autocomplete="off"
-                 ng-model="selected" 
-                 typeahead="place as place.description for place in getPlaces($viewValue)"
-                 />
-          <span class="search-icon">
-            <span ng-class="{
-              'fa fa-search': !submitting && !autocompleting,
-              'img-spinner': submitting || autocompleting
-            }"></span>
-            <button class="transparent" type="submit">
-              <span class="visuallyhidden">Search</span>
-            </button>
-          </span>
-        </form>
+        <input type="text" 
+               class="search-query" 
+               placeholder="Find backcountry huts" 
+               autocomplete="off"
+               ng-model="selected" 
+               typeahead="place as place.description for place in getPlaces($viewValue)"
+               />
+        <span class="search-icon">
+          <span ng-class="{
+            'fa fa-search': !submitting && !autocompleting,
+            'img-spinner': submitting || autocompleting
+          }"></span>
+          <button class="transparent" type="submit">
+            <span class="visuallyhidden">Search</span>
+          </button>
+        </span>
+      </form>
         
-        <div id="nav">
-          <a ng-class="{ active: ui.$route.current.active == '{% url 'huts:map' %}'}" href="{% url 'huts:map' %}">
-            Map
-          </a>
-          <a ng-class="{ active: ui.$route.current.active == '{% url 'huts:about' %}'}" href="{% url 'huts:about' %}">
-            About
-          </a>
-          <a ng-class="{ active: ui.$route.current.active == '{% url 'huts:hut_new' %}'}" href="{% url 'huts:hut_new' %}">
-            Add a Hut
-          </a>
-        </div>
-        
+      <div id="nav">
+        <a ui-sref="map" ui-sref-active="active">Map</a>
+        <a ui-sref="about" ui-sref-active="active">About</a>
+        <!--<a ui-sref="hut_new" ui-sref-active="active">Add a Hut</a>-->
+      </div>
+      
       <!-- Social Media Controls -->
 			<div id="social_controls" class="addthis_default_style nowrap" >
 				<a class="addthis_button_facebook_follow" addthis:userid="Hutmap">
@@ -119,8 +113,9 @@
       <div ng-controller="AlertCtrl">
         <div id="alert-topbar" ng-show="alerts.length">
           <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">[*alert.msg*]</alert>
-        </div> 
-        <ng-view></ng-view>
+        </div>
+        <div ui-view="map" ng-show="$state.includes('map')"></div>
+        <div ui-view="pages" ng-show="!$state.includes('map')"></div>
       </div>
     </div>
     {% endblock %}
@@ -157,7 +152,6 @@
   <script src="//maps.googleapis.com/maps/api/js?v=3.12&sensor=false&libraries=places&key={{ GOOGLE_API_KEY }}"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-resource.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-cookies.min.js"></script>
   {% compress js %}
@@ -167,6 +161,9 @@
   <script type="text/javascript" charset="utf-8" src="{% static "lib/select2/select2.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "lib/angular-ui-select2/src/select2.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "lib/angularjs-file-upload/angular-file-upload.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "lib/angular-ui-router/release/angular-ui-router.min.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "lib/ui-router-extras/release/modular/ct-ui-router-extras.core.min.js" %}"></script>
+  <script type="text/javascript" charset="utf-8" src="{% static "lib/ui-router-extras/release/modular/ct-ui-router-extras.sticky.min.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "js/app.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "js/filters.js" %}"></script>
   <script type="text/javascript" charset="utf-8" src="{% static "js/directives/module.js" %}"></script>

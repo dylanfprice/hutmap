@@ -22,9 +22,9 @@
             </td>
             <td class="caption-details">
               <h4>[*slide.title*]</h4><br />
-              [*slide.location*]<br />              
+              [*slide.location*]<br />
               <p>
-                <span class="linkcolor">&lfloor;</span>&nbsp;<a ng-href="[*slide.hutLink*]">show on map</a><br/>
+                <span class="linkcolor">&lfloor;</span>&nbsp;<a ng-click="showOnMap(slide.hutId)">show on map</a><br/>
                 <span class="linkcolor" ng-if="slide.agency.name">&lfloor;</span>&nbsp;<a ng-href="[*slide.agency.url*]">[*slide.agency.name*]</a>
               </p>
             </td>

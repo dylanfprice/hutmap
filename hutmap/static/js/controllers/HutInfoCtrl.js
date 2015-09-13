@@ -3,7 +3,10 @@
 
   angular.module('hutmap.controllers').
 
-  controller('HutInfoCtrl', ['$scope', function($scope) {
+  controller('HutInfoCtrl', 
+    ['$scope', 'MaxZoom', 'utils',
+    function($scope, MaxZoom, utils) {
+    
     $scope.accuracy_text = [
       'Unverified',
       'Wild guess',
@@ -45,6 +48,18 @@
         services = hut.services.concat(hut.optional_services);
       }
       return services;
+    };
+    
+    $scope.zoomToHut = function(hut) {
+      var latlng = utils.latLngFromHut(hut);
+      var zoom = 19;
+      if ($scope.map.mapTypeId == google.maps.MapTypeId.HYBRID) {
+        var zoomPromise = MaxZoom.getMaxZoom(latlng);
+        zoomPromise.then(function(maxZoom) {
+          zoom = Math.min(zoom, maxZoom);
+        });
+      }
+      $scope.setMap(latlng, zoom);
     };
 
   }]);
