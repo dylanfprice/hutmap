@@ -31,8 +31,8 @@ class HutCommonAdmin(admin.ModelAdmin):
 
 class HutAdmin(HutCommonAdmin):
     form = HutForm
-    list_display = ('name', 'updated', 'published')
-    list_filter = ('published', 'updated')
+    list_display = ('name', 'agency_id', 'updated', 'published')
+    list_filter = ('published', 'updated', 'discretion', 'overnight','state')
 
 class HutSuggestionAdmin(HutCommonAdmin):
     form = HutSuggestionForm
@@ -100,7 +100,7 @@ class HutEditAdmin(HutCommonAdmin):
 
 class AgencyAdmin(admin.ModelAdmin):
     list_display = ('name', 'parent', 'updated')
-    list_filter = ('updated',)
+    list_filter = ('updated', 'parent')
     search_fields = ('name', 'parent__name')
 
 admin.site.register(Region, RegionAdmin)

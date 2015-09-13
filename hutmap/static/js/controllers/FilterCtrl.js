@@ -146,34 +146,40 @@
           $tooltip: 'Self-service only',
           $keywords: []
         },
-        'food': {
+        'staffed': {
           include: true,
           $position: 1,
-          $tooltip: 'Stocked foods, cooked meals, ...',
+          $keywords: ['staffed']
+        },
+        'food': {
+          include: true,
+          $position: 2,
+          $tooltip: 'Stocked foods, cooked meals, etc',
           $keywords: ['stocked-food', 'catering']
         },
         'transportation': {
           include: true,
-          $position: 2,
+          $position: 3,
           $tooltip: 'Transportation to hut',
           $keywords: ['transportation-to-hut', 'gear-shuttle']
         },
         'guide': {
           include: true,
-          $position: 3,
+          $position: 4,
           $keywords: ['guide']
         },
         'charters': {
           include: true,
-          $position: 4,
+          $position: 5,
           $tooltip: 'Helicopters, snowcats, boats, etc',
           $keywords: ['snowcat-charter', 'boat-charter', 'plane-charter', 'helicopter-charter']
         },
-//         'internet': {
-//           include: true,
-//           $position: 5,
-//           $keywords: ['internet']
-//         }
+        'other': {
+          include: true,
+          $position: 6,
+          $tooltip: 'Sauna, hot-tub, internet, etc',
+          $keywords: ['sauna', 'hot-tub', 'internet']
+        },
       };
 
       $scope.f.reservations = {
@@ -201,12 +207,13 @@
             return hut.is_fee_hut && hut.reservations;
           }
         },
+        // NOTE: Currently also includes if reservations: true but person vs. hut not known
        'unknown': {
           include: true,
           $position: 3,
           $tooltip: 'It is unknown whether the hut can be reserved.',
           $match: function(hut) {
-            return hut.reservations === null;
+            return hut.reservations === null || (hut.is_fee_hut == null && hut.is_fee_person == null);
           }
        },
       };
