@@ -220,7 +220,7 @@
 
       $scope.f.capacity = {
         min: 0,
-        max: 200
+        max: 150
       };
 
       $scope.f.altitude = {

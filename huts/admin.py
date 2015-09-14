@@ -32,7 +32,7 @@ class HutCommonAdmin(admin.ModelAdmin):
 class HutAdmin(HutCommonAdmin):
     form = HutForm
     list_display = ('name', 'agency_id', 'updated', 'published')
-    list_filter = ('published', 'updated', 'discretion', 'overnight','state')
+    list_filter = ('published', 'updated', 'discretion', 'overnight', 'types', 'state')
 
 class HutSuggestionAdmin(HutCommonAdmin):
     form = HutSuggestionForm

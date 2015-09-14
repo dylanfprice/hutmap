@@ -6,6 +6,7 @@ from huts.model_fields import CountryField, ListField
 from huts.utils.image import retrieve_and_resize
 from os import path
 from urllib2 import HTTPError, URLError
+import hashlib
 
 class Region(models.Model):
     region = models.CharField(max_length=50, unique=True)
@@ -49,7 +50,7 @@ class Service(Label):
 
 # returns path to save photo, relative to MEDIA_ROOT
 def image_path(hut, filename):
-    return path.join('huts', hut.country, hut.state, hut.name, filename)
+    return path.join('hut-photos', filename)
 
 class HutCommon(models.Model):
     LOCATION_ACCURACY_CHOICES = (
@@ -170,18 +171,20 @@ class Hut(HutCommon):
         """Store image locally if we have a URL"""
         if self.photo_url and not self.photo:
             try:
-                image = retrieve_and_resize(self.photo_url, 200, 200)
-                self.photo.save(
-                  'photo_200x200.jpeg',
-                  ContentFile(image.read()),
+              # TODO: Also save original
+              result = retrieve_and_resize(self.photo_url, width=300)
+              self.photo.save(
+                  hashlib.md5(self.photo_url.encode("utf")).hexdigest() + '.jpg',
+                  ContentFile(result.read()),
                   save=True
                 )
             except (HTTPError, URLError, IOError):
+                # TODO: Log this!
                 self.photo_url = None
                 self.save()
             except:
-                pass #TODO: log this
-
+                # TODO: Log this!
+                pass
 
     def save(self, *args, **kwargs):
         super(Hut, self).save(*args, **kwargs) # Call the "real" save() method.
