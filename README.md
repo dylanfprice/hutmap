@@ -38,7 +38,7 @@ bower install
 Install:
 - [Python](http://www.python.org) 2.x
 - [Vagrant](http://docs.vagrantup.com/v2/installation/)
-- [Ansible](http://www.ansibleworks.com/docs/gettingstarted.html)
+- [Ansible](http://www.ansible.com/)
 
 If you run a Debian based Linux distro like me this should work:
 ```bash
