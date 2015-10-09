@@ -83,10 +83,13 @@ def save_m2m(model_inst, m2m_model, values, key):
         return None
     for value in all_values:
         identifier = value.replace(' ', '-').lower()
-        obj, created = m2m_model.objects.get_or_create(
-          name=value,
-          identifier=identifier,
-        )
+        try:
+            obj = m2m_model.objects.get(identifier=identifier)
+        except m2m_model.DoesNotExist:
+            obj = m2m_model.objects.create(
+              name=value.capitalize(),
+              identifier=identifier,
+            )
         getattr(model_inst, key).add(obj)
 
 def save_agency(values):
@@ -111,14 +114,7 @@ def save_agency(values):
 
 
 def save_hut(values):
-    # only save huts from WA and CO
-    #state = values['state']
-    #if state not in ['Washington', 'Colorado']:
-    #  return
-
-    if not values['latitude'] or not values['longitude']:
-        return
-
+    
     try:
         region_name = get_string(values, 'region')
         region = None
@@ -132,25 +128,27 @@ def save_hut(values):
         if agency_name:
             agency = Agency.objects.get(name=get_string(values, 'agency_name'))
 
+        location = None
+        if values['latitude'] and values['longitude']:
+          location = 'POINT({0} {1})'.format(get_float(values, 'longitude'), get_float(values, 'latitude')),
+        
         hut, created = Hut.objects.get_or_create(
           updated = get_datetime(values, 'date_updated'),
           discretion = get_bool(values, 'discretion'),
-
-          location = 'POINT({0} {1})'.format(get_float(values, 'longitude'), get_float(values, 'latitude')),
           altitude_meters = get_pos_int(values, 'altitude_meters'),
           location_accuracy = get_pos_int(values, 'location_accuracy'),
           show_satellite = get_bool(values, 'show_satellite'),
           show_topo = get_bool(values, 'show_topo'),
+          location = location,
           location_references = get_list(values, 'location_references'),
 
           country = lookup_country_code(get_string(values, 'country')),
           state = get_string(values, 'state'),
           region = region,
+          agency = agency,
           # designations is m2m
           # systems is m2m
-
-          agency = agency,
-
+          
           name = get_hut_name(values),
           alternate_names = get_list(values, 'alternate_names'),
           hut_url = get_string(values, 'hut_url'),
