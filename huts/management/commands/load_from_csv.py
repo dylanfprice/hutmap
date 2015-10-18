@@ -114,7 +114,7 @@ def save_agency(values):
 
 
 def save_hut(values):
-    
+
     try:
         region_name = get_string(values, 'region')
         region = None
@@ -130,8 +130,8 @@ def save_hut(values):
 
         location = None
         if values['latitude'] and values['longitude']:
-          location = 'POINT({0} {1})'.format(get_float(values, 'longitude'), get_float(values, 'latitude')),
-        
+          location = 'POINT({0} {1})'.format(get_float(values, 'longitude'), get_float(values, 'latitude'))
+
         hut, created = Hut.objects.get_or_create(
           updated = get_datetime(values, 'date_updated'),
           discretion = get_bool(values, 'discretion'),
@@ -148,7 +148,7 @@ def save_hut(values):
           agency = agency,
           # designations is m2m
           # systems is m2m
-          
+
           name = get_hut_name(values),
           alternate_names = get_list(values, 'alternate_names'),
           hut_url = get_string(values, 'hut_url'),
